@@ -1,4 +1,4 @@
-.form-container{
+.form-container-login{
     border: 2px solid rgb(200, 200, 200);
     position: absolute;
     top: 50%;
@@ -11,98 +11,64 @@
     margin: 0 auto; 
 }
 
-.form-container:hover{
+.form-container-login:hover{
     border: 2px solid rgb(180, 180, 180);
 }
 
-.register-form{
+.login-form{
     margin-bottom: 10px;
     text-align: center;
-    margin-top: 10px;
+    margin-top: 29%;
 }
 
-.form-field{
+.form-field-login{
     
     width: 65%;
     height: 30px;
     border-radius: 4px;
     font-size: 20px;
+    margin-bottom: 10px;
 }
 
-.form-field::placeholder{
-    font-size: 20px;
-}
-
-.form-field:hover{
+.form-field-login:hover{
     border-color: black;
 }
 
-.form-date{
-    width: 80%;
-    height: 30px;
-    font-size: 20px;
-    border-radius: 4px;
-}
-
-.form-date:hover{
-    border-color: black;
-}
-
-.form-gender{
-    font-size: 20px;
-    margin-bottom: 40px;
-}
-
-.form-success{
+.form-success-login{
     display: block;
     color: green; 
     font-size: 1em;
     height: 1.5em;
 }
 
-.form-button{
-    width: 65%;
+.form-button-login{
+    width: 67%;
     height: 35px;
     margin-bottom: 10px;
+    margin-top: 25px;
     font-size: 20px;
 }
 
-.form-button:hover{
+.form-button-login:hover{
     cursor: pointer;
 }
 
-.form-button:active{
+.form-button-login:active{
     cursor: pointer;
-    width: 295px;
+    width: 300px;
     height: 33px;
 }
 
-.form-date-label{
-    font-size: 20px;
-}
-
-.form-radio:hover{
-    cursor: pointer;
-}
-
-.form-radio{
-    padding-right: 10px;
-}
-
-.form-gender-text{
-    padding-right: 10px;
-}
-
-.error-label{
+.error-label-login{
     display: block;
     height: 1.5em;
     color: red;
 }
 
-.signIn-button{
+.signUp-button{
     color: #007bff;
 }
 
-.signIn-button:hover{
+.signUp-button:hover{
     cursor: pointer;
 }

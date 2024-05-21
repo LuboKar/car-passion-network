@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./RegisterModal.css";
 
-export default function RegisterModal() {
+export default function RegisterModal({ toggleModal }) {
   const [values, setValues] = useState({
     firstName: "",
     lastName: "",
@@ -175,6 +175,13 @@ export default function RegisterModal() {
         </button>
         <br />
       </form>
+      <p>
+        Already have an account?
+        <span className="signIn-button" onClick={toggleModal}>
+          {" "}
+          Sign In
+        </span>
+      </p>
     </div>
   );
 }
