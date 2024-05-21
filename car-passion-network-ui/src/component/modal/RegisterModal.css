@@ -1,0 +1,100 @@
+.form-container{
+    border: 2px solid rgb(200, 200, 200);
+    position: absolute;
+    top: 50%;
+    left: 70%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    background-color: white;
+    width: 30%;
+    height: 580px;
+    margin: 0 auto; 
+}
+
+.form-container:hover{
+    border: 2px solid rgb(180, 180, 180);
+}
+
+.register-form{
+    margin-bottom: 10px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.form-field{
+    
+    width: 65%;
+    height: 30px;
+    border-radius: 4px;
+    font-size: 20px;
+}
+
+.form-field::placeholder{
+    font-size: 20px;
+}
+
+.form-field:hover{
+    border-color: black;
+}
+
+.form-date{
+    width: 80%;
+    height: 30px;
+    font-size: 20px;
+    border-radius: 4px;
+}
+
+.form-date:hover{
+    border-color: black;
+}
+
+.form-gender{
+    font-size: 20px;
+    margin-bottom: 40px;
+}
+
+.form-success{
+    display: block;
+    color: green; 
+    font-size: 1em;
+    height: 1.5em;
+}
+
+.form-button{
+    width: 65%;
+    height: 35px;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.form-button:hover{
+    cursor: pointer;
+}
+
+.form-button:active{
+    cursor: pointer;
+    width: 295px;
+    height: 33px;
+}
+
+.form-date-label{
+    font-size: 20px;
+}
+
+.form-radio:hover{
+    cursor: pointer;
+}
+
+.form-radio{
+    padding-right: 10px;
+}
+
+.form-gender-text{
+    padding-right: 10px;
+}
+
+.error-label{
+    display: block;
+    height: 1.5em;
+    color: red;
+}
