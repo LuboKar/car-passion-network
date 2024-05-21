@@ -1,6 +1,8 @@
 package com.carpassionnetwork.controller;
 
+import com.carpassionnetwork.dto.request.LoginRequest;
 import com.carpassionnetwork.dto.request.RegistrationRequest;
+import com.carpassionnetwork.dto.response.AuthenticationResponse;
 import com.carpassionnetwork.mapper.UserMapper;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.service.AuthenticationService;
@@ -25,5 +27,11 @@ public class AuthenticationController {
       @RequestBody @Valid RegistrationRequest registrationRequest) {
     User registeredUser = userMapper.toUserEntity(registrationRequest);
     return ResponseEntity.ok(authenticationService.register(registeredUser));
+  }
+
+  @PostMapping("/login")
+  public ResponseEntity<AuthenticationResponse> login(
+      @RequestBody @Valid LoginRequest loginRequest) {
+    return ResponseEntity.ok(authenticationService.login(loginRequest));
   }
 }

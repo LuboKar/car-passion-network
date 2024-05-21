@@ -1,5 +1,6 @@
 package com.carpassionnetwork.helper;
 
+import com.carpassionnetwork.dto.request.LoginRequest;
 import com.carpassionnetwork.dto.request.RegistrationRequest;
 import com.carpassionnetwork.model.Gender;
 import com.carpassionnetwork.model.User;
@@ -25,12 +26,16 @@ public class AuthenticationTestHelper {
 
   public static RegistrationRequest createRegistrationRequest() {
     return RegistrationRequest.builder()
-            .firstName("John")
-            .lastName("Doe")
-            .email(EMAIL)
-            .password("password")
-            .dateOfBirth(LocalDate.of(1990, 1, 1))
-            .gender(Gender.MALE)
-            .build();
+        .firstName("John")
+        .lastName("Doe")
+        .email(EMAIL)
+        .password("password")
+        .dateOfBirth(LocalDate.of(1990, 1, 1))
+        .gender(Gender.MALE)
+        .build();
+  }
+
+  public static LoginRequest createLoginRequest() {
+    return LoginRequest.builder().email(EMAIL).password("password").build();
   }
 }

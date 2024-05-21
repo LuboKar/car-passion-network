@@ -12,7 +12,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-  @ExceptionHandler({AlreadyUsedEmailException.class})
+  @ExceptionHandler({
+    AlreadyUsedEmailException.class,
+    InvalidCredentialsException.class,
+    UserNotFoundException.class
+  })
   public ResponseEntity<Object> handleException(RuntimeException exception) {
     Map<String, String> error = new HashMap<>();
     error.put("error", exception.getMessage());
