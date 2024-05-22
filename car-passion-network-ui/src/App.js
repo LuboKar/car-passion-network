@@ -4,6 +4,7 @@ import DashboardPage from "./component/page/DashboardPage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ProtectedRoute from "./component/Authentication/ProtectedRoute";
 import ProtectedHome from "./component/Authentication/ProtectedHome";
+import ProfilePage from "./component/page/ProfilePage";
 
 function App() {
   const router = createBrowserRouter([
@@ -14,6 +15,10 @@ function App() {
     {
       path: "/dashboard",
       element: <ProtectedRoute element={DashboardPage} />,
+    },
+    {
+      path: "/profile",
+      element: <ProtectedRoute element={ProfilePage} />,
     },
     {
       path: "*",
