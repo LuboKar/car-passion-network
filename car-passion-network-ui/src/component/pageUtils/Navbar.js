@@ -33,6 +33,12 @@ export default function Navbar() {
     } else navigate("/");
   };
 
+  const navigateToProfile = () => {
+    if (isAuthenticated()) {
+      navigate(`/profile`);
+    } else navigate("/");
+  };
+
   const toggleOptions = () => {
     setIsOpen(!isOpen);
   };
@@ -76,12 +82,10 @@ export default function Navbar() {
         />
         {isOpen && (
           <div className="dropdown" ref={dropdownRef}>
-            <Link to="/" className="link">
-              <div className="profile-span">
-                <img src={pic} alt="profilepic" className="span-icon" />
-                <span>Profile</span>
-              </div>
-            </Link>
+            <div className="profile-span" onClick={navigateToProfile}>
+              <img src={pic} alt="profilepic" className="span-icon" />
+              <span>Profile</span>
+            </div>
             <Link to="/" className="link">
               <div className="profile-span">
                 <img src={settings} alt="profilepic" className="span-icon" />

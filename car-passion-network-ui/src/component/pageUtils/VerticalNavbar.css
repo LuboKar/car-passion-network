@@ -1,0 +1,16 @@
+.navbar-container{
+   border-right: 1px solid rgb(100, 100, 100);
+   width: 200px;
+   position: fixed;
+   margin-top: 70px;
+   height: 89%;
+   display: flex;
+   flex-direction: column;
+}
+
+@media (max-width: 1080px) {
+   .navbar-container{
+     display: none;
+   }
+ }
+

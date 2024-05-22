@@ -1,0 +1,46 @@
+.profile-container{
+    margin-left: 25%;
+    padding-top: 50px;
+    z-index: 0;
+    display: flex;
+    border-bottom: 1px solid rgb(150, 150, 150);
+    margin-right: 25%;
+    height: 185px;
+}
+
+.image-container{
+    width: 150px;
+    height: 150px;
+    margin-left: 10%;
+    margin-top: 20px;
+}
+
+.profile-pic{
+    width: 150px;
+    border-radius: 50px;
+}
+
+.profile-pic:hover{
+    cursor: pointer;
+}
+
+.profile-name{
+    font-size: 25px;
+    margin-left: 60px;
+    height: 5%;
+    padding-top: 20px;
+    font-weight: bold;
+}
+
+.profile-name:hover{
+    cursor:text;
+}
+
+@media (max-width: 1080px) {
+    .profile-container {
+     width: 80%;
+     margin-left: 10%;
+    }
+  }
+
+
