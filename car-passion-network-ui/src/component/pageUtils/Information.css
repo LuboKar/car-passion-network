@@ -1,0 +1,43 @@
+.information-container{
+    display: flex;
+    flex-direction: column;
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-top: 2%;
+    border-radius: 15px;
+    background-color: #e0e0e0;
+    padding: 2% 2% 2% 2%;
+    margin-bottom: 2%;
+    overflow: hidden;
+}
+
+.information-header{
+    font-size: 30px;
+    font-weight: bold;
+    padding-bottom: 1%;
+}
+
+.information-header:hover{
+    cursor: text;
+}
+
+.information-content{
+    font-size: 20px;
+    padding-bottom: 1%;
+    padding-left: 6%;
+}
+
+.information-content:hover{
+    cursor: text;
+}
+
+.header-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.information-icons{
+    width: 5%;
+    height: 60%;
+    padding-right: 1%;
+}
