@@ -8,6 +8,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { isAuthenticated } from "../Authentication/Authentication.js";
+import { jwtDecode } from "jwt-decode";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,7 +36,10 @@ export default function Navbar() {
 
   const navigateToProfile = () => {
     if (isAuthenticated()) {
-      navigate(`/profile`);
+      const token = localStorage.getItem("jwtToken");
+      const decodedToken = jwtDecode(token);
+      const id = decodedToken.userId;
+      navigate(`/profile/${id}`);
     } else navigate("/");
   };
 

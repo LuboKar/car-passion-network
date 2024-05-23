@@ -17,7 +17,7 @@ function App() {
       element: <ProtectedRoute element={DashboardPage} />,
     },
     {
-      path: "/profile",
+      path: "/profile/:id",
       element: <ProtectedRoute element={ProfilePage} />,
     },
     {

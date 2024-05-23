@@ -2,13 +2,15 @@ import React from "react";
 import "../pageUtils/Profile.css";
 import pic from "../../images/profile-pic.jpg";
 
-export default function Profile() {
+export default function Profile({ user }) {
   return (
     <div className="profile-container">
       <div className="image-container">
         <img src={pic} alt="profile-pic" className="profile-pic" />
       </div>
-      <label className="profile-name">John Doe</label>
+      <label className="profile-name">
+        {user.firstName} {user.lastName}
+      </label>
     </div>
   );
 }
