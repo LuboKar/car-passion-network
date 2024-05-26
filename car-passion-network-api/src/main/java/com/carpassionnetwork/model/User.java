@@ -1,5 +1,6 @@
 package com.carpassionnetwork.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.security.Principal;
 import java.time.LocalDate;
@@ -57,6 +58,10 @@ public class User implements UserDetails, Principal {
   @Column
   @Enumerated(EnumType.STRING)
   private Role role;
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+  @OrderBy("createdAt DESC")
+  private List<Post> posts;
 
   @Override
   public String getName() {
