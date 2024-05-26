@@ -27,7 +27,7 @@ public class PostControllerIT extends BaseIT {
     mockMvc
         .perform(
             post("/post")
-                .contentType(MediaType.APPLICATION_JSONgit )
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(postRequestDto)))
         .andExpect(status().isBadRequest())
         .andExpect(
