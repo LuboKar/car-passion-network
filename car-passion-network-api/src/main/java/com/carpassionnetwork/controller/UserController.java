@@ -1,6 +1,6 @@
 package com.carpassionnetwork.controller;
 
-import com.carpassionnetwork.dto.response.UserResponseDto;
+import com.carpassionnetwork.dto.response.UserWithPostsResponseDto;
 import com.carpassionnetwork.mapper.UserMapper;
 import com.carpassionnetwork.service.UserService;
 import java.util.UUID;
@@ -19,7 +19,7 @@ public class UserController {
   private final UserMapper userMapper;
 
   @GetMapping("/{id}")
-  public ResponseEntity<UserResponseDto> getUser(@PathVariable UUID id) {
+  public ResponseEntity<UserWithPostsResponseDto> getUser(@PathVariable UUID id) {
     return ResponseEntity.ok(userMapper.toUserResponse(userService.getUser(id)));
   }
 }

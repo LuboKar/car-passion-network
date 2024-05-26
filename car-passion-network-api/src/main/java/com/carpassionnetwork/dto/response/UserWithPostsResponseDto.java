@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserResponseDto {
+public class UserWithPostsResponseDto {
   private UUID id;
   private String firstName;
   private String lastName;
@@ -26,9 +26,11 @@ public class UserResponseDto {
   private String email;
   private Gender gender;
 
-  @JsonFormat(pattern = "yyyy-MM-dd  HH:mm:ss")
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime createdDate;
 
-  @JsonFormat(pattern = "yyyy-MM-dd  HH:mm:ss")
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime lastUpdate;
+
+  private List<PostResponseDto> posts;
 }

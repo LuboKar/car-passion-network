@@ -1,7 +1,7 @@
 package com.carpassionnetwork.mapper;
 
 import com.carpassionnetwork.dto.request.RegistrationRequest;
-import com.carpassionnetwork.dto.response.UserResponseDto;
+import com.carpassionnetwork.dto.response.UserWithPostsResponseDto;
 import com.carpassionnetwork.model.User;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -16,7 +16,7 @@ public class UserMapper {
     return modelMapper.map(registerRequest, User.class);
   }
 
-  public UserResponseDto toUserResponse(User user) {
-    return modelMapper.map(user, UserResponseDto.class);
+  public UserWithPostsResponseDto toUserResponse(User user) {
+    return modelMapper.map(user, UserWithPostsResponseDto.class);
   }
 }
