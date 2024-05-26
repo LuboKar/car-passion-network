@@ -65,7 +65,7 @@ export default function ProfilePage() {
       <RightVerticalNabvar className="right-navbar" />
       {!loading && <Profile user={user} />}
       {information && <Information user={user} />}
-      {!loading && posts && <Posts />}
+      {!loading && posts && <Posts user={user} setUser={setUser} />}
     </div>
   );
 }
