@@ -2,13 +2,14 @@ import React from "react";
 import { useState } from "react";
 import "./CreatePost.css";
 
-export default function CreatePost({ setUser }) {
+export default function CreatePost({ setPosts }) {
   const [createNewPost, setCreateNewPost] = useState(false);
 
   const [createPostValues, setCreatePostValues] = useState({
     title: "",
     content: "",
     createdAt: "Now",
+    currentUserLike: false,
   });
 
   const toggleCreatePost = () => {
@@ -41,12 +42,15 @@ export default function CreatePost({ setUser }) {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
+      const createdPost = await response.json();
       setCreateNewPost(false);
-      setCreatePostValues({ title: "", content: "", createdAt: "Now" });
-      setUser((prevUser) => ({
-        ...prevUser,
-        posts: [createPostValues, ...prevUser.posts],
-      }));
+      setPosts((prevPosts) => [createdPost, ...prevPosts]);
+      setCreatePostValues({
+        title: "",
+        content: "",
+        createdAt: "Now",
+        currentUserLike: false,
+      });
     } catch (error) {
       console.error("Error sending data to backend:", error);
     }

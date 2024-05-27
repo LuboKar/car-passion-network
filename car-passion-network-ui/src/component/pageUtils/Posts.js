@@ -3,7 +3,8 @@ import { jwtDecode } from "jwt-decode";
 import CreatePost from "./CreatePost";
 import ViewPosts from "./ViewPosts";
 
-export default function Posts({ user, setUser }) {
+export default function Posts({ user }) {
+  const [posts, setPosts] = useState(user.posts);
   const [loggedUser, setLoggedUser] = useState("");
 
   useEffect(() => {
@@ -14,8 +15,8 @@ export default function Posts({ user, setUser }) {
   }, []);
   return (
     <div>
-      {loggedUser === user.id && <CreatePost setUser={setUser} />}
-      <ViewPosts user={user} />
+      {loggedUser === user.id && <CreatePost setPosts={setPosts} />}
+      <ViewPosts posts={posts} user={user} setPosts={setPosts} />
     </div>
   );
 }
