@@ -33,11 +33,9 @@ public class PostService {
     String message;
 
     if (isPostLiked) {
-      likedPost.setCurrentUserLike(false);
       currentUser.getLikedPosts().remove(likedPost);
       message = "Post unliked successfully!";
     } else {
-      likedPost.setCurrentUserLike(true);
       currentUser.getLikedPosts().add(likedPost);
       message = "Post liked successfully!";
     }
