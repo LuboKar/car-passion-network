@@ -1,6 +1,7 @@
 package com.carpassionnetwork.controller;
 
 import com.carpassionnetwork.dto.request.PostRequestDto;
+import com.carpassionnetwork.dto.response.PostResponseDto;
 import com.carpassionnetwork.mapper.PostMapper;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.service.PostService;
@@ -18,9 +19,10 @@ public class PostController {
   private final PostService postService;
 
   @PostMapping
-  public ResponseEntity<String> createPost(@RequestBody @Valid PostRequestDto postRequestDto) {
+  public ResponseEntity<PostResponseDto> createPost(
+      @RequestBody @Valid PostRequestDto postRequestDto) {
     Post post = postMapper.toPostEntity(postRequestDto);
-    return ResponseEntity.ok(postService.createPost(post));
+    return ResponseEntity.ok(postMapper.toPostResponse(postService.createPost(post)));
   }
 
   @PostMapping("/like/{id}")

@@ -11,15 +11,14 @@ import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.PostRepository;
 import com.carpassionnetwork.repository.UserRepository;
+import java.util.HashSet;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.HashSet;
-import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 public class PostServiceTest {
@@ -48,11 +47,13 @@ public class PostServiceTest {
   @Test
   void createPostSuccessfully() {
     when(userService.getCurrentUser()).thenReturn(user);
+    when(postRepository.save(post)).thenReturn(post);
 
-    String message = postService.createPost(post);
+    Post savedPost = postService.createPost(post);
 
-    assertNotNull(message);
-    assertEquals(message, "Post created successfully!");
+    assertNotNull(savedPost);
+    assertEquals(savedPost.getTitle(), "PostTitle");
+    assertEquals(savedPost.getContent(), "PostContent");
     verify(userService, times(1)).getCurrentUser();
     verify(postRepository, times(1)).save(post);
   }
@@ -61,7 +62,8 @@ public class PostServiceTest {
   void likeOrUnlikePostShouldThrowInvalidCredentialsException() {
     when(userService.getCurrentUser()).thenThrow(InvalidCredentialsException.class);
 
-    assertThrows(InvalidCredentialsException.class, () -> postService.likeOrUnlikePost(post.getId()));
+    assertThrows(
+        InvalidCredentialsException.class, () -> postService.likeOrUnlikePost(post.getId()));
   }
 
   @Test
@@ -73,7 +75,7 @@ public class PostServiceTest {
   }
 
   @Test
-  void likeOrUnlikePostShouldLikePostSuccessfully(){
+  void likeOrUnlikePostShouldLikePostSuccessfully() {
     user.setLikedPosts(new HashSet<>());
     when(userService.getCurrentUser()).thenReturn(user);
     when(postRepository.findById(post.getId())).thenReturn(Optional.of(post));
@@ -82,13 +84,13 @@ public class PostServiceTest {
 
     assertNotNull(message);
     assertEquals(message, "Post liked successfully!");
-    verify(userService,times(1)).getCurrentUser();
+    verify(userService, times(1)).getCurrentUser();
     verify(postRepository, times(1)).findById(post.getId());
-    verify(userRepository,times(1)).save(user);
+    verify(userRepository, times(1)).save(user);
   }
 
   @Test
-  void likeOrUnlikePostShouldUnLikePostSuccessfully(){
+  void likeOrUnlikePostShouldUnLikePostSuccessfully() {
     user.setLikedPosts(new HashSet<>());
     user.getLikedPosts().add(post);
     when(userService.getCurrentUser()).thenReturn(user);
@@ -98,8 +100,8 @@ public class PostServiceTest {
 
     assertNotNull(message);
     assertEquals(message, "Post unliked successfully!");
-    verify(userService,times(1)).getCurrentUser();
+    verify(userService, times(1)).getCurrentUser();
     verify(postRepository, times(1)).findById(post.getId());
-    verify(userRepository,times(1)).save(user);
+    verify(userRepository, times(1)).save(user);
   }
 }

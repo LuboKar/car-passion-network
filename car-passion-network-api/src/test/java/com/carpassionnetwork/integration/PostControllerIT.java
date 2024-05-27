@@ -4,8 +4,7 @@ import static com.carpassionnetwork.helper.PostTestHelper.createNewPost;
 import static com.carpassionnetwork.helper.PostTestHelper.createNewPostRequest;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.carpassionnetwork.dto.request.PostRequestDto;
 import com.carpassionnetwork.exception.InvalidCredentialsException;
@@ -56,7 +55,9 @@ public class PostControllerIT extends BaseIT {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(postRequestDto)))
         .andExpect(status().isOk())
-        .andExpect(content().string("Post created successfully!"));
+        .andExpect(jsonPath("$.title").value(postRequestDto.getTitle()))
+        .andExpect(jsonPath("$.content").value(postRequestDto.getContent()))
+        .andExpect(jsonPath("$.currentUserLike").value(false));
   }
 
   @Test
@@ -101,9 +102,9 @@ public class PostControllerIT extends BaseIT {
     register();
 
     mockMvc
-            .perform(post("/post/like/" + createdPost.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().string("Post unliked successfully!"));
+        .perform(post("/post/like/" + createdPost.getId()))
+        .andExpect(status().isOk())
+        .andExpect(content().string("Post unliked successfully!"));
   }
 
   private Post createPost() {

@@ -16,14 +16,12 @@ public class PostService {
   private final UserService userService;
   private final UserRepository userRepository;
 
-  public String createPost(Post post) {
+  public Post createPost(Post post) {
     User creator = userService.getCurrentUser();
 
     post.setUser(creator);
 
-    postRepository.save(post);
-
-    return "Post created successfully!";
+    return postRepository.save(post);
   }
 
   public String likeOrUnlikePost(UUID postId) {
