@@ -8,8 +8,6 @@ export default function CreatePost({ setPosts }) {
   const [createPostValues, setCreatePostValues] = useState({
     title: "",
     content: "",
-    createdAt: "Now",
-    currentUserLike: false,
   });
 
   const toggleCreatePost = () => {
@@ -48,8 +46,6 @@ export default function CreatePost({ setPosts }) {
       setCreatePostValues({
         title: "",
         content: "",
-        createdAt: "Now",
-        currentUserLike: false,
       });
     } catch (error) {
       console.error("Error sending data to backend:", error);
