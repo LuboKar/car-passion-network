@@ -1,13 +1,10 @@
 package com.carpassionnetwork.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -63,6 +60,13 @@ public class User implements UserDetails, Principal {
   @OrderBy("createdAt DESC")
   private List<Post> posts;
 
+  @ManyToMany
+  @JoinTable(
+      name = "post_like",
+      joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "post_id"))
+  Set<Post> likedPosts;
+
   @Override
   public String getName() {
     return email;
@@ -101,5 +105,18 @@ public class User implements UserDetails, Principal {
   @Override
   public boolean isEnabled() {
     return true;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    User user = (User) o;
+    return Objects.equals(id, user.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
   }
 }

@@ -21,8 +21,7 @@ public class UserService {
 
   public User getCurrentUser() {
     String currentUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-    Optional<User> currentUser = userRepository.findByEmail(currentUserEmail);
 
-    return currentUser.orElseThrow(InvalidCredentialsException::new);
+    return userRepository.findByEmail(currentUserEmail).orElseThrow(InvalidCredentialsException::new);
   }
 }

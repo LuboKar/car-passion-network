@@ -5,6 +5,7 @@ import com.carpassionnetwork.mapper.PostMapper;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.service.PostService;
 import jakarta.validation.Valid;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,5 +21,10 @@ public class PostController {
   public ResponseEntity<String> createPost(@RequestBody @Valid PostRequestDto postRequestDto) {
     Post post = postMapper.toPostEntity(postRequestDto);
     return ResponseEntity.ok(postService.createPost(post));
+  }
+
+  @PostMapping("/like/{id}")
+  public ResponseEntity<String> likePost(@PathVariable UUID id) {
+    return ResponseEntity.ok(postService.likeOrUnlikePost(id));
   }
 }
