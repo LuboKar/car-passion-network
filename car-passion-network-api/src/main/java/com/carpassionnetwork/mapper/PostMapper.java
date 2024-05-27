@@ -24,12 +24,10 @@ public class PostMapper {
     return postResponseDto;
   }
 
-  public boolean isCurrentUserLiked(Post post){
-    if(post.getLikes() != null){
-      System.out.println(post.getLikes());
+  public boolean isCurrentUserLiked(Post post) {
+    if (post.getLikes() != null) {
       return post.getLikes().contains(userService.getCurrentUser());
     }
-    System.out.println("smth");
     return false;
   }
 }
