@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import "./CreatePost.css";
 
-export default function CreatePost() {
+export default function CreatePost({ setUser }) {
   const [createNewPost, setCreateNewPost] = useState(false);
 
   const [createPostValues, setCreatePostValues] = useState({
@@ -43,6 +43,10 @@ export default function CreatePost() {
       }
       setCreateNewPost(false);
       setCreatePostValues({ title: "", content: "", createdAt: "Now" });
+      setUser((prevUser) => ({
+        ...prevUser,
+        posts: [createPostValues, ...prevUser.posts],
+      }));
     } catch (error) {
       console.error("Error sending data to backend:", error);
     }
