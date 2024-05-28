@@ -1,7 +1,10 @@
 package com.carpassionnetwork.repository;
 
 import com.carpassionnetwork.model.Post;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PostRepository extends JpaRepository<Post, UUID> {}
+public interface PostRepository extends JpaRepository<Post, UUID> {
+  List<Post> findAllByUserIdOrderByCreatedAtDesc(UUID userId);
+}

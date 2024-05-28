@@ -4,7 +4,6 @@ import com.carpassionnetwork.model.Gender;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserWithPostsResponseDto {
+public class UserResponseDto {
   private UUID id;
   private String firstName;
   private String lastName;
@@ -31,6 +30,4 @@ public class UserWithPostsResponseDto {
 
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime lastUpdate;
-
-  private List<PostResponseDto> posts;
 }

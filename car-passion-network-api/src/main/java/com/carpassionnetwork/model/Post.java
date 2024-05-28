@@ -34,8 +34,6 @@ public class Post {
   @ManyToMany(mappedBy = "likedPosts")
   Set<User> likes;
 
-  private boolean currentUserLike;
-
   @PrePersist
   public void onPrePersist() {
     setCreatedAt(LocalDateTime.now());

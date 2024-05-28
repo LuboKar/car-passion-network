@@ -5,6 +5,7 @@ import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.PostRepository;
 import com.carpassionnetwork.repository.UserRepository;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,10 @@ public class PostService {
   private final PostRepository postRepository;
   private final UserService userService;
   private final UserRepository userRepository;
+
+  public List<Post> getAllPostsByUserId(UUID id) {
+    return postRepository.findAllByUserIdOrderByCreatedAtDesc(id);
+  }
 
   public Post createPost(Post post) {
     User creator = userService.getCurrentUser();

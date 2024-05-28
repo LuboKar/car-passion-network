@@ -3,6 +3,7 @@ package com.carpassionnetwork.integration;
 import static com.carpassionnetwork.helper.PostTestHelper.createNewPost;
 import static com.carpassionnetwork.helper.PostTestHelper.createNewPostRequest;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -105,6 +106,19 @@ public class PostControllerIT extends BaseIT {
         .perform(post("/post/like/" + createdPost.getId()))
         .andExpect(status().isOk())
         .andExpect(content().string("Post unliked successfully!"));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testGetAllPostsByUserIdSuccessfully() throws Exception {
+    Post createdPost = createPost();
+    currentUser.getLikedPosts().add(createdPost);
+    register();
+
+    mockMvc
+        .perform(get("/post/user/" + currentUser.getId()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$").isArray());
   }
 
   private Post createPost() {

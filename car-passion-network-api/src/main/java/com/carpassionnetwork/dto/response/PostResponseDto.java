@@ -3,7 +3,6 @@ package com.carpassionnetwork.dto.response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,4 +21,6 @@ public class PostResponseDto {
   private LocalDateTime createdAt;
 
   private boolean currentUserLike;
+
+  private UserResponseDto user;
 }

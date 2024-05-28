@@ -6,6 +6,7 @@ import com.carpassionnetwork.mapper.PostMapper;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.service.PostService;
 import jakarta.validation.Valid;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,11 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
   private final PostMapper postMapper;
   private final PostService postService;
+
+  @GetMapping("/user/{id}")
+  public ResponseEntity<List<PostResponseDto>> getAllPostsByUserId(@PathVariable UUID id) {
+    return ResponseEntity.ok(postMapper.toDtoList(postService.getAllPostsByUserId(id)));
+  }
 
   @PostMapping
   public ResponseEntity<PostResponseDto> createPost(

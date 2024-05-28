@@ -11,7 +11,9 @@ import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.PostRepository;
 import com.carpassionnetwork.repository.UserRepository;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -103,5 +105,21 @@ public class PostServiceTest {
     verify(userService, times(1)).getCurrentUser();
     verify(postRepository, times(1)).findById(post.getId());
     verify(userRepository, times(1)).save(user);
+  }
+
+  @Test
+  void getAllPostsByUserIdSuccessfully() {
+    user.setPosts(new ArrayList<>());
+    user.getPosts().add(post);
+    user.getPosts().add(post);
+    when(postRepository.findAllByUserIdOrderByCreatedAtDesc(user.getId()))
+        .thenReturn(user.getPosts());
+
+    List<Post> responseList = postService.getAllPostsByUserId(user.getId());
+
+    assertNotNull(responseList);
+    assertEquals(responseList.size(), 2);
+    assertEquals(responseList.get(0), responseList.get(1));
+    verify(postRepository, times(1)).findAllByUserIdOrderByCreatedAtDesc(user.getId());
   }
 }
