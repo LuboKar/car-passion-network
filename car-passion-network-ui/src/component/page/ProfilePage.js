@@ -62,7 +62,6 @@ export default function ProfilePage() {
   };
 
   useEffect(() => {
-    console.log("test");
     fetchUser();
     fetchPosts();
     // eslint-disable-next-line react-hooks/exhaustive-deps

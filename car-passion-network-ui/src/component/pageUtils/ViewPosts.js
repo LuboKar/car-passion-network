@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { isAuthenticated } from "../Authentication/Authentication";
 import open from "../../images/Open.png";
 import LikePost from "./LikePost";
+import ViewLikes from "./ViewLikes";
 
 export default function ViewPosts({ posts, setPosts }) {
   const navigate = useNavigate();
@@ -46,6 +47,7 @@ export default function ViewPosts({ posts, setPosts }) {
             <h3>{post.title}</h3>
             <p>{post.content}</p>
           </div>
+          <ViewLikes post={post} navigateToProfile={navigateToProfile} />
           <LikePost post={post} index={index} toggleLike={toggleLike} />
         </div>
       ))}
