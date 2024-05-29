@@ -6,7 +6,7 @@ import { isAuthenticated } from "../Authentication/Authentication";
 import open from "../../images/Open.png";
 import LikePost from "./LikePost";
 
-export default function ViewPosts({ posts, user, setPosts }) {
+export default function ViewPosts({ posts, setPosts }) {
   const navigate = useNavigate();
 
   const navigateToProfile = (id) => {
@@ -29,14 +29,14 @@ export default function ViewPosts({ posts, user, setPosts }) {
               src={pic}
               alt="profile-pic"
               className="post-profile-pic"
-              onClick={() => navigateToProfile(user.id)}
+              onClick={() => navigateToProfile(post.user.id)}
             />
             <div className="post-profile-information">
               <h1
                 className="post-user-name"
-                onClick={() => navigateToProfile(user.id)}
+                onClick={() => navigateToProfile(post.user.id)}
               >
-                {user.firstName} {user.lastName}
+                {post.user.firstName} {post.user.lastName}
               </h1>
               <label className="post-date">{post.createdAt}</label>
             </div>

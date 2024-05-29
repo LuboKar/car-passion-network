@@ -11,9 +11,11 @@ import Information from "../pageUtils/Information";
 export default function ProfilePage() {
   const { id } = useParams();
   const [user, setUser] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [information, setInformation] = useState(false);
-  const [posts, setPosts] = useState(true);
-  const [loading, setLoading] = useState(true);
+  const [viewPosts, setViewPosts] = useState(true);
+  const [loadingUser, setLoadingUser] = useState(true);
+  const [loadingPosts, setLoadingPosts] = useState(true);
 
   const fetchUser = async () => {
     try {
@@ -30,26 +32,50 @@ export default function ProfilePage() {
       }
       const userData = await response.json();
       setUser(userData);
-      setLoading(false);
+      setLoadingUser(false);
     } catch (error) {
       console.error("Error fetching user:", error);
-      setLoading(false);
+      setLoadingUser(false);
+    }
+  };
+
+  const fetchPosts = async () => {
+    try {
+      const token = localStorage.getItem("jwtToken");
+      const response = await fetch(`http://localhost:8080/post/user/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const postData = await response.json();
+      setPosts(postData);
+      setLoadingPosts(false);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      setLoadingPosts(false);
     }
   };
 
   useEffect(() => {
+    console.log("test");
     fetchUser();
+    fetchPosts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const toggleInformation = () => {
-    setPosts(false);
+    setViewPosts(false);
     setInformation(true);
   };
 
   const togglePosts = () => {
     setInformation(false);
-    setPosts(true);
+    setViewPosts(true);
   };
 
   return (
@@ -60,12 +86,14 @@ export default function ProfilePage() {
         toggleInformation={toggleInformation}
         information={information}
         togglePosts={togglePosts}
-        posts={posts}
+        posts={viewPosts}
       />
       <RightVerticalNabvar className="right-navbar" />
-      {!loading && <Profile user={user} />}
+      {!loadingUser && !loadingPosts && <Profile user={user} />}
       {information && <Information user={user} />}
-      {!loading && posts && <Posts user={user} />}
+      {!loadingUser && !loadingPosts && viewPosts && (
+        <Posts posts={posts} setPosts={setPosts} userId={user.id} />
+      )}
     </div>
   );
 }
