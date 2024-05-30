@@ -17,6 +17,10 @@ public class PostService {
   private final UserService userService;
   private final UserRepository userRepository;
 
+  public Post getPost(UUID id) {
+    return postRepository.findById(id).orElseThrow(() -> new PostNotFoundException(id));
+  }
+
   public List<Post> getAllPostsByUserId(UUID id) {
     return postRepository.findAllByUserIdOrderByCreatedAtDesc(id);
   }

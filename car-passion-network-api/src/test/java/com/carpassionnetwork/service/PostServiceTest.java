@@ -122,4 +122,20 @@ public class PostServiceTest {
     assertEquals(responseList.get(0), responseList.get(1));
     verify(postRepository, times(1)).findAllByUserIdOrderByCreatedAtDesc(user.getId());
   }
+
+  @Test
+  void getPostShouldThrowPostNotFoundException() {
+    when(postRepository.findById(post.getId())).thenThrow(PostNotFoundException.class);
+
+    assertThrows(PostNotFoundException.class, () -> postService.getPost(post.getId()));
+  }
+
+  @Test
+  void getPostSuccessfully() {
+    when(postRepository.findById(post.getId())).thenReturn(Optional.of(post));
+
+    postService.getPost(post.getId());
+
+    verify(postRepository, times(1)).findById(post.getId());
+  }
 }

@@ -2,6 +2,7 @@ package com.carpassionnetwork.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -21,10 +22,10 @@ public class Post {
   @Column(nullable = false)
   private String title;
 
-  @Column(nullable = false)
+  @Column(nullable = false, columnDefinition = "TEXT")
   private String content;
 
-  @Column(nullable = false)
+  @Column(nullable = false, updatable = false)
   private LocalDateTime createdAt;
 
   @ManyToOne
@@ -33,6 +34,9 @@ public class Post {
 
   @ManyToMany(mappedBy = "likedPosts")
   Set<User> likes;
+
+  @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+  private List<Comment> comments;
 
   @PrePersist
   public void onPrePersist() {

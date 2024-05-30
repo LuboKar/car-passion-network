@@ -67,6 +67,9 @@ public class User implements UserDetails, Principal {
       inverseJoinColumns = @JoinColumn(name = "post_id"))
   Set<Post> likedPosts;
 
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+  private List<Comment> comments;
+
   @Override
   public String getName() {
     return email;
