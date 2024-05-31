@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./ViewPosts.css";
 import pic from "../../images/profile-pic.jpg";
 import { useNavigate } from "react-router-dom";
@@ -6,9 +6,12 @@ import { isAuthenticated } from "../Authentication/Authentication";
 import open from "../../images/Open.png";
 import LikePost from "./LikePost";
 import ViewLikes from "./ViewLikes";
+import CommentButton from "./CommentButton";
+import WriteComment from "./WriteComment";
 
 export default function ViewPosts({ posts, setPosts }) {
   const navigate = useNavigate();
+  const [toggleComments, setToggleComments] = useState(false);
 
   const navigateToProfile = (id) => {
     if (isAuthenticated()) {
@@ -20,6 +23,10 @@ export default function ViewPosts({ posts, setPosts }) {
     const updatedPosts = [...posts];
     updatedPosts[index].currentUserLike = !updatedPosts[index].currentUserLike;
     setPosts(updatedPosts);
+  };
+
+  const toggleCommentsFunction = () => {
+    setToggleComments(!toggleComments);
   };
   return (
     <div>
@@ -48,7 +55,18 @@ export default function ViewPosts({ posts, setPosts }) {
             <p>{post.content}</p>
           </div>
           <ViewLikes post={post} navigateToProfile={navigateToProfile} />
-          <LikePost post={post} index={index} toggleLike={toggleLike} />
+          <div className="post-buttons-border"></div>
+          <div className="post-buttons">
+            <LikePost post={post} index={index} toggleLike={toggleLike} />
+            <CommentButton toggleCommentsFunction={toggleCommentsFunction} />
+          </div>
+
+          {toggleComments && (
+            <div className="comments-container">
+              <div className="post-buttons-border"></div>
+              <WriteComment post={post} />
+            </div>
+          )}
         </div>
       ))}
     </div>

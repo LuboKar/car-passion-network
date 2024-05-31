@@ -29,7 +29,6 @@ export default function LikePost({ post, index, toggleLike }) {
 
   return (
     <div className="like-post-container">
-      <div className="like-post-top-border"></div>
       <div className="like-post-text-container" onClick={likeOrDislike}>
         <img
           src={post.currentUserLike === true ? liked : notLiked}

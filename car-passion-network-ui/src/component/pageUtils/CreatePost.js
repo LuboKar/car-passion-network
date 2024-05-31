@@ -1,9 +1,10 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./CreatePost.css";
 
 export default function CreatePost({ setPosts }) {
   const [createNewPost, setCreateNewPost] = useState(false);
+  const [createPostButton, setCreatePostButton] = useState(false);
 
   const [createPostValues, setCreatePostValues] = useState({
     title: "",
@@ -23,6 +24,12 @@ export default function CreatePost({ setPosts }) {
       [name]: value,
     }));
   };
+
+  useEffect(() => {
+    if (createPostValues.title === "") {
+      setCreatePostButton(false);
+    } else setCreatePostButton(true);
+  }, [createPostValues.title]);
 
   const createPost = async (event) => {
     event.preventDefault();
@@ -77,7 +84,7 @@ export default function CreatePost({ setPosts }) {
             onChange={handleInputChange}
           />
         )}
-        {createNewPost && (
+        {createNewPost && createPostButton && (
           <button className="post-button" type="submit">
             Create post
           </button>
