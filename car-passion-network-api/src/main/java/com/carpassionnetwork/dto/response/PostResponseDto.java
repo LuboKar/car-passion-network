@@ -1,8 +1,8 @@
 package com.carpassionnetwork.dto.response;
 
-import com.carpassionnetwork.model.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -27,4 +27,6 @@ public class PostResponseDto {
   private UserResponseDto user;
 
   private Set<UserResponseDto> likes;
+
+  private List<CommentResponseDto> comments;
 }
