@@ -91,7 +91,7 @@ export default function ProfilePage() {
       {!loadingUser && !loadingPosts && <Profile user={user} />}
       {information && <Information user={user} />}
       {!loadingUser && !loadingPosts && viewPosts && (
-        <Posts posts={posts} setPosts={setPosts} userId={user.id} />
+        <Posts posts={posts} setPosts={setPosts} user={user} />
       )}
     </div>
   );

@@ -18,6 +18,7 @@
 
 .view-likes-container{
     margin-bottom: 5px;
+    width: max-content;
 }
 
 .drowdown-container{

@@ -10,7 +10,7 @@ import CommentButton from "./CommentButton";
 import WriteComment from "./WriteComment";
 import ViewComments from "./ViewComments";
 
-export default function ViewPosts({ posts, setPosts }) {
+export default function ViewPosts({ posts, setPosts, user }) {
   const navigate = useNavigate();
   const [toggleComments, setToggleComments] = useState(-1);
 
@@ -24,6 +24,18 @@ export default function ViewPosts({ posts, setPosts }) {
   const toggleLike = (index) => {
     const updatedPosts = [...posts];
     updatedPosts[index].currentUserLike = !updatedPosts[index].currentUserLike;
+
+    const userExists = updatedPosts[index].likes.some(
+      (like) => like.id === user.id
+    );
+
+    if (userExists) {
+      updatedPosts[index].likes = updatedPosts[index].likes.filter(
+        (like) => like.id !== user.id
+      );
+    } else {
+      updatedPosts[index].likes = [...updatedPosts[index].likes, user];
+    }
     setPosts(updatedPosts);
   };
 
@@ -55,14 +67,20 @@ export default function ViewPosts({ posts, setPosts }) {
             </div>
             <img src={open} alt="open-pic" className="open-pic" />
           </div>
-          <div key={post.id}>
+          <div>
             <h3>{post.title}</h3>
             <p>{post.content}</p>
           </div>
           <ViewLikes post={post} navigateToProfile={navigateToProfile} />
           <div className="post-buttons-border"></div>
           <div className="post-buttons">
-            <LikePost post={post} index={index} toggleLike={toggleLike} />
+            <LikePost
+              post={post}
+              setPosts={setPosts}
+              index={index}
+              toggleLike={toggleLike}
+              user={user}
+            />
             <CommentButton
               toggleCommentsFunction={() => toggleCommentsFunction(post.id)}
             />
