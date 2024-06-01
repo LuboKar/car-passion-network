@@ -5,7 +5,7 @@ import "./WriteComment.css";
 import { useState } from "react";
 import cannotSend from "../../images/cannot-send.png";
 
-export default function WriteComment({ post }) {
+export default function WriteComment({ post, setPosts }) {
   const [comment, setComment] = useState({
     postId: post.id,
     content: "",
@@ -46,7 +46,22 @@ export default function WriteComment({ post }) {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      setComment({ content: "" });
+
+      const createdComment = await response.json();
+
+      setComment((prevComment) => ({
+        ...prevComment,
+        content: "",
+      }));
+
+      const currentPost = post;
+      currentPost.comments = [...currentPost.comments, createdComment];
+
+      setPosts((prevPosts) => {
+        return prevPosts.map((p) =>
+          p.id === currentPost.id ? currentPost : p
+        );
+      });
     } catch (error) {
       console.error("Error sending data to backend:", error);
     }

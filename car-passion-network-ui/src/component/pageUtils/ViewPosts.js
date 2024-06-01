@@ -8,12 +8,14 @@ import LikePost from "./LikePost";
 import ViewLikes from "./ViewLikes";
 import CommentButton from "./CommentButton";
 import WriteComment from "./WriteComment";
+import ViewComments from "./ViewComments";
 
 export default function ViewPosts({ posts, setPosts }) {
   const navigate = useNavigate();
-  const [toggleComments, setToggleComments] = useState(false);
+  const [toggleComments, setToggleComments] = useState(-1);
 
   const navigateToProfile = (id) => {
+    console.log(id);
     if (isAuthenticated()) {
       navigate(`/profile/${id}`);
     } else navigate("/");
@@ -25,8 +27,10 @@ export default function ViewPosts({ posts, setPosts }) {
     setPosts(updatedPosts);
   };
 
-  const toggleCommentsFunction = () => {
-    setToggleComments(!toggleComments);
+  const toggleCommentsFunction = (index) => {
+    if (index === toggleComments) {
+      setToggleComments(-1);
+    } else setToggleComments(index);
   };
   return (
     <div>
@@ -58,13 +62,16 @@ export default function ViewPosts({ posts, setPosts }) {
           <div className="post-buttons-border"></div>
           <div className="post-buttons">
             <LikePost post={post} index={index} toggleLike={toggleLike} />
-            <CommentButton toggleCommentsFunction={toggleCommentsFunction} />
+            <CommentButton
+              toggleCommentsFunction={() => toggleCommentsFunction(index)}
+            />
           </div>
 
-          {toggleComments && (
+          {toggleComments === index && (
             <div className="comments-container">
               <div className="post-buttons-border"></div>
-              <WriteComment post={post} />
+              <WriteComment post={post} setPosts={setPosts} />
+              <ViewComments post={post} navigateToProfile={navigateToProfile} />
             </div>
           )}
         </div>
