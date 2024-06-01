@@ -27,10 +27,11 @@ export default function ViewPosts({ posts, setPosts }) {
     setPosts(updatedPosts);
   };
 
-  const toggleCommentsFunction = (index) => {
-    if (index === toggleComments) {
+  const toggleCommentsFunction = (id) => {
+    console.log(id);
+    if (id === toggleComments) {
       setToggleComments(-1);
-    } else setToggleComments(index);
+    } else setToggleComments(id);
   };
   return (
     <div>
@@ -63,11 +64,11 @@ export default function ViewPosts({ posts, setPosts }) {
           <div className="post-buttons">
             <LikePost post={post} index={index} toggleLike={toggleLike} />
             <CommentButton
-              toggleCommentsFunction={() => toggleCommentsFunction(index)}
+              toggleCommentsFunction={() => toggleCommentsFunction(post.id)}
             />
           </div>
 
-          {toggleComments === index && (
+          {toggleComments === post.id && (
             <div className="comments-container">
               <div className="post-buttons-border"></div>
               <WriteComment post={post} setPosts={setPosts} />

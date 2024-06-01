@@ -55,6 +55,9 @@ export default function WriteComment({ post, setPosts }) {
       }));
 
       const currentPost = post;
+
+      currentPost.comments =
+        currentPost.comments === null ? [] : currentPost.comments;
       currentPost.comments = [...currentPost.comments, createdComment];
 
       setPosts((prevPosts) => {
