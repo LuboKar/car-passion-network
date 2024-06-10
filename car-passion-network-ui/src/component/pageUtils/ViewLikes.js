@@ -33,6 +33,7 @@ export default function ViewLikes({ post, navigateToProfile }) {
           <div className="likes-dropdown">
             {post.likes.map((user, index) => (
               <div
+                key={index}
                 className="liked-user-container"
                 onClick={() => navigateToProfile(user.id)}
               >

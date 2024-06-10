@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./ViewPosts.css";
 import pic from "../../images/profile-pic.jpg";
 import { useNavigate } from "react-router-dom";
@@ -12,38 +12,61 @@ import ViewComments from "./ViewComments";
 import NumberOfComments from "./NumberOfComments";
 import { jwtDecode } from "jwt-decode";
 
-export default function ViewPosts({ posts, setPosts, user }) {
+export default function ViewPosts({ posts, setPosts }) {
   const navigate = useNavigate();
   const [toggleComments, setToggleComments] = useState(-1);
+  const [user, setUser] = useState("");
 
   const navigateToProfile = (id) => {
-    console.log(id);
     if (isAuthenticated()) {
       navigate(`/profile/${id}`);
     } else navigate("/");
   };
 
-  const toggleLike = (index) => {
+  const fetchUser = async (id) => {
+    try {
+      const token = localStorage.getItem("jwtToken");
+      const response = await fetch(`http://localhost:8080/users/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const userData = await response.json();
+      setUser(userData);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    }
+  };
+
+  useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     const decodedToken = jwtDecode(token);
     const currentId = decodedToken.userId;
+    fetchUser(currentId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
+  const toggleLike = (index) => {
     const updatedPosts = [...posts];
     updatedPosts[index].currentUserLike = !updatedPosts[index].currentUserLike;
 
     const userExists = updatedPosts[index].likes.some(
-      (like) => like.id === currentId
+      (like) => like.id === user.id
     );
+
     if (userExists) {
       updatedPosts[index].likes = updatedPosts[index].likes.filter(
-        (like) => like.id !== currentId
+        (like) => like.id !== user.id
       );
     } else {
-      user.id = currentId;
       updatedPosts[index].likes = [...updatedPosts[index].likes, user];
     }
 
-    console.log(updatedPosts[index].likes);
     setPosts(updatedPosts);
   };
 
