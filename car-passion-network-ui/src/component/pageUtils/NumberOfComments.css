@@ -1,0 +1,29 @@
+.number-of-comments-container{
+    margin-left: auto;
+}
+
+.number-of-comments-container:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.number-of-comments-icon{
+    width: 15px;
+    margin-right: 5px;
+}
+
+.number-of-comments-icon:hover{
+    cursor: pointer;
+}
+
+.number-of-posts-info{
+    width: max-content;
+}
+
+.post-comments-length{
+    color: rgb(67, 67, 67)
+}
+
+.post-comments-length:hover{
+    cursor: pointer;
+}

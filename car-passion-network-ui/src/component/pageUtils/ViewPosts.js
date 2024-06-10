@@ -9,6 +9,8 @@ import ViewLikes from "./ViewLikes";
 import CommentButton from "./CommentButton";
 import WriteComment from "./WriteComment";
 import ViewComments from "./ViewComments";
+import NumberOfComments from "./NumberOfComments";
+import { jwtDecode } from "jwt-decode";
 
 export default function ViewPosts({ posts, setPosts, user }) {
   const navigate = useNavigate();
@@ -22,20 +24,26 @@ export default function ViewPosts({ posts, setPosts, user }) {
   };
 
   const toggleLike = (index) => {
+    const token = localStorage.getItem("jwtToken");
+    const decodedToken = jwtDecode(token);
+    const currentId = decodedToken.userId;
+
     const updatedPosts = [...posts];
     updatedPosts[index].currentUserLike = !updatedPosts[index].currentUserLike;
 
     const userExists = updatedPosts[index].likes.some(
-      (like) => like.id === user.id
+      (like) => like.id === currentId
     );
-
     if (userExists) {
       updatedPosts[index].likes = updatedPosts[index].likes.filter(
-        (like) => like.id !== user.id
+        (like) => like.id !== currentId
       );
     } else {
+      user.id = currentId;
       updatedPosts[index].likes = [...updatedPosts[index].likes, user];
     }
+
+    console.log(updatedPosts[index].likes);
     setPosts(updatedPosts);
   };
 
@@ -71,7 +79,13 @@ export default function ViewPosts({ posts, setPosts, user }) {
             <h3>{post.title}</h3>
             <p>{post.content}</p>
           </div>
-          <ViewLikes post={post} navigateToProfile={navigateToProfile} />
+          <div className="post-information">
+            <ViewLikes post={post} navigateToProfile={navigateToProfile} />
+            <NumberOfComments
+              post={post}
+              toggleCommentsFunction={() => toggleCommentsFunction(post.id)}
+            />
+          </div>
           <div className="post-buttons-border"></div>
           <div className="post-buttons">
             <LikePost
@@ -79,7 +93,6 @@ export default function ViewPosts({ posts, setPosts, user }) {
               setPosts={setPosts}
               index={index}
               toggleLike={toggleLike}
-              user={user}
             />
             <CommentButton
               toggleCommentsFunction={() => toggleCommentsFunction(post.id)}

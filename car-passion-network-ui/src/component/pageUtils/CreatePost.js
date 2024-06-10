@@ -48,6 +48,8 @@ export default function CreatePost({ setPosts }) {
         throw new Error("Network response was not ok");
       }
       const createdPost = await response.json();
+      createdPost.comments = [];
+      createdPost.likes = [];
       setCreateNewPost(false);
       setPosts((prevPosts) => [createdPost, ...prevPosts]);
       setCreatePostValues({

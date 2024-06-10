@@ -75,3 +75,7 @@
     border-top: 1px solid rgb(150, 150, 150);
     margin-bottom: 1%;
 }
+
+.post-information{
+    display: flex;
+}
