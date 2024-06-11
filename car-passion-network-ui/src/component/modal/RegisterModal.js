@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./RegisterModal.css";
+import { registerUser } from "../service/AuthenticationService.js";
 
 export default function RegisterModal({ toggleModal }) {
-  const [values, setValues] = useState({
+  const [inputValues, setInputValues] = useState({
     firstName: "",
     lastName: "",
     email: "",
@@ -15,48 +16,33 @@ export default function RegisterModal({ toggleModal }) {
   });
 
   const [errors, setErrors] = useState({});
-
   const [success, setSuccess] = useState("");
 
-  const registerUser = async (event) => {
+  const register = async (event) => {
     event.preventDefault();
     setErrors({});
     setSuccess("");
-    try {
-      const response = await fetch(
-        "http://localhost:8080/authentication/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(values),
-        }
-      );
 
-      if (!response.ok) {
-        const responseBody = await response.json();
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          ...responseBody,
-        }));
-        return;
-      }
+    const response = await registerUser(inputValues);
 
-      const responseBody = await response.text();
-      setSuccess(responseBody);
-      console.log("Data sent successfully");
-    } catch (error) {
-      console.error("Error sending data to backend:", error);
+    if (!response.ok) {
+      const responseBody = await response.json();
+
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        ...responseBody,
+      }));
+      return;
     }
+
+    const responseBody = await response.text();
+    setSuccess(responseBody);
   };
 
   const handleInputChange = (event) => {
-    event.preventDefault();
-
     const { name, value } = event.target;
-    setValues((values) => ({
-      ...values,
+    setInputValues((inputValues) => ({
+      ...inputValues,
       [name]: value,
     }));
   };
@@ -70,23 +56,15 @@ export default function RegisterModal({ toggleModal }) {
 
   const handleDateChange = (date) => {
     const formattedDate = formatDate(date);
-    setValues((values) => ({
-      ...values,
+    setInputValues((inputValues) => ({
+      ...inputValues,
       dateOfBirth: formattedDate,
-    }));
-  };
-
-  const handleGenderChange = (event) => {
-    const { name, value } = event.target;
-    setValues((values) => ({
-      ...values,
-      [name]: value,
     }));
   };
 
   return (
     <div className="form-container">
-      <form className="register-form" onSubmit={registerUser}>
+      <form className="register-form" onSubmit={register}>
         <label className="form-success">{success}</label>
         <label className="error-label">{errors.firstName}</label>
 
@@ -95,7 +73,7 @@ export default function RegisterModal({ toggleModal }) {
           type="text"
           placeholder="First Name"
           name="firstName"
-          value={values.firstName}
+          value={inputValues.firstName}
           onChange={handleInputChange}
         />
         <br />
@@ -105,7 +83,7 @@ export default function RegisterModal({ toggleModal }) {
           type="text"
           placeholder="Last Name"
           name="lastName"
-          value={values.lastName}
+          value={inputValues.lastName}
           onChange={handleInputChange}
         />
         <br />
@@ -115,7 +93,7 @@ export default function RegisterModal({ toggleModal }) {
           type="email"
           placeholder="Email"
           name="email"
-          value={values.email}
+          value={inputValues.email}
           onChange={handleInputChange}
         />
         <br />
@@ -125,7 +103,7 @@ export default function RegisterModal({ toggleModal }) {
           type="password"
           placeholder="Password"
           name="password"
-          value={values.password}
+          value={inputValues.password}
           onChange={handleInputChange}
         />
         <br />
@@ -138,7 +116,7 @@ export default function RegisterModal({ toggleModal }) {
           <DatePicker
             className="form-date"
             id="dateOfBirth"
-            selected={values.dateOfBirth}
+            selected={inputValues.dateOfBirth}
             onChange={handleDateChange}
             dateFormat="yyyy-MM-dd"
           />
@@ -153,7 +131,7 @@ export default function RegisterModal({ toggleModal }) {
             id="male"
             name="gender"
             value="MALE"
-            onChange={handleGenderChange}
+            onChange={handleInputChange}
           />
           <label className="form-radio" htmlFor="male">
             Male
@@ -164,7 +142,7 @@ export default function RegisterModal({ toggleModal }) {
             id="female"
             name="gender"
             value="FEMALE"
-            onChange={handleGenderChange}
+            onChange={handleInputChange}
           />
           <label className="form-radio" htmlFor="female">
             Female
@@ -175,13 +153,10 @@ export default function RegisterModal({ toggleModal }) {
         </button>
         <br />
       </form>
-      <p>
-        Already have an account?
-        <span className="signIn-button" onClick={toggleModal}>
-          {" "}
-          Sign In
-        </span>
-      </p>
+      <label>Already have an account? </label>
+      <span className="signIn-button" onClick={toggleModal}>
+        Sign In
+      </span>
     </div>
   );
 }
