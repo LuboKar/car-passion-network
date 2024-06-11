@@ -8,10 +8,12 @@ import { useParams } from "react-router-dom";
 import Information from "../pageUtils/Information";
 import { getUser } from "../service/UserService";
 import { getPosts } from "../service/PostService";
+import { jwtDecode } from "jwt-decode";
 
 export default function ProfilePage() {
   const { id } = useParams();
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState({});
+  const [currentUser, setCurrentUser] = useState({});
   const [posts, setPosts] = useState([]);
   const [userInformation, setUserInformation] = useState(false);
   const [viewPosts, setViewPosts] = useState(true);
@@ -42,9 +44,25 @@ export default function ProfilePage() {
     setLoadingPosts(false);
   };
 
+  const fetchCurrentUser = async () => {
+    const token = localStorage.getItem("jwtToken");
+    const decodedToken = jwtDecode(token);
+    const currentId = decodedToken.userId;
+
+    const response = await getUser(currentId);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const userData = await response.json();
+    setCurrentUser(userData);
+  };
+
   useEffect(() => {
     fetchUser();
     fetchPosts();
+    fetchCurrentUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
@@ -57,6 +75,7 @@ export default function ProfilePage() {
     setUserInformation(false);
     setViewPosts(true);
   };
+  console.log(currentUser);
 
   return (
     <div className="profile-page-container">
@@ -71,7 +90,12 @@ export default function ProfilePage() {
 
       {!loadingUser && !loadingPosts && <Profile user={user} />}
       {!loadingUser && !loadingPosts && viewPosts && (
-        <Posts posts={posts} setPosts={setPosts} user={user} />
+        <Posts
+          posts={posts}
+          setPosts={setPosts}
+          user={user}
+          currentUser={currentUser}
+        />
       )}
 
       {userInformation && <Information user={user} />}
