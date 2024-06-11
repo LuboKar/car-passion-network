@@ -1,64 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../pageUtils/Navbar";
 import VerticalNavbar from "../pageUtils/VerticalNavbar";
 import RightVerticalNabvar from "../pageUtils/RightVerticalNavbar";
 import Profile from "../pageUtils/Profile";
 import Posts from "../pageUtils/Posts";
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Information from "../pageUtils/Information";
+import { getUser } from "../service/UserService";
+import { getPosts } from "../service/PostService";
 
 export default function ProfilePage() {
   const { id } = useParams();
   const [user, setUser] = useState([]);
   const [posts, setPosts] = useState([]);
-  const [information, setInformation] = useState(false);
+  const [userInformation, setUserInformation] = useState(false);
   const [viewPosts, setViewPosts] = useState(true);
   const [loadingUser, setLoadingUser] = useState(true);
   const [loadingPosts, setLoadingPosts] = useState(true);
 
   const fetchUser = async () => {
-    try {
-      const token = localStorage.getItem("jwtToken");
-      const response = await fetch(`http://localhost:8080/users/${id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const userData = await response.json();
-      setUser(userData);
-      setLoadingUser(false);
-    } catch (error) {
-      console.error("Error fetching user:", error);
-      setLoadingUser(false);
+    const response = await getUser(id);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
     }
+
+    const userData = await response.json();
+    setUser(userData);
+    setLoadingUser(false);
   };
 
   const fetchPosts = async () => {
-    try {
-      const token = localStorage.getItem("jwtToken");
-      const response = await fetch(`http://localhost:8080/post/user/${id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const postData = await response.json();
-      setPosts(postData);
-      setLoadingPosts(false);
-    } catch (error) {
-      console.error("Error fetching user:", error);
-      setLoadingPosts(false);
+    const response = await getPosts(id);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
     }
+
+    const postData = await response.json();
+    setPosts(postData);
+    setLoadingPosts(false);
   };
 
   useEffect(() => {
@@ -69,27 +50,26 @@ export default function ProfilePage() {
 
   const toggleInformation = () => {
     setViewPosts(false);
-    setInformation(true);
+    setUserInformation(true);
   };
 
   const togglePosts = () => {
-    setInformation(false);
+    setUserInformation(false);
     setViewPosts(true);
   };
 
   return (
-    <div className="test">
+    <div className="profile-page-container">
       <Navbar />
       <VerticalNavbar
-        className="left-navbar"
         toggleInformation={toggleInformation}
-        information={information}
+        information={userInformation}
         togglePosts={togglePosts}
         posts={viewPosts}
       />
-      <RightVerticalNabvar className="right-navbar" />
+      <RightVerticalNabvar />
       {!loadingUser && !loadingPosts && <Profile user={user} />}
-      {information && <Information user={user} />}
+      {userInformation && <Information user={user} />}
       {!loadingUser && !loadingPosts && viewPosts && (
         <Posts posts={posts} setPosts={setPosts} user={user} />
       )}
