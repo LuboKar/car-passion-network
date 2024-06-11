@@ -63,16 +63,18 @@ export default function ProfilePage() {
       <Navbar />
       <VerticalNavbar
         toggleInformation={toggleInformation}
-        information={userInformation}
+        userInformation={userInformation}
         togglePosts={togglePosts}
-        posts={viewPosts}
+        viewPosts={viewPosts}
       />
       <RightVerticalNabvar />
+
       {!loadingUser && !loadingPosts && <Profile user={user} />}
-      {userInformation && <Information user={user} />}
       {!loadingUser && !loadingPosts && viewPosts && (
         <Posts posts={posts} setPosts={setPosts} user={user} />
       )}
+
+      {userInformation && <Information user={user} />}
     </div>
   );
 }

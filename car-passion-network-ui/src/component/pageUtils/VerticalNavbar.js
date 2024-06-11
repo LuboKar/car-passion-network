@@ -6,13 +6,13 @@ import post from "../../images/post.png";
 export default function VerticalNavbar({
   toggleInformation,
   togglePosts,
-  information,
-  posts,
+  userInformation,
+  viewPosts,
 }) {
   return (
     <div className="navbar-container">
       <div
-        className={`vertical-buttons ${posts ? "information-visible" : ""}`}
+        className={`vertical-buttons ${viewPosts ? "information-visible" : ""}`}
         onClick={togglePosts}
       >
         <img src={post} alt="postpic" className="icon" />
@@ -20,7 +20,7 @@ export default function VerticalNavbar({
       </div>
       <div
         className={`vertical-buttons ${
-          information ? "information-visible" : ""
+          userInformation ? "information-visible" : ""
         }`}
         onClick={toggleInformation}
       >
