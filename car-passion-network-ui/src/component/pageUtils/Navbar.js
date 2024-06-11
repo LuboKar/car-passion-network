@@ -1,14 +1,13 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Navbar.css";
 import logo from "../../images/car-logo.png";
 import pic from "../../images/profile-pic.jpg";
 import settings from "../../images/settings.png";
-import logout from "../../images/logout.png";
-import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import logoutIcon from "../../images/logout.png";
+import { Link, useNavigate } from "react-router-dom";
 import { isAuthenticated } from "../Authentication/Authentication.js";
 import { jwtDecode } from "jwt-decode";
+import { logoutUser } from "../service/AuthenticationService.js";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,28 +46,16 @@ export default function Navbar() {
     setIsOpen(!isOpen);
   };
 
-  const handleLogout = async () => {
-    try {
-      const response = await fetch(
-        "http://localhost:8080/authentication/logout",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+  const logout = async () => {
+    const response = await logoutUser();
 
-      if (!response.ok) {
-        return;
-      }
-
-      localStorage.removeItem("jwtToken");
-
-      navigate("/");
-    } catch (error) {
-      console.error("Error sending data to backend:", error);
+    if (!response.ok) {
+      return;
     }
+
+    localStorage.removeItem("jwtToken");
+
+    navigate("/");
   };
 
   return (
@@ -96,8 +83,8 @@ export default function Navbar() {
                 <span>Settings</span>
               </div>
             </Link>
-            <div className="profile-span" onClick={handleLogout}>
-              <img src={logout} alt="profilepic" className="span-icon" />
+            <div className="profile-span" onClick={logout}>
+              <img src={logoutIcon} alt="profilepic" className="span-icon" />
               <span>Logout</span>
             </div>
           </div>
