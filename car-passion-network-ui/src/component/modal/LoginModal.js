@@ -1,10 +1,10 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import "./LoginModal.css";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../service/AuthenticationService";
 
 export default function LoginModal({ toggleModal }) {
-  const [values, setValues] = useState({
+  const [inputValues, setInputValues] = useState({
     email: "",
     password: "",
   });
@@ -13,55 +13,43 @@ export default function LoginModal({ toggleModal }) {
 
   const navigate = useNavigate();
 
-  const loginUser = async (event) => {
+  const login = async (event) => {
     event.preventDefault();
     setErrors({});
-    try {
-      const response = await fetch(
-        "http://localhost:8080/authentication/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(values),
-        }
-      );
 
-      if (!response.ok) {
-        const responseBody = await response.json();
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          ...responseBody,
-        }));
-        return;
-      }
+    const response = await loginUser(inputValues);
 
-      const data = await response.json();
-      const token = data.token;
+    if (!response.ok) {
+      const responseBody = await response.json();
 
-      localStorage.setItem("jwtToken", token);
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        ...responseBody,
+      }));
 
-      console.log("Data sent successfully");
-
-      navigate("/dashboard");
-    } catch (error) {
-      console.error("Error sending data to backend:", error);
+      return;
     }
+
+    const data = await response.json();
+
+    localStorage.setItem("jwtToken", data.token);
+
+    navigate("/dashboard");
   };
 
   const handleInputChange = (event) => {
     event.preventDefault();
 
     const { name, value } = event.target;
-    setValues((values) => ({
-      ...values,
+    setInputValues((inputValues) => ({
+      ...inputValues,
       [name]: value,
     }));
   };
+
   return (
     <div className="form-container-login">
-      <form className="login-form" onSubmit={loginUser}>
+      <form className="login-form" onSubmit={login}>
         <label className="error-label-login">
           {errors.email || errors.error}
         </label>
@@ -70,7 +58,7 @@ export default function LoginModal({ toggleModal }) {
           type="email"
           placeholder="Email"
           name="email"
-          value={values.email}
+          value={inputValues.email}
           onChange={handleInputChange}
         />
         <br />
@@ -80,7 +68,7 @@ export default function LoginModal({ toggleModal }) {
           type="password"
           placeholder="Password"
           name="password"
-          value={values.password}
+          value={inputValues.password}
           onChange={handleInputChange}
         />
         <br />
@@ -89,13 +77,10 @@ export default function LoginModal({ toggleModal }) {
         </button>
         <br />
       </form>
-      <p>
-        Don't have an account?
-        <span className="signUp-button" onClick={toggleModal}>
-          {" "}
-          Sign Up
-        </span>
-      </p>
+      <label>Don't have an account? </label>
+      <span className="signUp-button" onClick={toggleModal}>
+        Sign Up
+      </span>
     </div>
   );
 }
