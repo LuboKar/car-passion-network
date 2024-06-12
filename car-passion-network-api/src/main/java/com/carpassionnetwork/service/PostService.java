@@ -5,6 +5,8 @@ import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.PostRepository;
 import com.carpassionnetwork.repository.UserRepository;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,8 @@ public class PostService {
     User creator = userService.getCurrentUser();
 
     post.setUser(creator);
+    post.setLikes(new HashSet<>());
+    post.setComments(new ArrayList<>());
 
     return postRepository.save(post);
   }
