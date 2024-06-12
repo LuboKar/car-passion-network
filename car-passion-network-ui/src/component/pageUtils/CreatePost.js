@@ -1,6 +1,6 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./CreatePost.css";
+import { createPost } from "../service/PostService";
 
 export default function CreatePost({ setPosts }) {
   const [createNewPost, setCreateNewPost] = useState(false);
@@ -31,43 +31,27 @@ export default function CreatePost({ setPosts }) {
     } else setCreatePostButton(true);
   }, [createPostValues.title]);
 
-  const createPost = async (event) => {
+  const create = async (event) => {
     event.preventDefault();
-    try {
-      const token = localStorage.getItem("jwtToken");
-      const response = await fetch("http://localhost:8080/post", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(createPostValues),
-      });
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const createdPost = await response.json();
-      createdPost.comments = [];
-      createdPost.likes = [];
-      setCreateNewPost(false);
-      setPosts((prevPosts) => [createdPost, ...prevPosts]);
-      setCreatePostValues({
-        title: "",
-        content: "",
-      });
-    } catch (error) {
-      console.error("Error sending data to backend:", error);
+    const response = await createPost(createPostValues);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
     }
+
+    const createdPost = await response.json();
+    setCreateNewPost(false);
+    setPosts((prevPosts) => [createdPost, ...prevPosts]);
+    setCreatePostValues({
+      title: "",
+      content: "",
+    });
   };
 
   return (
     <div className="post-container">
-      <form
-        className="post-form"
-        onSubmit={createPost}
-        onClick={toggleCreatePost}
-      >
+      <form className="post-form" onSubmit={create} onClick={toggleCreatePost}>
         <input
           className="post-title-input"
           placeholder="Title"
