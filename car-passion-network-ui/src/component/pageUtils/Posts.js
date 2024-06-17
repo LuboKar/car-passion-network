@@ -6,7 +6,7 @@ export default function Posts({ posts, setPosts, user, currentUser }) {
   return (
     <div className="posts-container">
       {currentUser.id === user.id && <CreatePost setPosts={setPosts} />}
-      <ViewPosts posts={posts} setPosts={setPosts} user={user} />
+      <ViewPosts posts={posts} setPosts={setPosts} currentUser={currentUser} />
     </div>
   );
 }
