@@ -2,29 +2,19 @@ import React from "react";
 import "./LikePost.css";
 import liked from "../../images/liked.png";
 import notLiked from "../../images/not liked.png";
+import { likePost } from "../service/PostService";
 
 export default function LikePost({ post, index, toggleLike }) {
   const likeOrDislike = async (event) => {
     event.preventDefault();
-    try {
-      const token = localStorage.getItem("jwtToken");
-      const response = await fetch(
-        "http://localhost:8080/post/like/" + post.id,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      toggleLike(index);
-    } catch (error) {
-      console.error("Error sending data to backend:", error);
+    const response = await likePost(post);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
     }
+
+    toggleLike(index);
   };
 
   return (

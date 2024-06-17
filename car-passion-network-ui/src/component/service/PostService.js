@@ -33,4 +33,20 @@ const createPost = async (createPostValues) => {
   }
 };
 
-export { getPosts, createPost };
+const likePost = async (post) => {
+  try {
+    const token = localStorage.getItem("jwtToken");
+    const response = await fetch("http://localhost:8080/post/like/" + post.id, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error("Error sending data to backend:", error);
+  }
+};
+
+export { getPosts, createPost, likePost };
