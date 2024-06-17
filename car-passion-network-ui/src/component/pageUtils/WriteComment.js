@@ -4,8 +4,9 @@ import send from "../../images/send.png";
 import "./WriteComment.css";
 import { useState } from "react";
 import cannotSend from "../../images/cannot-send.png";
+import { writeComment } from "../service/CommentService";
 
-export default function WriteComment({ post, setPosts }) {
+export default function WriteComment({ post, index, commentPostByIndex }) {
   const [comment, setComment] = useState({
     postId: post.id,
     content: "",
@@ -29,45 +30,24 @@ export default function WriteComment({ post, setPosts }) {
     } else setSendButton(true);
   }, [comment.content]);
 
-  const writeComment = async (event) => {
+  const commentPost = async (event) => {
     event.preventDefault();
     if (comment.content === "") return;
-    try {
-      const token = localStorage.getItem("jwtToken");
-      const response = await fetch("http://localhost:8080/comment", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(comment),
-      });
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+    const response = await writeComment(comment);
 
-      const createdComment = await response.json();
-
-      setComment((prevComment) => ({
-        ...prevComment,
-        content: "",
-      }));
-
-      const currentPost = post;
-
-      currentPost.comments =
-        currentPost.comments === null ? [] : currentPost.comments;
-      currentPost.comments = [...currentPost.comments, createdComment];
-
-      setPosts((prevPosts) => {
-        return prevPosts.map((p) =>
-          p.id === currentPost.id ? currentPost : p
-        );
-      });
-    } catch (error) {
-      console.error("Error sending data to backend:", error);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
     }
+
+    setComment((prevComment) => ({
+      ...prevComment,
+      content: "",
+    }));
+
+    const createdComment = await response.json();
+
+    commentPostByIndex(index, createdComment);
   };
 
   return (
@@ -89,7 +69,7 @@ export default function WriteComment({ post, setPosts }) {
           src={send}
           alt="pic"
           className="send-comment"
-          onClick={writeComment}
+          onClick={commentPost}
         />
       )}
     </div>

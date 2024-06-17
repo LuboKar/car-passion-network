@@ -11,7 +11,7 @@ import PostProfile from "./PostProfile";
 import PostContent from "./PostContent";
 import "./ViewPosts.css";
 
-export default function Post({ post, setPosts, index, toggleLike }) {
+export default function Post({ post, index, toggleLike, commentPostByIndex }) {
   const navigate = useNavigate();
   const [toggleComments, setToggleComments] = useState(-1);
 
@@ -51,7 +51,11 @@ export default function Post({ post, setPosts, index, toggleLike }) {
       {toggleComments === post.id && (
         <div className="comments-container">
           <div className="post-buttons-border"></div>
-          <WriteComment post={post} setPosts={setPosts} />
+          <WriteComment
+            post={post}
+            index={index}
+            commentPostByIndex={commentPostByIndex}
+          />
           <ViewComments post={post} navigateToProfile={navigateToProfile} />
         </div>
       )}

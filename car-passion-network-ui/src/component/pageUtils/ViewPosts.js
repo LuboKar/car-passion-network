@@ -21,6 +21,21 @@ export default function ViewPosts({ posts, setPosts, currentUser }) {
     setPosts(updatedPosts);
   };
 
+  const commentPostByIndex = (index, createdComment) => {
+    setPosts((prevPosts) => {
+      const newPosts = [...prevPosts];
+      const updatedPost = { ...newPosts[index] };
+
+      updatedPost.comments = updatedPost.comments
+        ? [...updatedPost.comments, createdComment]
+        : [createdComment];
+
+      newPosts[index] = updatedPost;
+
+      return newPosts;
+    });
+  };
+
   return (
     <div>
       {posts.map((post, index) => (
@@ -29,7 +44,7 @@ export default function ViewPosts({ posts, setPosts, currentUser }) {
             post={post}
             index={index}
             toggleLike={toggleLike}
-            setPosts={setPosts}
+            commentPostByIndex={commentPostByIndex}
           />
         </div>
       ))}
