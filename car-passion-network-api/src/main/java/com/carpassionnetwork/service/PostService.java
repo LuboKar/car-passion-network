@@ -40,7 +40,7 @@ public class PostService {
   public String likeOrUnlikePost(UUID postId) {
     User currentUser = userService.getCurrentUser();
 
-    Post likedPost = getPostById(postId);
+    Post likedPost = getPost(postId);
 
     boolean isPostLiked = currentUser.getLikedPosts().contains(likedPost);
     String message;
@@ -56,9 +56,5 @@ public class PostService {
     userRepository.save(currentUser);
 
     return message;
-  }
-
-  private Post getPostById(UUID postId) {
-    return postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(postId));
   }
 }
