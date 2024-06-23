@@ -19,6 +19,11 @@ public class PostController {
   private final PostMapper postMapper;
   private final PostService postService;
 
+  @GetMapping("/{id}")
+  public ResponseEntity<PostResponseDto> getPost(@PathVariable UUID id){
+    return ResponseEntity.ok(postMapper.toPostResponse(postService.getPost(id)));
+  }
+
   @GetMapping("/user/{id}")
   public ResponseEntity<List<PostResponseDto>> getAllPostsByUserId(@PathVariable UUID id) {
     return ResponseEntity.ok(postMapper.toDtoList(postService.getAllPostsByUserId(id)));

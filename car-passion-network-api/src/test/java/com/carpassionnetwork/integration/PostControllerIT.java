@@ -121,6 +121,28 @@ public class PostControllerIT extends BaseIT {
         .andExpect(jsonPath("$").isArray());
   }
 
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testGetPostShouldThrowPostNotFoundException() throws Exception {
+    mockMvc
+        .perform(get("/post/" + post.getId()))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result -> assertInstanceOf(PostNotFoundException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testGetPostSuccessfully() throws Exception {
+    Post createdPost = createPost();
+    mockMvc
+        .perform(get("/post/" + createdPost.getId()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.title").value(postRequestDto.getTitle()))
+        .andExpect(jsonPath("$.content").value(postRequestDto.getContent()))
+        .andExpect(jsonPath("$.currentUserLike").value(false));
+  }
+
   private Post createPost() {
     return postRepository.save(post);
   }
