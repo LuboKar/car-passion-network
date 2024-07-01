@@ -1,0 +1,14 @@
+.open-post-container{
+    margin-left: auto;
+}
+
+.open-pic{
+    width: 23px;
+    height: 17px;
+}
+
+.open-pic:hover{
+    cursor: pointer;
+    width: 27px;
+    height: 21px;
+}

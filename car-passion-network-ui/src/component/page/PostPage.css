@@ -1,0 +1,19 @@
+.post-page-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.single-post-container{
+    display: flex;
+    flex-direction: column;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 6%;
+    border-radius: 15px;
+    background-color: #e0e0e0;
+    padding: 1% 1% 1% 1%;
+    margin-bottom: 2%;
+    overflow: hidden;
+    word-wrap: break-word;
+    padding-bottom: 0;
+}

@@ -54,18 +54,6 @@
     cursor: text;
 }
 
-.open-pic{
-    width: 23px;
-    height: 17px;
-    margin-left: auto;
-}
-
-.open-pic:hover{
-    cursor: pointer;
-    width: 27px;
-    height: 21px;
-}
-
 .post-buttons{
     display: flex;
     height: 45px;
@@ -77,5 +65,9 @@
 }
 
 .post-information{
+    display: flex;
+}
+
+.post-user-container{
     display: flex;
 }

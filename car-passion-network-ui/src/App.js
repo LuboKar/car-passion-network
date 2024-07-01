@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ProtectedRoute from "./component/Authentication/ProtectedRoute";
 import ProtectedHome from "./component/Authentication/ProtectedHome";
 import ProfilePage from "./component/page/ProfilePage";
+import PostPage from "./component/page/PostPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -19,6 +20,10 @@ function App() {
     {
       path: "/profile/:id",
       element: <ProtectedRoute element={ProfilePage} />,
+    },
+    {
+      path: "/post/:id",
+      element: <PostPage />,
     },
     {
       path: "*",

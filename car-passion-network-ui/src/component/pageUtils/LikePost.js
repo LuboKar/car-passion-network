@@ -4,7 +4,7 @@ import liked from "../../images/liked.png";
 import notLiked from "../../images/not liked.png";
 import { likePost } from "../service/PostService";
 
-export default function LikePost({ post, index, toggleLike }) {
+export default function LikePost({ post, toggleLike }) {
   const likeOrDislike = async (event) => {
     event.preventDefault();
 
@@ -14,7 +14,7 @@ export default function LikePost({ post, index, toggleLike }) {
       throw new Error("Network response was not ok");
     }
 
-    toggleLike(index);
+    toggleLike();
   };
 
   return (

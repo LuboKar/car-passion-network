@@ -1,6 +1,5 @@
 import React from "react";
 import pic from "../../images/profile-pic.jpg";
-import open from "../../images/Open.png";
 
 export default function PostProfile({ post, navigateToProfile }) {
   return (
@@ -20,7 +19,6 @@ export default function PostProfile({ post, navigateToProfile }) {
         </h1>
         <label className="post-date">{post.createdAt}</label>
       </div>
-      <img src={open} alt="open-pic" className="open-pic" />
     </div>
   );
 }
