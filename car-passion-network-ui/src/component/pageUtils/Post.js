@@ -41,7 +41,7 @@ export default function Post({ post, index, toggleLike, commentPostByIndex }) {
       <div className="post-buttons-border"></div>
 
       <div className="post-buttons">
-        <LikePost post={post} toggleLike={() => toggleLike(index)} />
+        <LikePost post={post} index={index} toggleLike={toggleLike} />
         <CommentButton
           toggleCommentsFunction={() => toggleCommentsFunction(post.id)}
         />

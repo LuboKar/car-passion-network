@@ -9,8 +9,6 @@ import PostContent from "../pageUtils/PostContent";
 import ViewLikes from "../pageUtils/ViewLikes";
 import NumberOfComments from "../pageUtils/NumberOfComments";
 import LikePost from "../pageUtils/LikePost";
-import { jwtDecode } from "jwt-decode";
-import { getUser } from "../service/UserService";
 import CommentButton from "../pageUtils/CommentButton";
 import WriteComment from "../pageUtils/WriteComment";
 import ViewComments from "../pageUtils/ViewComments";
@@ -18,7 +16,6 @@ import ViewComments from "../pageUtils/ViewComments";
 export default function PostPage() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
-  const [currentUser, setCurrentUser] = useState(null);
   const [loadingPost, setLoadingPost] = useState(true);
   const { navigateToProfile } = useNavigation();
   const [toggleComments, setToggleComments] = useState(true);
@@ -35,24 +32,8 @@ export default function PostPage() {
     setLoadingPost(false);
   };
 
-  const fetchCurrentUser = async () => {
-    const token = localStorage.getItem("jwtToken");
-    const decodedToken = jwtDecode(token);
-    const currentId = decodedToken.userId;
-
-    const response = await getUser(currentId);
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const userData = await response.json();
-    setCurrentUser(userData);
-  };
-
   useEffect(() => {
     fetchPost();
-    fetchCurrentUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
@@ -60,18 +41,8 @@ export default function PostPage() {
     setToggleComments(!toggleComments);
   };
 
-  const toggleLike = () => {
-    const userExists = post.likes.some((like) => like.id === currentUser.id);
-
-    const userLikes = userExists
-      ? post.likes.filter((like) => like.id !== currentUser.id)
-      : [...post.likes, currentUser];
-
-    setPost((prevPost) => ({
-      ...prevPost,
-      currentUserLike: !prevPost.currentUserLike,
-      likes: userLikes,
-    }));
+  const toggleLike = (index, post) => {
+    setPost(post);
   };
 
   const commentPostByIndex = (index, createdComment) => {
