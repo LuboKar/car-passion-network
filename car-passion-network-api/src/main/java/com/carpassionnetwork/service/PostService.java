@@ -37,24 +37,19 @@ public class PostService {
     return postRepository.save(post);
   }
 
-  public String likeOrUnlikePost(UUID postId) {
+  public Post likeOrUnlikePost(UUID postId) {
     User currentUser = userService.getCurrentUser();
 
     Post likedPost = getPost(postId);
 
-    boolean isPostLiked = currentUser.getLikedPosts().contains(likedPost);
-    String message;
+    boolean isPostLiked = likedPost.getLikes().contains(currentUser);
 
     if (isPostLiked) {
-      currentUser.getLikedPosts().remove(likedPost);
-      message = "Post unliked successfully!";
+      likedPost.getLikes().remove(currentUser);
     } else {
-      currentUser.getLikedPosts().add(likedPost);
-      message = "Post liked successfully!";
+      likedPost.getLikes().add(currentUser);
     }
 
-    userRepository.save(currentUser);
-
-    return message;
+    return postRepository.save(likedPost);
   }
 }

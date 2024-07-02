@@ -20,7 +20,7 @@ public class PostController {
   private final PostService postService;
 
   @GetMapping("/{id}")
-  public ResponseEntity<PostResponseDto> getPost(@PathVariable UUID id){
+  public ResponseEntity<PostResponseDto> getPost(@PathVariable UUID id) {
     return ResponseEntity.ok(postMapper.toPostResponse(postService.getPost(id)));
   }
 
@@ -37,7 +37,7 @@ public class PostController {
   }
 
   @PostMapping("/like/{id}")
-  public ResponseEntity<String> likePost(@PathVariable UUID id) {
-    return ResponseEntity.ok(postService.likeOrUnlikePost(id));
+  public ResponseEntity<PostResponseDto> likePost(@PathVariable UUID id) {
+    return ResponseEntity.ok(postMapper.toPostResponse(postService.likeOrUnlikePost(id)));
   }
 }

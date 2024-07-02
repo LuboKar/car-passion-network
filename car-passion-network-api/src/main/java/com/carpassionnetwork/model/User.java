@@ -60,11 +60,7 @@ public class User implements UserDetails, Principal {
   @OrderBy("createdAt DESC")
   private List<Post> posts;
 
-  @ManyToMany
-  @JoinTable(
-      name = "post_like",
-      joinColumns = @JoinColumn(name = "user_id"),
-      inverseJoinColumns = @JoinColumn(name = "post_id"))
+  @ManyToMany(mappedBy = "likes")
   Set<Post> likedPosts;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

@@ -11,10 +11,9 @@ import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.PostRepository;
 import com.carpassionnetwork.repository.UserRepository;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -78,33 +77,27 @@ public class PostServiceTest {
 
   @Test
   void likeOrUnlikePostShouldLikePostSuccessfully() {
-    user.setLikedPosts(new HashSet<>());
     when(userService.getCurrentUser()).thenReturn(user);
     when(postRepository.findById(post.getId())).thenReturn(Optional.of(post));
 
-    String message = postService.likeOrUnlikePost(post.getId());
+    Post savedPost = postService.likeOrUnlikePost(post.getId());
 
-    assertNotNull(message);
-    assertEquals(message, "Post liked successfully!");
     verify(userService, times(1)).getCurrentUser();
     verify(postRepository, times(1)).findById(post.getId());
-    verify(userRepository, times(1)).save(user);
+    verify(postRepository, times(1)).save(post);
   }
 
   @Test
   void likeOrUnlikePostShouldUnLikePostSuccessfully() {
-    user.setLikedPosts(new HashSet<>());
-    user.getLikedPosts().add(post);
+    post.getLikes().add(user);
     when(userService.getCurrentUser()).thenReturn(user);
     when(postRepository.findById(post.getId())).thenReturn(Optional.of(post));
 
-    String message = postService.likeOrUnlikePost(post.getId());
+    postService.likeOrUnlikePost(post.getId());
 
-    assertNotNull(message);
-    assertEquals(message, "Post unliked successfully!");
     verify(userService, times(1)).getCurrentUser();
     verify(postRepository, times(1)).findById(post.getId());
-    verify(userRepository, times(1)).save(user);
+    verify(postRepository, times(1)).save(post);
   }
 
   @Test

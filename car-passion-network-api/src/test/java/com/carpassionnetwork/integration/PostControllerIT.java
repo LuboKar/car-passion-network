@@ -11,6 +11,7 @@ import com.carpassionnetwork.dto.request.PostRequestDto;
 import com.carpassionnetwork.exception.InvalidCredentialsException;
 import com.carpassionnetwork.exception.PostNotFoundException;
 import com.carpassionnetwork.model.Post;
+import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.PostRepository;
 import java.util.HashSet;
 import org.junit.jupiter.api.BeforeEach;
@@ -92,20 +93,29 @@ public class PostControllerIT extends BaseIT {
     mockMvc
         .perform(post("/post/like/" + createdPost.getId()))
         .andExpect(status().isOk())
-        .andExpect(content().string("Post liked successfully!"));
+        .andExpect(jsonPath("$.title").value(createdPost.getTitle()))
+        .andExpect(jsonPath("$.content").value(createdPost.getContent()))
+        .andExpect(jsonPath("$.currentUserLike").value(true))
+        .andExpect(jsonPath("likes.length()").value(1))
+        .andExpect(jsonPath("likes[0].firstName").value(currentUser.getFirstName()))
+        .andExpect(jsonPath("likes[0].lastName").value(currentUser.getLastName()))
+        .andExpect(jsonPath("likes[0].email").value(currentUser.getEmail()));
   }
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testLikeOrUnlikePostShouldUnLikePostSuccessfully() throws Exception {
+    User savedUser = saveUser();
+    post.getLikes().add(savedUser);
     Post createdPost = createPost();
-    currentUser.getLikedPosts().add(createdPost);
-    register();
 
     mockMvc
         .perform(post("/post/like/" + createdPost.getId()))
         .andExpect(status().isOk())
-        .andExpect(content().string("Post unliked successfully!"));
+        .andExpect(jsonPath("$.title").value(createdPost.getTitle()))
+        .andExpect(jsonPath("$.content").value(createdPost.getContent()))
+        .andExpect(jsonPath("$.currentUserLike").value(false))
+        .andExpect(jsonPath("likes.length()").value(0));
   }
 
   @Test
@@ -145,5 +155,9 @@ public class PostControllerIT extends BaseIT {
 
   private Post createPost() {
     return postRepository.save(post);
+  }
+
+  private User saveUser() {
+    return userRepository.save(currentUser);
   }
 }

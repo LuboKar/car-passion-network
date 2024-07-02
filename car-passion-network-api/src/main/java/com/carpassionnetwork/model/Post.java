@@ -32,7 +32,11 @@ public class Post {
   @JoinColumn(name = "user_id", referencedColumnName = "id")
   private User user;
 
-  @ManyToMany(mappedBy = "likedPosts")
+  @ManyToMany
+  @JoinTable(
+      name = "user_likes",
+      joinColumns = @JoinColumn(name = "post_id"),
+      inverseJoinColumns = @JoinColumn(name = "user_id"))
   Set<User> likes;
 
   @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
