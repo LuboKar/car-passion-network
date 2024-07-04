@@ -18,6 +18,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.parameters.P;
 
 @ExtendWith(MockitoExtension.class)
 public class PostServiceTest {
@@ -141,5 +142,13 @@ public class PostServiceTest {
     postService.getPost(post.getId());
 
     verify(postRepository, times(1)).findById(post.getId());
+  }
+
+  @Test
+  void getAllPostsShouldReturnEmptyListIfThereIsNoPost(){
+    List<Post> posts = postService.getAllPosts();
+
+    assertEquals(posts.size(), 0);
+    verify(postRepository, times(1)).findAll();
   }
 }

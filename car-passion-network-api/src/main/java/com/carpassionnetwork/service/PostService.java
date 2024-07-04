@@ -53,4 +53,8 @@ public class PostService {
 
     return postRepository.save(likedPost);
   }
+
+  public List<Post> getAllPosts(){
+    return postRepository.findAll();
+  }
 }

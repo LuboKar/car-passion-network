@@ -3,6 +3,7 @@ package com.carpassionnetwork.integration;
 import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserTwo;
 import static com.carpassionnetwork.helper.PostTestHelper.createNewPost;
 import static com.carpassionnetwork.helper.PostTestHelper.createNewPostRequest;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -172,6 +173,22 @@ public class PostControllerIT extends BaseIT {
         .andExpect(jsonPath("$.title").value(postRequestDto.getTitle()))
         .andExpect(jsonPath("$.content").value(postRequestDto.getContent()))
         .andExpect(jsonPath("$.currentUserLike").value(false));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testGetALLPostsReturnsEmptyListWhenThereAreNoPosts() throws Exception {
+    mockMvc.perform(get("/post")).andExpect(status().isOk()).andExpect(content().json("[]"));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testGetALLPostsSuccessfully() throws Exception {
+    createPost();
+    createPost();
+    createPost();
+
+    mockMvc.perform(get("/post")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(3)));
   }
 
   private Post createPost() {
