@@ -18,7 +18,7 @@ const getPosts = async (id) => {
 const getAllPosts = async () => {
   try {
     const token = localStorage.getItem("jwtToken");
-    const response = await fetch(`http://localhost:8080/post`, {
+    const response = await fetch("http://localhost:8080/post", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
