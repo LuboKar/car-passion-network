@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import "./CreatePost.css";
 import { createPost } from "../service/PostService";
 
-export default function CreatePost({ setPosts }) {
+export default function CreatePost({ setPosts, ownerId }) {
   const [createNewPost, setCreateNewPost] = useState(false);
   const [createPostButton, setCreatePostButton] = useState(false);
 
   const [createPostValues, setCreatePostValues] = useState({
+    ownerId: ownerId,
     title: "",
     content: "",
   });
