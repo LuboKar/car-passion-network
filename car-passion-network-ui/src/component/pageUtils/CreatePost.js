@@ -45,6 +45,7 @@ export default function CreatePost({ setPosts, ownerId }) {
     setCreateNewPost(false);
     setPosts((prevPosts) => [createdPost, ...prevPosts]);
     setCreatePostValues({
+      ownerId: ownerId,
       title: "",
       content: "",
     });
