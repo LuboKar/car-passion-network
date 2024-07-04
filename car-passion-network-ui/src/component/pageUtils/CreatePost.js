@@ -39,7 +39,6 @@ export default function CreatePost({ setPosts, ownerId }) {
     const response = await createPost(createPostValues);
 
     if (!response.ok) {
-      console.log(response);
       throw new Error("Network response was not ok");
     }
 
@@ -52,7 +51,6 @@ export default function CreatePost({ setPosts, ownerId }) {
       content: "",
     });
   };
-  console.log(createPostValues);
   return (
     <div className="post-container">
       <form className="post-form" onSubmit={create} onClick={toggleCreatePost}>
