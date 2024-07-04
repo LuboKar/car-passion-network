@@ -55,6 +55,6 @@ public class PostService {
   }
 
   public List<Post> getAllPosts(){
-    return postRepository.findAll();
+    return postRepository.findAllWhereUserIdEqualsAuthorIdOrderByCreatedAtDesc();
   }
 }

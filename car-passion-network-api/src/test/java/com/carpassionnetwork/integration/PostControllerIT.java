@@ -185,10 +185,12 @@ public class PostControllerIT extends BaseIT {
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testGetALLPostsSuccessfully() throws Exception {
     createPost();
-    createPost();
+    User savedUser = saveUser(owner);
+    post.setUser(savedUser);
+    post.setAuthor(savedUser);
     createPost();
 
-    mockMvc.perform(get("/post")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(3)));
+    mockMvc.perform(get("/post")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(1)));
   }
 
   private Post createPost() {

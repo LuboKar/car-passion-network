@@ -149,6 +149,6 @@ public class PostServiceTest {
     List<Post> posts = postService.getAllPosts();
 
     assertEquals(posts.size(), 0);
-    verify(postRepository, times(1)).findAll();
+    verify(postRepository, times(1)).findAllWhereUserIdEqualsAuthorIdOrderByCreatedAtDesc();
   }
 }
