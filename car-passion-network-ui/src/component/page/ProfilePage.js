@@ -93,7 +93,7 @@ export default function ProfilePage() {
         <Posts
           posts={posts}
           setPosts={setPosts}
-          user={user}
+          ownerId={user.id}
           currentUser={currentUser}
         />
       )}

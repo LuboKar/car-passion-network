@@ -15,6 +15,23 @@ const getPosts = async (id) => {
   }
 };
 
+const getAllPosts = async () => {
+  try {
+    const token = localStorage.getItem("jwtToken");
+    const response = await fetch(`http://localhost:8080/post`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+  }
+};
+
 const createPost = async (createPostValues) => {
   try {
     const token = localStorage.getItem("jwtToken");
@@ -66,4 +83,4 @@ const getPost = async (id) => {
   }
 };
 
-export { getPosts, createPost, likePost, getPost };
+export { getPosts, createPost, likePost, getPost, getAllPosts };
