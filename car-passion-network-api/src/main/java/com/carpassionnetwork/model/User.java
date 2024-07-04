@@ -57,8 +57,10 @@ public class User implements UserDetails, Principal {
   private Role role;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-  @OrderBy("createdAt DESC")
   private List<Post> posts;
+
+  @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+  private List<Post> writtenPosts;
 
   @ManyToMany(mappedBy = "likes")
   Set<Post> likedPosts;

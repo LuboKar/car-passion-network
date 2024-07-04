@@ -19,6 +19,10 @@ public class PostTestHelper {
   }
 
   public static PostRequestDto createNewPostRequest() {
-    return PostRequestDto.builder().title("PostTitle").content("PostContent").build();
+    return PostRequestDto.builder()
+        .ownerId(UUID.randomUUID())
+        .title("PostTitle")
+        .content("PostContent")
+        .build();
   }
 }

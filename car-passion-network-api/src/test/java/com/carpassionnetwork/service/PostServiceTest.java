@@ -1,6 +1,7 @@
 package com.carpassionnetwork.service;
 
-import static com.carpassionnetwork.helper.AuthenticationTestHelper.createNewUser;
+import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserOne;
+import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserTwo;
 import static com.carpassionnetwork.helper.PostTestHelper.createNewPost;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -10,10 +11,7 @@ import com.carpassionnetwork.exception.PostNotFoundException;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.PostRepository;
-import com.carpassionnetwork.repository.UserRepository;
-
 import java.util.*;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,35 +25,48 @@ public class PostServiceTest {
 
   @Mock private UserService userService;
   @Mock private PostRepository postRepository;
-  @Mock private UserRepository userRepository;
 
-  private User user;
+  private User currentUser;
+  private User owner;
   private Post post;
 
   @BeforeEach
   void setUp() {
-    user = createNewUser();
+    currentUser = createUserOne();
+    owner = createUserTwo();
     post = createNewPost();
   }
 
   @Test
-  void createPostShouldThrowInvalidCredentialsException() {
+  void createPostShouldThrowInvalidCredentialsExceptionWhenOwnerDoesNotExists() {
+    when(userService.getUser(owner.getId())).thenThrow(InvalidCredentialsException.class);
+
+    assertThrows(
+        InvalidCredentialsException.class, () -> postService.createPost(post, owner.getId()));
+  }
+
+  @Test
+  void createPostShouldThrowInvalidCredentialsExceptionWhenAuthorDoesNotExists() {
+    when(userService.getUser(owner.getId())).thenReturn(owner);
     when(userService.getCurrentUser()).thenThrow(InvalidCredentialsException.class);
 
-    assertThrows(InvalidCredentialsException.class, () -> postService.createPost(post));
+    assertThrows(
+        InvalidCredentialsException.class, () -> postService.createPost(post, owner.getId()));
   }
 
   @Test
   void createPostSuccessfully() {
-    when(userService.getCurrentUser()).thenReturn(user);
+    when(userService.getCurrentUser()).thenReturn(currentUser);
+    when(userService.getUser(owner.getId())).thenReturn(currentUser);
     when(postRepository.save(post)).thenReturn(post);
 
-    Post savedPost = postService.createPost(post);
+    Post savedPost = postService.createPost(post, owner.getId());
 
     assertNotNull(savedPost);
     assertEquals(savedPost.getTitle(), "PostTitle");
     assertEquals(savedPost.getContent(), "PostContent");
     verify(userService, times(1)).getCurrentUser();
+    verify(userService, times(1)).getUser(owner.getId());
     verify(postRepository, times(1)).save(post);
   }
 
@@ -69,7 +80,7 @@ public class PostServiceTest {
 
   @Test
   void likeOrUnlikePostShouldThrowPostNotFoundException() {
-    when(userService.getCurrentUser()).thenReturn(user);
+    when(userService.getCurrentUser()).thenReturn(currentUser);
     when(postRepository.findById(post.getId())).thenThrow(PostNotFoundException.class);
 
     assertThrows(PostNotFoundException.class, () -> postService.likeOrUnlikePost(post.getId()));
@@ -77,7 +88,7 @@ public class PostServiceTest {
 
   @Test
   void likeOrUnlikePostShouldLikePostSuccessfully() {
-    when(userService.getCurrentUser()).thenReturn(user);
+    when(userService.getCurrentUser()).thenReturn(currentUser);
     when(postRepository.findById(post.getId())).thenReturn(Optional.of(post));
 
     Post savedPost = postService.likeOrUnlikePost(post.getId());
@@ -89,8 +100,8 @@ public class PostServiceTest {
 
   @Test
   void likeOrUnlikePostShouldUnLikePostSuccessfully() {
-    post.getLikes().add(user);
-    when(userService.getCurrentUser()).thenReturn(user);
+    post.getLikes().add(currentUser);
+    when(userService.getCurrentUser()).thenReturn(currentUser);
     when(postRepository.findById(post.getId())).thenReturn(Optional.of(post));
 
     postService.likeOrUnlikePost(post.getId());
@@ -102,18 +113,18 @@ public class PostServiceTest {
 
   @Test
   void getAllPostsByUserIdSuccessfully() {
-    user.setPosts(new ArrayList<>());
-    user.getPosts().add(post);
-    user.getPosts().add(post);
-    when(postRepository.findAllByUserIdOrderByCreatedAtDesc(user.getId()))
-        .thenReturn(user.getPosts());
+    currentUser.setPosts(new ArrayList<>());
+    currentUser.getPosts().add(post);
+    currentUser.getPosts().add(post);
+    when(postRepository.findAllByUserIdOrderByCreatedAtDesc(currentUser.getId()))
+        .thenReturn(currentUser.getPosts());
 
-    List<Post> responseList = postService.getAllPostsByUserId(user.getId());
+    List<Post> responseList = postService.getAllPostsByUserId(currentUser.getId());
 
     assertNotNull(responseList);
     assertEquals(responseList.size(), 2);
     assertEquals(responseList.get(0), responseList.get(1));
-    verify(postRepository, times(1)).findAllByUserIdOrderByCreatedAtDesc(user.getId());
+    verify(postRepository, times(1)).findAllByUserIdOrderByCreatedAtDesc(currentUser.getId());
   }
 
   @Test

@@ -1,6 +1,6 @@
 package com.carpassionnetwork.integration;
 
-import static com.carpassionnetwork.helper.AuthenticationTestHelper.createNewUser;
+import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserOne;
 
 import com.carpassionnetwork.config.LocalDateTypeAdapter;
 import com.carpassionnetwork.model.User;
@@ -9,8 +9,6 @@ import com.carpassionnetwork.service.AuthenticationService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.time.LocalDate;
-import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -44,7 +42,7 @@ public class BaseIT {
   public BaseIT() {
     gson =
         new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter()).create();
-    currentUser = createNewUser();
+    currentUser = createUserOne();
   }
 
   protected void register() {

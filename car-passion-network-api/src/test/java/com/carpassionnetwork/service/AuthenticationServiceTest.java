@@ -43,7 +43,7 @@ public class AuthenticationServiceTest {
 
   @BeforeEach
   void setUp() {
-    user = createNewUser();
+    user = createUserOne();
     successMessage = String.format(USER_CREATED_SUCCESSFULLY, EMAIL);
     loginRequest = createLoginRequest();
     claims = new HashMap<>();

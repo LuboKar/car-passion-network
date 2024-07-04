@@ -1,6 +1,6 @@
 package com.carpassionnetwork.service;
 
-import static com.carpassionnetwork.helper.AuthenticationTestHelper.createNewUser;
+import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserOne;
 import static com.carpassionnetwork.helper.PostTestHelper.createNewPost;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -31,7 +31,7 @@ public class CommentServiceTest {
 
   @BeforeEach
   void setUp() {
-    user = createNewUser();
+    user = createUserOne();
     post = createNewPost();
     content = "smth";
   }

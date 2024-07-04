@@ -33,7 +33,8 @@ public class PostController {
   public ResponseEntity<PostResponseDto> createPost(
       @RequestBody @Valid PostRequestDto postRequestDto) {
     Post post = postMapper.toPostEntity(postRequestDto);
-    return ResponseEntity.ok(postMapper.toPostResponse(postService.createPost(post)));
+    return ResponseEntity.ok(
+        postMapper.toPostResponse(postService.createPost(post, postRequestDto.getOwnerId())));
   }
 
   @PostMapping("/like/{id}")

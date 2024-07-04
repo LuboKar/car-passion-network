@@ -1,6 +1,6 @@
 package com.carpassionnetwork.service;
 
-import static com.carpassionnetwork.helper.AuthenticationTestHelper.createNewUser;
+import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserOne;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -26,7 +26,7 @@ public class UserServiceTest {
 
   @BeforeEach
   void setUp() {
-    user = createNewUser();
+    user = createUserOne();
   }
 
   @Test

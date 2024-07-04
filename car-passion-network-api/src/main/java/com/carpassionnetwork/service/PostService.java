@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 public class PostService {
   private final PostRepository postRepository;
   private final UserService userService;
-  private final UserRepository userRepository;
 
   public Post getPost(UUID id) {
     return postRepository.findById(id).orElseThrow(() -> new PostNotFoundException(id));
@@ -27,10 +26,12 @@ public class PostService {
     return postRepository.findAllByUserIdOrderByCreatedAtDesc(id);
   }
 
-  public Post createPost(Post post) {
-    User creator = userService.getCurrentUser();
+  public Post createPost(Post post, UUID ownerId) {
+    User owner = userService.getUser(ownerId);
+    User author = userService.getCurrentUser();
 
-    post.setUser(creator);
+    post.setUser(owner);
+    post.setAuthor(author);
     post.setLikes(new HashSet<>());
     post.setComments(new ArrayList<>());
 

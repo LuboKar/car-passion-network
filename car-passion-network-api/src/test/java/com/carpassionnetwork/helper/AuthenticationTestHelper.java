@@ -5,6 +5,7 @@ import com.carpassionnetwork.dto.request.RegistrationRequest;
 import com.carpassionnetwork.model.Gender;
 import com.carpassionnetwork.model.User;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.UUID;
 
 public class AuthenticationTestHelper {
@@ -12,13 +13,26 @@ public class AuthenticationTestHelper {
   public static final String USER_CREATED_SUCCESSFULLY =
       "User with email %s was created successfully!";
 
-  public static User createNewUser() {
+  public static User createUserOne() {
     return User.builder()
         .id(UUID.randomUUID())
         .firstName("John")
         .lastName("Doe")
         .dateOfBirth(LocalDate.of(1990, 1, 1))
         .email(EMAIL)
+        .password("password")
+        .gender(Gender.MALE)
+        .likedPosts(new HashSet<>())
+        .build();
+  }
+
+  public static User createUserTwo() {
+    return User.builder()
+        .id(UUID.randomUUID())
+        .firstName("Jane")
+        .lastName("Doe")
+        .dateOfBirth(LocalDate.of(1990, 1, 1))
+        .email("jane.doe@gmail.com")
         .password("password")
         .gender(Gender.MALE)
         .build();

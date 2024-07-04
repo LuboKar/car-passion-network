@@ -32,6 +32,10 @@ public class Post {
   @JoinColumn(name = "user_id", referencedColumnName = "id")
   private User user;
 
+  @ManyToOne
+  @JoinColumn(name = "author_id", referencedColumnName = "id")
+  private User author;
+
   @ManyToMany
   @JoinTable(
       name = "user_likes",

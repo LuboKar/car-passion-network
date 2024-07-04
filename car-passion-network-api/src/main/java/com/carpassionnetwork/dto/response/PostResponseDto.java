@@ -26,6 +26,8 @@ public class PostResponseDto {
 
   private UserResponseDto user;
 
+  private UserResponseDto author;
+
   private Set<UserResponseDto> likes;
 
   private List<CommentResponseDto> comments;

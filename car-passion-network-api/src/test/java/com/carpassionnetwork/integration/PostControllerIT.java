@@ -1,5 +1,6 @@
 package com.carpassionnetwork.integration;
 
+import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserTwo;
 import static com.carpassionnetwork.helper.PostTestHelper.createNewPost;
 import static com.carpassionnetwork.helper.PostTestHelper.createNewPostRequest;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -10,10 +11,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.carpassionnetwork.dto.request.PostRequestDto;
 import com.carpassionnetwork.exception.InvalidCredentialsException;
 import com.carpassionnetwork.exception.PostNotFoundException;
+import com.carpassionnetwork.exception.UserNotFoundException;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.PostRepository;
-import java.util.HashSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +24,36 @@ import org.springframework.security.test.context.support.WithMockUser;
 public class PostControllerIT extends BaseIT {
   private PostRequestDto postRequestDto;
   private Post post;
+  private User owner;
   @Autowired private PostRepository postRepository;
 
   @BeforeEach
   void setUp() {
     postRequestDto = createNewPostRequest();
     post = createNewPost();
-    currentUser.setLikedPosts(new HashSet<>());
+    owner = createUserTwo();
   }
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testCreatePostShouldThrowInvalidCredentialsException() throws Exception {
+  void testCreatePostShouldThrowUserNotFoundExceptionWhenOwnerDoesNotExists() throws Exception {
+    mockMvc
+        .perform(
+            post("/post")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(postRequestDto)))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result -> assertInstanceOf(UserNotFoundException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testCreatePostShouldThrowInvalidCredentialsExceptionWhenAuthorDoesNotExists()
+      throws Exception {
+    User savedOwner = saveUser(owner);
+    postRequestDto.setOwnerId(savedOwner.getId());
+
     mockMvc
         .perform(
             post("/post")
@@ -49,6 +68,8 @@ public class PostControllerIT extends BaseIT {
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testCreatePostSuccessfully() throws Exception {
+    User savedOwner = saveUser(owner);
+    postRequestDto.setOwnerId(savedOwner.getId());
     register();
 
     mockMvc
@@ -105,7 +126,7 @@ public class PostControllerIT extends BaseIT {
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testLikeOrUnlikePostShouldUnLikePostSuccessfully() throws Exception {
-    User savedUser = saveUser();
+    User savedUser = saveUser(currentUser);
     post.getLikes().add(savedUser);
     Post createdPost = createPost();
 
@@ -157,7 +178,7 @@ public class PostControllerIT extends BaseIT {
     return postRepository.save(post);
   }
 
-  private User saveUser() {
-    return userRepository.save(currentUser);
+  private User saveUser(User user) {
+    return userRepository.save(user);
   }
 }
