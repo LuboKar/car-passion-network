@@ -5,12 +5,10 @@ import com.carpassionnetwork.dto.response.CommentResponseDto;
 import com.carpassionnetwork.mapper.CommentMapper;
 import com.carpassionnetwork.service.CommentService;
 import jakarta.validation.Valid;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,5 +25,11 @@ public class CommentController {
     return ResponseEntity.ok(
         commentMapper.toCommentResponse(
             commentService.createComment(postRequestDto.getPostId(), postRequestDto.getContent())));
+  }
+
+  @PostMapping("/like/{id}")
+  public ResponseEntity<CommentResponseDto> likeComment(@PathVariable UUID id) {
+    return ResponseEntity.ok(
+        commentMapper.toCommentResponse(commentService.likeOrUnlikeComment(id)));
   }
 }

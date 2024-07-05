@@ -1,12 +1,16 @@
 package com.carpassionnetwork.service;
 
 import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserOne;
+import static com.carpassionnetwork.helper.CommentTestHelper.createNewComment;
 import static com.carpassionnetwork.helper.PostTestHelper.createNewPost;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
+import com.carpassionnetwork.exception.CommentNotFoundException;
 import com.carpassionnetwork.exception.InvalidCredentialsException;
 import com.carpassionnetwork.exception.PostNotFoundException;
+import com.carpassionnetwork.helper.CommentTestHelper;
+import com.carpassionnetwork.model.Comment;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.CommentRepository;
@@ -16,6 +20,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 public class CommentServiceTest {
@@ -28,12 +34,14 @@ public class CommentServiceTest {
   private User user;
   private Post post;
   private String content;
+  private Comment comment;
 
   @BeforeEach
   void setUp() {
     user = createUserOne();
     post = createNewPost();
     content = "smth";
+    comment = createNewComment();
   }
 
   @Test
@@ -64,5 +72,47 @@ public class CommentServiceTest {
     verify(userService, times(1)).getCurrentUser();
     verify(postService, times(1)).getPost(post.getId());
     verify(commentRepository, times(1)).save(any());
+  }
+
+  @Test
+  void testLikeOrUnlikeCommentShouldThrowInvalidCredentialsException(){
+    when(userService.getCurrentUser()).thenThrow(InvalidCredentialsException.class);
+
+    assertThrows(
+            InvalidCredentialsException.class, () -> commentService.likeOrUnlikeComment(comment.getId()));
+  }
+
+  @Test
+  void testLikeOrUnlikeCommentShouldThrowCommentNotFoundException(){
+    when(userService.getCurrentUser()).thenReturn(user);
+    when(commentRepository.findById(comment.getId())).thenThrow(CommentNotFoundException.class);
+
+    assertThrows(
+            CommentNotFoundException.class, () -> commentService.likeOrUnlikeComment(comment.getId()));
+  }
+
+  @Test
+  void testLikeOrUnlikeCommentLikesSuccessfully(){
+    when(userService.getCurrentUser()).thenReturn(user);
+    when(commentRepository.findById(comment.getId())).thenReturn(Optional.of(comment));
+
+    commentService.likeOrUnlikeComment(comment.getId());
+
+    verify(userService, times(1)).getCurrentUser();
+    verify(commentRepository, times(1)).findById(comment.getId());
+    verify(commentRepository, times(1)).save(comment);
+  }
+
+  @Test
+  void testLikeOrUnlikeCommentUnlikesSuccessfully(){
+    when(userService.getCurrentUser()).thenReturn(user);
+    when(commentRepository.findById(comment.getId())).thenReturn(Optional.of(comment));
+    comment.getLikes().add(user);
+
+    commentService.likeOrUnlikeComment(comment.getId());
+
+    verify(userService, times(1)).getCurrentUser();
+    verify(commentRepository, times(1)).findById(comment.getId());
+    verify(commentRepository, times(1)).save(comment);
   }
 }

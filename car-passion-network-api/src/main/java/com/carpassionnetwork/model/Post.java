@@ -38,7 +38,7 @@ public class Post {
 
   @ManyToMany
   @JoinTable(
-      name = "user_likes",
+      name = "user_post_likes",
       joinColumns = @JoinColumn(name = "post_id"),
       inverseJoinColumns = @JoinColumn(name = "user_id"))
   Set<User> likes;

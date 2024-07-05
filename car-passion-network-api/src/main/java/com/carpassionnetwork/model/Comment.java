@@ -2,6 +2,7 @@ package com.carpassionnetwork.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +30,13 @@ public class Comment {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "post_id", nullable = false)
   private Post post;
+
+  @ManyToMany
+  @JoinTable(
+          name = "user_comment_likes",
+          joinColumns = @JoinColumn(name = "comment_id"),
+          inverseJoinColumns = @JoinColumn(name = "user_id"))
+  Set<User> likes;
 
   @PrePersist
   public void onPrePersist() {

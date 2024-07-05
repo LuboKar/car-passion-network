@@ -1,5 +1,6 @@
 package com.carpassionnetwork.service;
 
+import com.carpassionnetwork.exception.CommentNotFoundException;
 import com.carpassionnetwork.model.Comment;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
@@ -22,5 +23,25 @@ public class CommentService {
     Comment comment = Comment.builder().user(user).post(post).content(content).build();
 
     return commentRepository.save(comment);
+  }
+
+  public Comment likeOrUnlikeComment(UUID commentId) {
+    User currentUser = userService.getCurrentUser();
+
+    Comment likedComment = getComment(commentId);
+
+    boolean isCommentLiked = likedComment.getLikes().contains(currentUser);
+
+    if (isCommentLiked) {
+      likedComment.getLikes().remove(currentUser);
+    } else {
+      likedComment.getLikes().add(currentUser);
+    }
+
+    return commentRepository.save(likedComment);
+  }
+
+  public Comment getComment(UUID id) {
+    return commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException(id));
   }
 }

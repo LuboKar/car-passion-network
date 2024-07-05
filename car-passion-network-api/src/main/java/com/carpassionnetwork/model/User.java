@@ -65,6 +65,9 @@ public class User implements UserDetails, Principal {
   @ManyToMany(mappedBy = "likes")
   Set<Post> likedPosts;
 
+  @ManyToMany(mappedBy = "likes")
+  Set<Post> likedComments;
+
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<Comment> comments;
 
