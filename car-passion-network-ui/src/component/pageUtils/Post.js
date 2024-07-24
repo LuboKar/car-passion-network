@@ -11,7 +11,13 @@ import "./ViewPosts.css";
 import OpenPost from "./OpenPost";
 import useNavigation from "../service/NavigateService";
 
-export default function Post({ post, index, toggleLike, commentPostByIndex }) {
+export default function Post({
+  post,
+  index,
+  toggleLike,
+  commentPostByIndex,
+  toggleCommentLike,
+}) {
   const [toggleComments, setToggleComments] = useState(-1);
   const { navigateToProfile, navigateToPostPage } = useNavigation();
 
@@ -55,7 +61,12 @@ export default function Post({ post, index, toggleLike, commentPostByIndex }) {
             index={index}
             commentPostByIndex={commentPostByIndex}
           />
-          <ViewComments post={post} navigateToProfile={navigateToProfile} />
+          <ViewComments
+            post={post}
+            postIndex={index}
+            navigateToProfile={navigateToProfile}
+            toggleCommentLike={toggleCommentLike}
+          />
         </div>
       )}
     </div>

@@ -1,0 +1,78 @@
+.comment-profile{
+    display: flex;
+    flex-direction: row;
+}
+.comment-profile-name{
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.comment-profile-name:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.comment-profile-pic{
+    width: 40px;
+    border-radius: 15px;
+    margin-right: 11px;
+}
+
+.comment-profile-pic:hover{
+    cursor: pointer;
+}
+
+.comment-content{
+    margin-top: 0;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 1%;
+    background-color: rgb(205, 205, 205);
+    border-radius:10px;
+    padding: 1% 1% 1% 1%;
+}
+
+.comment-date{
+    margin-left: auto;
+    font-size: 12px;
+    color: rgb(67, 67, 67);
+}
+
+.comment-date:hover{ 
+    cursor: text;
+}
+
+.like-comment{
+    margin-left: 50px;
+    margin-right: 50px;
+    font-weight: bold;
+    width: max-content;
+    display: inline;
+}
+
+.like-comment:hover{
+    cursor: pointer;
+    text-decoration: underline;
+    font-weight: normal;
+}
+
+.like-text{
+    color: rgb(90, 90, 90);
+}
+
+.like-text:hover{
+    cursor: pointer;
+    text-decoration: underline;
+    font-weight: normal;
+}
+
+.like-icon{
+    width: 13px;
+    margin-right: 1%;
+}
+
+.comment-buttons-border{
+    margin-left: 50px;
+    margin-right: 50px;
+    border-bottom: 1px solid rgb(150, 150, 150);
+}
