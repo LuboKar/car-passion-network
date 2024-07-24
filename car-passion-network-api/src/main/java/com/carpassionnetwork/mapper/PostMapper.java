@@ -1,6 +1,7 @@
 package com.carpassionnetwork.mapper;
 
 import com.carpassionnetwork.dto.request.PostRequestDto;
+import com.carpassionnetwork.dto.response.CommentResponseDto;
 import com.carpassionnetwork.dto.response.PostResponseDto;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class PostMapper {
   private final ModelMapper modelMapper;
-  private final UserService userService;
+  private final CommentMapper commentMapper;
 
   public Post toPostEntity(PostRequestDto postRequestDto) {
     return modelMapper.map(postRequestDto, Post.class);
@@ -25,6 +26,12 @@ public class PostMapper {
   public PostResponseDto toPostResponse(Post post) {
     PostResponseDto postResponseDto = modelMapper.map(post, PostResponseDto.class);
     postResponseDto.setCurrentUserLike(isCurrentUserLiked(post));
+
+    List<CommentResponseDto> commentResponseDtos = post.getComments().stream()
+            .map(commentMapper::toCommentResponse)
+            .collect(Collectors.toList());
+
+    postResponseDto.setComments(commentResponseDtos);
     return postResponseDto;
   }
 
