@@ -5,6 +5,7 @@ import com.carpassionnetwork.model.Comment;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.CommentRepository;
+import java.util.HashSet;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,8 @@ public class CommentService {
     User user = userService.getCurrentUser();
     Post post = postService.getPost(postId);
 
-    Comment comment = Comment.builder().user(user).post(post).content(content).build();
+    Comment comment =
+        Comment.builder().user(user).post(post).content(content).likes(new HashSet<>()).build();
 
     return commentRepository.save(comment);
   }
