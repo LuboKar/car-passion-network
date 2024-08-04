@@ -52,6 +52,17 @@ export default function PostPage() {
     }));
   };
 
+  const toggleCommentLike = (postIndex, commentIndex, comment) => {
+    setPost((prevPost) => {
+      const updatedComments = [...prevPost.comments];
+      updatedComments[commentIndex] = comment;
+
+      const updatedPost = { ...prevPost, comments: updatedComments };
+
+      return updatedPost;
+    });
+  };
+
   return (
     <div className="post-page-container">
       <Navbar />
@@ -82,7 +93,11 @@ export default function PostPage() {
                 post={post}
                 commentPostByIndex={commentPostByIndex}
               />
-              <ViewComments post={post} navigateToProfile={navigateToProfile} />
+              <ViewComments
+                post={post}
+                navigateToProfile={navigateToProfile}
+                toggleCommentLike={toggleCommentLike}
+              />
             </div>
           )}
         </div>
