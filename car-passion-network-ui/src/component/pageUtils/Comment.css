@@ -43,11 +43,10 @@
 }
 
 .like-comment{
-    margin-left: 50px;
-    margin-right: 50px;
-    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     width: max-content;
-    display: inline;
 }
 
 .like-comment:hover{
@@ -56,23 +55,113 @@
     font-weight: normal;
 }
 
-.like-text{
+.liked{
     color: rgb(90, 90, 90);
+    padding-left: 10%;
+    font-weight: bold; 
 }
 
-.like-text:hover{
+.notLiked{
+    color: rgb(70, 70, 70);
+    padding-left: 10%;
+}
+
+.liked:hover{
     cursor: pointer;
-    text-decoration: underline;
-    font-weight: normal;
+}
+
+.notLiked:hover{
+    cursor: pointer;
 }
 
 .like-icon{
-    width: 13px;
-    margin-right: 1%;
+    width: 15px;
 }
 
 .comment-buttons-border{
     margin-left: 50px;
     margin-right: 50px;
     border-bottom: 1px solid rgb(150, 150, 150);
+}
+
+.comment-tools{
+    display: flex;
+    flex-direction: row; 
+    align-items: center;
+    margin-right: 51px;
+    margin-left: 51px;
+}
+
+.show-comment-likes{
+    margin-left: auto;
+    display: flex;
+    flex-direction: row; 
+    align-items: center;
+}
+
+.show-comment-likes:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.comment-likes-number{
+    margin-left: 5px;
+}
+
+.comment-likes-number:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.comment-likes-dropdown{
+    overflow: auto;
+}
+
+.comment-likes-container{
+    display: flex;
+    flex-direction: row;
+    margin-top: 3%;
+    margin-left: 3%;
+    margin-right: 3%;
+    border-radius: 10px;
+}
+
+.comment-likes-container:hover{
+    cursor: pointer;
+    text-decoration: underline;
+    background-color: #f0f0f0;
+}
+
+
+.user-like-name{
+    padding-top: 3%;
+    padding-left: 3%;
+}
+
+.user-like-name:hover{
+    cursor: pointer;
+}
+
+.user-like-pic{
+    padding-top: 3%;
+    padding-left: 3%;
+    padding-bottom: 3%;
+    padding-right: 3%;
+    width: 25px; 
+    border-radius: 15px;
+}
+
+.comment-likes-drowdown-container{
+    position:absolute; 
+    z-index: 1; 
+    background-color: white; 
+    border: 2px solid #ccc; 
+    width: 19%;
+    height: 29%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    margin-bottom: 20%;
+    padding-bottom: 0.5%;
+    margin-left: 3%;
 }

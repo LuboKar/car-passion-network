@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import pic from "../../images/profile-pic.jpg";
 import liked from "../../images/liked.png";
 import notLiked from "../../images/not liked.png";
@@ -12,6 +12,14 @@ export default function Comment({
   toggleCommentLike,
   postIndex,
 }) {
+  const [clickdLikedCommentId, setClickdLikedCommentId] = useState(0);
+
+  const clickedLikes = (id) => {
+    if (clickdLikedCommentId === 0) {
+      setClickdLikedCommentId(id);
+    } else setClickdLikedCommentId(0);
+  };
+
   const likeOrUnlike = async (event) => {
     event.preventDefault();
 
@@ -25,6 +33,7 @@ export default function Comment({
 
     toggleCommentLike(postIndex, index, likedComment);
   };
+
   return (
     <div key={index} className="view-comment-container">
       <div className="comment-profile">
@@ -44,15 +53,54 @@ export default function Comment({
         <label className="comment-date">{comment.createdAt}</label>
       </div>
       <p className="comment-content">{comment.content}</p>
+      <div className="comment-tools">
+        <div className="like-comment" onClick={likeOrUnlike}>
+          <img
+            src={comment.currentUserLike === true ? liked : notLiked}
+            alt="icon"
+            className="like-icon"
+          />
+          <label className={comment.currentUserLike ? "liked" : "notLiked"}>
+            Like
+          </label>
+        </div>
 
-      <div className="like-comment" onClick={likeOrUnlike}>
-        <img
-          src={comment.currentUserLike === true ? liked : notLiked}
-          alt="icon"
-          className="like-icon"
-        />
-        <label className="like-text">Like</label>
+        {comment.likes.length > 0 && (
+          <div
+            className="show-comment-likes"
+            onClick={() => clickedLikes(comment.id)}
+          >
+            <img src={liked} alt="icon" className={"like-icon"} />
+            <label className="comment-likes-number">
+              {comment.likes.length}
+            </label>
+          </div>
+        )}
       </div>
+
+      {clickdLikedCommentId === comment.id && (
+        <div className="comment-likes-drowdown-container">
+          <div className="dropdown-menu">
+            <label className="close-likes" onClick={() => clickedLikes(0)}>
+              X
+            </label>
+          </div>
+          <div className="comment-likes-dropdown">
+            {comment.likes.map((user, index) => (
+              <div
+                key={index}
+                className="comment-likes-container"
+                onClick={() => navigateToProfile(user.id)}
+              >
+                <img src={pic} alt="user-pic" className="user-like-pic" />
+                <label key={index} className="user-like-name">
+                  {user.firstName} {user.lastName}
+                </label>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
