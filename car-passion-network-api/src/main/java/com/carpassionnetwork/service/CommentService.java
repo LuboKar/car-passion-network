@@ -58,7 +58,16 @@ public class CommentService {
       likedComment.getLikes().add(currentUser);
     }
 
-    return commentRepository.save(likedComment);
+    Comment parrentComment;
+    if (likedComment.getParent() != null) {
+      parrentComment = likedComment.getParent();
+
+      while (parrentComment.getParent() != null) {
+        parrentComment = parrentComment.getParent();
+      }
+    } else parrentComment = likedComment;
+
+    return commentRepository.save(parrentComment);
   }
 
   public Comment getComment(UUID id) {

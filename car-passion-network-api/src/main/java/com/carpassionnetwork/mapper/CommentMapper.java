@@ -3,6 +3,8 @@ package com.carpassionnetwork.mapper;
 import com.carpassionnetwork.dto.response.CommentResponseDto;
 import com.carpassionnetwork.model.Comment;
 import com.carpassionnetwork.model.User;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +18,13 @@ public class CommentMapper {
   public CommentResponseDto toCommentResponse(Comment comment) {
     CommentResponseDto commentResponseDto = modelMapper.map(comment, CommentResponseDto.class);
     commentResponseDto.setCurrentUserLike(isCurrentUserLiked(comment));
+
+    if (comment.getReplies() != null) {
+      List<CommentResponseDto> replies =
+          comment.getReplies().stream().map(this::toCommentResponse).collect(Collectors.toList());
+      commentResponseDto.setReplies(replies);
+    }
+
     return commentResponseDto;
   }
 
