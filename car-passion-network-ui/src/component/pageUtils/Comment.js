@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import pic from "../../images/profile-pic.jpg";
 import liked from "../../images/liked.png";
 import notLiked from "../../images/not liked.png";
+import replyCommentIcon from "../../images/comment-icon.png";
 import "./Comment.css";
 import { likeComment } from "../service/CommentService";
+import send from "../../images/send.png";
+import cannotSend from "../../images/cannot-send.png";
+import { replyComment } from "../service/CommentService";
 
 export default function Comment({
   comment,
@@ -11,8 +15,34 @@ export default function Comment({
   navigateToProfile,
   toggleCommentLike,
   postIndex,
+  postId,
 }) {
   const [clickdLikedCommentId, setClickdLikedCommentId] = useState(0);
+  const [clickedReply, setClickedReply] = useState(0);
+
+  const [reply, setReply] = useState({
+    postId: postId,
+    content: "",
+    parentCommentId: comment.id,
+  });
+
+  const [sendButton, setSendButton] = useState(false);
+
+  const handleInputChange = (event) => {
+    event.preventDefault();
+
+    const { name, value } = event.target;
+    setReply((contentValue) => ({
+      ...contentValue,
+      [name]: value,
+    }));
+  };
+
+  useEffect(() => {
+    if (reply.content === "") {
+      setSendButton(false);
+    } else setSendButton(true);
+  }, [reply.content]);
 
   const clickedLikes = (id) => {
     if (clickdLikedCommentId === 0) {
@@ -32,6 +62,28 @@ export default function Comment({
     const likedComment = await response.json();
 
     toggleCommentLike(postIndex, index, likedComment);
+  };
+
+  const toggleReply = (id) => {
+    if (clickedReply === 0) {
+      setClickedReply(id);
+    } else setClickedReply(0);
+  };
+
+  const commentReply = async (event) => {
+    event.preventDefault();
+    if (comment.content === "") return;
+
+    const response = await replyComment(reply);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    setReply((prevReply) => ({
+      ...prevReply,
+      content: "",
+    }));
   };
 
   return (
@@ -62,6 +114,21 @@ export default function Comment({
           />
           <label className={comment.currentUserLike ? "liked" : "notLiked"}>
             Like
+          </label>
+        </div>
+
+        <div className="reply-comment" onClick={() => toggleReply(comment.id)}>
+          <img
+            src={replyCommentIcon}
+            alt="icon"
+            className="reply-comment-icon"
+          />
+          <label
+            className={
+              comment.id === clickedReply ? "reply-clicked-text" : "reply-text"
+            }
+          >
+            Reply
           </label>
         </div>
 
@@ -99,6 +166,31 @@ export default function Comment({
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {clickedReply === comment.id && (
+        <div className="reply-comment-input">
+          <img src={pic} alt="pic" className="write-comment-profile-pic" />
+          <input
+            className="comment-input"
+            placeholder="Reply...."
+            type="text"
+            name="content"
+            value={reply.content}
+            onChange={handleInputChange}
+          />
+          {!sendButton && (
+            <img src={cannotSend} alt="pic" className="cannont-send-comment" />
+          )}
+          {sendButton && (
+            <img
+              src={send}
+              alt="pic"
+              className="send-comment"
+              onClick={commentReply}
+            />
+          )}
         </div>
       )}
     </div>

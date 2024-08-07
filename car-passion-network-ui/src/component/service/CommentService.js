@@ -16,6 +16,24 @@ const writeComment = async (comment) => {
   }
 };
 
+const replyComment = async (comment) => {
+  try {
+    const token = localStorage.getItem("jwtToken");
+    const response = await fetch("http://localhost:8080/comment/reply", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(comment),
+    });
+
+    return response;
+  } catch (error) {
+    console.error("Error sending data to backend:", error);
+  }
+};
+
 const likeComment = async (comment) => {
   try {
     const token = localStorage.getItem("jwtToken");
@@ -35,4 +53,4 @@ const likeComment = async (comment) => {
   }
 };
 
-export { writeComment, likeComment };
+export { writeComment, likeComment, replyComment };

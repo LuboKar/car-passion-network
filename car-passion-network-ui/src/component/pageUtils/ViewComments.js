@@ -19,6 +19,7 @@ export default function ViewComments({
               navigateToProfile={navigateToProfile}
               toggleCommentLike={toggleCommentLike}
               postIndex={postIndex}
+              postId={post.id}
             />
           </div>
         ))}
