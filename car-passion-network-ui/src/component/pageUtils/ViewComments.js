@@ -12,10 +12,10 @@ export default function ViewComments({
     <div>
       {post.comments &&
         post.comments.map((comment, index) => (
-          <div key={index}>
+          <div key={index} className="comments-container">
             <Comment
               comment={comment}
-              index={index}
+              commentIndex={index}
               navigateToProfile={navigateToProfile}
               toggleCommentLike={toggleCommentLike}
               postIndex={postIndex}

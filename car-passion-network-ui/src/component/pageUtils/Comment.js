@@ -11,7 +11,7 @@ import { replyComment } from "../service/CommentService";
 
 export default function Comment({
   comment,
-  index,
+  commentIndex,
   navigateToProfile,
   toggleCommentLike,
   postIndex,
@@ -61,7 +61,7 @@ export default function Comment({
 
     const likedComment = await response.json();
 
-    toggleCommentLike(postIndex, index, likedComment);
+    toggleCommentLike(postIndex, commentIndex, likedComment);
   };
 
   const toggleReply = (id) => {
@@ -87,7 +87,7 @@ export default function Comment({
   };
 
   return (
-    <div key={index} className="view-comment-container">
+    <div key={commentIndex} className="view-comment-container">
       <div className="comment-profile">
         <img
           src={pic}
@@ -193,6 +193,22 @@ export default function Comment({
           )}
         </div>
       )}
+
+      <div className="view-replies">
+        {comment.replies &&
+          comment.replies.map((reply, index) => (
+            <div key={index}>
+              <Comment
+                comment={reply}
+                commentIndex={commentIndex}
+                navigateToProfile={navigateToProfile}
+                toggleCommentLike={toggleCommentLike}
+                postIndex={postIndex}
+                postId={postId}
+              />
+            </div>
+          ))}
+      </div>
     </div>
   );
 }
