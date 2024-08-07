@@ -19,17 +19,27 @@ public class CommentController {
   private final CommentMapper commentMapper;
 
   @PostMapping
-  public ResponseEntity<CommentResponseDto> createPost(
-      @RequestBody @Valid CommentRequestDto postRequestDto) {
+  public ResponseEntity<CommentResponseDto> createComment(
+      @RequestBody @Valid CommentRequestDto commentRequestDto) {
 
     return ResponseEntity.ok(
         commentMapper.toCommentResponse(
-            commentService.createComment(postRequestDto.getPostId(), postRequestDto.getContent())));
+            commentService.createComment(
+                commentRequestDto.getPostId(), commentRequestDto.getContent())));
   }
 
   @PostMapping("/like/{id}")
   public ResponseEntity<CommentResponseDto> likeComment(@PathVariable UUID id) {
     return ResponseEntity.ok(
         commentMapper.toCommentResponse(commentService.likeOrUnlikeComment(id)));
+  }
+
+  @PostMapping("/reply")
+  public ResponseEntity<CommentResponseDto> replyComment(
+      @RequestBody @Valid CommentRequestDto commentRequestDto) {
+    return ResponseEntity.ok(
+        commentMapper.toCommentResponse(
+            commentService.replyComment(
+                commentRequestDto.getParentCommentId(), commentRequestDto.getContent())));
   }
 }

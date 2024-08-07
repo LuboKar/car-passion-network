@@ -13,6 +13,6 @@ public class CommentTestHelper {
   }
 
   public static Comment createNewComment() {
-    return Comment.builder().id(UUID.randomUUID()).content("smth").likes(new HashSet<>()).build();
+    return Comment.builder().id(UUID.randomUUID()).content("Test comment content!").likes(new HashSet<>()).build();
   }
 }

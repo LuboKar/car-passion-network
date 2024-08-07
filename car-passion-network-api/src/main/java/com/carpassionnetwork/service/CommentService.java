@@ -27,6 +27,24 @@ public class CommentService {
     return commentRepository.save(comment);
   }
 
+  public Comment replyComment(UUID parentId, String content) {
+    User user = userService.getCurrentUser();
+    Comment parentComment = getComment(parentId);
+
+    Comment reply =
+        Comment.builder()
+            .user(user)
+            .content(content)
+            .likes(new HashSet<>())
+            .parent(parentComment)
+            .post(parentComment.getPost())
+            .build();
+
+    commentRepository.save(reply);
+
+    return parentComment;
+  }
+
   public Comment likeOrUnlikeComment(UUID commentId) {
     User currentUser = userService.getCurrentUser();
 

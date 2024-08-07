@@ -5,7 +5,6 @@ import com.carpassionnetwork.dto.response.CommentResponseDto;
 import com.carpassionnetwork.dto.response.PostResponseDto;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
-import com.carpassionnetwork.service.UserService;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +26,9 @@ public class PostMapper {
     PostResponseDto postResponseDto = modelMapper.map(post, PostResponseDto.class);
     postResponseDto.setCurrentUserLike(isCurrentUserLiked(post));
 
-    List<CommentResponseDto> commentResponseDtos = post.getComments().stream()
+    List<CommentResponseDto> commentResponseDtos =
+        post.getComments().stream()
+            .filter(comment -> comment.getParent() == null)
             .map(commentMapper::toCommentResponse)
             .collect(Collectors.toList());
 

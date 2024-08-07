@@ -2,6 +2,7 @@ package com.carpassionnetwork.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -37,6 +38,13 @@ public class Comment {
           joinColumns = @JoinColumn(name = "comment_id"),
           inverseJoinColumns = @JoinColumn(name = "user_id"))
   Set<User> likes;
+
+  @ManyToOne
+  @JoinColumn(name = "parent_id")
+  private Comment parent;
+
+  @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+  private List<Comment> replies;
 
   @PrePersist
   public void onPrePersist() {

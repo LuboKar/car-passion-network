@@ -143,6 +143,56 @@ public class CommentControllerIT extends BaseIT {
         .andExpect(jsonPath("likes.length()").value(0));
   }
 
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testReplyCommentShouldThrowInvalidCredentialsException() throws Exception {
+    mockMvc
+        .perform(
+            post("/comment/reply")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(commentRequestDto)))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testReplyCommentShouldThrowCommentNotFoundException() throws Exception {
+    register();
+    commentRequestDto.setParentCommentId(comment.getId());
+
+    mockMvc
+        .perform(
+            post("/comment/reply")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(commentRequestDto)))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(CommentNotFoundException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testReplyCommentSuccessfully() throws Exception {
+    User createdUser = createUser();
+    Post createdPost = createPost();
+    comment.setPost(createdPost);
+    comment.setUser(createdUser);
+    Comment createdComment = creteComment();
+    commentRequestDto.setParentCommentId(createdComment.getId());
+
+    mockMvc
+        .perform(
+            post("/comment/reply")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(commentRequestDto)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.content").value(commentRequestDto.getContent()));
+  }
+
   private Post createPost() {
     return postRepository.save(post);
   }

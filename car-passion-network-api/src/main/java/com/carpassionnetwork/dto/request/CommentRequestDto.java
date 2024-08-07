@@ -17,6 +17,8 @@ public class CommentRequestDto {
   @NotNull(message = "Post id must not be null!")
   private UUID postId;
 
+  private UUID parentCommentId;
+
   @NotBlank(message = "Content must not be empty or null!")
   private String content;
 }

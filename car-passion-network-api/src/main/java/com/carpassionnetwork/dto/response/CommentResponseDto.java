@@ -2,6 +2,7 @@ package com.carpassionnetwork.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -26,4 +27,6 @@ public class CommentResponseDto {
   private boolean currentUserLike;
 
   private Set<UserResponseDto> likes;
+
+  private List<CommentResponseDto> replies;
 }

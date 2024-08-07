@@ -3,6 +3,7 @@ package com.carpassionnetwork.helper;
 import com.carpassionnetwork.dto.request.PostRequestDto;
 import com.carpassionnetwork.model.Post;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.UUID;
 
@@ -15,6 +16,7 @@ public class PostTestHelper {
         .content("PostContent")
         .createdAt(LocalDateTime.now())
         .likes(new HashSet<>())
+        .comments(new ArrayList<>())
         .build();
   }
 
