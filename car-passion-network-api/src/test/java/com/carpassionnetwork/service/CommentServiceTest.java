@@ -140,6 +140,7 @@ public class CommentServiceTest {
   void testReplyCommentSuccessfully() {
     when(userService.getCurrentUser()).thenReturn(user);
     when(commentRepository.findById(comment.getId())).thenReturn(Optional.of(comment));
+    when(commentRepository.save(any(Comment.class))).thenReturn(comment);
 
     commentService.replyComment(comment.getId(), replyContent);
 

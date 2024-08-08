@@ -40,9 +40,13 @@ public class CommentService {
             .post(parentComment.getPost())
             .build();
 
-    commentRepository.save(reply);
+    Comment savedReply = commentRepository.save(reply);
 
-    return parentComment;
+    if (savedReply.getParent() != null) {
+      return getParent(savedReply);
+    }
+
+    return savedReply;
   }
 
   public Comment likeOrUnlikeComment(UUID commentId) {
@@ -60,11 +64,7 @@ public class CommentService {
 
     Comment parrentComment;
     if (likedComment.getParent() != null) {
-      parrentComment = likedComment.getParent();
-
-      while (parrentComment.getParent() != null) {
-        parrentComment = parrentComment.getParent();
-      }
+      parrentComment = getParent(likedComment);
     } else parrentComment = likedComment;
 
     return commentRepository.save(parrentComment);
@@ -72,5 +72,14 @@ public class CommentService {
 
   public Comment getComment(UUID id) {
     return commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException(id));
+  }
+
+  private Comment getParent(Comment comment) {
+    Comment parentComment = comment.getParent();
+    while (parentComment.getParent() != null) {
+      parentComment = parentComment.getParent();
+    }
+
+    return parentComment;
   }
 }
