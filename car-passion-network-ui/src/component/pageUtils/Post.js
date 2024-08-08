@@ -16,7 +16,7 @@ export default function Post({
   index,
   toggleLike,
   commentPostByIndex,
-  toggleCommentLike,
+  editComment,
 }) {
   const [toggleComments, setToggleComments] = useState(-1);
   const { navigateToProfile, navigateToPostPage } = useNavigation();
@@ -65,7 +65,7 @@ export default function Post({
             post={post}
             postIndex={index}
             navigateToProfile={navigateToProfile}
-            toggleCommentLike={toggleCommentLike}
+            editComment={editComment}
           />
         </div>
       )}

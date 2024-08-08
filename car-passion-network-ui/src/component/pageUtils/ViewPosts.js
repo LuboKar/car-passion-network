@@ -25,7 +25,7 @@ export default function ViewPosts({ posts, setPosts, currentUser }) {
     });
   };
 
-  const toggleCommentLike = (postIndex, commentIndex, comment) => {
+  const editComment = (postIndex, commentIndex, comment) => {
     const updatedPosts = [...posts];
     updatedPosts[postIndex].comments[commentIndex] = comment;
     setPosts(updatedPosts);
@@ -40,7 +40,7 @@ export default function ViewPosts({ posts, setPosts, currentUser }) {
             index={index}
             toggleLike={toggleLike}
             commentPostByIndex={commentPostByIndex}
-            toggleCommentLike={toggleCommentLike}
+            editComment={editComment}
           />
         </div>
       ))}

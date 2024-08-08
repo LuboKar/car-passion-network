@@ -5,7 +5,7 @@ import Comment from "./Comment";
 export default function ViewComments({
   post,
   navigateToProfile,
-  toggleCommentLike,
+  editComment,
   postIndex,
 }) {
   return (
@@ -17,7 +17,7 @@ export default function ViewComments({
               comment={comment}
               commentIndex={index}
               navigateToProfile={navigateToProfile}
-              toggleCommentLike={toggleCommentLike}
+              editComment={editComment}
               postIndex={postIndex}
               postId={post.id}
             />

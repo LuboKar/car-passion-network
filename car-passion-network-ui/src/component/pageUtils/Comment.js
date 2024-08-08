@@ -13,7 +13,7 @@ export default function Comment({
   comment,
   commentIndex,
   navigateToProfile,
-  toggleCommentLike,
+  editComment,
   postIndex,
   postId,
 }) {
@@ -61,7 +61,7 @@ export default function Comment({
 
     const likedComment = await response.json();
 
-    toggleCommentLike(postIndex, commentIndex, likedComment);
+    editComment(postIndex, commentIndex, likedComment);
   };
 
   const toggleReply = (id) => {
@@ -84,6 +84,11 @@ export default function Comment({
       ...prevReply,
       content: "",
     }));
+
+    const repliedComment = await response.json();
+
+    editComment(postIndex, commentIndex, repliedComment);
+    toggleReply(0);
   };
 
   return (
@@ -202,7 +207,7 @@ export default function Comment({
                 comment={reply}
                 commentIndex={commentIndex}
                 navigateToProfile={navigateToProfile}
-                toggleCommentLike={toggleCommentLike}
+                editComment={editComment}
                 postIndex={postIndex}
                 postId={postId}
               />
