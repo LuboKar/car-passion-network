@@ -52,7 +52,7 @@ export default function PostPage() {
     }));
   };
 
-  const toggleCommentLike = (postIndex, commentIndex, comment) => {
+  const editComment = (postIndex, commentIndex, comment) => {
     setPost((prevPost) => {
       const updatedComments = [...prevPost.comments];
       updatedComments[commentIndex] = comment;
@@ -96,7 +96,7 @@ export default function PostPage() {
               <ViewComments
                 post={post}
                 navigateToProfile={navigateToProfile}
-                toggleCommentLike={toggleCommentLike}
+                editComment={editComment}
               />
             </div>
           )}
