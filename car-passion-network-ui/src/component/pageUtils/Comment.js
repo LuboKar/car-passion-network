@@ -90,6 +90,7 @@ export default function Comment({
 
     editComment(postIndex, commentIndex, repliedComment);
     toggleReply(0);
+    toggleReplies();
   };
 
   const toggleReplies = () => {
