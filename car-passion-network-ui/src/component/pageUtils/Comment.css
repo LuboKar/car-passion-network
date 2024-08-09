@@ -153,17 +153,20 @@
 
 .comment-likes-drowdown-container{
     position:absolute; 
-    z-index: 1; 
+    z-index: 0; 
     background-color: white; 
     border: 2px solid #ccc; 
-    width: 19%;
-    height: 29%;
+    width: 270px;
+    height: 225px;
     display: flex;
     flex-direction: column;
     border-radius: 10px;
     margin-bottom: 20%;
     padding-bottom: 0.5%;
-    margin-left: 3%;
+    margin-left: 50px;
+    transform: translate(0 ,-255px);
+    right: 0;
+    margin-right: 50px;
 }
 
 .reply-comment{
@@ -219,7 +222,6 @@
 .view-comment-container{
     position: relative;
     height: max-content;
-    /* border: 1px solid green; */
 }
 
 .horizontal-line{
