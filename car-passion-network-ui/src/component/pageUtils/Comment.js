@@ -132,20 +132,27 @@ export default function Comment({
           </label>
         </div>
 
-        <div className="reply-comment" onClick={() => toggleReply(comment.id)}>
-          <img
-            src={replyCommentIcon}
-            alt="icon"
-            className="reply-comment-icon"
-          />
-          <label
-            className={
-              comment.id === clickedReply ? "reply-clicked-text" : "reply-text"
-            }
+        {comment.depth < 5 && (
+          <div
+            className="reply-comment"
+            onClick={() => toggleReply(comment.id)}
           >
-            Reply
-          </label>
-        </div>
+            <img
+              src={replyCommentIcon}
+              alt="icon"
+              className="reply-comment-icon"
+            />
+            <label
+              className={
+                comment.id === clickedReply
+                  ? "reply-clicked-text"
+                  : "reply-text"
+              }
+            >
+              Reply
+            </label>
+          </div>
+        )}
 
         {comment.likes.length > 0 && (
           <div
