@@ -27,6 +27,7 @@ export default function Comment({
   });
 
   const [sendButton, setSendButton] = useState(false);
+  const [showReplies, setShowReplies] = useState(false);
 
   const handleInputChange = (event) => {
     event.preventDefault();
@@ -91,8 +92,16 @@ export default function Comment({
     toggleReply(0);
   };
 
+  const toggleReplies = () => {
+    setShowReplies(true);
+  };
+
   return (
     <div key={commentIndex} className="view-comment-container">
+      {showReplies && <div className="vertical-line"></div>}
+      {comment.replies && !showReplies && comment.replies.length > 0 && (
+        <div className="show-replies-horizontal-line"></div>
+      )}
       <div className="comment-profile">
         <img
           src={pic}
@@ -199,21 +208,37 @@ export default function Comment({
         </div>
       )}
 
-      <div className="view-replies">
-        {comment.replies &&
-          comment.replies.map((reply, index) => (
-            <div key={index}>
-              <Comment
-                comment={reply}
-                commentIndex={commentIndex}
-                navigateToProfile={navigateToProfile}
-                editComment={editComment}
-                postIndex={postIndex}
-                postId={postId}
-              />
-            </div>
-          ))}
-      </div>
+      {!showReplies && comment.replies && comment.replies.length > 0 && (
+        <div className="show-replies-tool">
+          <label className="show-replies" onClick={toggleReplies}>
+            show {comment.replies.length} replies
+          </label>
+        </div>
+      )}
+
+      {showReplies && (
+        <div>
+          {comment.replies &&
+            comment.replies.map((reply, index) => (
+              <div>
+                <div className="horizontal-line"></div>
+                {index === comment.replies.length - 1 && (
+                  <div className="fixing-line"></div>
+                )}
+                <div className="view-replies" key={index}>
+                  <Comment
+                    comment={reply}
+                    commentIndex={commentIndex}
+                    navigateToProfile={navigateToProfile}
+                    editComment={editComment}
+                    postIndex={postIndex}
+                    postId={postId}
+                  />
+                </div>
+              </div>
+            ))}
+        </div>
+      )}
     </div>
   );
 }
