@@ -29,4 +29,6 @@ public class CommentResponseDto {
   private Set<UserResponseDto> likes;
 
   private List<CommentResponseDto> replies;
+
+  private int depth;
 }

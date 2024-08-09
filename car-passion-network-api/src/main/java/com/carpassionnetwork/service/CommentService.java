@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CommentService {
+  private static final int STARTING_DEPTH = 1;
   private final UserService userService;
   private final PostService postService;
   private final CommentRepository commentRepository;
@@ -22,7 +23,13 @@ public class CommentService {
     Post post = postService.getPost(postId);
 
     Comment comment =
-        Comment.builder().user(user).post(post).content(content).likes(new HashSet<>()).build();
+        Comment.builder()
+            .user(user)
+            .post(post)
+            .content(content)
+            .likes(new HashSet<>())
+            .depth(STARTING_DEPTH)
+            .build();
 
     return commentRepository.save(comment);
   }
@@ -38,6 +45,7 @@ public class CommentService {
             .likes(new HashSet<>())
             .parent(parentComment)
             .post(parentComment.getPost())
+            .depth(parentComment.getDepth() + 1)
             .build();
 
     Comment savedReply = commentRepository.save(reply);

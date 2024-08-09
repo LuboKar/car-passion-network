@@ -34,9 +34,9 @@ public class Comment {
 
   @ManyToMany
   @JoinTable(
-          name = "user_comment_likes",
-          joinColumns = @JoinColumn(name = "comment_id"),
-          inverseJoinColumns = @JoinColumn(name = "user_id"))
+      name = "user_comment_likes",
+      joinColumns = @JoinColumn(name = "comment_id"),
+      inverseJoinColumns = @JoinColumn(name = "user_id"))
   Set<User> likes;
 
   @ManyToOne
@@ -45,6 +45,9 @@ public class Comment {
 
   @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
   private List<Comment> replies;
+
+  @Column(nullable = false)
+  private int depth;
 
   @PrePersist
   public void onPrePersist() {
