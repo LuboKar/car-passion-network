@@ -1,0 +1,34 @@
+.comment-profile{
+    display: flex;
+    flex-direction: row;
+}
+
+.comment-profile-pic{
+    width: 40px;
+    border-radius: 15px;
+    margin-right: 11px;
+}
+
+.comment-profile-pic:hover{
+    cursor: pointer;
+}
+
+.comment-profile-name{
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.comment-profile-name:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.comment-date{
+    margin-left: auto;
+    font-size: 12px;
+    color: rgb(67, 67, 67);
+}
+
+.comment-date:hover{ 
+    cursor: text;
+}

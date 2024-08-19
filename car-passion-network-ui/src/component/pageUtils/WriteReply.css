@@ -1,0 +1,8 @@
+.reply-comment-input{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 50px;
+    margin-top: 1%;
+    margin-right: 50px;
+}
