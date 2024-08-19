@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./PostPage.css";
-import Navbar from "../pageUtils/Navbar";
+import Navbar from "../pageUtils/navbar/Navbar";
 import { getPost } from "../service/PostService";
-import PostProfile from "../pageUtils/PostProfile";
+import PostProfile from "../pageUtils/post/PostProfile";
 import useNavigation from "../service/NavigateService";
-import PostContent from "../pageUtils/PostContent";
-import ViewLikes from "../pageUtils/ViewLikes";
-import NumberOfComments from "../pageUtils/NumberOfComments";
-import LikePost from "../pageUtils/LikePost";
-import CommentButton from "../pageUtils/CommentButton";
-import WriteComment from "../pageUtils/WriteComment";
-import ViewComments from "../pageUtils/ViewComments";
+import PostContent from "../pageUtils/post/PostContent";
+import ViewLikes from "../pageUtils/post/ViewLikes";
+import NumberOfComments from "../pageUtils/post/NumberOfComments";
+import LikePost from "../pageUtils/post/LikePost";
+import CommentButton from "../pageUtils/post/CommentButton";
+import WriteComment from "../pageUtils/post/WriteComment";
+import ViewComments from "../pageUtils/post/ViewComments";
 
 export default function PostPage() {
   const { id } = useParams();

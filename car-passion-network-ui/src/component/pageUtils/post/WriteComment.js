@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import pic from "../../images/profile-pic.jpg";
-import send from "../../images/send.png";
+import pic from "../../../images/profile-pic.jpg";
+import send from "../../../images/send.png";
 import "./WriteComment.css";
 import { useState } from "react";
-import cannotSend from "../../images/cannot-send.png";
-import { writeComment } from "../service/CommentService";
+import cannotSend from "../../../images/cannot-send.png";
+import { writeComment } from "../../service/CommentService";
 
 export default function WriteComment({ post, index, commentPostByIndex }) {
   const [comment, setComment] = useState({

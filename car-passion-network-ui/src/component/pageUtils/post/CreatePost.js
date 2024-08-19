@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./CreatePost.css";
-import { createPost } from "../service/PostService";
+import { createPost } from "../../service/PostService";
 
 export default function CreatePost({ setPosts, ownerId }) {
   const [createNewPost, setCreateNewPost] = useState(false);

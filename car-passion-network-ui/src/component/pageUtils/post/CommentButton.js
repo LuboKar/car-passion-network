@@ -1,6 +1,6 @@
 import React from "react";
 import "./CommentButton.css";
-import commentIcon from "../../images/comment-icon.png";
+import commentIcon from "../../../images/comment-icon.png";
 
 export default function WriteComment({ toggleCommentsFunction }) {
   return (

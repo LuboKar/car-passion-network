@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../pageUtils/Navbar";
-import VerticalNavbar from "../pageUtils/VerticalNavbar";
-import RightVerticalNabvar from "../pageUtils/RightVerticalNavbar";
-import Profile from "../pageUtils/Profile";
-import Posts from "../pageUtils/Posts";
+import Navbar from "../pageUtils/navbar/Navbar";
+import VerticalNavbar from "../pageUtils/navbar/VerticalNavbar";
+import RightVerticalNabvar from "../pageUtils/navbar/RightVerticalNavbar";
+import Profile from "../pageUtils/user/Profile";
+import Posts from "../pageUtils/post/Posts";
 import { useParams } from "react-router-dom";
-import Information from "../pageUtils/Information";
+import Information from "../pageUtils/user/Information";
 import { getUser } from "../service/UserService";
 import { getPosts } from "../service/PostService";
 

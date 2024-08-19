@@ -1,10 +1,10 @@
 import React from "react";
 import "./Information.css";
-import nameIcon from "../../images/name.png";
-import dateOfBirth from "../../images/dateOfBirth.png";
-import email from "../../images/email.png";
-import gender from "../../images/gender.png";
-import creationDate from "../../images/creationDate.png";
+import nameIcon from "../../../images/name.png";
+import dateOfBirth from "../../../images/dateOfBirth.png";
+import email from "../../../images/email.png";
+import gender from "../../../images/gender.png";
+import creationDate from "../../../images/creationDate.png";
 
 export default function Information({ user }) {
   return (

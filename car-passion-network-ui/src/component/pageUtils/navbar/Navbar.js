@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Navbar.css";
-import logo from "../../images/car-logo.png";
-import pic from "../../images/profile-pic.jpg";
-import settings from "../../images/settings.png";
-import logoutIcon from "../../images/logout.png";
+import logo from "../../../images/car-logo.png";
+import pic from "../../../images/profile-pic.jpg";
+import settings from "../../../images/settings.png";
+import logoutIcon from "../../../images/logout.png";
 import { Link, useNavigate } from "react-router-dom";
-import { isAuthenticated } from "../Authentication/Authentication.js";
+import { isAuthenticated } from "../../Authentication/Authentication.js";
 import { jwtDecode } from "jwt-decode";
-import { logoutUser } from "../service/AuthenticationService.js";
+import { logoutUser } from "../../service/AuthenticationService.js";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);

@@ -1,5 +1,5 @@
 import React from "react";
-import pic from "../../images/profile-pic.jpg";
+import pic from "../../../images/profile-pic.jpg";
 import "./CommentProfile.css";
 
 export default function CommentProfile({ comment, navigateToProfile }) {

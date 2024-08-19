@@ -1,6 +1,6 @@
 import React from "react";
 import "./ViewComments.css";
-import Comment from "./Comment";
+import Comment from "../comment/Comment";
 
 export default function ViewComments({
   post,

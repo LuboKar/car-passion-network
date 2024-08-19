@@ -1,6 +1,6 @@
 import React from "react";
-import "../pageUtils/Profile.css";
-import pic from "../../images/profile-pic.jpg";
+import "./Profile.css";
+import pic from "../../../images/profile-pic.jpg";
 
 export default function Profile({ user }) {
   return (

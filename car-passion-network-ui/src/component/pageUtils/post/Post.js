@@ -9,7 +9,7 @@ import PostProfile from "./PostProfile";
 import PostContent from "./PostContent";
 import "./ViewPosts.css";
 import OpenPost from "./OpenPost";
-import useNavigation from "../service/NavigateService";
+import useNavigation from "../../service/NavigateService";
 
 export default function Post({
   post,

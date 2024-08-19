@@ -1,8 +1,8 @@
 import React from "react";
 import "./LikePost.css";
-import liked from "../../images/liked.png";
-import notLiked from "../../images/not liked.png";
-import { likePost } from "../service/PostService";
+import liked from "../../../images/liked.png";
+import notLiked from "../../../images/not liked.png";
+import { likePost } from "../../service/PostService";
 
 export default function LikePost({ post, index, toggleLike }) {
   const likeOrDislike = async (event) => {

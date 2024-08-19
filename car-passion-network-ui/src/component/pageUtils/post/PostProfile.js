@@ -1,5 +1,5 @@
 import React from "react";
-import pic from "../../images/profile-pic.jpg";
+import pic from "../../../images/profile-pic.jpg";
 
 export default function PostProfile({ post, navigateToProfile }) {
   return (

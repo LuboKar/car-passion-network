@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import liked from "../../images/liked.png";
+import liked from "../../../images/liked.png";
 import "./ViewLikes.css";
-import pic from "../../images/profile-pic.jpg";
+import pic from "../../../images/profile-pic.jpg";
 
 export default function ViewLikes({ post, navigateToProfile }) {
   const [clickdPostId, setClickedPostId] = useState(0);

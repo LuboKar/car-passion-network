@@ -1,7 +1,7 @@
 import React from "react";
 import "./VerticalNavbar.css";
-import info from "../../images/info.png";
-import post from "../../images/post.png";
+import info from "../../../images/info.png";
+import post from "../../../images/post.png";
 
 export default function VerticalNavbar({
   toggleInformation,

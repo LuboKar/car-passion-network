@@ -1,7 +1,7 @@
 import React from "react";
-import pic from "../../images/profile-pic.jpg";
-import send from "../../images/send.png";
-import cannotSend from "../../images/cannot-send.png";
+import pic from "../../../images/profile-pic.jpg";
+import send from "../../../images/send.png";
+import cannotSend from "../../../images/cannot-send.png";
 import "./WriteReply.css";
 
 export default function WriteReply({

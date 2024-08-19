@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { likeComment } from "../service/CommentService";
-import liked from "../../images/liked.png";
-import notLiked from "../../images/not liked.png";
-import replyCommentIcon from "../../images/comment-icon.png";
+import { likeComment } from "../../service/CommentService";
+import liked from "../../../images/liked.png";
+import notLiked from "../../../images/not liked.png";
+import replyCommentIcon from "../../../images/comment-icon.png";
 import "./CommentTools.css";
-import pic from "../../images/profile-pic.jpg";
+import pic from "../../../images/profile-pic.jpg";
 
 export default function CommentTool({
   comment,

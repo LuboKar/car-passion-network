@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../pageUtils/Navbar.js";
+import Navbar from "../pageUtils/navbar/Navbar.js";
 import { getAllPosts } from "../service/PostService";
 import { getUser } from "../service/UserService.js";
 import { jwtDecode } from "jwt-decode";
-import Posts from "../pageUtils/Posts.js";
+import Posts from "../pageUtils/post/Posts.js";
 import "./DashboardPage.css";
 
 export default function DashboardPage() {

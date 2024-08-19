@@ -1,6 +1,6 @@
 import React from "react";
 import "./NumberOfComments.css";
-import commentIcon from "../../images/comment-icon.png";
+import commentIcon from "../../../images/comment-icon.png";
 
 export default function NumberOfComments({ post, toggleCommentsFunction }) {
   return (

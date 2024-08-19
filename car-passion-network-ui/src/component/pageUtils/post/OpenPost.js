@@ -1,5 +1,5 @@
 import React from "react";
-import open from "../../images/Open.png";
+import open from "../../../images/Open.png";
 import "./OpenPost.css";
 
 export default function OpenPost({ post, navigateToPostPage }) {

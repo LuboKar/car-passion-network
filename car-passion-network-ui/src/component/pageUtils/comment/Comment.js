@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Comment.css";
-import { replyComment } from "../service/CommentService";
+import { replyComment } from "../../service/CommentService";
 import CommentProfile from "./CommentProfile";
 import CommentTools from "./CommentTools";
 import WriteReply from "./WriteReply";
