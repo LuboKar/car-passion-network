@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 import Information from "../pageUtils/user/Information";
 import { getUser } from "../service/UserService";
 import { getPosts } from "../service/PostService";
+import ProfilePageHeader from "../pageUtils/user/ProfilePageHeader";
 
 export default function ProfilePage() {
   const { id } = useParams();
@@ -73,6 +74,8 @@ export default function ProfilePage() {
       {!loadingUser && !loadingPosts && viewPosts && (
         <Posts posts={posts} setPosts={setPosts} ownerId={user.id} />
       )}
+
+      {posts.length < 1 && viewPosts && <ProfilePageHeader />}
 
       {userInformation && <Information user={user} />}
     </div>
