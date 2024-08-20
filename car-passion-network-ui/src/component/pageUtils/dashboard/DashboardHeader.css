@@ -1,0 +1,14 @@
+.dashboard-header-container{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    margin-top: 5%;
+    text-align: center;
+    width: 100%;
+}
+
+.dashboard-header-text{
+    user-select: none;  
+    font-size: 250%; 
+    color: rgb(70, 70, 70);    
+}

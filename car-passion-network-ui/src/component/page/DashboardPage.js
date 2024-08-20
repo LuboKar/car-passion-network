@@ -5,7 +5,7 @@ import { getUser } from "../service/UserService.js";
 import { jwtDecode } from "jwt-decode";
 import Posts from "../pageUtils/post/Posts.js";
 import "./DashboardPage.css";
-
+import DashboardHeader from "../pageUtils/dashboard/DashboardHeader.js";
 export default function DashboardPage() {
   const [posts, setPosts] = useState([]);
   const [loadingPosts, setLoadingPosts] = useState(true);
@@ -57,6 +57,8 @@ export default function DashboardPage() {
           />
         </div>
       )}
+
+      {posts.length < 1 && <DashboardHeader />}
     </div>
   );
 }
