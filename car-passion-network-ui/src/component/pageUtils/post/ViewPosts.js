@@ -1,7 +1,7 @@
 import React from "react";
 import Post from "./Post";
 
-export default function ViewPosts({ posts, setPosts, currentUser }) {
+export default function ViewPosts({ posts, setPosts, deletePostById }) {
   const toggleLike = (index, post) => {
     const updatedPosts = [...posts];
 
@@ -41,6 +41,7 @@ export default function ViewPosts({ posts, setPosts, currentUser }) {
             toggleLike={toggleLike}
             commentPostByIndex={commentPostByIndex}
             editComment={editComment}
+            deletePostById={deletePostById}
           />
         </div>
       ))}

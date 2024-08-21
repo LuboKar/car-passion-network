@@ -83,4 +83,21 @@ const getPost = async (id) => {
   }
 };
 
-export { getPosts, createPost, likePost, getPost, getAllPosts };
+const deletePost = async (id) => {
+  try {
+    const token = localStorage.getItem("jwtToken");
+    const response = await fetch(`http://localhost:8080/post/delete/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+  }
+};
+
+export { getPosts, createPost, likePost, getPost, getAllPosts, deletePost };

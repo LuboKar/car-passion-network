@@ -17,6 +17,7 @@ export default function Post({
   toggleLike,
   commentPostByIndex,
   editComment,
+  deletePostById,
 }) {
   const [toggleComments, setToggleComments] = useState(-1);
   const { navigateToProfile, navigateToPostPage } = useNavigation();
@@ -31,7 +32,12 @@ export default function Post({
     <div className="view-posts-container">
       <div className="post-user-container">
         <PostProfile post={post} navigateToProfile={navigateToProfile} />
-        <PostMenu post={post} navigateToPostPage={navigateToPostPage} />
+        <PostMenu
+          post={post}
+          navigateToPostPage={navigateToPostPage}
+          index={index}
+          deletePostById={deletePostById}
+        />
       </div>
 
       <PostContent post={post} />
