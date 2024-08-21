@@ -222,6 +222,7 @@ public class PostControllerIT extends BaseIT {
     register();
     User savedUser = saveUser(owner);
     post.setAuthor(savedUser);
+    post.setUser(savedUser);
     Post savedPost = createPost();
 
     mockMvc

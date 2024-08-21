@@ -62,7 +62,7 @@ public class PostService {
     User currentUser = userService.getCurrentUser();
     Post post = getPost(postId);
 
-    if (!post.getAuthor().equals(currentUser)) {
+    if (!post.getAuthor().equals(currentUser) && !post.getUser().equals(currentUser)) {
       throw new UserNotAuthorException(currentUser.getId(), postId);
     }
 

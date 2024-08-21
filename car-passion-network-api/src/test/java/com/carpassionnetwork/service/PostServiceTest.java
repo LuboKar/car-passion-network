@@ -172,6 +172,7 @@ public class PostServiceTest {
     when(userService.getCurrentUser()).thenReturn(currentUser);
     when(postRepository.findById(post.getId())).thenReturn(Optional.ofNullable(post));
     post.setAuthor(owner);
+    post.setUser(owner);
 
     assertThrows(UserNotAuthorException.class, () -> postService.deletePost(post.getId()));
   }
