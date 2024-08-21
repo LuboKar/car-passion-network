@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,5 +46,11 @@ public class PostController {
   @PostMapping("/like/{id}")
   public ResponseEntity<PostResponseDto> likePost(@PathVariable UUID id) {
     return ResponseEntity.ok(postMapper.toPostResponse(postService.likeOrUnlikePost(id)));
+  }
+
+  @DeleteMapping("/delete/{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void deletePost(@PathVariable UUID id) {
+    postService.deletePost(id);
   }
 }

@@ -8,6 +8,7 @@ import static org.mockito.Mockito.*;
 
 import com.carpassionnetwork.exception.InvalidCredentialsException;
 import com.carpassionnetwork.exception.PostNotFoundException;
+import com.carpassionnetwork.exception.UserNotAuthorException;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.PostRepository;
@@ -18,7 +19,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.core.parameters.P;
 
 @ExtendWith(MockitoExtension.class)
 public class PostServiceTest {
@@ -145,10 +145,47 @@ public class PostServiceTest {
   }
 
   @Test
-  void getAllPostsShouldReturnEmptyListIfThereIsNoPost(){
+  void getAllPostsShouldReturnEmptyListIfThereIsNoPost() {
     List<Post> posts = postService.getAllPosts();
 
     assertEquals(posts.size(), 0);
     verify(postRepository, times(1)).findAllWhereUserIdEqualsAuthorIdOrderByCreatedAtDesc();
+  }
+
+  @Test
+  void deletePostShouldThrowInvalidCredentialsException() {
+    when(userService.getCurrentUser()).thenThrow(InvalidCredentialsException.class);
+
+    assertThrows(InvalidCredentialsException.class, () -> postService.deletePost(post.getId()));
+  }
+
+  @Test
+  void deletePostShouldThrowPostNotFoundException() {
+    when(userService.getCurrentUser()).thenReturn(currentUser);
+    when(postRepository.findById(post.getId())).thenThrow(PostNotFoundException.class);
+
+    assertThrows(PostNotFoundException.class, () -> postService.deletePost(post.getId()));
+  }
+
+  @Test
+  void deletePostShouldThrowUserNotAuthorException() {
+    when(userService.getCurrentUser()).thenReturn(currentUser);
+    when(postRepository.findById(post.getId())).thenReturn(Optional.ofNullable(post));
+    post.setAuthor(owner);
+
+    assertThrows(UserNotAuthorException.class, () -> postService.deletePost(post.getId()));
+  }
+
+  @Test
+  void deletePostSuccessfully() {
+    when(userService.getCurrentUser()).thenReturn(currentUser);
+    when(postRepository.findById(post.getId())).thenReturn(Optional.ofNullable(post));
+    post.setAuthor(currentUser);
+
+    postService.deletePost(post.getId());
+
+    verify(userService, times(1)).getCurrentUser();
+    verify(postRepository, times(1)).findById(post.getId());
+    verify(postRepository, times(1)).delete(post);
   }
 }

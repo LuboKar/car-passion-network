@@ -5,13 +5,13 @@ import static com.carpassionnetwork.helper.PostTestHelper.createNewPost;
 import static com.carpassionnetwork.helper.PostTestHelper.createNewPostRequest;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.carpassionnetwork.dto.request.PostRequestDto;
 import com.carpassionnetwork.exception.InvalidCredentialsException;
 import com.carpassionnetwork.exception.PostNotFoundException;
+import com.carpassionnetwork.exception.UserNotAuthorException;
 import com.carpassionnetwork.exception.UserNotFoundException;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
@@ -191,6 +191,57 @@ public class PostControllerIT extends BaseIT {
     createPost();
 
     mockMvc.perform(get("/post")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(1)));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testDeletePostShouldThrowInvalidCredentialsException() throws Exception {
+    mockMvc
+        .perform(delete("/post/delete/" + post.getId()))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testDeletePostShouldThrowPostNotFoundException() throws Exception {
+    register();
+
+    mockMvc
+        .perform(delete("/post/delete/" + post.getId()))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result -> assertInstanceOf(PostNotFoundException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testDeletePostShouldThrowUserNotAuthorException() throws Exception {
+    register();
+    User savedUser = saveUser(owner);
+    post.setAuthor(savedUser);
+    Post savedPost = createPost();
+
+    mockMvc
+            .perform(delete("/post/delete/" + savedPost.getId()))
+            .andExpect(status().isBadRequest())
+            .andExpect(
+                    result -> assertInstanceOf(UserNotAuthorException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testDeletePostSuccessfully() throws Exception {
+    User savedUser = saveUser(currentUser);
+    post.setAuthor(savedUser);
+    Post savedPost = createPost();
+
+    mockMvc
+            .perform(delete("/post/delete/" + savedPost.getId()))
+            .andExpect(status().isNoContent());
+
   }
 
   private Post createPost() {

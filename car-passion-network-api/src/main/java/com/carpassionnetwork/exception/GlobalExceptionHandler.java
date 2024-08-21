@@ -17,7 +17,8 @@ public class GlobalExceptionHandler {
     InvalidCredentialsException.class,
     UserNotFoundException.class,
     PostNotFoundException.class,
-    CommentNotFoundException.class
+    CommentNotFoundException.class,
+    UserNotAuthorException.class
   })
   public ResponseEntity<Object> handleException(RuntimeException exception) {
     Map<String, String> error = new HashMap<>();

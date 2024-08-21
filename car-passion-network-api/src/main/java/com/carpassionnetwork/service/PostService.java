@@ -1,10 +1,10 @@
 package com.carpassionnetwork.service;
 
 import com.carpassionnetwork.exception.PostNotFoundException;
+import com.carpassionnetwork.exception.UserNotAuthorException;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.PostRepository;
-import com.carpassionnetwork.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -54,7 +54,18 @@ public class PostService {
     return postRepository.save(likedPost);
   }
 
-  public List<Post> getAllPosts(){
+  public List<Post> getAllPosts() {
     return postRepository.findAllWhereUserIdEqualsAuthorIdOrderByCreatedAtDesc();
+  }
+
+  public void deletePost(UUID postId) {
+    User currentUser = userService.getCurrentUser();
+    Post post = getPost(postId);
+
+    if (!post.getAuthor().equals(currentUser)) {
+      throw new UserNotAuthorException(currentUser.getId(), postId);
+    }
+
+    postRepository.delete(post);
   }
 }
