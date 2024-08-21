@@ -1,0 +1,72 @@
+.menu-post-container{
+    direction: flex;
+    margin-left: auto;
+}
+
+.menu-button{
+    border-radius: 8px;
+    height: max-content;
+    width: 31px;
+    height: 31px;
+    text-align: center;
+}
+
+.menu-button:hover{
+    background-color: rgb(200,200,200);
+    cursor: pointer;
+    user-select: none; 
+}
+
+.menu-pic{
+    padding-top: 5px;
+    width: 6px;
+    height: 20px;
+}
+
+.menu-pic:hover{
+    cursor: pointer;
+}
+
+.menu-post-dropdown{
+    position:absolute; 
+    z-index: 1; 
+    background-color: white; 
+    border: 2px solid #ccc; 
+    width: 230px;
+    height: 225px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    margin-bottom: 20%;
+    padding-bottom: 0.5%;
+    transform: translate(-227px ,0);
+}
+
+.menu-option{
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-right: 10px;
+    border-radius: 10px;
+}
+
+.menu-option:hover{
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+.option-pic{
+    width: 30px;
+    padding: 5px 5px 5px 5px;
+}
+
+.open-text{
+    font-size: 20px;
+    padding-bottom: 4px;
+}
+
+.open-text:hover{
+    cursor: pointer;
+}
+

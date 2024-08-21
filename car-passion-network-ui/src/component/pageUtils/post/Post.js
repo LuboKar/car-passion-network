@@ -8,7 +8,7 @@ import NumberOfComments from "./NumberOfComments";
 import PostProfile from "./PostProfile";
 import PostContent from "./PostContent";
 import "./ViewPosts.css";
-import OpenPost from "./OpenPost";
+import PostMenu from "./PostMenu";
 import useNavigation from "../../service/NavigateService";
 
 export default function Post({
@@ -31,7 +31,7 @@ export default function Post({
     <div className="view-posts-container">
       <div className="post-user-container">
         <PostProfile post={post} navigateToProfile={navigateToProfile} />
-        <OpenPost post={post} navigateToPostPage={navigateToPostPage} />
+        <PostMenu post={post} navigateToPostPage={navigateToPostPage} />
       </div>
 
       <PostContent post={post} />
