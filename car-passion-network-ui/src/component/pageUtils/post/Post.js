@@ -7,7 +7,7 @@ import ViewComments from "./ViewComments";
 import NumberOfComments from "./NumberOfComments";
 import PostProfile from "./PostProfile";
 import PostContent from "./PostContent";
-import "./ViewPosts.css";
+import "./Post.css";
 import PostMenu from "./PostMenu";
 import useNavigation from "../../service/NavigateService";
 
