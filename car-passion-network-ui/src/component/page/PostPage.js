@@ -12,13 +12,17 @@ import LikePost from "../pageUtils/post/LikePost";
 import CommentButton from "../pageUtils/post/CommentButton";
 import WriteComment from "../pageUtils/post/WriteComment";
 import ViewComments from "../pageUtils/post/ViewComments";
+import PostMenu from "../pageUtils/post/PostMenu";
+import { useNavigate } from "react-router-dom";
+import { deletePost } from "../service/PostService";
 
 export default function PostPage() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [loadingPost, setLoadingPost] = useState(true);
-  const { navigateToProfile } = useNavigation();
+  const { navigateToProfile, navigateToPostPage } = useNavigation();
   const [toggleComments, setToggleComments] = useState(true);
+  const navigate = useNavigate();
 
   const fetchPost = async () => {
     const response = await getPost(id);
@@ -63,12 +67,29 @@ export default function PostPage() {
     });
   };
 
+  const deletePostById = async () => {
+    const response = await deletePost(post.id);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    navigate("/dashboard");
+  };
+
   return (
     <div className="post-page-container">
       <Navbar />
       {!loadingPost && (
         <div className="single-post-container">
-          <PostProfile post={post} navigateToProfile={navigateToProfile} />
+          <div className="post-page-user-container">
+            <PostProfile post={post} navigateToProfile={navigateToProfile} />
+            <PostMenu
+              post={post}
+              navigateToPostPage={navigateToPostPage}
+              deletePostById={deletePostById}
+            />
+          </div>
           <PostContent post={post} />
 
           <div className="post-information">
