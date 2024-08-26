@@ -1,14 +1,14 @@
 package com.carpassionnetwork.integration;
 
 import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserTwo;
-import static com.carpassionnetwork.helper.PostTestHelper.createNewPost;
-import static com.carpassionnetwork.helper.PostTestHelper.createNewPostRequest;
+import static com.carpassionnetwork.helper.PostTestHelper.*;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import com.carpassionnetwork.dto.request.PostRequestDto;
+import com.carpassionnetwork.dto.request.PostCreateRequestDto;
+import com.carpassionnetwork.dto.request.PostEditRequestDto;
 import com.carpassionnetwork.exception.InvalidCredentialsException;
 import com.carpassionnetwork.exception.PostNotFoundException;
 import com.carpassionnetwork.exception.UserNotAuthorException;
@@ -16,6 +16,7 @@ import com.carpassionnetwork.exception.UserNotFoundException;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.PostRepository;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,16 +24,18 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
 public class PostControllerIT extends BaseIT {
-  private PostRequestDto postRequestDto;
+  private PostCreateRequestDto postCreateRequestDto;
+  private PostEditRequestDto postEditRequestDto;
   private Post post;
   private User owner;
   @Autowired private PostRepository postRepository;
 
   @BeforeEach
   void setUp() {
-    postRequestDto = createNewPostRequest();
+    postCreateRequestDto = createNewPostCreateRequest();
     post = createNewPost();
     owner = createUserTwo();
+    postEditRequestDto = createNewPostEditRequest();
   }
 
   @Test
@@ -42,7 +45,7 @@ public class PostControllerIT extends BaseIT {
         .perform(
             post("/post")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(postRequestDto)))
+                .content(gson.toJson(postCreateRequestDto)))
         .andExpect(status().isBadRequest())
         .andExpect(
             result -> assertInstanceOf(UserNotFoundException.class, result.getResolvedException()));
@@ -53,13 +56,13 @@ public class PostControllerIT extends BaseIT {
   void testCreatePostShouldThrowInvalidCredentialsExceptionWhenAuthorDoesNotExists()
       throws Exception {
     User savedOwner = saveUser(owner);
-    postRequestDto.setOwnerId(savedOwner.getId());
+    postCreateRequestDto.setOwnerId(savedOwner.getId());
 
     mockMvc
         .perform(
             post("/post")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(postRequestDto)))
+                .content(gson.toJson(postCreateRequestDto)))
         .andExpect(status().isBadRequest())
         .andExpect(
             result ->
@@ -70,17 +73,17 @@ public class PostControllerIT extends BaseIT {
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testCreatePostSuccessfully() throws Exception {
     User savedOwner = saveUser(owner);
-    postRequestDto.setOwnerId(savedOwner.getId());
+    postCreateRequestDto.setOwnerId(savedOwner.getId());
     register();
 
     mockMvc
         .perform(
             post("/post")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(postRequestDto)))
+                .content(gson.toJson(postCreateRequestDto)))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.title").value(postRequestDto.getTitle()))
-        .andExpect(jsonPath("$.content").value(postRequestDto.getContent()))
+        .andExpect(jsonPath("$.title").value(postCreateRequestDto.getTitle()))
+        .andExpect(jsonPath("$.content").value(postCreateRequestDto.getContent()))
         .andExpect(jsonPath("$.currentUserLike").value(false));
   }
 
@@ -170,8 +173,8 @@ public class PostControllerIT extends BaseIT {
     mockMvc
         .perform(get("/post/" + createdPost.getId()))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.title").value(postRequestDto.getTitle()))
-        .andExpect(jsonPath("$.content").value(postRequestDto.getContent()))
+        .andExpect(jsonPath("$.title").value(postCreateRequestDto.getTitle()))
+        .andExpect(jsonPath("$.content").value(postCreateRequestDto.getContent()))
         .andExpect(jsonPath("$.currentUserLike").value(false));
   }
 
@@ -226,10 +229,11 @@ public class PostControllerIT extends BaseIT {
     Post savedPost = createPost();
 
     mockMvc
-            .perform(delete("/post/delete/" + savedPost.getId()))
-            .andExpect(status().isBadRequest())
-            .andExpect(
-                    result -> assertInstanceOf(UserNotAuthorException.class, result.getResolvedException()));
+        .perform(delete("/post/delete/" + savedPost.getId()))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(UserNotAuthorException.class, result.getResolvedException()));
   }
 
   @Test
@@ -239,10 +243,77 @@ public class PostControllerIT extends BaseIT {
     post.setAuthor(savedUser);
     Post savedPost = createPost();
 
-    mockMvc
-            .perform(delete("/post/delete/" + savedPost.getId()))
-            .andExpect(status().isNoContent());
+    mockMvc.perform(delete("/post/delete/" + savedPost.getId())).andExpect(status().isNoContent());
+  }
 
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testEditPostShouldThrowInvalidCredentialsException() throws Exception {
+    postEditRequestDto.setPostId(UUID.randomUUID());
+
+    mockMvc
+        .perform(
+            put("/post/edit")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(postEditRequestDto)))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testEditPostShouldThrowPostNotFoundException() throws Exception {
+    register();
+    postEditRequestDto.setPostId(UUID.randomUUID());
+
+    mockMvc
+        .perform(
+            put("/post/edit")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(postEditRequestDto)))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result -> assertInstanceOf(PostNotFoundException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testEditPostShouldThrowUserNotAuthorException() throws Exception {
+    register();
+    User savedUser = saveUser(owner);
+    post.setAuthor(savedUser);
+    Post savedPost = createPost();
+    postEditRequestDto.setPostId(savedPost.getId());
+
+    mockMvc
+        .perform(
+            put("/post/edit")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(postEditRequestDto)))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(UserNotAuthorException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testEditPostSuccessfully() throws Exception {
+    User savedUser = saveUser(currentUser);
+    post.setAuthor(savedUser);
+    Post savedPost = createPost();
+    postEditRequestDto.setPostId(savedPost.getId());
+
+    mockMvc
+        .perform(
+            put("/post/edit")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(postEditRequestDto)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.title").value(postEditRequestDto.getTitle()))
+        .andExpect(jsonPath("$.content").value(postEditRequestDto.getContent()));
   }
 
   private Post createPost() {

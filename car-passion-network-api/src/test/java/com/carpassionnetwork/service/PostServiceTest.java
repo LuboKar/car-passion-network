@@ -189,4 +189,55 @@ public class PostServiceTest {
     verify(postRepository, times(1)).findById(post.getId());
     verify(postRepository, times(1)).delete(post);
   }
+
+  @Test
+  void editPostShouldThrowInvalidCredentialsException() {
+    when(userService.getCurrentUser()).thenThrow(InvalidCredentialsException.class);
+
+    String title = "New title";
+
+    assertThrows(
+        InvalidCredentialsException.class,
+        () -> postService.editPost(post.getId(), title, post.getContent()));
+  }
+
+  @Test
+  void editPostShouldThrowPostNotFoundException() {
+    when(userService.getCurrentUser()).thenReturn(currentUser);
+    when(postRepository.findById(post.getId())).thenThrow(PostNotFoundException.class);
+
+    String title = "New title";
+
+    assertThrows(
+        PostNotFoundException.class,
+        () -> postService.editPost(post.getId(), title, post.getContent()));
+  }
+
+  @Test
+  void editPostShouldThrowUserNotAuthorException() {
+    when(userService.getCurrentUser()).thenReturn(currentUser);
+    post.setAuthor(owner);
+    when(postRepository.findById(post.getId())).thenReturn(Optional.of(post));
+
+    String title = "New title";
+
+    assertThrows(
+        UserNotAuthorException.class,
+        () -> postService.editPost(post.getId(), title, post.getContent()));
+  }
+
+  @Test
+  void editPostSuccessfully() {
+    when(userService.getCurrentUser()).thenReturn(currentUser);
+    post.setAuthor(currentUser);
+    when(postRepository.findById(post.getId())).thenReturn(Optional.of(post));
+
+    String title = "New title";
+
+    postService.editPost(post.getId(), title, post.getContent());
+
+    verify(userService, times(1)).getCurrentUser();
+    verify(postRepository, times(1)).findById(post.getId());
+    verify(postRepository, times(1)).save(post);
+  }
 }

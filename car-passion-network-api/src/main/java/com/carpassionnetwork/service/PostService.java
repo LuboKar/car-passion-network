@@ -68,4 +68,18 @@ public class PostService {
 
     postRepository.delete(post);
   }
+
+  public Post editPost(UUID postId, String title, String content) {
+    User currentUser = userService.getCurrentUser();
+    Post post = getPost(postId);
+
+    if (!post.getAuthor().equals(currentUser)) {
+      throw new UserNotAuthorException(currentUser.getId(), postId);
+    }
+
+    post.setTitle(title);
+    post.setContent(content);
+
+    return postRepository.save(post);
+  }
 }

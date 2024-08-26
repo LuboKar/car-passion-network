@@ -12,12 +12,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PostRequestDto {
-  @NotNull(message = "Owner id must not be empty or null!")
-  private UUID ownerId;
+public class PostEditRequestDto {
+  @NotNull(message = "Post id must not be empty or null!")
+  private UUID postId;
 
   @NotBlank(message = "Title must not be empty or null!")
   private String title;
 
+  @NotBlank(message = "Content must not be empty or null!")
   private String content;
 }

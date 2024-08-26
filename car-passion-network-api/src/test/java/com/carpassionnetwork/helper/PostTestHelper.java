@@ -1,6 +1,7 @@
 package com.carpassionnetwork.helper;
 
-import com.carpassionnetwork.dto.request.PostRequestDto;
+import com.carpassionnetwork.dto.request.PostCreateRequestDto;
+import com.carpassionnetwork.dto.request.PostEditRequestDto;
 import com.carpassionnetwork.model.Post;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,11 +21,15 @@ public class PostTestHelper {
         .build();
   }
 
-  public static PostRequestDto createNewPostRequest() {
-    return PostRequestDto.builder()
+  public static PostCreateRequestDto createNewPostCreateRequest() {
+    return PostCreateRequestDto.builder()
         .ownerId(UUID.randomUUID())
         .title("PostTitle")
         .content("PostContent")
         .build();
+  }
+
+  public static PostEditRequestDto createNewPostEditRequest() {
+    return PostEditRequestDto.builder().title("NewPostTitle").content("NewPostContent").build();
   }
 }

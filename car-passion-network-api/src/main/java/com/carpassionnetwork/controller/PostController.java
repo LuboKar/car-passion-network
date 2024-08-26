@@ -1,6 +1,7 @@
 package com.carpassionnetwork.controller;
 
-import com.carpassionnetwork.dto.request.PostRequestDto;
+import com.carpassionnetwork.dto.request.PostCreateRequestDto;
+import com.carpassionnetwork.dto.request.PostEditRequestDto;
 import com.carpassionnetwork.dto.response.PostResponseDto;
 import com.carpassionnetwork.mapper.PostMapper;
 import com.carpassionnetwork.model.Post;
@@ -37,10 +38,10 @@ public class PostController {
 
   @PostMapping
   public ResponseEntity<PostResponseDto> createPost(
-      @RequestBody @Valid PostRequestDto postRequestDto) {
-    Post post = postMapper.toPostEntity(postRequestDto);
+      @RequestBody @Valid PostCreateRequestDto postCreateRequestDto) {
+    Post post = postMapper.toPostEntity(postCreateRequestDto);
     return ResponseEntity.ok(
-        postMapper.toPostResponse(postService.createPost(post, postRequestDto.getOwnerId())));
+        postMapper.toPostResponse(postService.createPost(post, postCreateRequestDto.getOwnerId())));
   }
 
   @PostMapping("/like/{id}")
@@ -52,5 +53,16 @@ public class PostController {
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deletePost(@PathVariable UUID id) {
     postService.deletePost(id);
+  }
+
+  @PutMapping("/edit")
+  public ResponseEntity<PostResponseDto> editPost(
+      @RequestBody @Valid PostEditRequestDto postEditRequestDto) {
+    return ResponseEntity.ok(
+        postMapper.toPostResponse(
+            postService.editPost(
+                postEditRequestDto.getPostId(),
+                postEditRequestDto.getTitle(),
+                postEditRequestDto.getContent())));
   }
 }

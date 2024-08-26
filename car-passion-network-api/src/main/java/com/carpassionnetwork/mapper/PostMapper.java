@@ -1,6 +1,6 @@
 package com.carpassionnetwork.mapper;
 
-import com.carpassionnetwork.dto.request.PostRequestDto;
+import com.carpassionnetwork.dto.request.PostCreateRequestDto;
 import com.carpassionnetwork.dto.response.CommentResponseDto;
 import com.carpassionnetwork.dto.response.PostResponseDto;
 import com.carpassionnetwork.model.Post;
@@ -18,8 +18,8 @@ public class PostMapper {
   private final ModelMapper modelMapper;
   private final CommentMapper commentMapper;
 
-  public Post toPostEntity(PostRequestDto postRequestDto) {
-    return modelMapper.map(postRequestDto, Post.class);
+  public Post toPostEntity(PostCreateRequestDto postCreateRequestDto) {
+    return modelMapper.map(postCreateRequestDto, Post.class);
   }
 
   public PostResponseDto toPostResponse(Post post) {
