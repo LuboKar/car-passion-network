@@ -18,7 +18,6 @@ public class PostEditRequestDto {
 
   @NotBlank(message = "Title must not be empty or null!")
   private String title;
-
-  @NotBlank(message = "Content must not be empty or null!")
+  
   private String content;
 }
