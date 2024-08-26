@@ -100,4 +100,30 @@ const deletePost = async (id) => {
   }
 };
 
-export { getPosts, createPost, likePost, getPost, getAllPosts, deletePost };
+const editPost = async (editPostValues) => {
+  try {
+    const token = localStorage.getItem("jwtToken");
+    const response = await fetch("http://localhost:8080/post/edit", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(editPostValues),
+    });
+
+    return response;
+  } catch (error) {
+    console.error("Error sending data to backend:", error);
+  }
+};
+
+export {
+  getPosts,
+  createPost,
+  likePost,
+  getPost,
+  getAllPosts,
+  deletePost,
+  editPost,
+};
