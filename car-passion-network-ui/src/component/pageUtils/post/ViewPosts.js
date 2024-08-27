@@ -54,9 +54,9 @@ export default function ViewPosts({ posts, setPosts, deletePostById }) {
   };
 
   const toggleMenu = (id) => {
-    if (clickedMenu === 0) {
-      setClickedMenu(id);
-    } else setClickedMenu(0);
+    if (clickedMenu === id) {
+      setClickedMenu(0);
+    } else setClickedMenu(id);
   };
 
   const toggleEditPost = (id) => {
