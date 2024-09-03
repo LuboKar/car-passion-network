@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./LoginModal.css";
-import { useNavigate } from "react-router-dom";
 import { loginUser } from "../service/AuthenticationService";
+import { saveToken } from "../service/TokenService";
+import useNavigation from "../service/NavigateService";
 
 export default function LoginModal({ toggleModal }) {
   const [inputValues, setInputValues] = useState({
@@ -11,7 +12,7 @@ export default function LoginModal({ toggleModal }) {
 
   const [errors, setErrors] = useState({});
 
-  const navigate = useNavigate();
+  const { navigateToDashboardPage } = useNavigation();
 
   const login = async (event) => {
     event.preventDefault();
@@ -32,9 +33,9 @@ export default function LoginModal({ toggleModal }) {
 
     const data = await response.json();
 
-    localStorage.setItem("jwtToken", data.token);
+    saveToken(data.token);
 
-    navigate("/dashboard");
+    navigateToDashboardPage();
   };
 
   const handleInputChange = (event) => {

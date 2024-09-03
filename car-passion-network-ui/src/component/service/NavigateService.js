@@ -16,7 +16,13 @@ const useNavigation = () => {
     } else navigate("/");
   };
 
-  return { navigateToProfile, navigateToPostPage };
+  const navigateToDashboardPage = () => {
+    if (isAuthenticated()) {
+      navigate(`/dashboard`);
+    } else navigate("/");
+  };
+
+  return { navigateToProfile, navigateToPostPage, navigateToDashboardPage };
 };
 
 export default useNavigation;

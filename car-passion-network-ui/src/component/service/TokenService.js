@@ -28,4 +28,8 @@ const isExpired = () => {
   return false;
 };
 
-export { getId, isExpired, getToken };
+const saveToken = (token) => {
+  localStorage.setItem("jwtToken", token);
+};
+
+export { getId, isExpired, getToken, saveToken };
