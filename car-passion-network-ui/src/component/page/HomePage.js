@@ -7,18 +7,15 @@ import { useState } from "react";
 
 export default function HomePage() {
   const [registerModal, setRegisterModalOpen] = useState(true);
-  const [loginModal, setLoginModalOpen] = useState(false);
-
-  const toggleModal = () => {
-    setRegisterModalOpen(!registerModal);
-    setLoginModalOpen(!loginModal);
-  };
 
   return (
     <div className="homepage">
       <HomePageHeader />
-      {registerModal && <RegisterModal toggleModal={toggleModal} />}
-      {loginModal && <LoginModal toggleModal={toggleModal} />}
+      {registerModal ? (
+        <RegisterModal toggleModal={() => setRegisterModalOpen(false)} />
+      ) : (
+        <LoginModal toggleModal={() => setRegisterModalOpen(true)} />
+      )}
     </div>
   );
 }
