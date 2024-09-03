@@ -15,7 +15,6 @@ import EditPost from "./EditPost";
 export default function Post({
   post,
   index,
-  toggleLike,
   commentPostByIndex,
   editComment,
   deletePostById,
@@ -67,7 +66,7 @@ export default function Post({
           <div className="post-buttons-border"></div>
 
           <div className="post-buttons">
-            <LikePost post={post} index={index} toggleLike={toggleLike} />
+            <LikePost post={post} index={index} />
             <CommentButton
               toggleCommentsFunction={() => toggleCommentsFunction(post.id)}
             />

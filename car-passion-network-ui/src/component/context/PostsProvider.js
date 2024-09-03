@@ -9,8 +9,18 @@ export const PostsProvider = ({ children }) => {
     setPosts((prevPosts) => [createdPost, ...prevPosts]);
   };
 
+  const toggleLike = (index, post) => {
+    setPosts((prevPosts) => {
+      const updatedPosts = [...prevPosts];
+
+      updatedPosts[index] = post;
+
+      return updatedPosts;
+    });
+  };
+
   return (
-    <PostsContext.Provider value={{ posts, setPosts, addNewPost }}>
+    <PostsContext.Provider value={{ posts, setPosts, addNewPost, toggleLike }}>
       {children}
     </PostsContext.Provider>
   );

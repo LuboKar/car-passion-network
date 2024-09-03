@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./LikePost.css";
 import liked from "../../../images/liked.png";
 import notLiked from "../../../images/not liked.png";
 import { likePost } from "../../service/PostService";
+import { PostsContext } from "../../context/PostsProvider";
 
-export default function LikePost({ post, index, toggleLike }) {
+export default function LikePost({ post, index }) {
+  const { toggleLike } = useContext(PostsContext);
+
   const likeOrDislike = async (event) => {
     event.preventDefault();
 
