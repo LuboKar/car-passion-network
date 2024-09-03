@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Navbar from "../pageUtils/navbar/Navbar.js";
 import { getAllPosts } from "../service/PostService";
 import Posts from "../pageUtils/post/Posts.js";
 import "./DashboardPage.css";
 import DashboardHeader from "../pageUtils/dashboard/DashboardHeader.js";
 import { getId } from "../service/TokenService.js";
+import { PostsContext } from "../context/PostsProvider.js";
 
 export default function DashboardPage() {
-  const [posts, setPosts] = useState([]);
   const [loadingPosts, setLoadingPosts] = useState(true);
   const currentUserId = getId();
+
+  const { posts, setPosts } = useContext(PostsContext);
 
   const fetchPosts = async () => {
     const response = await getAllPosts();
@@ -34,7 +36,7 @@ export default function DashboardPage() {
 
       {!loadingPosts && (
         <div className="dashboard-container">
-          <Posts posts={posts} setPosts={setPosts} ownerId={currentUserId} />
+          <Posts ownerId={currentUserId} />
         </div>
       )}
 

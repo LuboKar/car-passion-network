@@ -5,6 +5,7 @@ import HomePage from "../page/HomePage";
 import DashboardPage from "../page/DashboardPage";
 import ProfilePage from "../page/ProfilePage";
 import PostPage from "../page/PostPage";
+import { PostsProvider } from "../context/PostsProvider";
 
 const router = createBrowserRouter([
   {
@@ -13,11 +14,19 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <ProtectedRoute element={DashboardPage} />,
+    element: (
+      <PostsProvider>
+        <ProtectedRoute element={DashboardPage} />
+      </PostsProvider>
+    ),
   },
   {
     path: "/profile/:id",
-    element: <ProtectedRoute element={ProfilePage} />,
+    element: (
+      <PostsProvider>
+        <ProtectedRoute element={ProfilePage} />
+      </PostsProvider>
+    ),
   },
   {
     path: "/post/:id",

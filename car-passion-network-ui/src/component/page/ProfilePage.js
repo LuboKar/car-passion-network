@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Navbar from "../pageUtils/navbar/Navbar";
 import VerticalNavbar from "../pageUtils/navbar/VerticalNavbar";
 import RightVerticalNabvar from "../pageUtils/navbar/RightVerticalNavbar";
@@ -9,15 +9,17 @@ import Information from "../pageUtils/user/Information";
 import { getUser } from "../service/UserService";
 import { getPosts } from "../service/PostService";
 import ProfilePageHeader from "../pageUtils/user/ProfilePageHeader";
+import { PostsContext } from "../context/PostsProvider";
 
 export default function ProfilePage() {
   const { id } = useParams();
   const [user, setUser] = useState({});
-  const [posts, setPosts] = useState([]);
   const [userInformation, setUserInformation] = useState(false);
   const [viewPosts, setViewPosts] = useState(true);
   const [loadingUser, setLoadingUser] = useState(true);
   const [loadingPosts, setLoadingPosts] = useState(true);
+
+  const { posts, setPosts } = useContext(PostsContext);
 
   const fetchUser = async () => {
     const response = await getUser(id);
@@ -72,8 +74,10 @@ export default function ProfilePage() {
 
       {!loadingUser && !loadingPosts && <Profile user={user} />}
       {!loadingUser && !loadingPosts && viewPosts && (
-        <Posts posts={posts} setPosts={setPosts} ownerId={user.id} />
+        <Posts ownerId={user.id} />
       )}
+
+      <label>{posts.length}</label>
 
       {posts.length < 1 && viewPosts && <ProfilePageHeader />}
 
