@@ -15,7 +15,6 @@ import EditPost from "./EditPost";
 export default function Post({
   post,
   index,
-  commentPostByIndex,
   editComment,
   deletePostById,
   editAuthorPost,
@@ -75,11 +74,7 @@ export default function Post({
           {toggleComments === post.id && (
             <div className="comments-container">
               <div className="post-buttons-border"></div>
-              <WriteComment
-                post={post}
-                index={index}
-                commentPostByIndex={commentPostByIndex}
-              />
+              <WriteComment post={post} index={index} />
               <ViewComments
                 post={post}
                 postIndex={index}

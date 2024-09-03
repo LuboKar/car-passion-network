@@ -7,29 +7,6 @@ export default function ViewPosts({ posts, setPosts }) {
   const [editPostId, setEditPostId] = useState(0);
   const [clickedMenu, setClickedMenu] = useState(0);
 
-  const toggleLike = (index, post) => {
-    const updatedPosts = [...posts];
-
-    updatedPosts[index] = post;
-
-    setPosts(updatedPosts);
-  };
-
-  const commentPostByIndex = (index, createdComment) => {
-    setPosts((prevPosts) => {
-      const newPosts = [...prevPosts];
-      const updatedPost = { ...newPosts[index] };
-
-      updatedPost.comments = updatedPost.comments
-        ? [...updatedPost.comments, createdComment]
-        : [createdComment];
-
-      newPosts[index] = updatedPost;
-
-      return newPosts;
-    });
-  };
-
   const editComment = (postIndex, commentIndex, comment) => {
     const updatedPosts = [...posts];
     updatedPosts[postIndex].comments[commentIndex] = comment;
@@ -85,8 +62,6 @@ export default function ViewPosts({ posts, setPosts }) {
           <Post
             post={post}
             index={index}
-            toggleLike={toggleLike}
-            commentPostByIndex={commentPostByIndex}
             editComment={editComment}
             deletePostById={deletePostById}
             editAuthorPost={editAuthorPost}
