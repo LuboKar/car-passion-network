@@ -1,6 +1,8 @@
+import { getToken } from "./TokenService";
+
 const getPosts = async (id) => {
   try {
-    const token = localStorage.getItem("jwtToken");
+    const token = getToken();
     const response = await fetch(`http://localhost:8080/post/user/${id}`, {
       method: "GET",
       headers: {
@@ -17,7 +19,7 @@ const getPosts = async (id) => {
 
 const getAllPosts = async () => {
   try {
-    const token = localStorage.getItem("jwtToken");
+    const token = getToken();
     const response = await fetch("http://localhost:8080/post", {
       method: "GET",
       headers: {
@@ -34,7 +36,7 @@ const getAllPosts = async () => {
 
 const createPost = async (createPostValues) => {
   try {
-    const token = localStorage.getItem("jwtToken");
+    const token = getToken();
     const response = await fetch("http://localhost:8080/post", {
       method: "POST",
       headers: {
@@ -52,7 +54,7 @@ const createPost = async (createPostValues) => {
 
 const likePost = async (post) => {
   try {
-    const token = localStorage.getItem("jwtToken");
+    const token = getToken();
     const response = await fetch("http://localhost:8080/post/like/" + post.id, {
       method: "POST",
       headers: {
@@ -68,7 +70,7 @@ const likePost = async (post) => {
 
 const getPost = async (id) => {
   try {
-    const token = localStorage.getItem("jwtToken");
+    const token = getToken();
     const response = await fetch(`http://localhost:8080/post/${id}`, {
       method: "GET",
       headers: {
@@ -85,7 +87,7 @@ const getPost = async (id) => {
 
 const deletePost = async (id) => {
   try {
-    const token = localStorage.getItem("jwtToken");
+    const token = getToken();
     const response = await fetch(`http://localhost:8080/post/delete/${id}`, {
       method: "DELETE",
       headers: {
@@ -102,7 +104,7 @@ const deletePost = async (id) => {
 
 const editPost = async (editPostValues) => {
   try {
-    const token = localStorage.getItem("jwtToken");
+    const token = getToken();
     const response = await fetch("http://localhost:8080/post/edit", {
       method: "PUT",
       headers: {
