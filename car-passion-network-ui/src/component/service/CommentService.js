@@ -1,6 +1,8 @@
+import { getToken } from "./TokenService";
+
 const writeComment = async (comment) => {
   try {
-    const token = localStorage.getItem("jwtToken");
+    const token = getToken();
     const response = await fetch("http://localhost:8080/comment", {
       method: "POST",
       headers: {
@@ -18,7 +20,7 @@ const writeComment = async (comment) => {
 
 const replyComment = async (comment) => {
   try {
-    const token = localStorage.getItem("jwtToken");
+    const token = getToken();
     const response = await fetch("http://localhost:8080/comment/reply", {
       method: "POST",
       headers: {
@@ -36,7 +38,7 @@ const replyComment = async (comment) => {
 
 const likeComment = async (comment) => {
   try {
-    const token = localStorage.getItem("jwtToken");
+    const token = getToken();
     const response = await fetch(
       "http://localhost:8080/comment/like/" + comment.id,
       {
