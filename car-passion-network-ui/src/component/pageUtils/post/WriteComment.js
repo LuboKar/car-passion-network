@@ -1,18 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import pic from "../../../images/profile-pic.jpg";
 import send from "../../../images/send.png";
 import "./WriteComment.css";
 import { useState } from "react";
 import cannotSend from "../../../images/cannot-send.png";
 import { writeComment } from "../../service/CommentService";
+import { PostsContext } from "../../context/PostsProvider";
 
-export default function WriteComment({ post, index, commentPostByIndex }) {
+export default function WriteComment({ post, index }) {
   const [comment, setComment] = useState({
     postId: post.id,
     content: "",
   });
 
   const [sendButton, setSendButton] = useState(false);
+
+  const { commentPostByIndex } = useContext(PostsContext);
 
   const handleInputChange = (event) => {
     event.preventDefault();

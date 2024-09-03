@@ -19,8 +19,25 @@ export const PostsProvider = ({ children }) => {
     });
   };
 
+  const commentPostByIndex = (index, createdComment) => {
+    setPosts((prevPosts) => {
+      const newPosts = [...prevPosts];
+      const updatedPost = { ...newPosts[index] };
+
+      updatedPost.comments = updatedPost.comments
+        ? [...updatedPost.comments, createdComment]
+        : [createdComment];
+
+      newPosts[index] = updatedPost;
+
+      return newPosts;
+    });
+  };
+
   return (
-    <PostsContext.Provider value={{ posts, setPosts, addNewPost, toggleLike }}>
+    <PostsContext.Provider
+      value={{ posts, setPosts, addNewPost, toggleLike, commentPostByIndex }}
+    >
       {children}
     </PostsContext.Provider>
   );
