@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import Post from "./Post";
 import { editPost } from "../../service/PostService";
+import { deletePost } from "../../service/PostService";
 
-export default function ViewPosts({ posts, setPosts, deletePostById }) {
+export default function ViewPosts({ posts, setPosts }) {
   const [editPostId, setEditPostId] = useState(0);
   const [clickedMenu, setClickedMenu] = useState(0);
 
@@ -51,6 +52,19 @@ export default function ViewPosts({ posts, setPosts, deletePostById }) {
     setPosts(updatedPosts);
 
     setEditPostId(0);
+  };
+
+  const deletePostById = async (index, id) => {
+    setPosts((prevPosts) => [
+      ...prevPosts.slice(0, index),
+      ...prevPosts.slice(index + 1),
+    ]);
+
+    const response = await deletePost(id);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
   };
 
   const toggleMenu = (id) => {
