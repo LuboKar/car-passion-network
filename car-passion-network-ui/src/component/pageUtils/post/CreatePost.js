@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./CreatePost.css";
 import { createPost } from "../../service/PostService";
+import { PostsContext } from "../../context/PostsProvider";
 
-export default function CreatePost({ setPosts, ownerId }) {
+export default function CreatePost({ ownerId }) {
   const [createNewPost, setCreateNewPost] = useState(false);
   const [createPostButton, setCreatePostButton] = useState(false);
 
@@ -11,6 +12,8 @@ export default function CreatePost({ setPosts, ownerId }) {
     title: "",
     content: "",
   });
+
+  const { addNewPost } = useContext(PostsContext);
 
   const toggleCreatePost = () => {
     setCreateNewPost(true);
@@ -44,7 +47,7 @@ export default function CreatePost({ setPosts, ownerId }) {
 
     const createdPost = await response.json();
     setCreateNewPost(false);
-    setPosts((prevPosts) => [createdPost, ...prevPosts]);
+    addNewPost(createdPost);
     setCreatePostValues({
       ownerId: ownerId,
       title: "",
