@@ -1,6 +1,8 @@
+import { getToken } from "./TokenService";
+
 const getUser = async (id) => {
   try {
-    const token = localStorage.getItem("jwtToken");
+    const token = getToken();
     const response = await fetch(`http://localhost:8080/users/${id}`, {
       method: "GET",
       headers: {
