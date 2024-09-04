@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { likeComment } from "../../service/CommentService";
 import liked from "../../../images/liked.png";
 import notLiked from "../../../images/not liked.png";
 import replyCommentIcon from "../../../images/comment-icon.png";
 import "./CommentTools.css";
 import pic from "../../../images/profile-pic.jpg";
+import { PostsContext } from "../../context/PostsProvider";
 
 export default function CommentTool({
   comment,
-  editComment,
   postIndex,
   commentIndex,
   toggleReply,
@@ -16,6 +16,8 @@ export default function CommentTool({
   navigateToProfile,
 }) {
   const [clickdLikedCommentId, setClickdLikedCommentId] = useState(0);
+
+  const { editComment } = useContext(PostsContext);
 
   const clickedLikes = (id) => {
     if (clickdLikedCommentId === 0) {

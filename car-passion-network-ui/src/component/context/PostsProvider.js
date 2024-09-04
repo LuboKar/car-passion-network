@@ -34,9 +34,22 @@ export const PostsProvider = ({ children }) => {
     });
   };
 
+  const editComment = (postIndex, commentIndex, comment) => {
+    const updatedPosts = [...posts];
+    updatedPosts[postIndex].comments[commentIndex] = comment;
+    setPosts(updatedPosts);
+  };
+
   return (
     <PostsContext.Provider
-      value={{ posts, setPosts, addNewPost, toggleLike, commentPostByIndex }}
+      value={{
+        posts,
+        setPosts,
+        addNewPost,
+        toggleLike,
+        commentPostByIndex,
+        editComment,
+      }}
     >
       {children}
     </PostsContext.Provider>

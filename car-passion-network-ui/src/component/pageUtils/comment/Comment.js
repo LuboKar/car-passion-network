@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./Comment.css";
 import { replyComment } from "../../service/CommentService";
 import CommentProfile from "./CommentProfile";
 import CommentTools from "./CommentTools";
 import WriteReply from "./WriteReply";
+import { PostsContext } from "../../context/PostsProvider";
 
 export default function Comment({
   comment,
   commentIndex,
   navigateToProfile,
-  editComment,
   postIndex,
   postId,
 }) {
@@ -23,6 +23,8 @@ export default function Comment({
 
   const [sendButton, setSendButton] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
+
+  const { editComment } = useContext(PostsContext);
 
   const handleInputChange = (event) => {
     event.preventDefault();
@@ -86,7 +88,6 @@ export default function Comment({
 
       <CommentTools
         comment={comment}
-        editComment={editComment}
         postIndex={postIndex}
         commentIndex={commentIndex}
         toggleReply={toggleReply}
@@ -125,7 +126,6 @@ export default function Comment({
                     comment={reply}
                     commentIndex={commentIndex}
                     navigateToProfile={navigateToProfile}
-                    editComment={editComment}
                     postIndex={postIndex}
                     postId={postId}
                   />

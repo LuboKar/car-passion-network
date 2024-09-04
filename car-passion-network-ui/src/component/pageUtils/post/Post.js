@@ -15,7 +15,6 @@ import EditPost from "./EditPost";
 export default function Post({
   post,
   index,
-  editComment,
   deletePostById,
   editAuthorPost,
   editPostId,
@@ -79,7 +78,6 @@ export default function Post({
                 post={post}
                 postIndex={index}
                 navigateToProfile={navigateToProfile}
-                editComment={editComment}
               />
             </div>
           )}

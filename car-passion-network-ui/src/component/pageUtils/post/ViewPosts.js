@@ -7,12 +7,6 @@ export default function ViewPosts({ posts, setPosts }) {
   const [editPostId, setEditPostId] = useState(0);
   const [clickedMenu, setClickedMenu] = useState(0);
 
-  const editComment = (postIndex, commentIndex, comment) => {
-    const updatedPosts = [...posts];
-    updatedPosts[postIndex].comments[commentIndex] = comment;
-    setPosts(updatedPosts);
-  };
-
   const editAuthorPost = async (event, editPostValues, postIndex) => {
     event.preventDefault();
 
@@ -62,7 +56,6 @@ export default function ViewPosts({ posts, setPosts }) {
           <Post
             post={post}
             index={index}
-            editComment={editComment}
             deletePostById={deletePostById}
             editAuthorPost={editAuthorPost}
             editPostId={editPostId}
