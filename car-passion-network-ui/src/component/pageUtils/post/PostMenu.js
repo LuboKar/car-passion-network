@@ -1,21 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import menu from "../../../images/menu.png";
 import "./PostMenu.css";
 import open from "../../../images/open.png";
 import deleteIcon from "../../../images/delete.png";
 import { jwtDecode } from "jwt-decode";
 import edit from "../../../images/edit.png";
+import { PostsContext } from "../../context/PostsProvider";
+import { deletePost } from "../../service/PostService";
 
 export default function PostMenu({
   post,
   navigateToPostPage,
   index,
-  deletePostById,
   toggleEditPost,
   toggleMenu,
   clickedMenu,
 }) {
   const [currentUserId, setCurrentUserId] = useState(0);
+  const { removePost } = useContext(PostsContext);
+
+  const deletePostById = async (index, id) => {
+    const response = await deletePost(id);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    removePost(index, id);
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");

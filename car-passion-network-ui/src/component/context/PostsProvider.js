@@ -19,6 +19,13 @@ export const PostsProvider = ({ children }) => {
     });
   };
 
+  const removePost = async (index, id) => {
+    setPosts((prevPosts) => [
+      ...prevPosts.slice(0, index),
+      ...prevPosts.slice(index + 1),
+    ]);
+  };
+
   const commentPostByIndex = (index, createdComment) => {
     setPosts((prevPosts) => {
       const newPosts = [...prevPosts];
@@ -49,6 +56,7 @@ export const PostsProvider = ({ children }) => {
         toggleLike,
         commentPostByIndex,
         editComment,
+        removePost,
       }}
     >
       {children}

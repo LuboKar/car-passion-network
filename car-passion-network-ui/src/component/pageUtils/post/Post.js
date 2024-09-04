@@ -15,7 +15,6 @@ import EditPost from "./EditPost";
 export default function Post({
   post,
   index,
-  deletePostById,
   editAuthorPost,
   editPostId,
   toggleMenu,
@@ -39,7 +38,6 @@ export default function Post({
           post={post}
           navigateToPostPage={navigateToPostPage}
           index={index}
-          deletePostById={deletePostById}
           toggleEditPost={toggleEditPost}
           toggleMenu={toggleMenu}
           clickedMenu={clickedMenu}
