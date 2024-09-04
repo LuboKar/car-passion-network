@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import LikePost from "./LikePost";
 import ViewLikes from "./ViewLikes";
 import CommentButton from "./CommentButton";
@@ -11,18 +11,13 @@ import "./Post.css";
 import PostMenu from "./PostMenu";
 import useNavigation from "../../service/NavigateService";
 import EditPost from "./EditPost";
+import { PostsContext } from "../../context/PostsProvider";
 
-export default function Post({
-  post,
-  index,
-  editAuthorPost,
-  editPostId,
-  toggleMenu,
-  toggleEditPost,
-  clickedMenu,
-}) {
+export default function Post({ post, index }) {
   const [toggleComments, setToggleComments] = useState(-1);
   const { navigateToProfile, navigateToPostPage } = useNavigation();
+
+  const { editPostId } = useContext(PostsContext);
 
   const toggleCommentsFunction = (id) => {
     if (id === toggleComments) {
@@ -38,16 +33,11 @@ export default function Post({
           post={post}
           navigateToPostPage={navigateToPostPage}
           index={index}
-          toggleEditPost={toggleEditPost}
-          toggleMenu={toggleMenu}
-          clickedMenu={clickedMenu}
         />
       </div>
 
       {editPostId !== post.id && <PostContent post={post} />}
-      {editPostId === post.id && (
-        <EditPost post={post} editAuthorPost={editAuthorPost} index={index} />
-      )}
+      {editPostId === post.id && <EditPost post={post} index={index} />}
 
       {editPostId !== post.id && (
         <div className="post-tools">

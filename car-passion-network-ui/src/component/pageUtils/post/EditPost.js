@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./EditPost.css";
+import { editPost } from "../../service/PostService";
+import { PostsContext } from "../../context/PostsProvider";
 
-export default function EditPost({ post, editAuthorPost, index }) {
+export default function EditPost({ post, index }) {
   const [editPostValues, setEditPostValues] = useState({
     postId: post.id,
     title: post.title,
     content: post.content,
   });
+
+  const { editPostByIndex, setEditPostId } = useContext(PostsContext);
 
   const handleInputChange = (event) => {
     event.preventDefault();
@@ -16,6 +20,22 @@ export default function EditPost({ post, editAuthorPost, index }) {
       ...editPostValues,
       [name]: value,
     }));
+  };
+
+  const editAuthorPost = async (event, editPostValues, postIndex) => {
+    event.preventDefault();
+
+    const response = await editPost(editPostValues);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const editedPost = await response.json();
+
+    editPostByIndex(editedPost, postIndex);
+
+    setEditPostId(0);
   };
 
   return (

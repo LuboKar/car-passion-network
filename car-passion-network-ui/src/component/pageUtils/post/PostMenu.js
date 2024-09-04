@@ -8,16 +8,10 @@ import edit from "../../../images/edit.png";
 import { PostsContext } from "../../context/PostsProvider";
 import { deletePost } from "../../service/PostService";
 
-export default function PostMenu({
-  post,
-  navigateToPostPage,
-  index,
-  toggleEditPost,
-  toggleMenu,
-  clickedMenu,
-}) {
+export default function PostMenu({ post, navigateToPostPage, index }) {
   const [currentUserId, setCurrentUserId] = useState(0);
-  const { removePost } = useContext(PostsContext);
+  const { removePost, toggleEditPost, toggleMenu, clickedMenu } =
+    useContext(PostsContext);
 
   const deletePostById = async (index, id) => {
     const response = await deletePost(id);
