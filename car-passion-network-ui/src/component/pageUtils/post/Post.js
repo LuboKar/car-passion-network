@@ -9,13 +9,11 @@ import PostProfile from "./PostProfile";
 import PostContent from "./PostContent";
 import "./Post.css";
 import PostMenu from "./PostMenu";
-import useNavigation from "../../service/NavigateService";
 import EditPost from "./EditPost";
 import { PostsContext } from "../../context/PostsProvider";
 
 export default function Post({ post, index }) {
   const [toggleComments, setToggleComments] = useState(-1);
-  const { navigateToProfile, navigateToPostPage } = useNavigation();
 
   const { editPostId } = useContext(PostsContext);
 
@@ -28,12 +26,8 @@ export default function Post({ post, index }) {
   return (
     <div className="view-posts-container">
       <div className="post-user-container">
-        <PostProfile post={post} navigateToProfile={navigateToProfile} />
-        <PostMenu
-          post={post}
-          navigateToPostPage={navigateToPostPage}
-          index={index}
-        />
+        <PostProfile post={post} />
+        <PostMenu post={post} index={index} />
       </div>
 
       {editPostId !== post.id && <PostContent post={post} />}
@@ -42,7 +36,7 @@ export default function Post({ post, index }) {
       {editPostId !== post.id && (
         <div className="post-tools">
           <div className="post-information">
-            <ViewLikes post={post} navigateToProfile={navigateToProfile} />
+            <ViewLikes post={post} />
             <NumberOfComments
               post={post}
               toggleCommentsFunction={() => toggleCommentsFunction(post.id)}
@@ -62,11 +56,7 @@ export default function Post({ post, index }) {
             <div className="comments-container">
               <div className="post-buttons-border"></div>
               <WriteComment post={post} index={index} />
-              <ViewComments
-                post={post}
-                postIndex={index}
-                navigateToProfile={navigateToProfile}
-              />
+              <ViewComments post={post} postIndex={index} />
             </div>
           )}
         </div>

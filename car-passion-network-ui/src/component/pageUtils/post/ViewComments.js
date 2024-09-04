@@ -1,8 +1,11 @@
 import React from "react";
 import "./ViewComments.css";
 import Comment from "../comment/Comment";
+import useNavigation from "../../service/NavigateService";
 
-export default function ViewComments({ post, navigateToProfile, postIndex }) {
+export default function ViewComments({ post, postIndex }) {
+  const { navigateToProfile } = useNavigation();
+
   return (
     <div>
       {post.comments &&

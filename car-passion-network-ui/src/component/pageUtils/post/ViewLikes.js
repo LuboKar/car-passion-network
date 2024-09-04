@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import liked from "../../../images/liked.png";
 import "./ViewLikes.css";
 import pic from "../../../images/profile-pic.jpg";
+import useNavigation from "../../service/NavigateService";
 
-export default function ViewLikes({ post, navigateToProfile }) {
+export default function ViewLikes({ post }) {
   const [clickdPostId, setClickedPostId] = useState(0);
+
+  const { navigateToProfile } = useNavigation();
 
   const clickedLikes = (id) => {
     if (clickdPostId === 0) {

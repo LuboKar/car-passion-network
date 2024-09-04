@@ -7,11 +7,14 @@ import { jwtDecode } from "jwt-decode";
 import edit from "../../../images/edit.png";
 import { PostsContext } from "../../context/PostsProvider";
 import { deletePost } from "../../service/PostService";
+import useNavigation from "../../service/NavigateService";
 
-export default function PostMenu({ post, navigateToPostPage, index }) {
+export default function PostMenu({ post, index }) {
   const [currentUserId, setCurrentUserId] = useState(0);
   const { removePost, toggleEditPost, toggleMenu, clickedMenu } =
     useContext(PostsContext);
+
+  const { navigateToPostPage } = useNavigation();
 
   const deletePostById = async (index, id) => {
     const response = await deletePost(id);

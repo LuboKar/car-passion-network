@@ -1,7 +1,10 @@
 import React from "react";
 import pic from "../../../images/profile-pic.jpg";
+import useNavigation from "../../service/NavigateService";
 
-export default function PostProfile({ post, navigateToProfile }) {
+export default function PostProfile({ post }) {
+  const { navigateToProfile } = useNavigation();
+
   return (
     <div className="post-profile">
       <img
