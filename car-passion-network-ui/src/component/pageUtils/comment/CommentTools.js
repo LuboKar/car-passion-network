@@ -6,6 +6,7 @@ import replyCommentIcon from "../../../images/comment-icon.png";
 import "./CommentTools.css";
 import pic from "../../../images/profile-pic.jpg";
 import { PostsContext } from "../../context/PostsProvider";
+import useNavigation from "../../service/NavigateService";
 
 export default function CommentTool({
   comment,
@@ -13,11 +14,12 @@ export default function CommentTool({
   commentIndex,
   toggleReply,
   clickedReply,
-  navigateToProfile,
 }) {
   const [clickdLikedCommentId, setClickdLikedCommentId] = useState(0);
 
   const { editComment } = useContext(PostsContext);
+
+  const { navigateToProfile } = useNavigation();
 
   const clickedLikes = (id) => {
     if (clickdLikedCommentId === 0) {

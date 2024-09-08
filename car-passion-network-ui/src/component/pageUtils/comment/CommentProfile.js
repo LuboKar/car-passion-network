@@ -1,8 +1,11 @@
 import React from "react";
 import pic from "../../../images/profile-pic.jpg";
 import "./CommentProfile.css";
+import useNavigation from "../../service/NavigateService";
 
-export default function CommentProfile({ comment, navigateToProfile }) {
+export default function CommentProfile({ comment }) {
+  const { navigateToProfile } = useNavigation();
+
   return (
     <div className="comment-profile">
       <img

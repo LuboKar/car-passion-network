@@ -1,73 +1,19 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState } from "react";
 import "./Comment.css";
-import { replyComment } from "../../service/CommentService";
 import CommentProfile from "./CommentProfile";
 import CommentTools from "./CommentTools";
 import WriteReply from "./WriteReply";
-import { PostsContext } from "../../context/PostsProvider";
+import ViewReplies from "./ViewReplies";
 
-export default function Comment({
-  comment,
-  commentIndex,
-  navigateToProfile,
-  postIndex,
-  postId,
-}) {
+export default function Comment({ comment, commentIndex, postIndex, postId }) {
   const [clickedReply, setClickedReply] = useState(0);
 
-  const [reply, setReply] = useState({
-    postId: postId,
-    content: "",
-    parentCommentId: comment.id,
-  });
-
-  const [sendButton, setSendButton] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
-
-  const { editComment } = useContext(PostsContext);
-
-  const handleInputChange = (event) => {
-    event.preventDefault();
-
-    const { name, value } = event.target;
-    setReply((contentValue) => ({
-      ...contentValue,
-      [name]: value,
-    }));
-  };
-
-  useEffect(() => {
-    if (reply.content === "") {
-      setSendButton(false);
-    } else setSendButton(true);
-  }, [reply.content]);
 
   const toggleReply = (id) => {
     if (clickedReply === 0) {
       setClickedReply(id);
     } else setClickedReply(0);
-  };
-
-  const commentReply = async (event) => {
-    event.preventDefault();
-    if (comment.content === "") return;
-
-    const response = await replyComment(reply);
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    setReply((prevReply) => ({
-      ...prevReply,
-      content: "",
-    }));
-
-    const repliedComment = await response.json();
-
-    editComment(postIndex, commentIndex, repliedComment);
-    toggleReply(0);
-    toggleReplies();
   };
 
   const toggleReplies = () => {
@@ -82,7 +28,7 @@ export default function Comment({
         <div className="show-replies-horizontal-line"></div>
       )}
 
-      <CommentProfile comment={comment} navigateToProfile={navigateToProfile} />
+      <CommentProfile comment={comment} />
 
       <p className="comment-content">{comment.content}</p>
 
@@ -92,15 +38,16 @@ export default function Comment({
         commentIndex={commentIndex}
         toggleReply={toggleReply}
         clickedReply={clickedReply}
-        navigateToProfile={navigateToProfile}
       />
 
       {clickedReply === comment.id && (
         <WriteReply
-          reply={reply}
-          handleInputChange={handleInputChange}
-          sendButton={sendButton}
-          commentReply={commentReply}
+          comment={comment}
+          commentIndex={commentIndex}
+          postId={postId}
+          postIndex={postIndex}
+          toggleReply={toggleReply}
+          toggleReplies={toggleReplies}
         />
       )}
 
@@ -113,26 +60,12 @@ export default function Comment({
       )}
 
       {showReplies && (
-        <div>
-          {comment.replies &&
-            comment.replies.map((reply, index) => (
-              <div>
-                <div className="horizontal-line"></div>
-                {index === comment.replies.length - 1 && (
-                  <div className="fixing-line"></div>
-                )}
-                <div className="view-replies" key={index}>
-                  <Comment
-                    comment={reply}
-                    commentIndex={commentIndex}
-                    navigateToProfile={navigateToProfile}
-                    postIndex={postIndex}
-                    postId={postId}
-                  />
-                </div>
-              </div>
-            ))}
-        </div>
+        <ViewReplies
+          comment={comment}
+          commentIndex={commentIndex}
+          postIndex={postIndex}
+          postId={postId}
+        />
       )}
     </div>
   );
