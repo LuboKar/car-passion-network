@@ -1,16 +1,16 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext } from "react";
 import menu from "../../../images/menu.png";
 import "./PostMenu.css";
 import open from "../../../images/open.png";
 import deleteIcon from "../../../images/delete.png";
-import { jwtDecode } from "jwt-decode";
 import edit from "../../../images/edit.png";
 import { PostsContext } from "../../context/PostsProvider";
 import { deletePost } from "../../service/PostService";
 import useNavigation from "../../service/NavigateService";
+import { getId } from "../../service/TokenService";
 
 export default function PostMenu({ post, index }) {
-  const [currentUserId, setCurrentUserId] = useState(0);
+  const currentUserId = getId();
   const { removePost, toggleEditPost, toggleMenu, clickedMenu } =
     useContext(PostsContext);
 
@@ -25,13 +25,6 @@ export default function PostMenu({ post, index }) {
 
     removePost(index, id);
   };
-
-  useEffect(() => {
-    const token = localStorage.getItem("jwtToken");
-    const decodedToken = jwtDecode(token);
-    const id = decodedToken.userId;
-    setCurrentUserId(id);
-  }, []);
 
   return (
     <div className="menu-post-container">
