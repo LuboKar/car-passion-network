@@ -6,6 +6,8 @@ import settings from "../../../images/settings.png";
 import { logoutUser } from "../../service/AuthenticationService";
 import logoutIcon from "../../../images/logout.png";
 import { getId } from "../../service/TokenService";
+import { deleteToken } from "../../service/TokenService";
+import "./NavbarDropdown.css";
 
 export default function NavbarDropdown() {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,7 +38,7 @@ export default function NavbarDropdown() {
       return;
     }
 
-    localStorage.removeItem("jwtToken");
+    deleteToken();
 
     navigateToDashboardPage();
   };

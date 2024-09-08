@@ -37,61 +37,6 @@
     cursor: pointer;
 }
 
-.dropdown-icon{
-    width: 40px;
-    margin-top: 8px;
-    margin-bottom: 5px;
-    border-radius: 15px;
-}
-
-.dropdown-icon:hover{
-    cursor: pointer;
-}
-
-.dropdown-container{
-    align-items: center;
-    margin-left: auto;
-}
-
-.dropdown{
-    position: absolute;
-    top: 100%;
-    right: 0;
-    z-index: 1; 
-    background-color: white; 
-    border: 1px solid #ccc; 
-    width: 200px;
-    height: 190px;
-    display: flex;
-    flex-direction: column;
-    border-radius: 5px;
-  }
-
-  .dropdown div {
-    display: flex;
-    align-items: center;
-    height: 50px;
-    border-radius: 10px;
-    width: 90%;
-    margin-left: 5%;
-    margin-top: 10px;
-  }
-
-  .span-icon{
-    width: 30px;
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
-  .dropdown div:hover{
-    background-color: #f0f0f0;
-    cursor: pointer;
-  }
-
-  .link {
-    text-decoration: none; 
-    color: black; 
-  }
 
 
 

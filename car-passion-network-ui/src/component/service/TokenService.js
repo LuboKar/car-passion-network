@@ -32,4 +32,8 @@ const saveToken = (token) => {
   localStorage.setItem("jwtToken", token);
 };
 
-export { getId, isExpired, getToken, saveToken };
+const deleteToken = () => {
+  localStorage.removeItem("jwtToken");
+};
+
+export { getId, isExpired, getToken, saveToken, deleteToken };
