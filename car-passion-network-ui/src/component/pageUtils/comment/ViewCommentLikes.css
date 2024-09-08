@@ -1,0 +1,20 @@
+.show-comment-likes{
+    margin-left: auto;
+    display: flex;
+    flex-direction: row; 
+    align-items: center;
+}
+
+.show-comment-likes:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.comment-likes-number{
+    margin-left: 5px;
+}
+
+.comment-likes-number:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}

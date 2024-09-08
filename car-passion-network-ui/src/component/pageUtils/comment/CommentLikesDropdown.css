@@ -1,0 +1,54 @@
+.comment-likes-drowdown-container{
+    position:absolute; 
+    z-index: 0; 
+    background-color: white; 
+    border: 2px solid #ccc; 
+    width: 270px;
+    height: 225px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    margin-bottom: 20%;
+    padding-bottom: 0.5%;
+    margin-left: 50px;
+    transform: translate(0 ,-255px);
+    right: 0;
+    margin-right: 50px;
+}
+
+.comment-likes-dropdown{
+    overflow: auto;
+}
+
+.comment-likes-container{
+    display: flex;
+    flex-direction: row;
+    margin-top: 3%;
+    margin-left: 3%;
+    margin-right: 3%;
+    border-radius: 10px;
+}
+
+.comment-likes-container:hover{
+    cursor: pointer;
+    text-decoration: underline;
+    background-color: #f0f0f0;
+}
+
+.user-like-pic{
+    padding-top: 3%;
+    padding-left: 3%;
+    padding-bottom: 3%;
+    padding-right: 3%;
+    width: 25px; 
+    border-radius: 15px;
+}
+
+.user-like-name{
+    padding-top: 3%;
+    padding-left: 3%;
+}
+
+.user-like-name:hover{
+    cursor: pointer;
+}
