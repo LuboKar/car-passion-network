@@ -40,7 +40,7 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {posts.length < 1 && <DashboardHeader />}
+      {posts.length < 1 && !loadingPosts && <DashboardHeader />}
     </div>
   );
 }

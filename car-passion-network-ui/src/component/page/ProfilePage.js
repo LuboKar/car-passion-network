@@ -77,9 +77,9 @@ export default function ProfilePage() {
         <Posts ownerId={user.id} />
       )}
 
-      <label>{posts.length}</label>
-
-      {posts.length < 1 && viewPosts && <ProfilePageHeader />}
+      {posts.length < 1 && viewPosts && !loadingUser && !loadingPosts && (
+        <ProfilePageHeader />
+      )}
 
       {userInformation && <Information user={user} />}
     </div>
