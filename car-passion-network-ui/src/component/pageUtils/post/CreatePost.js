@@ -31,34 +31,40 @@ export default function CreatePost({ ownerId }) {
   };
 
   useEffect(() => {
-    if (createPostValues.title === "") {
+    if (createPostValues.title !== "") {
       setCreatePostButton(false);
-    } else setCreatePostButton(true);
+    }
   }, [createPostValues.title]);
 
   const create = async (event) => {
     event.preventDefault();
 
-    const response = await createPost(createPostValues);
+    if (createPostValues.title !== "") {
+      const response = await createPost(createPostValues);
 
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const createdPost = await response.json();
+      setCreateNewPost(false);
+      addNewPost(createdPost);
+      setCreatePostValues({
+        ownerId: ownerId,
+        title: "",
+        content: "",
+      });
+    } else {
+      setCreatePostButton(true);
     }
-
-    const createdPost = await response.json();
-    setCreateNewPost(false);
-    addNewPost(createdPost);
-    setCreatePostValues({
-      ownerId: ownerId,
-      title: "",
-      content: "",
-    });
   };
   return (
     <div className="create-post-container">
       <form className="post-form" onSubmit={create} onClick={toggleCreatePost}>
         <input
-          className="post-title-input"
+          className={
+            !createPostButton ? "post-title-input" : "empty-post-title-imput"
+          }
           placeholder="Title"
           type="text"
           name="title"
@@ -75,7 +81,7 @@ export default function CreatePost({ ownerId }) {
             onChange={handleInputChange}
           />
         )}
-        {createNewPost && createPostButton && (
+        {createNewPost && (
           <button className="post-button" type="submit">
             Create post
           </button>
