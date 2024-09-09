@@ -11,7 +11,7 @@ export const PostsProvider = ({ children }) => {
     setPosts((prevPosts) => [createdPost, ...prevPosts]);
   };
 
-  const toggleLike = (index, post) => {
+  const toggleLike = (post, index) => {
     setPosts((prevPosts) => {
       const updatedPosts = [...prevPosts];
 
@@ -28,7 +28,7 @@ export const PostsProvider = ({ children }) => {
     ]);
   };
 
-  const commentPostByIndex = (index, createdComment) => {
+  const commentPostByIndex = (createdComment, index) => {
     setPosts((prevPosts) => {
       const newPosts = [...prevPosts];
       const updatedPost = { ...newPosts[index] };
@@ -43,7 +43,7 @@ export const PostsProvider = ({ children }) => {
     });
   };
 
-  const editComment = (postIndex, commentIndex, comment) => {
+  const editComment = (comment, commentIndex, postIndex) => {
     const updatedPosts = [...posts];
     updatedPosts[postIndex].comments[commentIndex] = comment;
     setPosts(updatedPosts);

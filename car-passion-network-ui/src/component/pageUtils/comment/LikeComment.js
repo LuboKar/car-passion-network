@@ -19,7 +19,7 @@ export default function LikeComment({ comment, postIndex, commentIndex }) {
 
     const likedComment = await response.json();
 
-    editComment(postIndex, commentIndex, likedComment);
+    editComment(likedComment, commentIndex, postIndex);
   };
 
   return (

@@ -19,7 +19,7 @@ export default function LikePost({ post, index }) {
 
     const likedPost = await response.json();
 
-    toggleLike(index, likedPost);
+    toggleLike(likedPost, index);
   };
 
   return (

@@ -6,6 +6,7 @@ import DashboardPage from "../page/DashboardPage";
 import ProfilePage from "../page/ProfilePage";
 import PostPage from "../page/PostPage";
 import { PostsProvider } from "../context/PostsProvider";
+import { PostProvider } from "../context/PostProvider";
 
 const router = createBrowserRouter([
   {
@@ -30,7 +31,13 @@ const router = createBrowserRouter([
   },
   {
     path: "/post/:id",
-    element: <PostPage />,
+    element: (
+      <PostsProvider>
+        <PostProvider>
+          <PostPage />
+        </PostProvider>
+      </PostsProvider>
+    ),
   },
   {
     path: "*",

@@ -56,7 +56,7 @@ export default function WriteReply({
 
     const repliedComment = await response.json();
 
-    editComment(postIndex, commentIndex, repliedComment);
+    editComment(repliedComment, commentIndex, postIndex);
     toggleReply(0);
     toggleReplies();
   };

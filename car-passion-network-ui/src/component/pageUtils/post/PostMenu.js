@@ -26,6 +26,11 @@ export default function PostMenu({ post, index }) {
     removePost(index, id);
   };
 
+  const openPost = () => {
+    toggleMenu(0);
+    navigateToPostPage(post.id);
+  };
+
   return (
     <div className="menu-post-container">
       <div className="menu-button" onClick={() => toggleMenu(post.id)}>
@@ -34,10 +39,7 @@ export default function PostMenu({ post, index }) {
 
       {clickedMenu === post.id && (
         <div className="menu-post-dropdown">
-          <div
-            className="menu-option"
-            onClick={() => navigateToPostPage(post.id)}
-          >
+          <div className="menu-option" onClick={openPost}>
             <img src={open} alt="option-pic" className="option-pic" />
             <label className="open-text">Open</label>
           </div>

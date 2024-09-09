@@ -50,7 +50,7 @@ export default function WriteComment({ post, index }) {
 
     const createdComment = await response.json();
 
-    commentPostByIndex(index, createdComment);
+    commentPostByIndex(createdComment, index);
   };
 
   return (

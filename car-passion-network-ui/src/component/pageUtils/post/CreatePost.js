@@ -55,7 +55,7 @@ export default function CreatePost({ ownerId }) {
     });
   };
   return (
-    <div className="post-container">
+    <div className="create-post-container">
       <form className="post-form" onSubmit={create} onClick={toggleCreatePost}>
         <input
           className="post-title-input"

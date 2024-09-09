@@ -12,8 +12,8 @@ import PostMenu from "./PostMenu";
 import EditPost from "./EditPost";
 import { PostsContext } from "../../context/PostsProvider";
 
-export default function Post({ post, index }) {
-  const [toggleComments, setToggleComments] = useState(-1);
+export default function Post({ post, index, postId }) {
+  const [toggleComments, setToggleComments] = useState(postId ? postId : -1);
 
   const { editPostId } = useContext(PostsContext);
 
@@ -24,7 +24,7 @@ export default function Post({ post, index }) {
   };
 
   return (
-    <div className="view-posts-container">
+    <div className="post-container">
       <div className="post-user-container">
         <PostProfile post={post} />
         <PostMenu post={post} index={index} />
