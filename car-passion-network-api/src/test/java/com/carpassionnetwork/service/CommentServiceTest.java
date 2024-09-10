@@ -1,6 +1,7 @@
 package com.carpassionnetwork.service;
 
 import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserOne;
+import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserTwo;
 import static com.carpassionnetwork.helper.CommentTestHelper.createNewComment;
 import static com.carpassionnetwork.helper.PostTestHelper.createNewPost;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -9,6 +10,7 @@ import static org.mockito.Mockito.*;
 import com.carpassionnetwork.exception.CommentNotFoundException;
 import com.carpassionnetwork.exception.InvalidCredentialsException;
 import com.carpassionnetwork.exception.PostNotFoundException;
+import com.carpassionnetwork.exception.UserNotAuthorException;
 import com.carpassionnetwork.model.Comment;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
@@ -30,6 +32,7 @@ public class CommentServiceTest {
   @Mock private CommentRepository commentRepository;
 
   private User user;
+  private User secondUser;
   private Post post;
   private String content;
   private String replyContent;
@@ -38,6 +41,7 @@ public class CommentServiceTest {
   @BeforeEach
   void setUp() {
     user = createUserOne();
+    secondUser = createUserTwo();
     post = createNewPost();
     content = "smth";
     replyContent = "reply";
@@ -147,5 +151,66 @@ public class CommentServiceTest {
     verify(userService, times(1)).getCurrentUser();
     verify(commentRepository, times(1)).findById(comment.getId());
     verify(commentRepository, times(1)).save(any());
+  }
+
+  @Test
+  void testDeleteCommentShouldThrowInvalidCredentialsException() {
+    when(userService.getCurrentUser()).thenThrow(InvalidCredentialsException.class);
+
+    assertThrows(
+        InvalidCredentialsException.class,
+        () -> commentService.deleteComment(post.getId(), comment.getId()));
+  }
+
+  @Test
+  void testDeleteCommentShouldThrowPostNotFoundException() {
+    when(userService.getCurrentUser()).thenReturn(user);
+    when(postService.getPost(post.getId())).thenThrow(PostNotFoundException.class);
+
+    assertThrows(
+        PostNotFoundException.class,
+        () -> commentService.deleteComment(post.getId(), comment.getId()));
+  }
+
+  @Test
+  void testDeleteCommentShouldThrowCommentNotFoundException() {
+    when(userService.getCurrentUser()).thenReturn(user);
+    when(postService.getPost(post.getId())).thenReturn(post);
+    when(commentRepository.findById(comment.getId())).thenThrow(CommentNotFoundException.class);
+
+    assertThrows(
+            CommentNotFoundException.class,
+            () -> commentService.deleteComment(post.getId(), comment.getId()));
+  }
+
+  @Test
+  void testDeleteCommentShouldThrowUserNotAuthorException() {
+    when(userService.getCurrentUser()).thenReturn(user);
+    when(postService.getPost(post.getId())).thenReturn(post);
+    when(commentRepository.findById(comment.getId())).thenReturn(Optional.of(comment));
+
+    post.setUser(secondUser);
+    post.setAuthor(secondUser);
+
+    assertThrows(
+            UserNotAuthorException.class,
+            () -> commentService.deleteComment(post.getId(), comment.getId()));
+  }
+
+  @Test
+  void testDeleteCommentSuccessfully() {
+    when(userService.getCurrentUser()).thenReturn(user);
+    when(postService.getPost(post.getId())).thenReturn(post);
+    when(commentRepository.findById(comment.getId())).thenReturn(Optional.of(comment));
+
+    post.setUser(user);
+    post.setAuthor(user);
+
+    commentService.deleteComment(post.getId(), comment.getId());
+
+    verify(userService, times(1)).getCurrentUser();
+    verify(postService,times(1)).getPost(post.getId());
+    verify(commentRepository, times(1)).findById(comment.getId());
+    verify(commentRepository, times(1)).delete(comment);
   }
 }

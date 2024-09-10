@@ -1,6 +1,7 @@
 package com.carpassionnetwork.service;
 
 import com.carpassionnetwork.exception.CommentNotFoundException;
+import com.carpassionnetwork.exception.UserNotAuthorException;
 import com.carpassionnetwork.model.Comment;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
@@ -80,6 +81,18 @@ public class CommentService {
 
   public Comment getComment(UUID id) {
     return commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException(id));
+  }
+
+  public void deleteComment(UUID postId, UUID commentID) {
+    User currentUser = userService.getCurrentUser();
+    Post post = postService.getPost(postId);
+    Comment commentToDelete = getComment(commentID);
+
+    if (!post.getAuthor().equals(currentUser) && !post.getUser().equals(currentUser)) {
+      throw new UserNotAuthorException(currentUser.getId(), postId);
+    }
+
+    commentRepository.delete(commentToDelete);
   }
 
   private Comment getParent(Comment comment) {

@@ -7,6 +7,7 @@ import com.carpassionnetwork.service.CommentService;
 import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,5 +42,11 @@ public class CommentController {
         commentMapper.toCommentResponse(
             commentService.replyComment(
                 commentRequestDto.getParentCommentId(), commentRequestDto.getContent())));
+  }
+
+  @DeleteMapping("/delete/{postId}/{commentId}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void deleteComment(@PathVariable UUID postId, @PathVariable UUID commentId) {
+    commentService.deleteComment(postId, commentId);
   }
 }

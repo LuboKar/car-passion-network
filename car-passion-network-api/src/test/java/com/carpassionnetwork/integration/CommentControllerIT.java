@@ -1,10 +1,12 @@
 package com.carpassionnetwork.integration;
 
 import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserOne;
+import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserTwo;
 import static com.carpassionnetwork.helper.CommentTestHelper.createNewComment;
 import static com.carpassionnetwork.helper.CommentTestHelper.createNewCommentRequestDto;
 import static com.carpassionnetwork.helper.PostTestHelper.createNewPost;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -13,6 +15,7 @@ import com.carpassionnetwork.dto.request.CommentRequestDto;
 import com.carpassionnetwork.exception.CommentNotFoundException;
 import com.carpassionnetwork.exception.InvalidCredentialsException;
 import com.carpassionnetwork.exception.PostNotFoundException;
+import com.carpassionnetwork.exception.UserNotAuthorException;
 import com.carpassionnetwork.model.Comment;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
@@ -30,6 +33,7 @@ public class CommentControllerIT extends BaseIT {
   private Post post;
   private Comment comment;
   private User user;
+  private User secondUser;
 
   @Autowired private PostRepository postRepository;
   @Autowired private CommentRepository commentRepository;
@@ -40,6 +44,7 @@ public class CommentControllerIT extends BaseIT {
     post = createNewPost();
     comment = createNewComment();
     user = createUserOne();
+    secondUser = createUserTwo();
   }
 
   @Test
@@ -193,6 +198,79 @@ public class CommentControllerIT extends BaseIT {
         .andExpect(jsonPath("$.content").value(commentRequestDto.getContent()));
   }
 
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testDeleteCommentShouldThrowInvalidCredentialsException() throws Exception {
+    mockMvc
+        .perform(delete("/comment/delete/" + post.getId() + "/" + comment.getId()))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testDeleteCommentShouldThrowPostNotFoundException() throws Exception {
+    register();
+
+    mockMvc
+        .perform(delete("/comment/delete/" + post.getId() + "/" + comment.getId()))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result -> assertInstanceOf(PostNotFoundException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testDeleteCommentShouldThrowCommentNotFoundException() throws Exception {
+    register();
+    Post savedPost = createPost();
+
+    mockMvc
+        .perform(delete("/comment/delete/" + savedPost.getId() + "/" + comment.getId()))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(CommentNotFoundException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testDeleteCommentShouldThrowUserNotAuthorException() throws Exception {
+    register();
+    User user = createSecondUser();
+    post.setAuthor(user);
+    post.setUser(user);
+    Post savedPost = createPost();
+    comment.setUser(user);
+    comment.setPost(savedPost);
+    Comment savedComment = creteComment();
+
+    mockMvc
+        .perform(delete("/comment/delete/" + savedPost.getId() + "/" + savedComment.getId()))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(UserNotAuthorException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testDeleteCommentSuccessfully() throws Exception {
+    User user = createUser();
+    post.setAuthor(user);
+    post.setUser(user);
+    Post savedPost = createPost();
+    comment.setUser(user);
+    comment.setPost(savedPost);
+    Comment savedComment = creteComment();
+
+    mockMvc
+        .perform(delete("/comment/delete/" + savedPost.getId() + "/" + savedComment.getId()))
+        .andExpect(status().isNoContent());
+  }
+
   private Post createPost() {
     return postRepository.save(post);
   }
@@ -203,5 +281,9 @@ public class CommentControllerIT extends BaseIT {
 
   private User createUser() {
     return userRepository.save(user);
+  }
+
+  private User createSecondUser() {
+    return userRepository.save(secondUser);
   }
 }
