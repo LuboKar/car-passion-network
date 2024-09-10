@@ -14,14 +14,15 @@ export default function CommentProfile({ comment }) {
         className="comment-profile-pic"
         onClick={() => navigateToProfile(comment.user.id)}
       />
-      <label
-        className="comment-profile-name"
-        onClick={() => navigateToProfile(comment.user.id)}
-      >
-        {comment.user.firstName} {comment.user.lastName}
-      </label>
-
-      <label className="comment-date">{comment.createdAt}</label>
+      <div className="comment-profile-information">
+        <label
+          className="comment-profile-name"
+          onClick={() => navigateToProfile(comment.user.id)}
+        >
+          {comment.user.firstName} {comment.user.lastName}
+        </label>
+        <label className="comment-date">{comment.createdAt}</label>
+      </div>
     </div>
   );
 }

@@ -32,3 +32,8 @@
 .comment-date:hover{ 
     cursor: text;
 }
+
+.comment-profile-information{
+    display: flex;
+    flex-direction: column;
+}

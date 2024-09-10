@@ -4,8 +4,15 @@ import CommentProfile from "./CommentProfile";
 import CommentTools from "./CommentTools";
 import WriteReply from "./WriteReply";
 import ViewReplies from "./ViewReplies";
+import CommentMenu from "./CommentMenu";
 
-export default function Comment({ comment, commentIndex, postIndex, postId }) {
+export default function Comment({
+  comment,
+  commentIndex,
+  postIndex,
+  postId,
+  postOwnerId,
+}) {
   const [clickedReply, setClickedReply] = useState(0);
 
   const [showReplies, setShowReplies] = useState(false);
@@ -27,8 +34,16 @@ export default function Comment({ comment, commentIndex, postIndex, postId }) {
       {comment.replies && !showReplies && comment.replies.length > 0 && (
         <div className="show-replies-horizontal-line"></div>
       )}
-
-      <CommentProfile comment={comment} />
+      <div className="comment-user-container">
+        <CommentProfile comment={comment} />
+        <CommentMenu
+          comment={comment}
+          postId={postId}
+          postIndex={postIndex}
+          postOwnerId={postOwnerId}
+          commentIndex={commentIndex}
+        />
+      </div>
 
       <p className="comment-content">{comment.content}</p>
 

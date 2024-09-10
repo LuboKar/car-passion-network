@@ -6,6 +6,7 @@ export const PostsProvider = ({ children }) => {
   const [posts, setPosts] = useState([]);
   const [editPostId, setEditPostId] = useState(0);
   const [clickedMenu, setClickedMenu] = useState(0);
+  const [clickedCommentMenu, setClickedCommentMenu] = useState(0);
 
   const addNewPost = (createdPost) => {
     setPosts((prevPosts) => [createdPost, ...prevPosts]);
@@ -66,6 +67,25 @@ export const PostsProvider = ({ children }) => {
     setClickedMenu(0);
   };
 
+  const toggleCommentMenu = (id) => {
+    if (clickedCommentMenu === id) {
+      setClickedCommentMenu(0);
+    } else setClickedCommentMenu(id);
+  };
+
+  const removeComment = (commentIndex, postIndex) => {
+    setPosts((prevPosts) => {
+      const newPosts = [...prevPosts];
+
+      newPosts[postIndex].comments = [
+        ...newPosts[postIndex].comments.slice(0, commentIndex),
+        ...newPosts[postIndex].comments.slice(commentIndex + 1),
+      ];
+
+      return newPosts;
+    });
+  };
+
   return (
     <PostsContext.Provider
       value={{
@@ -82,6 +102,9 @@ export const PostsProvider = ({ children }) => {
         toggleMenu,
         toggleEditPost,
         setEditPostId,
+        clickedCommentMenu,
+        toggleCommentMenu,
+        removeComment,
       }}
     >
       {children}

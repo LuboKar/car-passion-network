@@ -35,6 +35,16 @@ export const PostProvider = ({ children }) => {
     setPost(updatedPost);
   };
 
+  const removeComment = (commentIndex) => {
+    setPost((prevPost) => ({
+      ...prevPost,
+      comments: [
+        ...prevPost.comments.slice(0, commentIndex),
+        ...prevPost.comments.slice(commentIndex + 1),
+      ],
+    }));
+  };
+
   const postProviderValues = {
     ...postsContext,
     removePost: deletePost,
@@ -44,6 +54,7 @@ export const PostProvider = ({ children }) => {
     toggleLike: editPost,
     commentPostByIndex: commentPost,
     editComment: editComment,
+    removeComment: removeComment,
   };
 
   return (

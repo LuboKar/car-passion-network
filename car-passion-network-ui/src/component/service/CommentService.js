@@ -55,4 +55,24 @@ const likeComment = async (comment) => {
   }
 };
 
-export { writeComment, likeComment, replyComment };
+const deleteComment = async (postId, commentId) => {
+  try {
+    const token = getToken();
+    const response = await fetch(
+      `http://localhost:8080/comment/delete/${postId}/${commentId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+  }
+};
+
+export { writeComment, likeComment, replyComment, deleteComment };
