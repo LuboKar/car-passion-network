@@ -44,6 +44,7 @@ public class Post {
   Set<User> likes;
 
   @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+  @OrderBy("createdAt ASC")
   private List<Comment> comments;
 
   @PrePersist
