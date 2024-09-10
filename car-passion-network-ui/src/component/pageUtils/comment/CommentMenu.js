@@ -24,7 +24,7 @@ export default function CommentMenu({
       throw new Error("Network response was not ok");
     }
 
-    removeComment(commentIndex, postIndex);
+    removeComment(comment.id, postId);
   };
 
   return (

@@ -73,16 +73,29 @@ export const PostsProvider = ({ children }) => {
     } else setClickedCommentMenu(id);
   };
 
-  const removeComment = (commentIndex, postIndex) => {
+  const removeComment = (commentId, postId) => {
+    const removeCommentRecursively = (comments) => {
+      return comments.filter((comment) => {
+        if (comment.id === commentId) {
+          return false;
+        }
+        if (comment.replies) {
+          comment.replies = removeCommentRecursively(comment.replies);
+        }
+        return true;
+      });
+    };
+
     setPosts((prevPosts) => {
-      const newPosts = [...prevPosts];
-
-      newPosts[postIndex].comments = [
-        ...newPosts[postIndex].comments.slice(0, commentIndex),
-        ...newPosts[postIndex].comments.slice(commentIndex + 1),
-      ];
-
-      return newPosts;
+      return prevPosts.map((post) => {
+        if (post.id === postId) {
+          return {
+            ...post,
+            comments: removeCommentRecursively(post.comments),
+          };
+        }
+        return post;
+      });
     });
   };
 

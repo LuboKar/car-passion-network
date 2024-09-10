@@ -35,14 +35,25 @@ export const PostProvider = ({ children }) => {
     setPost(updatedPost);
   };
 
-  const removeComment = (commentIndex) => {
-    setPost((prevPost) => ({
-      ...prevPost,
-      comments: [
-        ...prevPost.comments.slice(0, commentIndex),
-        ...prevPost.comments.slice(commentIndex + 1),
-      ],
-    }));
+  const removeComment = (commentId) => {
+    const removeCommentRecursively = (comments) => {
+      return comments.filter((comment) => {
+        if (comment.id === commentId) {
+          return false;
+        }
+        if (comment.replies) {
+          comment.replies = removeCommentRecursively(comment.replies);
+        }
+        return true;
+      });
+    };
+
+    setPost((prevPost) => {
+      return {
+        ...prevPost,
+        comments: removeCommentRecursively(prevPost.comments),
+      };
+    });
   };
 
   const postProviderValues = {

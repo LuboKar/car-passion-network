@@ -29,7 +29,9 @@ export default function Comment({
 
   return (
     <div key={commentIndex} className="view-comment-container">
-      {showReplies && <div className="vertical-line"></div>}
+      {comment.replies && comment.replies.length > 0 && showReplies && (
+        <div className="vertical-line"></div>
+      )}
 
       {comment.replies && !showReplies && comment.replies.length > 0 && (
         <div className="show-replies-horizontal-line"></div>
@@ -39,9 +41,7 @@ export default function Comment({
         <CommentMenu
           comment={comment}
           postId={postId}
-          postIndex={postIndex}
           postOwnerId={postOwnerId}
-          commentIndex={commentIndex}
         />
       </div>
 
