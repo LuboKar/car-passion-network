@@ -2,15 +2,14 @@ package com.carpassionnetwork.integration;
 
 import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserOne;
 import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserTwo;
-import static com.carpassionnetwork.helper.CommentTestHelper.createNewComment;
-import static com.carpassionnetwork.helper.CommentTestHelper.createNewCommentRequestDto;
+import static com.carpassionnetwork.helper.CommentTestHelper.*;
 import static com.carpassionnetwork.helper.PostTestHelper.createNewPost;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.carpassionnetwork.dto.request.CommentEditRequestDto;
 import com.carpassionnetwork.dto.request.CommentRequestDto;
 import com.carpassionnetwork.exception.CommentNotFoundException;
 import com.carpassionnetwork.exception.InvalidCredentialsException;
@@ -30,6 +29,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 public class CommentControllerIT extends BaseIT {
   private CommentRequestDto commentRequestDto;
+  private CommentEditRequestDto commentEditRequestDto;
   private Post post;
   private Comment comment;
   private User user;
@@ -45,6 +45,7 @@ public class CommentControllerIT extends BaseIT {
     comment = createNewComment();
     user = createUserOne();
     secondUser = createUserTwo();
+    commentEditRequestDto = createNewCommentEditRequestDto();
   }
 
   @Test
@@ -269,6 +270,100 @@ public class CommentControllerIT extends BaseIT {
     mockMvc
         .perform(delete("/comment/delete/" + savedPost.getId() + "/" + savedComment.getId()))
         .andExpect(status().isNoContent());
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testEditCommentShouldThrowInvalidCredentialsException() throws Exception {
+    mockMvc
+        .perform(
+            put("/comment/edit")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(commentEditRequestDto)))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testEditCommentShouldThrowPostNotFoundException() throws Exception {
+    register();
+
+    mockMvc
+        .perform(
+            put("/comment/edit")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(commentEditRequestDto)))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result -> assertInstanceOf(PostNotFoundException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testEditCommentShouldThrowCommentNotFoundException() throws Exception {
+    register();
+    Post createdPost = createPost();
+    commentEditRequestDto.setPostId(createdPost.getId());
+
+    mockMvc
+        .perform(
+            put("/comment/edit")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(commentEditRequestDto)))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(CommentNotFoundException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testEditCommentShouldThrowUserNotAuthorException() throws Exception {
+    register();
+    User user = createSecondUser();
+    post.setAuthor(user);
+    post.setUser(user);
+    Post savedPost = createPost();
+    comment.setUser(user);
+    comment.setPost(savedPost);
+    Comment savedComment = creteComment();
+    commentEditRequestDto.setPostId(savedPost.getId());
+    commentEditRequestDto.setCommentId(savedComment.getId());
+
+    mockMvc
+        .perform(
+            put("/comment/edit")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(commentEditRequestDto)))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(UserNotAuthorException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testEditCommentSuccessfully() throws Exception {
+    User user = createUser();
+    post.setAuthor(user);
+    post.setUser(user);
+    Post savedPost = createPost();
+    comment.setUser(user);
+    comment.setPost(savedPost);
+    Comment savedComment = creteComment();
+    commentEditRequestDto.setPostId(savedPost.getId());
+    commentEditRequestDto.setCommentId(savedComment.getId());
+
+    mockMvc
+        .perform(
+            put("/comment/edit")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(commentEditRequestDto)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.content").value(commentEditRequestDto.getContent()));
   }
 
   private Post createPost() {

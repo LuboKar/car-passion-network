@@ -95,6 +95,20 @@ public class CommentService {
     commentRepository.delete(commentToDelete);
   }
 
+  public Comment editComment(UUID postId, UUID commentId, String content) {
+    User currentUser = userService.getCurrentUser();
+    Post post = postService.getPost(postId);
+    Comment commentToEdit = getComment(commentId);
+
+    if (!post.getAuthor().equals(currentUser) && !post.getUser().equals(currentUser)) {
+      throw new UserNotAuthorException(currentUser.getId(), postId);
+    }
+
+    commentToEdit.setContent(content);
+
+    return commentRepository.save(commentToEdit);
+  }
+
   private Comment getParent(Comment comment) {
     Comment parentComment = comment.getParent();
     while (parentComment.getParent() != null) {

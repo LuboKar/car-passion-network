@@ -1,5 +1,6 @@
 package com.carpassionnetwork.helper;
 
+import com.carpassionnetwork.dto.request.CommentEditRequestDto;
 import com.carpassionnetwork.dto.request.CommentRequestDto;
 import com.carpassionnetwork.model.Comment;
 import java.util.HashSet;
@@ -13,6 +14,18 @@ public class CommentTestHelper {
   }
 
   public static Comment createNewComment() {
-    return Comment.builder().id(UUID.randomUUID()).content("Test comment content!").likes(new HashSet<>()).build();
+    return Comment.builder()
+        .id(UUID.randomUUID())
+        .content("Test comment content!")
+        .likes(new HashSet<>())
+        .build();
+  }
+
+  public static CommentEditRequestDto createNewCommentEditRequestDto() {
+    return CommentEditRequestDto.builder()
+        .postId(UUID.randomUUID())
+        .commentId(UUID.randomUUID())
+        .content(CONTENT)
+        .build();
   }
 }

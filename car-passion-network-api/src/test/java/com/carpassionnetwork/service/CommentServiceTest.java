@@ -179,8 +179,8 @@ public class CommentServiceTest {
     when(commentRepository.findById(comment.getId())).thenThrow(CommentNotFoundException.class);
 
     assertThrows(
-            CommentNotFoundException.class,
-            () -> commentService.deleteComment(post.getId(), comment.getId()));
+        CommentNotFoundException.class,
+        () -> commentService.deleteComment(post.getId(), comment.getId()));
   }
 
   @Test
@@ -193,8 +193,8 @@ public class CommentServiceTest {
     post.setAuthor(secondUser);
 
     assertThrows(
-            UserNotAuthorException.class,
-            () -> commentService.deleteComment(post.getId(), comment.getId()));
+        UserNotAuthorException.class,
+        () -> commentService.deleteComment(post.getId(), comment.getId()));
   }
 
   @Test
@@ -209,8 +209,69 @@ public class CommentServiceTest {
     commentService.deleteComment(post.getId(), comment.getId());
 
     verify(userService, times(1)).getCurrentUser();
-    verify(postService,times(1)).getPost(post.getId());
+    verify(postService, times(1)).getPost(post.getId());
     verify(commentRepository, times(1)).findById(comment.getId());
     verify(commentRepository, times(1)).delete(comment);
+  }
+
+  @Test
+  void testEditCommentShouldThrowInvalidCredentialsException() {
+    when(userService.getCurrentUser()).thenThrow(InvalidCredentialsException.class);
+
+    assertThrows(
+        InvalidCredentialsException.class,
+        () -> commentService.editComment(post.getId(), comment.getId(), content));
+  }
+
+  @Test
+  void testEditCommentShouldThrowPostNotFoundException() {
+    when(userService.getCurrentUser()).thenReturn(user);
+    when(postService.getPost(post.getId())).thenThrow(PostNotFoundException.class);
+
+    assertThrows(
+        PostNotFoundException.class,
+        () -> commentService.editComment(post.getId(), comment.getId(), content));
+  }
+
+  @Test
+  void testEditCommentShouldThrowCommentNotFoundException() {
+    when(userService.getCurrentUser()).thenReturn(user);
+    when(postService.getPost(post.getId())).thenReturn(post);
+    when(commentRepository.findById(comment.getId())).thenThrow(CommentNotFoundException.class);
+
+    assertThrows(
+        CommentNotFoundException.class,
+        () -> commentService.editComment(post.getId(), comment.getId(), content));
+  }
+
+  @Test
+  void testEditCommentShouldThrowUserNotAuthorException() {
+    when(userService.getCurrentUser()).thenReturn(user);
+    when(postService.getPost(post.getId())).thenReturn(post);
+    when(commentRepository.findById(comment.getId())).thenReturn(Optional.of(comment));
+
+    post.setUser(secondUser);
+    post.setAuthor(secondUser);
+
+    assertThrows(
+        UserNotAuthorException.class,
+        () -> commentService.editComment(post.getId(), comment.getId(), content));
+  }
+
+  @Test
+  void testEditCommentSuccessfully() {
+    when(userService.getCurrentUser()).thenReturn(user);
+    when(postService.getPost(post.getId())).thenReturn(post);
+    when(commentRepository.findById(comment.getId())).thenReturn(Optional.of(comment));
+
+    post.setUser(user);
+    post.setAuthor(user);
+
+    commentService.editComment(post.getId(), comment.getId(), content);
+
+    verify(userService, times(1)).getCurrentUser();
+    verify(postService, times(1)).getPost(post.getId());
+    verify(commentRepository, times(1)).findById(comment.getId());
+    verify(commentRepository, times(1)).save(comment);
   }
 }

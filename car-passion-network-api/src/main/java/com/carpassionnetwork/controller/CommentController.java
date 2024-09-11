@@ -1,5 +1,6 @@
 package com.carpassionnetwork.controller;
 
+import com.carpassionnetwork.dto.request.CommentEditRequestDto;
 import com.carpassionnetwork.dto.request.CommentRequestDto;
 import com.carpassionnetwork.dto.response.CommentResponseDto;
 import com.carpassionnetwork.mapper.CommentMapper;
@@ -48,5 +49,16 @@ public class CommentController {
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteComment(@PathVariable UUID postId, @PathVariable UUID commentId) {
     commentService.deleteComment(postId, commentId);
+  }
+
+  @PutMapping("/edit")
+  public ResponseEntity<CommentResponseDto> editComment(
+      @RequestBody @Valid CommentEditRequestDto commentEditRequestDto) {
+    return ResponseEntity.ok(
+        commentMapper.toCommentResponse(
+            commentService.editComment(
+                commentEditRequestDto.getPostId(),
+                commentEditRequestDto.getCommentId(),
+                commentEditRequestDto.getContent())));
   }
 }
