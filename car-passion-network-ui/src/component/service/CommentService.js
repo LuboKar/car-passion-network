@@ -75,4 +75,22 @@ const deleteComment = async (postId, commentId) => {
   }
 };
 
-export { writeComment, likeComment, replyComment, deleteComment };
+const editComment = async (editCommentValues) => {
+  try {
+    const token = getToken();
+    const response = await fetch("http://localhost:8080/comment/edit", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(editCommentValues),
+    });
+
+    return response;
+  } catch (error) {
+    console.error("Error sending data to backend:", error);
+  }
+};
+
+export { writeComment, likeComment, replyComment, deleteComment, editComment };

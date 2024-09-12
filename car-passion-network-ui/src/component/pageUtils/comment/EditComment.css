@@ -1,0 +1,17 @@
+.edit-comment-container{
+    display: flex;
+    text-align: center;
+    align-items: center;
+    margin-bottom: 5%;
+}
+
+.edit-comment-input{
+    width: 100%;
+    height: 28px;
+    border-radius: 10px;
+    padding-left: 1%;
+    border: 2px solid black;
+    font-size: 15px;
+    margin-left: 50px;
+    margin-right: 1%;
+}

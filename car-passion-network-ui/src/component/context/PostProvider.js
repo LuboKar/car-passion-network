@@ -56,6 +56,27 @@ export const PostProvider = ({ children }) => {
     });
   };
 
+  const editCommentContent = (commentId, newComment, postId) => {
+    const editCommentRecursively = (comments) => {
+      return comments.map((comment) => {
+        if (comment.id === commentId) {
+          return { ...comment, ...newComment };
+        }
+        if (comment.replies) {
+          comment.replies = editCommentRecursively(comment.replies);
+        }
+        return comment;
+      });
+    };
+
+    setPost((prevPost) => {
+      return {
+        ...prevPost,
+        comments: editCommentRecursively(prevPost.comments),
+      };
+    });
+  };
+
   const postProviderValues = {
     ...postsContext,
     removePost: deletePost,
@@ -66,6 +87,7 @@ export const PostProvider = ({ children }) => {
     commentPostByIndex: commentPost,
     editComment: editComment,
     removeComment: removeComment,
+    editCommentContent: editCommentContent,
   };
 
   return (

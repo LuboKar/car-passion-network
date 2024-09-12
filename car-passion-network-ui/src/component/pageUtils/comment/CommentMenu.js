@@ -5,17 +5,16 @@ import { PostsContext } from "../../context/PostsProvider";
 import { getId } from "../../service/TokenService";
 import deleteIcon from "../../../images/delete.png";
 import { deleteComment } from "../../service/CommentService";
+import edit from "../../../images/edit.png";
 
-export default function CommentMenu({
-  comment,
-  postId,
-  postIndex,
-  postOwnerId,
-  commentIndex,
-}) {
+export default function CommentMenu({ comment, postId, postOwnerId }) {
   const currentUserId = getId();
-  const { clickedCommentMenu, toggleCommentMenu, removeComment } =
-    useContext(PostsContext);
+  const {
+    clickedCommentMenu,
+    toggleCommentMenu,
+    removeComment,
+    toggleEditComment,
+  } = useContext(PostsContext);
 
   const deleteCommentById = async () => {
     const response = await deleteComment(postId, comment.id);
@@ -38,6 +37,16 @@ export default function CommentMenu({
 
       {clickedCommentMenu === comment.id && (
         <div className="comment-menu-dropdown">
+          {currentUserId === comment.user.id && (
+            <div
+              className="menu-option"
+              onClick={() => toggleEditComment(comment.id)}
+            >
+              <img src={edit} alt="option-pic" className="option-pic" />
+              <label className="edit-text">Edit</label>
+            </div>
+          )}
+
           {(currentUserId === comment.user.id ||
             currentUserId === postOwnerId) && (
             <div className="menu-option" onClick={deleteCommentById}>

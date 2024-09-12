@@ -5,6 +5,7 @@ export const PostsContext = createContext();
 export const PostsProvider = ({ children }) => {
   const [posts, setPosts] = useState([]);
   const [editPostId, setEditPostId] = useState(0);
+  const [editCommentId, setEditCommentId] = useState(0);
   const [clickedMenu, setClickedMenu] = useState(0);
   const [clickedCommentMenu, setClickedCommentMenu] = useState(0);
 
@@ -67,6 +68,11 @@ export const PostsProvider = ({ children }) => {
     setClickedMenu(0);
   };
 
+  const toggleEditComment = (id) => {
+    setEditCommentId(id);
+    setClickedCommentMenu(0);
+  };
+
   const toggleCommentMenu = (id) => {
     if (clickedCommentMenu === id) {
       setClickedCommentMenu(0);
@@ -99,6 +105,32 @@ export const PostsProvider = ({ children }) => {
     });
   };
 
+  const editCommentContent = (commentId, newComment, postId) => {
+    const editCommentRecursively = (comments) => {
+      return comments.map((comment) => {
+        if (comment.id === commentId) {
+          return { ...comment, ...newComment };
+        }
+        if (comment.replies) {
+          comment.replies = editCommentRecursively(comment.replies);
+        }
+        return comment;
+      });
+    };
+
+    setPosts((prevPosts) => {
+      return prevPosts.map((post) => {
+        if (post.id === postId) {
+          return {
+            ...post,
+            comments: editCommentRecursively(post.comments),
+          };
+        }
+        return post;
+      });
+    });
+  };
+
   return (
     <PostsContext.Provider
       value={{
@@ -118,6 +150,9 @@ export const PostsProvider = ({ children }) => {
         clickedCommentMenu,
         toggleCommentMenu,
         removeComment,
+        editCommentId,
+        toggleEditComment,
+        editCommentContent,
       }}
     >
       {children}

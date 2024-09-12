@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./Comment.css";
 import CommentProfile from "./CommentProfile";
 import CommentTools from "./CommentTools";
 import WriteReply from "./WriteReply";
 import ViewReplies from "./ViewReplies";
 import CommentMenu from "./CommentMenu";
+import EditComment from "./EditComment";
+import { PostsContext } from "../../context/PostsProvider";
 
 export default function Comment({
   comment,
@@ -16,6 +18,8 @@ export default function Comment({
   const [clickedReply, setClickedReply] = useState(0);
 
   const [showReplies, setShowReplies] = useState(false);
+
+  const { editCommentId } = useContext(PostsContext);
 
   const toggleReply = (id) => {
     if (clickedReply === 0) {
@@ -45,15 +49,26 @@ export default function Comment({
         />
       </div>
 
-      <p className="comment-content">{comment.content}</p>
+      {editCommentId !== comment.id && (
+        <p className="comment-content">{comment.content}</p>
+      )}
+      {editCommentId === comment.id && (
+        <EditComment
+          postId={postId}
+          commentId={comment.id}
+          content={comment.content}
+        />
+      )}
 
-      <CommentTools
-        comment={comment}
-        postIndex={postIndex}
-        commentIndex={commentIndex}
-        toggleReply={toggleReply}
-        clickedReply={clickedReply}
-      />
+      {editCommentId !== comment.id && (
+        <CommentTools
+          comment={comment}
+          postIndex={postIndex}
+          commentIndex={commentIndex}
+          toggleReply={toggleReply}
+          clickedReply={clickedReply}
+        />
+      )}
 
       {clickedReply === comment.id && (
         <WriteReply
