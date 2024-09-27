@@ -6,12 +6,15 @@ import { useState } from "react";
 import cannotSend from "../../../images/cannot-send.png";
 import { writeComment } from "../../service/CommentService";
 import { PostsContext } from "../../context/PostsProvider";
+import { getProfilePictureUrl } from "../../service/profilePictureService";
 
 export default function WriteComment({ post, index }) {
   const [comment, setComment] = useState({
     postId: post.id,
     content: "",
   });
+
+  const profilePicture = getProfilePictureUrl();
 
   const [sendButton, setSendButton] = useState(false);
 
@@ -57,11 +60,7 @@ export default function WriteComment({ post, index }) {
     <div className="write-comment-container">
       <div className="write-comment-profile-pic-container">
         <img
-          src={
-            post.user.profilePicture
-              ? `http://localhost:8080/${post.user.profilePicture}`
-              : pic
-          }
+          src={profilePicture ? `http://localhost:8080/${profilePicture}` : pic}
           alt={"profile-pic"}
           className="write-comment-profile-pic"
         />

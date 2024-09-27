@@ -5,6 +5,7 @@ import cannotSend from "../../../images/cannot-send.png";
 import "./WriteReply.css";
 import { replyComment } from "../../service/CommentService";
 import { PostsContext } from "../../context/PostsProvider";
+import { getProfilePictureUrl } from "../../service/profilePictureService";
 
 export default function WriteReply({
   comment,
@@ -23,6 +24,8 @@ export default function WriteReply({
   const [sendButton, setSendButton] = useState(false);
 
   const { editComment } = useContext(PostsContext);
+
+  const profilePicture = getProfilePictureUrl();
 
   useEffect(() => {
     if (reply.content === "") {
@@ -65,11 +68,7 @@ export default function WriteReply({
     <div className="reply-comment-input">
       <div className="write-comment-profile-pic-container">
         <img
-          src={
-            comment.user.profilePicture
-              ? `http://localhost:8080/${comment.user.profilePicture}`
-              : pic
-          }
+          src={profilePicture ? `http://localhost:8080/${profilePicture}` : pic}
           alt="pic"
           className="write-comment-profile-pic"
         />
