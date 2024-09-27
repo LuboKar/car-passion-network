@@ -6,10 +6,8 @@ import com.carpassionnetwork.service.UserService;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,5 +19,11 @@ public class UserController {
   @GetMapping("/{id}")
   public ResponseEntity<UserResponseDto> getUser(@PathVariable UUID id) {
     return ResponseEntity.ok(userMapper.toUserResponse(userService.getUser(id)));
+  }
+
+  @PutMapping("/upload")
+  public ResponseEntity<UserResponseDto> uploadProfilePicture(
+      @RequestParam("file") MultipartFile file) {
+    return ResponseEntity.ok(userMapper.toUserResponse(userService.uploadProfilePicture(file)));
   }
 }

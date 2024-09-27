@@ -18,7 +18,9 @@ public class GlobalExceptionHandler {
     UserNotFoundException.class,
     PostNotFoundException.class,
     CommentNotFoundException.class,
-    UserNotAuthorException.class
+    UserNotAuthorException.class,
+    FileNotUploadedException.class,
+    FolderNotCreatedException.class
   })
   public ResponseEntity<Object> handleException(RuntimeException exception) {
     Map<String, String> error = new HashMap<>();

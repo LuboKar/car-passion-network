@@ -56,6 +56,8 @@ public class User implements UserDetails, Principal {
   @Enumerated(EnumType.STRING)
   private Role role;
 
+  @Column private String profilePicture;
+
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<Post> posts;
 

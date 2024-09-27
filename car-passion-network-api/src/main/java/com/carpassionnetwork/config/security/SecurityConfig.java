@@ -23,6 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
   private static final String LOGIN_ENDPOINT = "/authentication/**";
   private static final String ERROR_ENDPOINT = "/error/**";
+  private static final String PROFILE_PICTURES_ENDPOINT = "/ProfilePictures/**";
   private final JwtFilter jwtAuthenticationFilter;
   private final AuthenticationProvider authenticationProvider;
 
@@ -34,7 +35,7 @@ public class SecurityConfig {
         .authorizeHttpRequests(
             request ->
                 request
-                    .requestMatchers(LOGIN_ENDPOINT, ERROR_ENDPOINT)
+                    .requestMatchers(LOGIN_ENDPOINT, ERROR_ENDPOINT, PROFILE_PICTURES_ENDPOINT)
                     .permitAll()
                     .anyRequest()
                     .authenticated())

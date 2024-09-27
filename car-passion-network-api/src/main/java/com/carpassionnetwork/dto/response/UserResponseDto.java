@@ -30,4 +30,6 @@ public class UserResponseDto {
 
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime lastUpdate;
+
+  private String profilePicture;
 }
