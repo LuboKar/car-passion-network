@@ -55,7 +55,18 @@ export default function WriteComment({ post, index }) {
 
   return (
     <div className="write-comment-container">
-      <img src={pic} alt="pic" className="write-comment-profile-pic" />
+      <div className="write-comment-profile-pic-container">
+        <img
+          src={
+            post.user.profilePicture
+              ? `http://localhost:8080/${post.user.profilePicture}`
+              : pic
+          }
+          alt={"profile-pic"}
+          className="write-comment-profile-pic"
+        />
+      </div>
+
       <input
         className="comment-input"
         placeholder="Say something...."

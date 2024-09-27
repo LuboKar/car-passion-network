@@ -8,12 +8,18 @@ export default function CommentProfile({ comment }) {
 
   return (
     <div className="comment-profile">
-      <img
-        src={pic}
-        alt="profile-pic"
-        className="comment-profile-pic"
-        onClick={() => navigateToProfile(comment.user.id)}
-      />
+      <div className="comment-profile-pic-container">
+        <img
+          src={
+            comment.user.profilePicture
+              ? `http://localhost:8080/${comment.user.profilePicture}`
+              : pic
+          }
+          alt="profile-pic"
+          className="comment-profile-pic"
+          onClick={() => navigateToProfile(comment.user.id)}
+        />
+      </div>
       <div className="comment-profile-information">
         <label
           className="comment-profile-name"

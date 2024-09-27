@@ -63,7 +63,17 @@ export default function WriteReply({
 
   return (
     <div className="reply-comment-input">
-      <img src={pic} alt="pic" className="write-comment-profile-pic" />
+      <div className="write-comment-profile-pic-container">
+        <img
+          src={
+            comment.user.profilePicture
+              ? `http://localhost:8080/${comment.user.profilePicture}`
+              : pic
+          }
+          alt="pic"
+          className="write-comment-profile-pic"
+        />
+      </div>
       <input
         className="comment-input"
         placeholder="Reply...."

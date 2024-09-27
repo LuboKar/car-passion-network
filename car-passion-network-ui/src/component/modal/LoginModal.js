@@ -3,6 +3,7 @@ import "./LoginModal.css";
 import { loginUser } from "../service/AuthenticationService";
 import { saveToken } from "../service/TokenService";
 import useNavigation from "../service/NavigateService";
+import { saveProfilePictureUrl } from "../service/profilePictureService";
 
 export default function LoginModal({ toggleModal }) {
   const [inputValues, setInputValues] = useState({
@@ -34,6 +35,10 @@ export default function LoginModal({ toggleModal }) {
     const data = await response.json();
 
     saveToken(data.token);
+
+    const profilePicture = data.profilePicture;
+
+    saveProfilePictureUrl(profilePicture);
 
     navigateToDashboardPage();
   };

@@ -17,4 +17,21 @@ const getUser = async (id) => {
   }
 };
 
-export { getUser };
+const uploadProfilePicture = async (formData) => {
+  try {
+    const token = getToken();
+    const response = await fetch(`http://localhost:8080/users/upload`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    return response;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+  }
+};
+
+export { getUser, uploadProfilePicture };

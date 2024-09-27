@@ -7,12 +7,18 @@ export default function PostProfile({ post }) {
 
   return (
     <div className="post-profile">
-      <img
-        src={pic}
-        alt="profile-pic"
-        className="post-profile-pic"
-        onClick={() => navigateToProfile(post.author.id)}
-      />
+      <div className="post-profile-pic-container">
+        <img
+          src={
+            post.author.profilePicture
+              ? `http://localhost:8080/${post.author.profilePicture}`
+              : pic
+          }
+          alt="profile-pic"
+          className="post-profile-pic"
+          onClick={() => navigateToProfile(post.author.id)}
+        />
+      </div>
       <div className="post-profile-information">
         <h1
           className="post-user-name"

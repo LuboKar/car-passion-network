@@ -72,7 +72,9 @@ export default function ProfilePage() {
       />
       <RightVerticalNabvar />
 
-      {!loadingUser && !loadingPosts && <Profile user={user} />}
+      {!loadingUser && !loadingPosts && (
+        <Profile user={user} setUser={setUser} />
+      )}
       {!loadingUser && !loadingPosts && viewPosts && (
         <Posts ownerId={user.id} />
       )}

@@ -10,15 +10,26 @@
    margin-bottom: 5%;
 }
 
-.post-profile-pic{
+.post-profile-pic-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;  
     width: 45px;
     border-radius: 15px;
     height: 45px;
+    overflow: hidden;
 }
 
-.post-profile-pic:hover{
+.post-profile-pic-container:hover{
     cursor: pointer;
 }
+
+.post-profile-pic{
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+}
+
 
 .post-profile{
     display: flex;

@@ -8,11 +8,13 @@ import logoutIcon from "../../../images/logout.png";
 import { getId } from "../../service/TokenService";
 import { deleteToken } from "../../service/TokenService";
 import "./NavbarDropdown.css";
+import { getProfilePictureUrl } from "../../service/profilePictureService";
 
 export default function NavbarDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const { navigateToProfile, navigateToDashboardPage } = useNavigation();
+  const profilePicture = getProfilePictureUrl();
 
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -45,12 +47,14 @@ export default function NavbarDropdown() {
 
   return (
     <div className="dropdown-container">
-      <img
-        src={pic}
-        alt="profilepic"
-        className="dropdown-icon"
-        onClick={toggleOptions}
-      />
+      <div className="dropdown-icon-container">
+        <img
+          src={profilePicture ? `http://localhost:8080/${profilePicture}` : pic}
+          alt="profilepic"
+          className="dropdown-icon"
+          onClick={toggleOptions}
+        />
+      </div>
 
       {isOpen && (
         <div className="dropdown" ref={dropdownRef}>
@@ -58,7 +62,17 @@ export default function NavbarDropdown() {
             className="profile-span"
             onClick={() => navigateToProfile(getId())}
           >
-            <img src={pic} alt="profilepic" className="span-icon" />
+            <div className="dropdown-profile-picture-container">
+              <img
+                src={
+                  profilePicture
+                    ? `http://localhost:8080/${profilePicture}`
+                    : pic
+                }
+                alt="profilepic"
+                className="profile-picture-icon"
+              />
+            </div>
             <span>Profile</span>
           </div>
           <Link to="/" className="link">
