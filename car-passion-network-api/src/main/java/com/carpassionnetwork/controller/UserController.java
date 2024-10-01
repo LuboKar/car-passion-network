@@ -1,5 +1,6 @@
 package com.carpassionnetwork.controller;
 
+import com.carpassionnetwork.dto.request.UserEditRequest;
 import com.carpassionnetwork.dto.response.UserResponseDto;
 import com.carpassionnetwork.mapper.UserMapper;
 import com.carpassionnetwork.service.UserService;
@@ -25,5 +26,10 @@ public class UserController {
   public ResponseEntity<UserResponseDto> uploadProfilePicture(
       @RequestParam("file") MultipartFile file) {
     return ResponseEntity.ok(userMapper.toUserResponse(userService.uploadProfilePicture(file)));
+  }
+
+  @PatchMapping("/edit")
+  public ResponseEntity<UserResponseDto> editUser(@RequestBody UserEditRequest userEditRequest) {
+    return ResponseEntity.ok(userMapper.toUserResponse(userService.editUser(userEditRequest)));
   }
 }

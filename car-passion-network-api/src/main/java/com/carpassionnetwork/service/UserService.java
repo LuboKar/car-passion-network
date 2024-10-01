@@ -1,7 +1,9 @@
 package com.carpassionnetwork.service;
 
+import com.carpassionnetwork.dto.request.UserEditRequest;
 import com.carpassionnetwork.exception.FileNotUploadedException;
 import com.carpassionnetwork.exception.InvalidCredentialsException;
+import com.carpassionnetwork.exception.InvalidPasswordException;
 import com.carpassionnetwork.exception.UserNotFoundException;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.UserRepository;
@@ -12,6 +14,7 @@ import java.nio.file.Paths;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +24,7 @@ public class UserService {
   private static final String PARENT_DIRECTORY = "ProfilePictures";
   private static final String FILE_NAME = "profile picture";
   private final UserRepository userRepository;
+  private final PasswordEncoder passwordEncoder;
 
   public User getUser(UUID id) {
     return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
@@ -42,6 +46,17 @@ public class UserService {
     createFile(file, targetPath);
 
     return saveProfilePicture(targetPath);
+  }
+
+  public User editUser(UserEditRequest userEditRequest) {
+    User currentUser = getCurrentUser();
+
+    editName(userEditRequest, currentUser);
+    editPassword(userEditRequest, currentUser);
+    editDateOfBirth(userEditRequest, currentUser);
+    editGender(userEditRequest, currentUser);
+
+    return userRepository.save(currentUser);
   }
 
   private String getCurrentUserEmail() {
@@ -85,5 +100,34 @@ public class UserService {
     currentUser.setProfilePicture(targetPath.toString());
 
     return userRepository.save(currentUser);
+  }
+
+  private void editName(UserEditRequest userEditRequest, User currentUser) {
+    if (userEditRequest.getFirstName() != null && userEditRequest.getLastName() != null) {
+      currentUser.setFirstName(userEditRequest.getFirstName());
+      currentUser.setLastName(userEditRequest.getLastName());
+    }
+  }
+
+  private void editPassword(UserEditRequest userEditRequest, User currentUser) {
+    if (userEditRequest.getOldPassword() != null) {
+      if (passwordEncoder.matches(userEditRequest.getOldPassword(), currentUser.getPassword())) {
+        currentUser.setPassword(passwordEncoder.encode(userEditRequest.getNewPassword()));
+      } else {
+        throw new InvalidPasswordException();
+      }
+    }
+  }
+
+  private void editDateOfBirth(UserEditRequest userEditRequest, User currentUser) {
+    if (userEditRequest.getDateOfBirth() != null) {
+      currentUser.setDateOfBirth(userEditRequest.getDateOfBirth());
+    }
+  }
+
+  private void editGender(UserEditRequest userEditRequest, User currentUser) {
+    if (userEditRequest.getGender() != null) {
+      currentUser.setGender(userEditRequest.getGender());
+    }
   }
 }

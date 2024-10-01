@@ -1,12 +1,15 @@
 package com.carpassionnetwork.service;
 
 import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserOne;
+import static com.carpassionnetwork.helper.UserTestHelper.createUserEditRequest;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import com.carpassionnetwork.dto.request.UserEditRequest;
 import com.carpassionnetwork.exception.FileNotUploadedException;
 import com.carpassionnetwork.exception.InvalidCredentialsException;
+import com.carpassionnetwork.exception.InvalidPasswordException;
 import com.carpassionnetwork.exception.UserNotFoundException;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.UserRepository;
@@ -21,6 +24,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,12 +35,15 @@ public class UserServiceTest {
   @Mock private MultipartFile file;
   @Mock private Authentication authentication;
   @Mock private SecurityContext securityContext;
+  @Mock private PasswordEncoder passwordEncoder;
 
   private User user;
+  private UserEditRequest userEditRequest;
 
   @BeforeEach
   void setUp() {
     user = createUserOne();
+    userEditRequest = createUserEditRequest();
   }
 
   @Test
@@ -114,6 +121,45 @@ public class UserServiceTest {
 
     userService.uploadProfilePicture(file);
 
+    verify(userRepository, times(1)).findByEmail(user.getEmail());
+    verify(userRepository, times(1)).save(user);
+  }
+
+  @Test
+  void editUserShouldThrowInvalidCredentialsException() {
+    SecurityContextHolder.setContext(securityContext);
+    when(authentication.getName()).thenReturn(user.getEmail());
+    when(securityContext.getAuthentication()).thenReturn(authentication);
+    when(userRepository.findByEmail(user.getEmail())).thenThrow(InvalidCredentialsException.class);
+
+    assertThrows(InvalidCredentialsException.class, () -> userService.editUser(userEditRequest));
+  }
+
+  @Test
+  void editUserShouldThrowInvalidPasswordException() {
+    SecurityContextHolder.setContext(securityContext);
+    when(authentication.getName()).thenReturn(user.getEmail());
+    when(securityContext.getAuthentication()).thenReturn(authentication);
+    when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.ofNullable(user));
+
+    user.setPassword("passs");
+    userEditRequest.setOldPassword("pass");
+    userEditRequest.setNewPassword("password");
+
+    assertThrows(InvalidPasswordException.class, () -> userService.editUser(userEditRequest));
+  }
+
+  @Test
+  void editUserSuccessfully() {
+    SecurityContextHolder.setContext(securityContext);
+    when(authentication.getName()).thenReturn(user.getEmail());
+    when(securityContext.getAuthentication()).thenReturn(authentication);
+    when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.ofNullable(user));
+
+    userService.editUser(userEditRequest);
+
+    verify(authentication, times(1)).getName();
+    verify(securityContext, times(1)).getAuthentication();
     verify(userRepository, times(1)).findByEmail(user.getEmail());
     verify(userRepository, times(1)).save(user);
   }

@@ -2,13 +2,16 @@ package com.carpassionnetwork.integration;
 
 import static com.carpassionnetwork.helper.AuthenticationTestHelper.EMAIL;
 import static com.carpassionnetwork.helper.PostTestHelper.*;
+import static com.carpassionnetwork.helper.UserTestHelper.createUserEditRequest;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.carpassionnetwork.dto.request.UserEditRequest;
 import com.carpassionnetwork.exception.FileNotUploadedException;
+import com.carpassionnetwork.exception.InvalidCredentialsException;
+import com.carpassionnetwork.exception.InvalidPasswordException;
 import com.carpassionnetwork.exception.UserNotFoundException;
 import com.carpassionnetwork.model.Gender;
 import com.carpassionnetwork.model.User;
@@ -25,11 +28,13 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 public class UserControllerIT extends BaseIT {
   @TempDir Path tempDir;
+  private UserEditRequest userEditRequest;
 
   @BeforeEach
   void setUp() throws IOException {
     Path customTempDir = tempDir.resolve(currentUser.getEmail());
     Files.createDirectories(customTempDir);
+    userEditRequest = createUserEditRequest();
   }
 
   @Test
@@ -196,6 +201,56 @@ public class UserControllerIT extends BaseIT {
                       return request;
                     }))
         .andExpect(status().isOk());
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void editUserShouldThrowInvalidCredentialsException() throws Exception {
+    mockMvc
+        .perform(
+            patch("/users/edit")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(userEditRequest)))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void editUserShouldThrowInvalidPasswordException() throws Exception {
+    register();
+    userEditRequest.setOldPassword("pass");
+    userEditRequest.setNewPassword("password");
+
+    mockMvc
+        .perform(
+            patch("/users/edit")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(userEditRequest)))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(InvalidPasswordException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void editUserSuccessfully() throws Exception {
+    register();
+
+    mockMvc
+        .perform(
+            patch("/users/edit")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(userEditRequest)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.firstName").value(userEditRequest.getFirstName()))
+        .andExpect(jsonPath("$.lastName").value(userEditRequest.getLastName()))
+        .andExpect(jsonPath("$.dateOfBirth").value(currentUser.getDateOfBirth().toString()))
+        .andExpect(jsonPath("$.email").value(currentUser.getEmail()))
+        .andExpect(jsonPath("$.gender").value(currentUser.getGender().toString()));
   }
 
   private User getRegisteredUser() {

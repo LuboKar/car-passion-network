@@ -20,7 +20,8 @@ public class GlobalExceptionHandler {
     CommentNotFoundException.class,
     UserNotAuthorException.class,
     FileNotUploadedException.class,
-    FolderNotCreatedException.class
+    FolderNotCreatedException.class,
+    InvalidPasswordException.class
   })
   public ResponseEntity<Object> handleException(RuntimeException exception) {
     Map<String, String> error = new HashMap<>();
