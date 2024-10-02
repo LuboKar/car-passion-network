@@ -22,7 +22,18 @@ const useNavigation = () => {
     } else navigate("/");
   };
 
-  return { navigateToProfile, navigateToPostPage, navigateToDashboardPage };
+  const navigateToSettingsPage = () => {
+    if (isAuthenticated()) {
+      navigate(`/settings`);
+    } else navigate("/");
+  };
+
+  return {
+    navigateToProfile,
+    navigateToPostPage,
+    navigateToDashboardPage,
+    navigateToSettingsPage,
+  };
 };
 
 export default useNavigation;

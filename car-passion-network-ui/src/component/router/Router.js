@@ -7,6 +7,7 @@ import ProfilePage from "../page/ProfilePage";
 import PostPage from "../page/PostPage";
 import { PostsProvider } from "../context/PostsProvider";
 import { PostProvider } from "../context/PostProvider";
+import SettingsPage from "../page/SettingsPage";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
         </PostProvider>
       </PostsProvider>
     ),
+  },
+  {
+    path: "/settings",
+    element: <ProtectedRoute element={SettingsPage} />,
   },
   {
     path: "*",

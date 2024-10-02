@@ -1,0 +1,21 @@
+.edit-profile-container{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    margin-left: 30%;  
+    margin-top: 95px;
+    width: 40%;
+    border-radius: 15px;
+    background-color: #e0e0e0;
+    align-items: center;
+}
+
+.success-message{
+    display: block;
+    height: 1.5em;
+    color: green;
+}
+
+.success-message:hover{
+    cursor: text;
+}

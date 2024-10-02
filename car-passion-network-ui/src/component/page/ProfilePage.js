@@ -10,6 +10,8 @@ import { getUser } from "../service/UserService";
 import { getPosts } from "../service/PostService";
 import ProfilePageHeader from "../pageUtils/user/ProfilePageHeader";
 import { PostsContext } from "../context/PostsProvider";
+import infoIcon from "../../images/info.png";
+import postIcon from "../../images/post.png";
 
 export default function ProfilePage() {
   const { id } = useParams();
@@ -61,15 +63,25 @@ export default function ProfilePage() {
     setViewPosts(true);
   };
 
+  const buttons = [
+    {
+      label: "Posts",
+      icon: postIcon,
+      onClick: togglePosts,
+      isVisible: viewPosts,
+    },
+    {
+      label: "Information",
+      icon: infoIcon,
+      onClick: toggleInformation,
+      isVisible: userInformation,
+    },
+  ];
+
   return (
     <div className="profile-page-container">
       <Navbar />
-      <VerticalNavbar
-        toggleInformation={toggleInformation}
-        userInformation={userInformation}
-        togglePosts={togglePosts}
-        viewPosts={viewPosts}
-      />
+      <VerticalNavbar buttons={buttons} />
       <RightVerticalNabvar />
 
       {!loadingUser && !loadingPosts && (

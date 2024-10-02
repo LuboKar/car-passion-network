@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import pic from "../../../images/profile-pic.jpg";
 import useNavigation from "../../service/NavigateService";
-import { Link } from "react-router-dom";
 import settings from "../../../images/settings.png";
 import { logoutUser } from "../../service/AuthenticationService";
 import logoutIcon from "../../../images/logout.png";
@@ -13,7 +12,8 @@ import { getProfilePictureUrl } from "../../service/profilePictureService";
 export default function NavbarDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const { navigateToProfile, navigateToDashboardPage } = useNavigation();
+  const { navigateToProfile, navigateToDashboardPage, navigateToSettingsPage } =
+    useNavigation();
   const profilePicture = getProfilePictureUrl();
 
   const handleClickOutside = (event) => {
@@ -75,12 +75,12 @@ export default function NavbarDropdown() {
             </div>
             <span>Profile</span>
           </div>
-          <Link to="/" className="link">
-            <div className="profile-span">
-              <img src={settings} alt="profilepic" className="span-icon" />
-              <span>Settings</span>
-            </div>
-          </Link>
+
+          <div className="profile-span" onClick={navigateToSettingsPage}>
+            <img src={settings} alt="profilepic" className="span-icon" />
+            <span>Settings</span>
+          </div>
+
           <div className="profile-span" onClick={logout}>
             <img src={logoutIcon} alt="profilepic" className="span-icon" />
             <span>Logout</span>
