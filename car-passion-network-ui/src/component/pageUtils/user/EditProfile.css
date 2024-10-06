@@ -19,3 +19,13 @@
 .success-message:hover{
     cursor: text;
 }
+
+.error-message{
+    display: block;
+    height: 1.5em;
+    color: red;
+}
+
+.error-message:hover{
+    cursor: text;
+}
