@@ -1,14 +1,14 @@
-.edit-password-container{
+.edit-birth-date-container{
     margin-left: 2%;
     margin-right: 2%;
     width: 94%;
 }
 
-.change-password-border{
+.change-birth-date-border{
     border-top: 1px solid rgb(150, 150, 150);
 }
 
-.change-password-label-container{
+.change-birth-date-label-container{
     display: flex;
     margin-top: 1%;
     margin-bottom: 1%;
@@ -16,7 +16,7 @@
     padding: 1% 1% 2% 1%;
 }
 
-.change-password-label-container-selected{
+.change-birth-date-label-container-selected{
     display: flex;
     margin-top: 1%;
     margin-bottom: 1%;
@@ -25,23 +25,24 @@
     background-color: rgb(200, 200, 200);
 }
 
-.change-password-label-container-selected:hover{
+.change-birth-date-label-container-selected:hover{
     background-color: rgb(200, 200, 200);
     cursor: pointer;
 }
 
-.change-password-label-container:hover{
+.change-birth-date-label-container:hover{
     background-color: rgb(200, 200, 200);
     cursor: pointer;
 }
 
-.change-password-label{
+
+.change-birth-date-label{
     font-size: 25px;
     user-select: none;
     margin-left: 1%;
 }
 
-.change-password-label:hover{
+.change-birth-date-label:hover{
     cursor: pointer;
 }
 
@@ -57,44 +58,23 @@
     cursor: pointer;
 }
 
-.edit-password-form{
+.edit-birth-date-form{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.password-input{
-    height: 40px;
-    border-radius: 7px;
-    border: 2px solid black;
-    font-size: 20px;
-    width: 98%;
-    padding-left: 2%;
-}
-
-.empty-password-input{
-    height: 40px;
-    border-radius: 7px;
-    border: 2px solid red;
-    font-size: 20px;
-    width: 98%;
-    padding-left: 2%;
-}
-
-.empty-password-input::placeholder{
-    color: red;
-}
-
-.label-password{
+.label-birth-date{
     color: rgb(50, 50, 50);
 }
 
-.label-password:hover{
+.label-birth-date:hover{
     cursor: text;
 }
 
-.edit-password-button{
+
+.edit-birth-date-button{
     height: 40px;
     width: 40%;
     font-size: 20px;
@@ -102,6 +82,24 @@
     margin-bottom: 1%;
 }
 
-.edit-password-button:hover{
+.edit-birth-date-button:hover{
     cursor: pointer;
+}
+
+.edit-form-birth-date{
+    width: 97%;
+    height: 40px;
+    font-size: 20px;
+    border-radius: 4px;
+    border: 2px solid black;
+    border-radius: 7px;
+}
+
+.empty-edit-form-birth-date{
+    width: 100%;
+    height: 40px;
+    font-size: 20px;
+    border-radius: 4px;
+    border: 2px solid red;
+    border-radius: 7px;
 }
