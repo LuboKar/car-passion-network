@@ -1,14 +1,15 @@
-.edit-password-container{
+.edit-gender-container{
     margin-left: 2%;
     margin-right: 2%;
     width: 94%;
+    margin-bottom: 4%;
 }
 
-.change-password-border{
+.change-gender-border{
     border-top: 1px solid rgb(150, 150, 150);
 }
 
-.change-password-label-container{
+.change-gender-label-container{
     display: flex;
     margin-top: 1%;
     margin-bottom: 1%;
@@ -16,7 +17,7 @@
     padding: 1% 1% 2% 1%;
 }
 
-.change-password-label-container-selected{
+.change-gender-label-container-selected{
     display: flex;
     margin-top: 1%;
     margin-bottom: 1%;
@@ -25,31 +26,31 @@
     background-color: rgb(200, 200, 200);
 }
 
-.change-password-label-container-selected:hover{
+.change-gender-label-container-selected:hover{
     background-color: rgb(200, 200, 200);
     cursor: pointer;
 }
 
-.change-password-label-container:hover{
+.change-gender-label-container:hover{
     background-color: rgb(200, 200, 200);
     cursor: pointer;
 }
 
-.change-password-label{
+.change-gender-label{
     font-size: 25px;
     user-select: none;
     margin-left: 1%;
     margin-top: 1%;
 }
 
-.change-password-label:hover{
+.change-gender-label:hover{
     cursor: pointer;
 }
 
 .greater-than-symbol{
     font-size: 15px;
     margin-left: auto;
-    margin-top: 9px;
+    margin-top: 12px;
     margin-right: 1%;
     user-select: none;
 }
@@ -58,44 +59,48 @@
     cursor: pointer;
 }
 
-.edit-password-form{
+.edit-gender-form{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.password-input{
-    height: 40px;
-    border-radius: 7px;
-    border: 2px solid black;
-    font-size: 20px;
-    width: 98%;
-    padding-left: 2%;
-}
-
-.empty-password-input{
-    height: 40px;
-    border-radius: 7px;
-    border: 2px solid red;
-    font-size: 20px;
-    width: 98%;
-    padding-left: 2%;
-}
-
-.empty-password-input::placeholder{
-    color: red;
-}
-
-.label-password{
+.label-gender{
     color: rgb(50, 50, 50);
 }
 
-.label-password:hover{
+.label-gender:hover{
     cursor: text;
 }
 
-.edit-password-button{
+.edit-select-gender{
+    height: 45px;
+    border-radius: 7px;
+    border: 2px solid black;
+    font-size: 20px;
+    width: 100%;
+    padding-left: 2%;
+}
+
+.empty-edit-select-gender{
+    height: 45px;
+    border-radius: 7px;
+    border: 2px solid red;
+    font-size: 20px;
+    width: 100%;
+    padding-left: 2%;
+}
+
+.edit-select-gender:hover{
+    cursor: pointer;
+}
+
+.empty-edit-select-gender{
+    cursor: pointer;
+}
+
+.edit-gender-button{
     height: 40px;
     width: 40%;
     font-size: 20px;
@@ -103,6 +108,6 @@
     margin-bottom: 1%;
 }
 
-.edit-password-button:hover{
+.edit-gender-button:hover{
     cursor: pointer;
 }

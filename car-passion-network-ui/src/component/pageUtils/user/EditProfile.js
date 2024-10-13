@@ -4,6 +4,7 @@ import EditName from "./EditName";
 import { editUser } from "../../service/UserService";
 import EditPassword from "./EditPassword";
 import EditBirthDate from "./EditBirthDate";
+import EditGender from "./EditGender";
 
 export default function EditProfile({ user, setUser }) {
   const [successMessage, setSuccessMessage] = useState("");
@@ -38,6 +39,8 @@ export default function EditProfile({ user, setUser }) {
       />
 
       <EditBirthDate edit={edit} setSuccessMessage={setSuccessMessage} />
+
+      <EditGender edit={edit} setSuccessMessage={setSuccessMessage} />
     </div>
   );
 }
