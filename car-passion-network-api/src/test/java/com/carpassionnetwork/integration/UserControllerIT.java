@@ -1,6 +1,7 @@
 package com.carpassionnetwork.integration;
 
 import static com.carpassionnetwork.helper.AuthenticationTestHelper.EMAIL;
+import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserTwo;
 import static com.carpassionnetwork.helper.PostTestHelper.*;
 import static com.carpassionnetwork.helper.UserTestHelper.createUserEditRequest;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -29,12 +30,14 @@ import org.springframework.security.test.context.support.WithMockUser;
 public class UserControllerIT extends BaseIT {
   @TempDir Path tempDir;
   private UserEditRequest userEditRequest;
+  private User secondUser;
 
   @BeforeEach
   void setUp() throws IOException {
     Path customTempDir = tempDir.resolve(currentUser.getEmail());
     Files.createDirectories(customTempDir);
     userEditRequest = createUserEditRequest();
+    secondUser = createUserTwo();
   }
 
   @Test
@@ -48,7 +51,7 @@ public class UserControllerIT extends BaseIT {
   }
 
   @Test
-  @WithMockUser(username = "user", roles = "USER")
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void getUserSuccessfully() throws Exception {
     register();
     User registeredUser = getRegisteredUser();
@@ -251,6 +254,43 @@ public class UserControllerIT extends BaseIT {
         .andExpect(jsonPath("$.dateOfBirth").value(currentUser.getDateOfBirth().toString()))
         .andExpect(jsonPath("$.email").value(currentUser.getEmail()))
         .andExpect(jsonPath("$.gender").value(currentUser.getGender().toString()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void addFriendShouldThrowInvalidCredentialsException() throws Exception {
+    mockMvc
+        .perform(post("/users/friends/" + secondUser.getId()))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void addFriendShouldThrowUserNotFoundException() throws Exception {
+    register();
+    mockMvc
+            .perform(post("/users/friends/" + secondUser.getId()))
+            .andExpect(status().isBadRequest())
+            .andExpect(
+                    result ->
+                            assertInstanceOf(UserNotFoundException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void addFriendSuccessfully() throws Exception {
+    register();
+    User savedSecondUser = saveUser(secondUser);
+    mockMvc
+            .perform(post("/users/friends/" + savedSecondUser.getId()))
+            .andExpect(status().isOk());
+  }
+
+  private User saveUser(User user) {
+    return userRepository.save(user);
   }
 
   private User getRegisteredUser() {

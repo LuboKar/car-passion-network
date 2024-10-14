@@ -32,4 +32,9 @@ public class UserController {
   public ResponseEntity<UserResponseDto> editUser(@RequestBody UserEditRequest userEditRequest) {
     return ResponseEntity.ok(userMapper.toUserResponse(userService.editUser(userEditRequest)));
   }
+
+  @PostMapping("/friends/{userId}")
+  public ResponseEntity<UserResponseDto> addFriends(@PathVariable UUID userId) {
+    return ResponseEntity.ok(userMapper.toUserResponse(userService.addFriend(userId)));
+  }
 }

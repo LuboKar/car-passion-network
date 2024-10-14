@@ -1,6 +1,7 @@
 package com.carpassionnetwork.service;
 
 import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserOne;
+import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserTwo;
 import static com.carpassionnetwork.helper.UserTestHelper.createUserEditRequest;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -38,12 +39,14 @@ public class UserServiceTest {
   @Mock private PasswordEncoder passwordEncoder;
 
   private User user;
+  private User secondUser;
   private UserEditRequest userEditRequest;
 
   @BeforeEach
   void setUp() {
     user = createUserOne();
     userEditRequest = createUserEditRequest();
+    secondUser = createUserTwo();
   }
 
   @Test
@@ -163,4 +166,43 @@ public class UserServiceTest {
     verify(userRepository, times(1)).findByEmail(user.getEmail());
     verify(userRepository, times(1)).save(user);
   }
+//
+//  @Test
+//  void addFriendShouldThrowInvalidCredentialsException() {
+//    SecurityContextHolder.setContext(securityContext);
+//    when(securityContext.getAuthentication()).thenReturn(authentication);
+//    when(authentication.getName()).thenReturn(user.getEmail());
+//    when(userRepository.findByEmail(user.getEmail())).thenThrow(InvalidCredentialsException.class);
+//
+//    assertThrows(
+//        InvalidCredentialsException.class, () -> userService.addFriend(secondUser.getId()));
+//  }
+//
+//  @Test
+//  void addFriendShouldThrowUserNotFoundException() {
+//    SecurityContextHolder.setContext(securityContext);
+//    when(securityContext.getAuthentication()).thenReturn(authentication);
+//    when(authentication.getName()).thenReturn(user.getEmail());
+//    when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+//    when(userRepository.findById(secondUser.getId())).thenThrow(UserNotFoundException.class);
+//
+//    assertThrows(UserNotFoundException.class, () -> userService.addFriend(secondUser.getId()));
+//  }
+//
+//  @Test
+//  void addFriendSuccessfully(){
+//    SecurityContextHolder.setContext(securityContext);
+//    when(securityContext.getAuthentication()).thenReturn(authentication);
+//    when(authentication.getName()).thenReturn(user.getEmail());
+//    when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+//    when(userRepository.findById(secondUser.getId())).thenReturn(Optional.of(secondUser));
+//
+//    userService.addFriend(secondUser.getId());
+//
+//    verify(authentication, times(1)).getName();
+//    verify(securityContext, times(1)).getAuthentication();
+//    verify(userRepository, times(1)).findByEmail(user.getEmail());
+//    verify(userRepository, times(1)).findById(secondUser.getId());
+//    verify(userRepository, times(1)).save(secondUser);
+//  }
 }

@@ -23,6 +23,7 @@ public class AuthenticationTestHelper {
         .password("password")
         .gender(Gender.MALE)
         .likedPosts(new HashSet<>())
+        .friends(new HashSet<>())
         .build();
   }
 
@@ -35,6 +36,7 @@ public class AuthenticationTestHelper {
         .email("jane.doe@gmail.com")
         .password("password")
         .gender(Gender.MALE)
+        .friends(new HashSet<>())
         .build();
   }
 

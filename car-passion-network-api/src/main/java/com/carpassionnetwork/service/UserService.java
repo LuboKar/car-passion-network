@@ -59,6 +59,16 @@ public class UserService {
     return userRepository.save(currentUser);
   }
 
+  public User addFriend(UUID friendID) {
+    User currentUser = getCurrentUser();
+    User friendUser = getUser(friendID);
+
+    currentUser.getFriends().add(friendUser);
+    friendUser.getFriends().add(currentUser);
+
+    return userRepository.save(friendUser);
+  }
+
   private String getCurrentUserEmail() {
     return SecurityContextHolder.getContext().getAuthentication().getName();
   }
@@ -98,7 +108,6 @@ public class UserService {
   private User saveProfilePicture(Path targetPath) {
     User currentUser = getCurrentUser();
     currentUser.setProfilePicture(targetPath.toString());
-
     return userRepository.save(currentUser);
   }
 

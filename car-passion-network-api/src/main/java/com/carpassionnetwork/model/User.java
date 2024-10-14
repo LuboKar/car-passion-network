@@ -1,5 +1,6 @@
 package com.carpassionnetwork.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.security.Principal;
 import java.time.LocalDate;
@@ -72,6 +73,13 @@ public class User implements UserDetails, Principal {
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<Comment> comments;
+
+  @ManyToMany
+  @JoinTable(
+      name = "friends",
+      joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "friend_id"))
+  private Set<User> friends;
 
   @Override
   public String getName() {

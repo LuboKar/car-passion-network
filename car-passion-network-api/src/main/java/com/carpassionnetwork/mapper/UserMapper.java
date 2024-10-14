@@ -5,6 +5,8 @@ import com.carpassionnetwork.dto.response.UserResponseDto;
 import com.carpassionnetwork.model.User;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,6 +19,16 @@ public class UserMapper {
   }
 
   public UserResponseDto toUserResponse(User user) {
-    return modelMapper.map(user, UserResponseDto.class);
+    UserResponseDto userResponseDto = modelMapper.map(user, UserResponseDto.class);
+
+    userResponseDto.setFriend(isCurrentUserFriend(user));
+
+    return userResponseDto;
+  }
+
+  public boolean isCurrentUserFriend(User user) {
+    UserDetails currentUser = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+    return user.getFriends().contains(currentUser);
   }
 }

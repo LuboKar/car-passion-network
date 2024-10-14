@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -74,6 +75,7 @@ public class AuthenticationService {
   private User buildRegisteredUser(User registeredUser) {
     registeredUser.setRole(Role.USER);
     registeredUser.setPassword(passwordEncoder.encode(registeredUser.getPassword()));
+    registeredUser.setFriends(new HashSet<>());
 
     return registeredUser;
   }
