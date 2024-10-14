@@ -4,12 +4,14 @@ import { uploadProfilePicture } from "../../service/UserService";
 import pic from "../../../images/profile-pic.jpg";
 import { getId } from "../../service/TokenService";
 import { saveProfilePictureUrl } from "../../service/profilePictureService";
+import AddFriend from "./AddFriend";
 
-export default function Profile({ user }) {
+export default function Profile({ user, setUser }) {
+  const currentUserId = getId();
   const fileInputRef = useRef(null);
 
   const handleContainerClick = () => {
-    if (user.id !== getId()) {
+    if (user.id !== currentUserId()) {
       return;
     }
     fileInputRef.current.click();
@@ -58,6 +60,10 @@ export default function Profile({ user }) {
       <label className="profile-name">
         {user.firstName} {user.lastName}
       </label>
+
+      {currentUserId !== user.id && !user.friend && (
+        <AddFriend userId={user.id} setUser={setUser} />
+      )}
     </div>
   );
 }
