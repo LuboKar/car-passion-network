@@ -69,6 +69,16 @@ public class UserService {
     return userRepository.save(friendUser);
   }
 
+  public User removeFriend(UUID friendID) {
+    User currentUser = getCurrentUser();
+    User friendUser = getUser(friendID);
+
+    currentUser.getFriends().remove(friendUser);
+    friendUser.getFriends().remove(currentUser);
+
+    return userRepository.save(friendUser);
+  }
+
   private String getCurrentUserEmail() {
     return SecurityContextHolder.getContext().getAuthentication().getName();
   }

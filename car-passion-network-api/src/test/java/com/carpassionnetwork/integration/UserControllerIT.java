@@ -272,11 +272,10 @@ public class UserControllerIT extends BaseIT {
   void addFriendShouldThrowUserNotFoundException() throws Exception {
     register();
     mockMvc
-            .perform(post("/users/friends/" + secondUser.getId()))
-            .andExpect(status().isBadRequest())
-            .andExpect(
-                    result ->
-                            assertInstanceOf(UserNotFoundException.class, result.getResolvedException()));
+        .perform(post("/users/friends/" + secondUser.getId()))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result -> assertInstanceOf(UserNotFoundException.class, result.getResolvedException()));
   }
 
   @Test
@@ -285,8 +284,38 @@ public class UserControllerIT extends BaseIT {
     register();
     User savedSecondUser = saveUser(secondUser);
     mockMvc
-            .perform(post("/users/friends/" + savedSecondUser.getId()))
-            .andExpect(status().isOk());
+        .perform(post("/users/friends/" + savedSecondUser.getId()))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void removeFriendShouldThrowInvalidCredentialsException() throws Exception {
+    mockMvc
+        .perform(delete("/users/friends/" + secondUser.getId()))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void removeFriendShouldThrowUserNotFoundException() throws Exception {
+    register();
+    mockMvc
+        .perform(delete("/users/friends/" + secondUser.getId()))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result -> assertInstanceOf(UserNotFoundException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void removeFriendSuccessfully() throws Exception {
+    register();
+    User savedSecondUser = saveUser(secondUser);
+    mockMvc.perform(delete("/users/friends/" + savedSecondUser.getId())).andExpect(status().isOk());
   }
 
   private User saveUser(User user) {

@@ -205,4 +205,43 @@ public class UserServiceTest {
     verify(userRepository, times(1)).findById(secondUser.getId());
     verify(userRepository, times(1)).save(secondUser);
   }
+
+  @Test
+  void removeFriendShouldThrowInvalidCredentialsException() {
+    SecurityContextHolder.setContext(securityContext);
+    when(securityContext.getAuthentication()).thenReturn(authentication);
+    when(authentication.getName()).thenReturn(user.getEmail());
+    when(userRepository.findByEmail(user.getEmail())).thenThrow(InvalidCredentialsException.class);
+
+    assertThrows(
+            InvalidCredentialsException.class, () -> userService.removeFriend(secondUser.getId()));
+  }
+
+  @Test
+  void removeFriendShouldThrowUserNotFoundException() {
+    SecurityContextHolder.setContext(securityContext);
+    when(securityContext.getAuthentication()).thenReturn(authentication);
+    when(authentication.getName()).thenReturn(user.getEmail());
+    when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+    when(userRepository.findById(secondUser.getId())).thenThrow(UserNotFoundException.class);
+
+    assertThrows(UserNotFoundException.class, () -> userService.removeFriend(secondUser.getId()));
+  }
+
+  @Test
+  void removeFriendSuccessfully(){
+    SecurityContextHolder.setContext(securityContext);
+    when(securityContext.getAuthentication()).thenReturn(authentication);
+    when(authentication.getName()).thenReturn(user.getEmail());
+    when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+    when(userRepository.findById(secondUser.getId())).thenReturn(Optional.of(secondUser));
+
+    userService.addFriend(secondUser.getId());
+
+    verify(authentication, times(1)).getName();
+    verify(securityContext, times(1)).getAuthentication();
+    verify(userRepository, times(1)).findByEmail(user.getEmail());
+    verify(userRepository, times(1)).findById(secondUser.getId());
+    verify(userRepository, times(1)).save(secondUser);
+  }
 }

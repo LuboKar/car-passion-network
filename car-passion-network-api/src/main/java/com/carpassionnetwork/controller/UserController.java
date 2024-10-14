@@ -37,4 +37,9 @@ public class UserController {
   public ResponseEntity<UserResponseDto> addFriends(@PathVariable UUID userId) {
     return ResponseEntity.ok(userMapper.toUserResponse(userService.addFriend(userId)));
   }
+
+  @DeleteMapping("/friends/{userId}")
+  public ResponseEntity<UserResponseDto> removeFriends(@PathVariable UUID userId) {
+    return ResponseEntity.ok(userMapper.toUserResponse(userService.removeFriend(userId)));
+  }
 }
