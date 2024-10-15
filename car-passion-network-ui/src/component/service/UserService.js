@@ -72,4 +72,24 @@ const addFriend = async (userId) => {
   }
 };
 
-export { getUser, uploadProfilePicture, editUser, addFriend };
+const removeFriend = async (userId) => {
+  try {
+    const token = getToken();
+    const response = await fetch(
+      `http://localhost:8080/users/friends/${userId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+  }
+};
+
+export { getUser, uploadProfilePicture, editUser, addFriend, removeFriend };

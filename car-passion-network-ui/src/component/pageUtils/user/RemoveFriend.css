@@ -1,0 +1,22 @@
+.remove-friend-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: 10%;
+    margin-top: auto;
+    margin-bottom: 2%;
+}
+
+.remove-friend-button{
+    width: 150px;
+    height: 30px;
+    border: 2px solid black;
+    border-radius: 7px;
+    font-size: 18px;
+}
+
+.remove-friend-button:hover{
+    cursor: pointer;
+}

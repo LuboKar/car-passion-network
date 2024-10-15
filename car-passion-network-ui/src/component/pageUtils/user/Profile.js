@@ -5,13 +5,14 @@ import pic from "../../../images/profile-pic.jpg";
 import { getId } from "../../service/TokenService";
 import { saveProfilePictureUrl } from "../../service/profilePictureService";
 import AddFriend from "./AddFriend";
+import RemoveFriend from "./RemoveFriend";
 
 export default function Profile({ user, setUser }) {
   const currentUserId = getId();
   const fileInputRef = useRef(null);
 
   const handleContainerClick = () => {
-    if (user.id !== currentUserId()) {
+    if (user.id !== currentUserId) {
       return;
     }
     fileInputRef.current.click();
@@ -61,9 +62,12 @@ export default function Profile({ user, setUser }) {
         {user.firstName} {user.lastName}
       </label>
 
-      {currentUserId !== user.id && !user.friend && (
-        <AddFriend userId={user.id} setUser={setUser} />
-      )}
+      {currentUserId !== user.id &&
+        (user.friend ? (
+          <RemoveFriend userId={user.id} setUser={setUser} />
+        ) : (
+          <AddFriend userId={user.id} setUser={setUser} />
+        ))}
     </div>
   );
 }
