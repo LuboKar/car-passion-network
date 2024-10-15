@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -77,6 +78,10 @@ public class UserService {
     friendUser.getFriends().remove(currentUser);
 
     return userRepository.save(friendUser);
+  }
+
+  public List<User> getAllFriendsByUserId(UUID id) {
+    return userRepository.findAllFriendsByUserId(id);
   }
 
   private String getCurrentUserEmail() {

@@ -6,8 +6,7 @@ import static com.carpassionnetwork.helper.PostTestHelper.*;
 import static com.carpassionnetwork.helper.UserTestHelper.createUserEditRequest;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.carpassionnetwork.dto.request.UserEditRequest;
 import com.carpassionnetwork.exception.FileNotUploadedException;
@@ -283,9 +282,7 @@ public class UserControllerIT extends BaseIT {
   void addFriendSuccessfully() throws Exception {
     register();
     User savedSecondUser = saveUser(secondUser);
-    mockMvc
-        .perform(post("/users/friends/" + savedSecondUser.getId()))
-        .andExpect(status().isOk());
+    mockMvc.perform(post("/users/friends/" + savedSecondUser.getId())).andExpect(status().isOk());
   }
 
   @Test
@@ -316,6 +313,33 @@ public class UserControllerIT extends BaseIT {
     register();
     User savedSecondUser = saveUser(secondUser);
     mockMvc.perform(delete("/users/friends/" + savedSecondUser.getId())).andExpect(status().isOk());
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void getFriendShouldReturnEmptyList() throws Exception {
+    User savedCurrentUser = saveUser(currentUser);
+
+    mockMvc
+        .perform(get("/users/friends/" + savedCurrentUser.getId()))
+        .andExpect(status().isOk())
+        .andExpect(content().json("[]"));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void getFriendSuccessfully() throws Exception {
+    User savedCurrentUser = saveUser(currentUser);
+    User savedSecondUser = saveUser(secondUser);
+    savedCurrentUser.getFriends().add(savedSecondUser);
+    savedSecondUser.getFriends().add(savedCurrentUser);
+    saveUser(savedCurrentUser);
+
+    mockMvc
+        .perform(get("/users/friends/" + savedCurrentUser.getId()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.length()").value(1))
+        .andExpect(jsonPath("$[0].id").value(savedSecondUser.getId().toString()));
   }
 
   private User saveUser(User user) {

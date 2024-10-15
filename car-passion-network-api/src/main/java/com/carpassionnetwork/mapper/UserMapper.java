@@ -3,6 +3,8 @@ package com.carpassionnetwork.mapper;
 import com.carpassionnetwork.dto.request.RegistrationRequest;
 import com.carpassionnetwork.dto.response.UserResponseDto;
 import com.carpassionnetwork.model.User;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,8 +28,13 @@ public class UserMapper {
     return userResponseDto;
   }
 
-  public boolean isCurrentUserFriend(User user) {
-    UserDetails currentUser = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+  public List<UserResponseDto> toUserResponseList(List<User> users) {
+    return users.stream().map(this::toUserResponse).collect(Collectors.toList());
+  }
+
+  private boolean isCurrentUserFriend(User user) {
+    UserDetails currentUser =
+        (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
     return user.getFriends().contains(currentUser);
   }

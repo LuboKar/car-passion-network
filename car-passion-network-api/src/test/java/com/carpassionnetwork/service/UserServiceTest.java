@@ -15,6 +15,8 @@ import com.carpassionnetwork.exception.UserNotFoundException;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.UserRepository;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -190,7 +192,7 @@ public class UserServiceTest {
   }
 
   @Test
-  void addFriendSuccessfully(){
+  void addFriendSuccessfully() {
     SecurityContextHolder.setContext(securityContext);
     when(securityContext.getAuthentication()).thenReturn(authentication);
     when(authentication.getName()).thenReturn(user.getEmail());
@@ -214,7 +216,7 @@ public class UserServiceTest {
     when(userRepository.findByEmail(user.getEmail())).thenThrow(InvalidCredentialsException.class);
 
     assertThrows(
-            InvalidCredentialsException.class, () -> userService.removeFriend(secondUser.getId()));
+        InvalidCredentialsException.class, () -> userService.removeFriend(secondUser.getId()));
   }
 
   @Test
@@ -229,7 +231,7 @@ public class UserServiceTest {
   }
 
   @Test
-  void removeFriendSuccessfully(){
+  void removeFriendSuccessfully() {
     SecurityContextHolder.setContext(securityContext);
     when(securityContext.getAuthentication()).thenReturn(authentication);
     when(authentication.getName()).thenReturn(user.getEmail());
@@ -243,5 +245,25 @@ public class UserServiceTest {
     verify(userRepository, times(1)).findByEmail(user.getEmail());
     verify(userRepository, times(1)).findById(secondUser.getId());
     verify(userRepository, times(1)).save(secondUser);
+  }
+
+  @Test
+  void getFriendsShouldReturnEmptyList() {
+    when(userRepository.findAllFriendsByUserId(user.getId())).thenReturn(Collections.emptyList());
+
+    List<User> friends = userService.getAllFriendsByUserId(user.getId());
+
+    assertEquals(friends.size(), 0);
+    verify(userRepository, times(1)).findAllFriendsByUserId(user.getId());
+  }
+
+  @Test
+  void getFriendsSuccessfully() {
+    when(userRepository.findAllFriendsByUserId(user.getId())).thenReturn(List.of(secondUser));
+
+    List<User> friends = userService.getAllFriendsByUserId(user.getId());
+
+    assertEquals(friends.size(), 1);
+    verify(userRepository, times(1)).findAllFriendsByUserId(user.getId());
   }
 }
