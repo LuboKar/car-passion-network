@@ -1,22 +1,10 @@
 import React from "react";
 import "./RemoveFriend.css";
-import { removeFriend } from "../../service/UserService";
 
-export default function RemoveFriend({ userId, setUser }) {
-  const handleClick = async () => {
-    const response = await removeFriend(userId);
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const friendUser = await response.json();
-    setUser(friendUser);
-  };
-
+export default function RemoveFriend({ handleRemoveFriend }) {
   return (
     <div className="remove-friend-container">
-      <button className="remove-friend-button" onClick={handleClick}>
+      <button className="remove-friend-button" onClick={handleRemoveFriend}>
         Remove Friend
       </button>
     </div>

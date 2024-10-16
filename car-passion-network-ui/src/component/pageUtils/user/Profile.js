@@ -6,6 +6,8 @@ import { getId } from "../../service/TokenService";
 import { saveProfilePictureUrl } from "../../service/profilePictureService";
 import AddFriend from "./AddFriend";
 import RemoveFriend from "./RemoveFriend";
+import { addFriend } from "../../service/UserService";
+import { removeFriend } from "../../service/UserService";
 
 export default function Profile({ user, setUser }) {
   const currentUserId = getId();
@@ -39,6 +41,28 @@ export default function Profile({ user, setUser }) {
     }
   };
 
+  const handleAddFriend = async () => {
+    const response = await addFriend(user.id);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const friendUser = await response.json();
+    setUser(friendUser);
+  };
+
+  const handleRemoveFriend = async () => {
+    const response = await removeFriend(user.id);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const friendUser = await response.json();
+    setUser(friendUser);
+  };
+
   return (
     <div className="profile-container">
       <div className="image-container" onClick={handleContainerClick}>
@@ -62,12 +86,15 @@ export default function Profile({ user, setUser }) {
         {user.firstName} {user.lastName}
       </label>
 
-      {currentUserId !== user.id &&
-        (user.friend ? (
-          <RemoveFriend userId={user.id} setUser={setUser} />
-        ) : (
-          <AddFriend userId={user.id} setUser={setUser} />
-        ))}
+      {currentUserId !== user.id && (
+        <div className="profile-friend-request">
+          {user.friend ? (
+            <RemoveFriend handleRemoveFriend={handleRemoveFriend} />
+          ) : (
+            <AddFriend handleAddFriend={handleAddFriend} />
+          )}
+        </div>
+      )}
     </div>
   );
 }

@@ -12,14 +12,21 @@ import ProfilePageHeader from "../pageUtils/user/ProfilePageHeader";
 import { PostsContext } from "../context/PostsProvider";
 import infoIcon from "../../images/info.png";
 import postIcon from "../../images/post.png";
+import friendIcon from "../../images/friendIcon.png";
+import Friends from "../pageUtils/friends/Friends";
+import { getFriends } from "../service/UserService";
+import FriendsHeader from "../pageUtils/friends/FriendsHeader";
 
 export default function ProfilePage() {
   const { id } = useParams();
   const [user, setUser] = useState({});
   const [userInformation, setUserInformation] = useState(false);
   const [viewPosts, setViewPosts] = useState(true);
+  const [viewFriends, setViewFriends] = useState(false);
   const [loadingUser, setLoadingUser] = useState(true);
   const [loadingPosts, setLoadingPosts] = useState(true);
+  const [friends, setFriends] = useState([]);
+  const [loadingFriends, setLoadingFriends] = useState(true);
 
   const { posts, setPosts } = useContext(PostsContext);
 
@@ -47,20 +54,42 @@ export default function ProfilePage() {
     setLoadingPosts(false);
   };
 
+  const fetchFriends = async () => {
+    const response = await getFriends(id);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const friendsList = await response.json();
+    setFriends(friendsList);
+    setLoadingFriends(false);
+  };
+
   useEffect(() => {
     fetchUser();
     fetchPosts();
+    togglePosts();
+    fetchFriends();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const toggleInformation = () => {
     setViewPosts(false);
     setUserInformation(true);
+    setViewFriends(false);
   };
 
   const togglePosts = () => {
     setUserInformation(false);
     setViewPosts(true);
+    setViewFriends(false);
+  };
+
+  const toggleFriends = () => {
+    setViewFriends(true);
+    setViewPosts(false);
+    setUserInformation(false);
   };
 
   const buttons = [
@@ -76,6 +105,12 @@ export default function ProfilePage() {
       onClick: toggleInformation,
       isVisible: userInformation,
     },
+    {
+      label: "Friends",
+      icon: friendIcon,
+      onClick: toggleFriends,
+      isVisible: viewFriends,
+    },
   ];
 
   return (
@@ -87,15 +122,22 @@ export default function ProfilePage() {
       {!loadingUser && !loadingPosts && (
         <Profile user={user} setUser={setUser} />
       )}
+
       {!loadingUser && !loadingPosts && viewPosts && (
         <Posts ownerId={user.id} />
       )}
-
       {posts.length < 1 && viewPosts && !loadingUser && !loadingPosts && (
         <ProfilePageHeader />
       )}
 
       {userInformation && <Information user={user} />}
+
+      {!loadingFriends && viewFriends && (
+        <Friends friends={friends} setFriends={setFriends} userId={user.id} />
+      )}
+      {!loadingFriends && friends.length < 1 && viewFriends && (
+        <FriendsHeader />
+      )}
     </div>
   );
 }
