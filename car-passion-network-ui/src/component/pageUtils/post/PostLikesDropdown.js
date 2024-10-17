@@ -19,7 +19,17 @@ export default function PostLikesDropdown({ post, clickedLikes }) {
             className="liked-user-container"
             onClick={() => navigateToProfile(user.id)}
           >
-            <img src={pic} alt="user-pic" className="liked-user-pic" />
+            <div className="post-user-like-pic-container">
+              <img
+                src={
+                  user.profilePicture
+                    ? `http://localhost:8080/${user.profilePicture}`
+                    : pic
+                }
+                alt="user-pic"
+                className="liked-user-pic"
+              />
+            </div>
             <label key={index} className="liked-user-name">
               {user.firstName} {user.lastName}
             </label>

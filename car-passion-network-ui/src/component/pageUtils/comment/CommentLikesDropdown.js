@@ -19,7 +19,17 @@ export default function COmmentLikesDropdown({ comment, clickedLikes }) {
             className="comment-likes-container"
             onClick={() => navigateToProfile(user.id)}
           >
-            <img src={pic} alt="user-pic" className="user-like-pic" />
+            <div className="comment-user-like-pic-container">
+              <img
+                src={
+                  user.profilePicture
+                    ? `http://localhost:8080/${user.profilePicture}`
+                    : pic
+                }
+                alt="user-pic"
+                className="user-like-pic"
+              />
+            </div>
             <label key={index} className="user-like-name">
               {user.firstName} {user.lastName}
             </label>
