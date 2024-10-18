@@ -342,6 +342,31 @@ public class UserControllerIT extends BaseIT {
         .andExpect(jsonPath("$[0].id").value(savedSecondUser.getId().toString()));
   }
 
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void findUsersByFullNameStartsWithShouldReturnEmptyArray() throws Exception {
+    String term = "aa";
+    mockMvc
+        .perform(get("/users/findBy/" + term))
+        .andExpect(status().isOk())
+        .andExpect(content().json("[]"));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void findUsersByFullNameStartsWithSuccessfully() throws Exception {
+    String term = "j";
+    User savedCurrentUser = saveUser(currentUser);
+    User savedSecondUser = saveUser(secondUser);
+
+    mockMvc
+        .perform(get("/users/findBy/" + term))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.length()").value(2))
+        .andExpect(jsonPath("$[0].id").value(savedCurrentUser.getId().toString()))
+        .andExpect(jsonPath("$[1].id").value(savedSecondUser.getId().toString()));
+  }
+
   private User saveUser(User user) {
     return userRepository.save(user);
   }

@@ -266,4 +266,26 @@ public class UserServiceTest {
     assertEquals(friends.size(), 1);
     verify(userRepository, times(1)).findAllFriendsByUserId(user.getId());
   }
+
+  @Test
+  void findUsersByFullNameStartsWithShouldReturnEmptyArray() {
+    String term = "Test";
+    when(userRepository.findByFullNameStartingWith(term)).thenReturn(Collections.emptyList());
+
+    List<User> users = userService.findUsersByFullNameStartsWith(term);
+
+    assertTrue(users.isEmpty());
+    verify(userRepository, times(1)).findByFullNameStartingWith(term);
+  }
+
+  @Test
+  void findUsersByFullNameStartsWithSuccessfully() {
+    String term = "J";
+    when(userRepository.findByFullNameStartingWith(term)).thenReturn(List.of(user, secondUser));
+
+    List<User> users = userService.findUsersByFullNameStartsWith(term);
+
+    assertEquals(users.size(), 2);
+    verify(userRepository, times(1)).findByFullNameStartingWith(term);
+  }
 }

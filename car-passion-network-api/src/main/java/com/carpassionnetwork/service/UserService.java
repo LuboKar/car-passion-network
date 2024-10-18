@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -82,6 +83,10 @@ public class UserService {
 
   public List<User> getAllFriendsByUserId(UUID id) {
     return userRepository.findAllFriendsByUserId(id);
+  }
+
+  public List<User> findUsersByFullNameStartsWith(String term) {
+    return userRepository.findByFullNameStartingWith(term);
   }
 
   private String getCurrentUserEmail() {

@@ -17,4 +17,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
   @Query(
       "SELECT f FROM User u JOIN u.friends f WHERE u.id = :userId ORDER BY f.firstName, f.lastName")
   List<User> findAllFriendsByUserId(@Param("userId") UUID userId);
+
+  @Query(
+      "SELECT u FROM User u WHERE LOWER(CONCAT(u.firstName, ' ', u.lastName)) LIKE LOWER(CONCAT(:fullName, '%'))")
+  List<User> findByFullNameStartingWith(@Param("fullName") String fullName);
 }

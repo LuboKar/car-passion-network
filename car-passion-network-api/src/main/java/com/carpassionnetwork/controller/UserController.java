@@ -49,4 +49,11 @@ public class UserController {
     return ResponseEntity.ok(
         userMapper.toUserResponseList(userService.getAllFriendsByUserId(userId)));
   }
+
+  @GetMapping("/findBy/{term}")
+  public ResponseEntity<List<UserResponseDto>> findUsersByFullNameStartsWith(
+      @PathVariable String term) {
+    return ResponseEntity.ok(
+        userMapper.toUserResponseList(userService.findUsersByFullNameStartsWith(term)));
+  }
 }
