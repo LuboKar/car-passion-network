@@ -24,6 +24,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -270,22 +271,22 @@ public class UserServiceTest {
   @Test
   void findUsersByFullNameStartsWithShouldReturnEmptyArray() {
     String term = "Test";
-    when(userRepository.findByFullNameStartingWith(term)).thenReturn(Collections.emptyList());
+    when(userRepository.findByFullNameStartingWith(eq(term), any(Pageable.class))).thenReturn(Collections.emptyList());
 
     List<User> users = userService.findUsersByFullNameStartsWith(term);
 
     assertTrue(users.isEmpty());
-    verify(userRepository, times(1)).findByFullNameStartingWith(term);
+    verify(userRepository, times(1)).findByFullNameStartingWith(eq(term), any(Pageable.class));
   }
 
   @Test
   void findUsersByFullNameStartsWithSuccessfully() {
     String term = "J";
-    when(userRepository.findByFullNameStartingWith(term)).thenReturn(List.of(user, secondUser));
+    when(userRepository.findByFullNameStartingWith(eq(term), any(Pageable.class))).thenReturn(List.of(user, secondUser));
 
     List<User> users = userService.findUsersByFullNameStartsWith(term);
 
     assertEquals(users.size(), 2);
-    verify(userRepository, times(1)).findByFullNameStartingWith(term);
+    verify(userRepository, times(1)).findByFullNameStartingWith(eq(term), any(Pageable.class));
   }
 }
