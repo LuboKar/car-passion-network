@@ -12,9 +12,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -86,7 +87,9 @@ public class UserService {
   }
 
   public List<User> findUsersByFullNameStartsWith(String term) {
-    return userRepository.findByFullNameStartingWith(term);
+    Pageable limit = PageRequest.of(0, 6);
+
+    return userRepository.findByFullNameStartingWith(term, limit);
   }
 
   private String getCurrentUserEmail() {
