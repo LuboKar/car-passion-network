@@ -60,6 +60,10 @@
     height: 1.5em;
 }
 
+.form-success:hover{
+    cursor: text;
+}
+
 .form-button{
     width: 65%;
     height: 35px;

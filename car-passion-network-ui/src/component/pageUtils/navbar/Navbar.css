@@ -1,4 +1,7 @@
 .navbar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-bottom: 1px solid rgb(150, 150, 150);
     width: 98%;
     margin-left: 14px;
@@ -29,7 +32,7 @@
 .logo{
     position: relative;
     display: flex;
-    width: 30%;
+    width: max-content;
     border-radius: 60px;
 }
 

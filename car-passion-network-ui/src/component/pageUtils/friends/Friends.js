@@ -20,6 +20,8 @@ export default function Friends({ friends, setFriends, userId }) {
     setFilteredFriends(filtered);
   }, [searchTerm, friends]);
 
+  console.log(friends.length);
+
   return (
     <div className="friends-container">
       {friends.length > 0 && (
@@ -44,7 +46,7 @@ export default function Friends({ friends, setFriends, userId }) {
         />
       ))}
 
-      {filteredFriends.length < 1 && friends.length > 1 && (
+      {filteredFriends.length < 1 && friends.length > 0 && (
         <label className="no-results">No results for: {searchTerm}</label>
       )}
     </div>

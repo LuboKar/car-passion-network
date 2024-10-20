@@ -112,6 +112,23 @@ const getFriends = async (userId) => {
   }
 };
 
+const findUsersByFullNameStartsWith = async (term) => {
+  try {
+    const token = getToken();
+    const response = await fetch(`http://localhost:8080/users/findBy/${term}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+  }
+};
+
 export {
   getUser,
   uploadProfilePicture,
@@ -119,4 +136,5 @@ export {
   addFriend,
   removeFriend,
   getFriends,
+  findUsersByFullNameStartsWith,
 };

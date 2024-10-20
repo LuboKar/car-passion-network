@@ -4,6 +4,7 @@ import logo from "../../../images/car-logo.png";
 import { useNavigate } from "react-router-dom";
 import { isAuthenticated } from "../../Authentication/Authentication.js";
 import NavbarDropdown from "./NavbarDropdown.js";
+import NavbarSearch from "./NavbarSearch.js";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -20,6 +21,8 @@ export default function Navbar() {
         <img src={logo} alt="CPN" className="navbar-logo-image" />
         <p className="navbar-logo-header">Car Passion Network</p>
       </div>
+
+      <NavbarSearch />
 
       <NavbarDropdown />
     </nav>

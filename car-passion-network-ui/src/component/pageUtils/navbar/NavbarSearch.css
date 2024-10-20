@@ -1,0 +1,108 @@
+.navbar-search-container{
+    position: relative;
+    display: flex;
+    margin-left: 1%;
+    width: 25%;
+}
+
+.navbar-search-field-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    border: 2px solid black;
+    border-radius: 8px;
+    background-color: white;
+    margin-left:10%;
+    
+}
+
+.navbar-search-input{
+    width: 100%;
+    height: 27px;
+    border: 2px solid black;
+    border-radius: 10px;
+    font-size: 20px;
+    padding-left: 1%;
+    outline: none;
+    border: none;
+    padding-left: 5px;
+}
+
+.navbar-search-dropdown-container{
+    position: absolute;
+    width: 100%;
+    margin-left: 1%;
+    height: max-content;
+    border-radius: 16px;
+    background-color: #e5e5e5; 
+    z-index: -1;
+    padding-top: 40px;
+}
+
+.navbar-search-dropdown{
+    display: flex;
+    align-items: center;
+    margin-left: 2%;
+    margin-right: 2%;
+    border-radius: 10px;
+    margin-bottom: 2%;
+    
+}
+
+.navbar-search-dropdown:hover{
+    cursor: pointer;
+    text-decoration: underline;
+    background-color: rgb(200,200,200);
+}
+
+.navbar-search-profile-pic-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px; 
+    height: 40px;
+    margin: 1%;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.found-user-pic{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.found-user-name{
+    margin-left: 2%;
+    font-size: 20px;
+}
+
+.found-user-name:hover{
+    cursor: pointer;
+}
+
+.search-user-no-results-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-user-no-results{
+    margin-bottom: 2%;
+    font-size: 20px;
+}
+
+.navbar-search-dropdown-arrow{
+    width: 25px;
+    height: 10px;
+    padding: 2%;
+    margin-top: 1%;
+    border-radius: 10px;
+}
+
+.navbar-search-dropdown-arrow:hover{
+    cursor: pointer;
+    background-color: rgb(200,200,200);
+}
