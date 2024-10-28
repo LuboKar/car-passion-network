@@ -7,6 +7,7 @@ import com.carpassionnetwork.service.UserService;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,5 +56,11 @@ public class UserController {
       @PathVariable String term) {
     return ResponseEntity.ok(
         userMapper.toUserResponseList(userService.findUsersByFullNameStartsWith(term)));
+  }
+
+  @DeleteMapping("/{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void deleteUser(@PathVariable UUID id) {
+    userService.deleteUser(id);
   }
 }

@@ -16,6 +16,7 @@ import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.UserRepository;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -288,5 +289,23 @@ public class UserServiceTest {
 
     assertEquals(users.size(), 2);
     verify(userRepository, times(1)).findByFullNameStartingWith(eq(term), any(Pageable.class));
+  }
+
+  @Test
+  void deleteUserShouldThrowUserNotFoundException(){
+    when(userRepository.findById(user.getId())).thenThrow(UserNotFoundException.class);
+
+    assertThrows(UserNotFoundException.class, () -> userService.deleteUser(user.getId()));
+  }
+
+  @Test
+  void deleteUserSuccessfully(){
+    user.setLikedComments(new HashSet<>());
+    when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+
+    userService.deleteUser(user.getId());
+
+    verify(userRepository,times(1)).findById(user.getId());
+    verify(userRepository, times(1)).delete(user);
   }
 }

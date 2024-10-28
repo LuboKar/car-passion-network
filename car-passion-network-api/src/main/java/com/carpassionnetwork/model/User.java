@@ -1,6 +1,5 @@
 package com.carpassionnetwork.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.security.Principal;
 import java.time.LocalDate;
@@ -69,7 +68,7 @@ public class User implements UserDetails, Principal {
   Set<Post> likedPosts;
 
   @ManyToMany(mappedBy = "likes")
-  Set<Post> likedComments;
+  Set<Comment> likedComments;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<Comment> comments;

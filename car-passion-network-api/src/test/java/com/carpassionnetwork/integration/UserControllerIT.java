@@ -2,6 +2,7 @@ package com.carpassionnetwork.integration;
 
 import static com.carpassionnetwork.helper.AuthenticationTestHelper.EMAIL;
 import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserTwo;
+import static com.carpassionnetwork.helper.CommentTestHelper.createNewComment;
 import static com.carpassionnetwork.helper.PostTestHelper.*;
 import static com.carpassionnetwork.helper.UserTestHelper.createUserEditRequest;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -13,15 +14,21 @@ import com.carpassionnetwork.exception.FileNotUploadedException;
 import com.carpassionnetwork.exception.InvalidCredentialsException;
 import com.carpassionnetwork.exception.InvalidPasswordException;
 import com.carpassionnetwork.exception.UserNotFoundException;
+import com.carpassionnetwork.model.Comment;
 import com.carpassionnetwork.model.Gender;
+import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
+import com.carpassionnetwork.repository.CommentRepository;
+import com.carpassionnetwork.repository.PostRepository;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -30,6 +37,11 @@ public class UserControllerIT extends BaseIT {
   @TempDir Path tempDir;
   private UserEditRequest userEditRequest;
   private User secondUser;
+  private Post post;
+  private Comment comment;
+
+  @Autowired private PostRepository postRepository;
+  @Autowired private CommentRepository commentRepository;
 
   @BeforeEach
   void setUp() throws IOException {
@@ -37,6 +49,8 @@ public class UserControllerIT extends BaseIT {
     Files.createDirectories(customTempDir);
     userEditRequest = createUserEditRequest();
     secondUser = createUserTwo();
+    post = createNewPost();
+    comment = createNewComment();
   }
 
   @Test
@@ -367,8 +381,40 @@ public class UserControllerIT extends BaseIT {
         .andExpect(jsonPath("$[1].id").value(savedSecondUser.getId().toString()));
   }
 
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void deleteUserShouldThrowUserNotFoundException() throws Exception {
+    mockMvc
+        .perform(delete("/users/" + currentUser.getId()))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result -> assertInstanceOf(UserNotFoundException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void deleteUserSuccessfully() throws Exception {
+    User savedSecondUser = saveUser(secondUser);
+    Post savedPost = savePost(post);
+    Comment savedComment = saveComment(comment);
+    User savedCurrentUser = saveUser(currentUser);
+    savedCurrentUser.setLikedPosts(Set.of(savedPost));
+    savedCurrentUser.setLikedComments(Set.of(savedComment));
+    savedCurrentUser.setFriends(Set.of(savedSecondUser));
+
+    mockMvc.perform(delete("/users/" + savedCurrentUser.getId())).andExpect(status().isNoContent());
+  }
+
   private User saveUser(User user) {
     return userRepository.save(user);
+  }
+
+  private Post savePost(Post post) {
+    return postRepository.save(post);
+  }
+
+  private Comment saveComment(Comment comment) {
+    return commentRepository.save(comment);
   }
 
   private User getRegisteredUser() {

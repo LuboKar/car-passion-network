@@ -5,6 +5,8 @@ import com.carpassionnetwork.exception.FileNotUploadedException;
 import com.carpassionnetwork.exception.InvalidCredentialsException;
 import com.carpassionnetwork.exception.InvalidPasswordException;
 import com.carpassionnetwork.exception.UserNotFoundException;
+import com.carpassionnetwork.model.Comment;
+import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.UserRepository;
 import java.io.IOException;
@@ -92,6 +94,16 @@ public class UserService {
     return userRepository.findByFullNameStartingWith(term, limit);
   }
 
+  public void deleteUser(UUID id) {
+    User userToDelete = getUser(id);
+
+    removeUserPostLikes(userToDelete);
+    removeUserCommentLikes(userToDelete);
+    removeUserFriends(userToDelete);
+
+    userRepository.delete(userToDelete);
+  }
+
   private String getCurrentUserEmail() {
     return SecurityContextHolder.getContext().getAuthentication().getName();
   }
@@ -160,6 +172,24 @@ public class UserService {
   private void editGender(UserEditRequest userEditRequest, User currentUser) {
     if (userEditRequest.getGender() != null) {
       currentUser.setGender(userEditRequest.getGender());
+    }
+  }
+
+  private void removeUserPostLikes(User user) {
+    for (Post post : user.getLikedPosts()) {
+      post.getLikes().remove(user);
+    }
+  }
+
+  private void removeUserCommentLikes(User user) {
+    for (Comment comment : user.getLikedComments()) {
+      comment.getLikes().remove(user);
+    }
+  }
+
+  private void removeUserFriends(User user) {
+    for (User frienduser : user.getFriends()) {
+      frienduser.getFriends().remove(user);
     }
   }
 }
