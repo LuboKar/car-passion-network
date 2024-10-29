@@ -2,12 +2,12 @@ package com.carpassionnetwork.mapper;
 
 import com.carpassionnetwork.dto.response.CommentResponseDto;
 import com.carpassionnetwork.model.Comment;
-import com.carpassionnetwork.model.User;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -29,15 +29,9 @@ public class CommentMapper {
   }
 
   private boolean isCurrentUserLiked(Comment comment) {
-    String currentUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+    UserDetails currentUser =
+        (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-    if (comment.getLikes() != null) {
-      for (User user : comment.getLikes()) {
-        if (user.getEmail().equals(currentUserEmail)) {
-          return true;
-        }
-      }
-    }
-    return false;
+    return comment.getLikes().contains(currentUser);
   }
 }
