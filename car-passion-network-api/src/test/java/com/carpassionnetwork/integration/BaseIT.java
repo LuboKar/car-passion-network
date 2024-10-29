@@ -3,13 +3,16 @@ package com.carpassionnetwork.integration;
 import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserOne;
 
 import com.carpassionnetwork.config.LocalDateTypeAdapter;
+import com.carpassionnetwork.model.Comment;
+import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
+import com.carpassionnetwork.repository.CommentRepository;
+import com.carpassionnetwork.repository.PostRepository;
 import com.carpassionnetwork.repository.UserRepository;
 import com.carpassionnetwork.service.AuthenticationService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.time.LocalDate;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,6 +37,8 @@ public class BaseIT {
   @Autowired protected MockMvc mockMvc;
   @Autowired private AuthenticationService authenticationService;
   @Autowired protected UserRepository userRepository;
+  @Autowired private PostRepository postRepository;
+  @Autowired private CommentRepository commentRepository;
 
   protected final User currentUser;
 
@@ -47,5 +52,21 @@ public class BaseIT {
 
   protected void register() {
     authenticationService.register(currentUser);
+  }
+
+  protected Post createPost(Post post) {
+    return postRepository.save(post);
+  }
+
+  protected Comment creteComment(Comment comment) {
+    return commentRepository.save(comment);
+  }
+
+  protected User createUser(User user) {
+    return userRepository.save(user);
+  }
+
+  protected User createSecondUser(User secondUser) {
+    return userRepository.save(secondUser);
   }
 }

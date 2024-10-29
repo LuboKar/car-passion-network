@@ -18,12 +18,9 @@ import com.carpassionnetwork.exception.UserNotAuthorException;
 import com.carpassionnetwork.model.Comment;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
-import com.carpassionnetwork.repository.CommentRepository;
-import com.carpassionnetwork.repository.PostRepository;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
@@ -34,9 +31,6 @@ public class CommentControllerIT extends BaseIT {
   private Comment comment;
   private User user;
   private User secondUser;
-
-  @Autowired private PostRepository postRepository;
-  @Autowired private CommentRepository commentRepository;
 
   @BeforeEach
   void setUp() {
@@ -80,7 +74,7 @@ public class CommentControllerIT extends BaseIT {
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testCreateCommentSuccessfully() throws Exception {
     register();
-    Post createdPost = createPost();
+    Post createdPost = createPost(post);
     commentRequestDto.setPostId(createdPost.getId());
 
     mockMvc
@@ -119,11 +113,11 @@ public class CommentControllerIT extends BaseIT {
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testLikeOrUnlikeCommentShouldLikeSuccessfully() throws Exception {
-    Post createdPost = createPost();
+    Post createdPost = createPost(post);
     comment.setPost(createdPost);
-    User createdUser = createUser();
+    User createdUser = createUser(user);
     comment.setUser(createdUser);
-    Comment createdComment = creteComment();
+    Comment createdComment = creteComment(comment);
 
     mockMvc
         .perform(post("/comment/like/" + createdComment.getId()))
@@ -135,12 +129,12 @@ public class CommentControllerIT extends BaseIT {
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testLikeOrUnlikeCommentShouldUnlikeSuccessfully() throws Exception {
-    Post createdPost = createPost();
+    Post createdPost = createPost(post);
     comment.setPost(createdPost);
-    User createdUser = createUser();
+    User createdUser = createUser(user);
     comment.setUser(createdUser);
     comment.setLikes(Set.of(createdUser));
-    Comment createdComment = creteComment();
+    Comment createdComment = creteComment(comment);
 
     mockMvc
         .perform(post("/comment/like/" + createdComment.getId()))
@@ -183,11 +177,11 @@ public class CommentControllerIT extends BaseIT {
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testReplyCommentSuccessfully() throws Exception {
-    User createdUser = createUser();
-    Post createdPost = createPost();
+    User createdUser = createUser(user);
+    Post createdPost = createPost(post);
     comment.setPost(createdPost);
     comment.setUser(createdUser);
-    Comment createdComment = creteComment();
+    Comment createdComment = creteComment(comment);
     commentRequestDto.setParentCommentId(createdComment.getId());
 
     mockMvc
@@ -226,7 +220,7 @@ public class CommentControllerIT extends BaseIT {
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testDeleteCommentShouldThrowCommentNotFoundException() throws Exception {
     register();
-    Post savedPost = createPost();
+    Post savedPost = createPost(post);
 
     mockMvc
         .perform(delete("/comment/delete/" + savedPost.getId() + "/" + comment.getId()))
@@ -240,13 +234,13 @@ public class CommentControllerIT extends BaseIT {
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testDeleteCommentShouldThrowUserNotAuthorException() throws Exception {
     register();
-    User user = createSecondUser();
-    post.setAuthor(user);
-    post.setUser(user);
-    Post savedPost = createPost();
-    comment.setUser(user);
+    User savedSecondUser = createSecondUser(secondUser);
+    post.setAuthor(savedSecondUser);
+    post.setUser(savedSecondUser);
+    Post savedPost = createPost(post);
+    comment.setUser(savedSecondUser);
     comment.setPost(savedPost);
-    Comment savedComment = creteComment();
+    Comment savedComment = creteComment(comment);
 
     mockMvc
         .perform(delete("/comment/delete/" + savedPost.getId() + "/" + savedComment.getId()))
@@ -259,13 +253,13 @@ public class CommentControllerIT extends BaseIT {
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testDeleteCommentSuccessfully() throws Exception {
-    User user = createUser();
-    post.setAuthor(user);
-    post.setUser(user);
-    Post savedPost = createPost();
-    comment.setUser(user);
+    User savedUser = createUser(user);
+    post.setAuthor(savedUser);
+    post.setUser(savedUser);
+    Post savedPost = createPost(post);
+    comment.setUser(savedUser);
     comment.setPost(savedPost);
-    Comment savedComment = creteComment();
+    Comment savedComment = creteComment(comment);
 
     mockMvc
         .perform(delete("/comment/delete/" + savedPost.getId() + "/" + savedComment.getId()))
@@ -305,7 +299,7 @@ public class CommentControllerIT extends BaseIT {
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testEditCommentShouldThrowCommentNotFoundException() throws Exception {
     register();
-    Post createdPost = createPost();
+    Post createdPost = createPost(post);
     commentEditRequestDto.setPostId(createdPost.getId());
 
     mockMvc
@@ -323,13 +317,13 @@ public class CommentControllerIT extends BaseIT {
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testEditCommentShouldThrowUserNotAuthorException() throws Exception {
     register();
-    User user = createSecondUser();
-    post.setAuthor(user);
-    post.setUser(user);
-    Post savedPost = createPost();
-    comment.setUser(user);
+    User savedSecondUser = createSecondUser(secondUser);
+    post.setAuthor(savedSecondUser);
+    post.setUser(savedSecondUser);
+    Post savedPost = createPost(post);
+    comment.setUser(savedSecondUser);
     comment.setPost(savedPost);
-    Comment savedComment = creteComment();
+    Comment savedComment = creteComment(comment);
     commentEditRequestDto.setPostId(savedPost.getId());
     commentEditRequestDto.setCommentId(savedComment.getId());
 
@@ -347,13 +341,13 @@ public class CommentControllerIT extends BaseIT {
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testEditCommentSuccessfully() throws Exception {
-    User user = createUser();
-    post.setAuthor(user);
-    post.setUser(user);
-    Post savedPost = createPost();
-    comment.setUser(user);
+    User savedUser = createUser(user);
+    post.setAuthor(savedUser);
+    post.setUser(savedUser);
+    Post savedPost = createPost(post);
+    comment.setUser(savedUser);
     comment.setPost(savedPost);
-    Comment savedComment = creteComment();
+    Comment savedComment = creteComment(comment);
     commentEditRequestDto.setPostId(savedPost.getId());
     commentEditRequestDto.setCommentId(savedComment.getId());
 
@@ -364,21 +358,5 @@ public class CommentControllerIT extends BaseIT {
                 .content(gson.toJson(commentEditRequestDto)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.content").value(commentEditRequestDto.getContent()));
-  }
-
-  private Post createPost() {
-    return postRepository.save(post);
-  }
-
-  private Comment creteComment() {
-    return commentRepository.save(comment);
-  }
-
-  private User createUser() {
-    return userRepository.save(user);
-  }
-
-  private User createSecondUser() {
-    return userRepository.save(secondUser);
   }
 }
