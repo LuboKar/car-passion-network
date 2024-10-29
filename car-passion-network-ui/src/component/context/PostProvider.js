@@ -30,9 +30,13 @@ export const PostProvider = ({ children }) => {
   };
 
   const editComment = (comment, commentIndex) => {
-    const updatedPost = { ...post };
-    updatedPost.comments[commentIndex] = comment;
-    setPost(updatedPost);
+    setPost((prevPost) => {
+      const updatedPost = { ...prevPost };
+
+      updatedPost.comments[commentIndex] = comment;
+
+      return updatedPost;
+    });
   };
 
   const removeComment = (commentId) => {
