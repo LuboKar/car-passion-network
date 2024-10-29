@@ -27,6 +27,8 @@ public class PostServiceTest {
   @Mock private UserService userService;
   @Mock private PostRepository postRepository;
 
+  private static final String TITLE = "New title";
+
   private User currentUser;
   private User owner;
   private Post post;
@@ -36,6 +38,10 @@ public class PostServiceTest {
     currentUser = createUserOne();
     owner = createUserTwo();
     post = createNewPost();
+    post.getLikes().add(currentUser);
+    currentUser.setPosts(new ArrayList<>());
+    post.setUser(owner);
+    post.setAuthor(currentUser);
   }
 
   @Test
@@ -101,7 +107,6 @@ public class PostServiceTest {
 
   @Test
   void likeOrUnlikePostShouldUnLikePostSuccessfully() {
-    post.getLikes().add(currentUser);
     when(userService.getCurrentUser()).thenReturn(currentUser);
     when(postRepository.findById(post.getId())).thenReturn(Optional.of(post));
 
@@ -114,11 +119,10 @@ public class PostServiceTest {
 
   @Test
   void getAllPostsByUserIdSuccessfully() {
-    currentUser.setPosts(new ArrayList<>());
-    currentUser.getPosts().add(post);
-    currentUser.getPosts().add(post);
     when(postRepository.findAllByUserIdOrderByCreatedAtDesc(currentUser.getId()))
         .thenReturn(currentUser.getPosts());
+    currentUser.getPosts().add(post);
+    currentUser.getPosts().add(post);
 
     List<Post> responseList = postService.getAllPostsByUserId(currentUser.getId());
 
@@ -172,7 +176,6 @@ public class PostServiceTest {
     when(userService.getCurrentUser()).thenReturn(currentUser);
     when(postRepository.findById(post.getId())).thenReturn(Optional.ofNullable(post));
     post.setAuthor(owner);
-    post.setUser(owner);
 
     assertThrows(UserNotAuthorException.class, () -> postService.deletePost(post.getId()));
   }
@@ -181,7 +184,6 @@ public class PostServiceTest {
   void deletePostSuccessfully() {
     when(userService.getCurrentUser()).thenReturn(currentUser);
     when(postRepository.findById(post.getId())).thenReturn(Optional.ofNullable(post));
-    post.setAuthor(currentUser);
 
     postService.deletePost(post.getId());
 
@@ -194,11 +196,9 @@ public class PostServiceTest {
   void editPostShouldThrowInvalidCredentialsException() {
     when(userService.getCurrentUser()).thenThrow(InvalidCredentialsException.class);
 
-    String title = "New title";
-
     assertThrows(
         InvalidCredentialsException.class,
-        () -> postService.editPost(post.getId(), title, post.getContent()));
+        () -> postService.editPost(post.getId(), TITLE, post.getContent()));
   }
 
   @Test
@@ -206,35 +206,28 @@ public class PostServiceTest {
     when(userService.getCurrentUser()).thenReturn(currentUser);
     when(postRepository.findById(post.getId())).thenThrow(PostNotFoundException.class);
 
-    String title = "New title";
-
     assertThrows(
         PostNotFoundException.class,
-        () -> postService.editPost(post.getId(), title, post.getContent()));
+        () -> postService.editPost(post.getId(), TITLE, post.getContent()));
   }
 
   @Test
   void editPostShouldThrowUserNotAuthorException() {
     when(userService.getCurrentUser()).thenReturn(currentUser);
-    post.setAuthor(owner);
     when(postRepository.findById(post.getId())).thenReturn(Optional.of(post));
-
-    String title = "New title";
+    post.setAuthor(owner);
 
     assertThrows(
         UserNotAuthorException.class,
-        () -> postService.editPost(post.getId(), title, post.getContent()));
+        () -> postService.editPost(post.getId(), TITLE, post.getContent()));
   }
 
   @Test
   void editPostSuccessfully() {
     when(userService.getCurrentUser()).thenReturn(currentUser);
-    post.setAuthor(currentUser);
     when(postRepository.findById(post.getId())).thenReturn(Optional.of(post));
 
-    String title = "New title";
-
-    postService.editPost(post.getId(), title, post.getContent());
+    postService.editPost(post.getId(), TITLE, post.getContent());
 
     verify(userService, times(1)).getCurrentUser();
     verify(postRepository, times(1)).findById(post.getId());
