@@ -92,7 +92,7 @@ export default function ProfilePage() {
     setUserInformation(false);
   };
 
-  const buttons = [
+  const topButtons = [
     {
       label: "Posts",
       icon: postIcon,
@@ -116,7 +116,7 @@ export default function ProfilePage() {
   return (
     <div className="profile-page-container">
       <Navbar />
-      <VerticalNavbar buttons={buttons} />
+      <VerticalNavbar topButtons={topButtons} />
       <RightVerticalNabvar />
 
       {!loadingUser && !loadingPosts && (

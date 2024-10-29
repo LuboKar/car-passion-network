@@ -1,0 +1,65 @@
+.delete-account-container{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    margin-left: 30%;  
+    margin-top: 95px;
+    width: 40%;
+    border-radius: 15px;
+    background-color: #e0e0e0;
+    align-items: center;
+}
+
+.delete-account-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.delete-account-text{
+    margin-top: 10%;
+    font-size: 60px;
+}
+
+.dalete-account-option{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30%;
+}
+
+.delete-account-radio-yes:hover{
+    cursor: pointer;
+}
+
+.delete-account-radio-no{
+    margin-left: 90px;
+}
+
+.delete-account-radio-no:hover{
+    cursor: pointer;
+}
+
+.delete-account-option-label{
+    font-size: 30px;
+}
+
+
+.delete-account-option-label:hover{
+    cursor: pointer;
+}
+
+.delete-account-button{
+    margin-top: 20%;
+    height: 40px;
+    width: 200px;
+    margin-bottom: 50%;
+    font-size: 20px;
+    color: red;
+}
+
+.delete-account-button:hover{
+    cursor: pointer;
+}

@@ -6,11 +6,14 @@ import editIcon from "../../images/edit.png";
 import EditProfile from "../pageUtils/user/EditProfile";
 import { getUser } from "../service/UserService";
 import { getId } from "../service/TokenService";
+import deleteProfileIcon from "../../images/delete.png";
+import DeleteAccount from "../pageUtils/user/DeleteAccount";
 
 export default function SettingsPage() {
   const [editProfileButton, setEditProfileButton] = useState(true);
   const [user, setUser] = useState({});
   const [loadingUser, setLoadingUser] = useState(true);
+  const [deleteAccountButton, setDeleteAccountButton] = useState(false);
 
   const fetchUser = async () => {
     const response = await getUser(getId());
@@ -29,21 +32,44 @@ export default function SettingsPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const buttons = [
+  const toggleEditProfile = () => {
+    setDeleteAccountButton(false);
+    setEditProfileButton(true);
+  };
+
+  const toggleDeleteAccount = () => {
+    setEditProfileButton(false);
+    setDeleteAccountButton(true);
+  };
+
+  const topButtons = [
     {
       label: "Edit Profile",
       icon: editIcon,
-      //onClick: togglePosts,
+      onClick: toggleEditProfile,
       isVisible: editProfileButton,
+    },
+  ];
+
+  const bottomButtons = [
+    {
+      label: "Delete Account",
+      icon: deleteProfileIcon,
+      onClick: toggleDeleteAccount,
+      isVisible: deleteAccountButton,
     },
   ];
 
   return (
     <div className="settings-page-container">
       <Navbar />
-      <VerticalNavbar buttons={buttons} />
+      <VerticalNavbar topButtons={topButtons} bottomButtons={bottomButtons} />
       <RightVerticalNabvar />
-      {!loadingUser && <EditProfile user={user} setUser={setUser} />}
+      {!loadingUser && editProfileButton && (
+        <EditProfile user={user} setUser={setUser} />
+      )}
+
+      {deleteAccountButton && <DeleteAccount userId={user.id} />}
     </div>
   );
 }

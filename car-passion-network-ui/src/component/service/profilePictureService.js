@@ -7,4 +7,8 @@ const getProfilePictureUrl = () => {
   return profilePicture === "null" ? null : profilePicture;
 };
 
-export { saveProfilePictureUrl, getProfilePictureUrl };
+const deleteProfilePictureUrl = () => {
+  localStorage.removeItem("profilePicture");
+};
+
+export { saveProfilePictureUrl, getProfilePictureUrl, deleteProfilePictureUrl };

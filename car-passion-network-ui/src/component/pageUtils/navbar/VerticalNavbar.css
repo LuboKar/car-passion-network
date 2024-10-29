@@ -21,11 +21,11 @@
   cursor: pointer;
 }
 
-.vertical-buttons label{
-  font-size: 150%;
+.vertical-top-buttons-label{
+  font-size: 120%;
 }
 
-.vertical-buttons label:hover{
+.vertical-top-buttons-label:hover{
   cursor: pointer;
 }
 
@@ -44,5 +44,19 @@
 
 .information-visible{
   background-color: #d9d9d9;
+}
+
+.navbar-bottom-buttons{
+  margin-top: auto;
+  margin-bottom: 10%;
+}
+
+.vertical-bottom-buttons-label{
+  font-size: 120%;
+  color: red;
+}
+
+.vertical-bottom-buttons-label:hover{
+  cursor: pointer;
 }
 

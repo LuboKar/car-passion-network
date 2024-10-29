@@ -129,6 +129,23 @@ const findUsersByFullNameStartsWith = async (term) => {
   }
 };
 
+const deleteUser = async (userId) => {
+  try {
+    const token = getToken();
+    const response = await fetch(`http://localhost:8080/users/${userId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+  }
+};
+
 export {
   getUser,
   uploadProfilePicture,
@@ -137,4 +154,5 @@ export {
   removeFriend,
   getFriends,
   findUsersByFullNameStartsWith,
+  deleteUser,
 };
