@@ -2,7 +2,7 @@ package com.carpassionnetwork.integration;
 
 import static com.carpassionnetwork.helper.AuthenticationTestHelper.EMAIL;
 import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserTwo;
-import static com.carpassionnetwork.helper.CommentTestHelper.createNewComment;
+import static com.carpassionnetwork.helper.CommentTestHelper.createNewCommentOne;
 import static com.carpassionnetwork.helper.PostTestHelper.*;
 import static com.carpassionnetwork.helper.UserTestHelper.createUserEditRequest;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -50,7 +50,7 @@ public class UserControllerIT extends BaseIT {
     userEditRequest = createUserEditRequest();
     secondUser = createUserTwo();
     post = createNewPost();
-    comment = createNewComment();
+    comment = createNewCommentOne();
   }
 
   @Test

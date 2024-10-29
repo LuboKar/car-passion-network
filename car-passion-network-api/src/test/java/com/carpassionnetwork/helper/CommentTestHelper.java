@@ -13,7 +13,15 @@ public class CommentTestHelper {
     return CommentRequestDto.builder().postId(UUID.randomUUID()).content(CONTENT).build();
   }
 
-  public static Comment createNewComment() {
+  public static Comment createNewCommentOne() {
+    return Comment.builder()
+        .id(UUID.randomUUID())
+        .content("Test comment content!")
+        .likes(new HashSet<>())
+        .build();
+  }
+
+  public static Comment createNewCommentTwo() {
     return Comment.builder()
         .id(UUID.randomUUID())
         .content("Test comment content!")

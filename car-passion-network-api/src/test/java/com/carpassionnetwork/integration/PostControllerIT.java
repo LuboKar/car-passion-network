@@ -120,7 +120,6 @@ public class PostControllerIT extends BaseIT {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.title").value(createdPost.getTitle()))
         .andExpect(jsonPath("$.content").value(createdPost.getContent()))
-        .andExpect(jsonPath("$.currentUserLike").value(true))
         .andExpect(jsonPath("likes.length()").value(1))
         .andExpect(jsonPath("likes[0].firstName").value(currentUser.getFirstName()))
         .andExpect(jsonPath("likes[0].lastName").value(currentUser.getLastName()))

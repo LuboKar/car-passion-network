@@ -42,7 +42,7 @@ public class CommentControllerIT extends BaseIT {
   void setUp() {
     commentRequestDto = createNewCommentRequestDto();
     post = createNewPost();
-    comment = createNewComment();
+    comment = createNewCommentOne();
     user = createUserOne();
     secondUser = createUserTwo();
     commentEditRequestDto = createNewCommentEditRequestDto();

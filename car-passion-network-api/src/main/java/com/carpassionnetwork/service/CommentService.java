@@ -23,14 +23,7 @@ public class CommentService {
     User user = userService.getCurrentUser();
     Post post = postService.getPost(postId);
 
-    Comment comment =
-        Comment.builder()
-            .user(user)
-            .post(post)
-            .content(content)
-            .likes(new HashSet<>())
-            .depth(STARTING_DEPTH)
-            .build();
+    Comment comment = buildComment(user, post, content);
 
     return commentRepository.save(comment);
   }
@@ -39,44 +32,21 @@ public class CommentService {
     User user = userService.getCurrentUser();
     Comment parentComment = getComment(parentId);
 
-    Comment reply =
-        Comment.builder()
-            .user(user)
-            .content(content)
-            .likes(new HashSet<>())
-            .parent(parentComment)
-            .post(parentComment.getPost())
-            .depth(parentComment.getDepth() + 1)
-            .build();
-
+    Comment reply = buildReply(user, parentComment, content);
     Comment savedReply = commentRepository.save(reply);
 
-    if (savedReply.getParent() != null) {
-      return getParent(savedReply);
-    }
-
-    return savedReply;
+    return getParent(savedReply);
   }
 
   public Comment likeOrUnlikeComment(UUID commentId) {
     User currentUser = userService.getCurrentUser();
-
     Comment likedComment = getComment(commentId);
 
-    boolean isCommentLiked = likedComment.getLikes().contains(currentUser);
+    toggleLike(currentUser, likedComment);
 
-    if (isCommentLiked) {
-      likedComment.getLikes().remove(currentUser);
-    } else {
-      likedComment.getLikes().add(currentUser);
-    }
+    Comment savedComment = commentRepository.save(likedComment);
 
-    Comment parrentComment;
-    if (likedComment.getParent() != null) {
-      parrentComment = getParent(likedComment);
-    } else parrentComment = likedComment;
-
-    return commentRepository.save(parrentComment);
+    return savedComment.getParent() != null ? getParent(savedComment) : savedComment;
   }
 
   public Comment getComment(UUID id) {
@@ -88,9 +58,7 @@ public class CommentService {
     Post post = postService.getPost(postId);
     Comment commentToDelete = getComment(commentID);
 
-    if (!post.getAuthor().equals(currentUser) && !post.getUser().equals(currentUser)) {
-      throw new UserNotAuthorException(currentUser.getId(), postId);
-    }
+    validateUserCanEditComment(currentUser, post);
 
     commentRepository.delete(commentToDelete);
   }
@@ -100,13 +68,32 @@ public class CommentService {
     Post post = postService.getPost(postId);
     Comment commentToEdit = getComment(commentId);
 
-    if (!post.getAuthor().equals(currentUser) && !post.getUser().equals(currentUser)) {
-      throw new UserNotAuthorException(currentUser.getId(), postId);
-    }
+    validateUserCanEditComment(currentUser, post);
 
     commentToEdit.setContent(content);
 
     return commentRepository.save(commentToEdit);
+  }
+
+  private Comment buildComment(User user, Post post, String content) {
+    return Comment.builder()
+        .user(user)
+        .post(post)
+        .content(content)
+        .likes(new HashSet<>())
+        .depth(STARTING_DEPTH)
+        .build();
+  }
+
+  private Comment buildReply(User user, Comment parentComment, String content) {
+    return Comment.builder()
+        .user(user)
+        .content(content)
+        .likes(new HashSet<>())
+        .parent(parentComment)
+        .post(parentComment.getPost())
+        .depth(parentComment.getDepth() + 1)
+        .build();
   }
 
   private Comment getParent(Comment comment) {
@@ -116,5 +103,17 @@ public class CommentService {
     }
 
     return parentComment;
+  }
+
+  private void toggleLike(User currentUser, Comment likedComment) {
+    if (!likedComment.getLikes().remove(currentUser)) {
+      likedComment.getLikes().add(currentUser);
+    }
+  }
+
+  private void validateUserCanEditComment(User user, Post post) {
+    if (!post.getAuthor().equals(user) && !post.getUser().equals(user)) {
+      throw new UserNotAuthorException(user.getId(), post.getId());
+    }
   }
 }
