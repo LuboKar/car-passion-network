@@ -51,6 +51,7 @@ public class UserServiceTest {
     user = createUserOne();
     userEditRequest = createUserEditRequest();
     secondUser = createUserTwo();
+    user.setLikedComments(new HashSet<>());
   }
 
   @Test
@@ -101,7 +102,6 @@ public class UserServiceTest {
   void uploadProfilePictureShouldThrowInvalidCredentialsException() throws IOException {
     String fileName = "test.png";
     byte[] fileContent = "file content".getBytes();
-
     when(file.isEmpty()).thenReturn(false);
     when(file.getOriginalFilename()).thenReturn(fileName);
     SecurityContextHolder.setContext(securityContext);
@@ -117,7 +117,6 @@ public class UserServiceTest {
   void uploadProfilePictureSuccessfully() throws IOException {
     String fileName = "test.png";
     byte[] fileContent = "file content".getBytes();
-
     when(file.isEmpty()).thenReturn(false);
     when(file.getOriginalFilename()).thenReturn(fileName);
     SecurityContextHolder.setContext(securityContext);
@@ -148,7 +147,6 @@ public class UserServiceTest {
     when(authentication.getName()).thenReturn(user.getEmail());
     when(securityContext.getAuthentication()).thenReturn(authentication);
     when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.ofNullable(user));
-
     user.setPassword("passs");
     userEditRequest.setOldPassword("pass");
     userEditRequest.setNewPassword("password");
@@ -272,7 +270,8 @@ public class UserServiceTest {
   @Test
   void findUsersByFullNameStartsWithShouldReturnEmptyArray() {
     String term = "Test";
-    when(userRepository.findByFullNameStartingWith(eq(term), any(Pageable.class))).thenReturn(Collections.emptyList());
+    when(userRepository.findByFullNameStartingWith(eq(term), any(Pageable.class)))
+        .thenReturn(Collections.emptyList());
 
     List<User> users = userService.findUsersByFullNameStartsWith(term);
 
@@ -283,7 +282,8 @@ public class UserServiceTest {
   @Test
   void findUsersByFullNameStartsWithSuccessfully() {
     String term = "J";
-    when(userRepository.findByFullNameStartingWith(eq(term), any(Pageable.class))).thenReturn(List.of(user, secondUser));
+    when(userRepository.findByFullNameStartingWith(eq(term), any(Pageable.class)))
+        .thenReturn(List.of(user, secondUser));
 
     List<User> users = userService.findUsersByFullNameStartsWith(term);
 
@@ -292,20 +292,19 @@ public class UserServiceTest {
   }
 
   @Test
-  void deleteUserShouldThrowUserNotFoundException(){
+  void deleteUserShouldThrowUserNotFoundException() {
     when(userRepository.findById(user.getId())).thenThrow(UserNotFoundException.class);
 
     assertThrows(UserNotFoundException.class, () -> userService.deleteUser(user.getId()));
   }
 
   @Test
-  void deleteUserSuccessfully(){
-    user.setLikedComments(new HashSet<>());
+  void deleteUserSuccessfully() {
     when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 
     userService.deleteUser(user.getId());
 
-    verify(userRepository,times(1)).findById(user.getId());
+    verify(userRepository, times(1)).findById(user.getId());
     verify(userRepository, times(1)).delete(user);
   }
 }
