@@ -23,7 +23,6 @@ import com.carpassionnetwork.repository.PostRepository;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -66,8 +65,7 @@ public class UserControllerIT extends BaseIT {
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void getUserSuccessfully() throws Exception {
-    register();
-    User registeredUser = getRegisteredUser();
+    User registeredUser = createUser(currentUser);
 
     mockMvc
         .perform(get("/users/" + registeredUser.getId()))
@@ -284,6 +282,7 @@ public class UserControllerIT extends BaseIT {
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void addFriendShouldThrowUserNotFoundException() throws Exception {
     register();
+
     mockMvc
         .perform(post("/users/friends/" + secondUser.getId()))
         .andExpect(status().isBadRequest())
@@ -295,7 +294,8 @@ public class UserControllerIT extends BaseIT {
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void addFriendSuccessfully() throws Exception {
     register();
-    User savedSecondUser = saveUser(secondUser);
+    User savedSecondUser = createUser(secondUser);
+
     mockMvc.perform(post("/users/friends/" + savedSecondUser.getId())).andExpect(status().isOk());
   }
 
@@ -314,6 +314,7 @@ public class UserControllerIT extends BaseIT {
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void removeFriendShouldThrowUserNotFoundException() throws Exception {
     register();
+
     mockMvc
         .perform(delete("/users/friends/" + secondUser.getId()))
         .andExpect(status().isBadRequest())
@@ -325,14 +326,15 @@ public class UserControllerIT extends BaseIT {
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void removeFriendSuccessfully() throws Exception {
     register();
-    User savedSecondUser = saveUser(secondUser);
+    User savedSecondUser = createUser(secondUser);
+
     mockMvc.perform(delete("/users/friends/" + savedSecondUser.getId())).andExpect(status().isOk());
   }
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void getFriendShouldReturnEmptyList() throws Exception {
-    User savedCurrentUser = saveUser(currentUser);
+    User savedCurrentUser = createUser(currentUser);
 
     mockMvc
         .perform(get("/users/friends/" + savedCurrentUser.getId()))
@@ -343,11 +345,11 @@ public class UserControllerIT extends BaseIT {
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void getFriendSuccessfully() throws Exception {
-    User savedCurrentUser = saveUser(currentUser);
-    User savedSecondUser = saveUser(secondUser);
+    User savedCurrentUser = createUser(currentUser);
+    User savedSecondUser = createUser(secondUser);
     savedCurrentUser.getFriends().add(savedSecondUser);
     savedSecondUser.getFriends().add(savedCurrentUser);
-    saveUser(savedCurrentUser);
+    createUser(savedCurrentUser);
 
     mockMvc
         .perform(get("/users/friends/" + savedCurrentUser.getId()))
@@ -360,6 +362,7 @@ public class UserControllerIT extends BaseIT {
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void findUsersByFullNameStartsWithShouldReturnEmptyArray() throws Exception {
     String term = "aa";
+
     mockMvc
         .perform(get("/users/findBy/" + term))
         .andExpect(status().isOk())
@@ -370,8 +373,8 @@ public class UserControllerIT extends BaseIT {
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void findUsersByFullNameStartsWithSuccessfully() throws Exception {
     String term = "j";
-    User savedCurrentUser = saveUser(currentUser);
-    User savedSecondUser = saveUser(secondUser);
+    User savedCurrentUser = createUser(currentUser);
+    User savedSecondUser = createUser(secondUser);
 
     mockMvc
         .perform(get("/users/findBy/" + term))
@@ -394,31 +397,14 @@ public class UserControllerIT extends BaseIT {
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void deleteUserSuccessfully() throws Exception {
-    User savedSecondUser = saveUser(secondUser);
-    Post savedPost = savePost(post);
-    Comment savedComment = saveComment(comment);
-    User savedCurrentUser = saveUser(currentUser);
+    User savedSecondUser = createUser(secondUser);
+    Post savedPost = createPost(post);
+    Comment savedComment = creteComment(comment);
+    User savedCurrentUser = createUser(currentUser);
     savedCurrentUser.setLikedPosts(Set.of(savedPost));
     savedCurrentUser.setLikedComments(Set.of(savedComment));
     savedCurrentUser.setFriends(Set.of(savedSecondUser));
 
     mockMvc.perform(delete("/users/" + savedCurrentUser.getId())).andExpect(status().isNoContent());
-  }
-
-  private User saveUser(User user) {
-    return userRepository.save(user);
-  }
-
-  private Post savePost(Post post) {
-    return postRepository.save(post);
-  }
-
-  private Comment saveComment(Comment comment) {
-    return commentRepository.save(comment);
-  }
-
-  private User getRegisteredUser() {
-    Optional<User> registeredUser = userRepository.findByEmail(EMAIL);
-    return registeredUser.orElse(null);
   }
 }
