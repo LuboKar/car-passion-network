@@ -40,16 +40,9 @@ public class PostService {
 
   public Post likeOrUnlikePost(UUID postId) {
     User currentUser = userService.getCurrentUser();
-
     Post likedPost = getPost(postId);
 
-    boolean isPostLiked = likedPost.getLikes().contains(currentUser);
-
-    if (isPostLiked) {
-      likedPost.getLikes().remove(currentUser);
-    } else {
-      likedPost.getLikes().add(currentUser);
-    }
+    toggleLike(currentUser, likedPost);
 
     return postRepository.save(likedPost);
   }
@@ -62,9 +55,7 @@ public class PostService {
     User currentUser = userService.getCurrentUser();
     Post post = getPost(postId);
 
-    if (!post.getAuthor().equals(currentUser) && !post.getUser().equals(currentUser)) {
-      throw new UserNotAuthorException(currentUser.getId(), postId);
-    }
+    validateUserCanDeletePost(currentUser, post);
 
     postRepository.delete(post);
   }
@@ -73,13 +64,29 @@ public class PostService {
     User currentUser = userService.getCurrentUser();
     Post post = getPost(postId);
 
-    if (!post.getAuthor().equals(currentUser)) {
-      throw new UserNotAuthorException(currentUser.getId(), postId);
-    }
+    validateUserCanEditPost(currentUser, post);
 
     post.setTitle(title);
     post.setContent(content);
 
     return postRepository.save(post);
+  }
+
+  private void toggleLike(User currentUser, Post likedPost) {
+    if (!likedPost.getLikes().remove(currentUser)) {
+      likedPost.getLikes().add(currentUser);
+    }
+  }
+
+  private void validateUserCanDeletePost(User user, Post post) {
+    if (!post.getAuthor().equals(user) && !post.getUser().equals(user)) {
+      throw new UserNotAuthorException(user.getId(), post.getId());
+    }
+  }
+
+  private void validateUserCanEditPost(User currentUser, Post post) {
+    if (!post.getAuthor().equals(currentUser)) {
+      throw new UserNotAuthorException(currentUser.getId(), post.getId());
+    }
   }
 }
