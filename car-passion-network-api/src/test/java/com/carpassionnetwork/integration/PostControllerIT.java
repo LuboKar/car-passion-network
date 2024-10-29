@@ -55,7 +55,7 @@ public class PostControllerIT extends BaseIT {
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testCreatePostShouldThrowInvalidCredentialsExceptionWhenAuthorDoesNotExists()
       throws Exception {
-    User savedOwner = saveUser(owner);
+    User savedOwner = createUser(owner);
     postCreateRequestDto.setOwnerId(savedOwner.getId());
 
     mockMvc
@@ -72,7 +72,7 @@ public class PostControllerIT extends BaseIT {
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testCreatePostSuccessfully() throws Exception {
-    User savedOwner = saveUser(owner);
+    User savedOwner = createUser(owner);
     postCreateRequestDto.setOwnerId(savedOwner.getId());
     register();
 
@@ -113,7 +113,7 @@ public class PostControllerIT extends BaseIT {
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testLikeOrUnlikePostShouldLikePostSuccessfully() throws Exception {
     register();
-    Post createdPost = createPost();
+    Post createdPost = createPost(post);
 
     mockMvc
         .perform(post("/post/like/" + createdPost.getId()))
@@ -129,9 +129,9 @@ public class PostControllerIT extends BaseIT {
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testLikeOrUnlikePostShouldUnLikePostSuccessfully() throws Exception {
-    User savedUser = saveUser(currentUser);
+    User savedUser = createUser(currentUser);
     post.getLikes().add(savedUser);
-    Post createdPost = createPost();
+    Post createdPost = createPost(post);
 
     mockMvc
         .perform(post("/post/like/" + createdPost.getId()))
@@ -145,7 +145,7 @@ public class PostControllerIT extends BaseIT {
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testGetAllPostsByUserIdSuccessfully() throws Exception {
-    Post createdPost = createPost();
+    Post createdPost = createPost(post);
     currentUser.getLikedPosts().add(createdPost);
     register();
 
@@ -168,7 +168,7 @@ public class PostControllerIT extends BaseIT {
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testGetPostSuccessfully() throws Exception {
-    Post createdPost = createPost();
+    Post createdPost = createPost(post);
     mockMvc
         .perform(get("/post/" + createdPost.getId()))
         .andExpect(status().isOk())
@@ -186,11 +186,11 @@ public class PostControllerIT extends BaseIT {
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testGetALLPostsSuccessfully() throws Exception {
-    createPost();
-    User savedUser = saveUser(owner);
+    createPost(post);
+    User savedUser = createUser(owner);
     post.setUser(savedUser);
     post.setAuthor(savedUser);
-    createPost();
+    createPost(post);
 
     mockMvc.perform(get("/post")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(1)));
   }
@@ -222,10 +222,10 @@ public class PostControllerIT extends BaseIT {
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testDeletePostShouldThrowUserNotAuthorException() throws Exception {
     register();
-    User savedUser = saveUser(owner);
+    User savedUser = createUser(owner);
     post.setAuthor(savedUser);
     post.setUser(savedUser);
-    Post savedPost = createPost();
+    Post savedPost = createPost(post);
 
     mockMvc
         .perform(delete("/post/delete/" + savedPost.getId()))
@@ -238,9 +238,9 @@ public class PostControllerIT extends BaseIT {
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testDeletePostSuccessfully() throws Exception {
-    User savedUser = saveUser(currentUser);
+    User savedUser = createUser(currentUser);
     post.setAuthor(savedUser);
-    Post savedPost = createPost();
+    Post savedPost = createPost(post);
 
     mockMvc.perform(delete("/post/delete/" + savedPost.getId())).andExpect(status().isNoContent());
   }
@@ -281,9 +281,9 @@ public class PostControllerIT extends BaseIT {
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testEditPostShouldThrowUserNotAuthorException() throws Exception {
     register();
-    User savedUser = saveUser(owner);
+    User savedUser = createUser(owner);
     post.setAuthor(savedUser);
-    Post savedPost = createPost();
+    Post savedPost = createPost(post);
     postEditRequestDto.setPostId(savedPost.getId());
 
     mockMvc
@@ -300,9 +300,9 @@ public class PostControllerIT extends BaseIT {
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testEditPostSuccessfully() throws Exception {
-    User savedUser = saveUser(currentUser);
+    User savedUser = createUser(currentUser);
     post.setAuthor(savedUser);
-    Post savedPost = createPost();
+    Post savedPost = createPost(post);
     postEditRequestDto.setPostId(savedPost.getId());
 
     mockMvc
@@ -313,13 +313,5 @@ public class PostControllerIT extends BaseIT {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.title").value(postEditRequestDto.getTitle()))
         .andExpect(jsonPath("$.content").value(postEditRequestDto.getContent()));
-  }
-
-  private Post createPost() {
-    return postRepository.save(post);
-  }
-
-  private User saveUser(User user) {
-    return userRepository.save(user);
   }
 }
