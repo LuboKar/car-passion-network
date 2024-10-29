@@ -49,6 +49,10 @@ public class CommentServiceTest {
     replyContent = "reply";
     commentOne = createNewCommentOne();
     commentTwo = createNewCommentTwo();
+    commentOne.getLikes().add(user);
+    commentOne.setParent(commentTwo);
+    post.setUser(user);
+    post.setAuthor(user);
   }
 
   @Test
@@ -118,7 +122,6 @@ public class CommentServiceTest {
     when(userService.getCurrentUser()).thenReturn(user);
     when(commentRepository.findById(commentOne.getId())).thenReturn(Optional.of(commentOne));
     when(commentRepository.save(commentOne)).thenReturn(commentOne);
-    commentOne.getLikes().add(user);
 
     commentService.likeOrUnlikeComment(commentOne.getId());
 
@@ -151,7 +154,6 @@ public class CommentServiceTest {
     when(userService.getCurrentUser()).thenReturn(user);
     when(commentRepository.findById(commentOne.getId())).thenReturn(Optional.of(commentOne));
     when(commentRepository.save(any(Comment.class))).thenReturn(commentOne);
-    commentOne.setParent(commentTwo);
 
     commentService.replyComment(commentOne.getId(), replyContent);
 
@@ -210,9 +212,6 @@ public class CommentServiceTest {
     when(postService.getPost(post.getId())).thenReturn(post);
     when(commentRepository.findById(commentOne.getId())).thenReturn(Optional.of(commentOne));
 
-    post.setUser(user);
-    post.setAuthor(user);
-
     commentService.deleteComment(post.getId(), commentOne.getId());
 
     verify(userService, times(1)).getCurrentUser();
@@ -256,7 +255,6 @@ public class CommentServiceTest {
     when(userService.getCurrentUser()).thenReturn(user);
     when(postService.getPost(post.getId())).thenReturn(post);
     when(commentRepository.findById(commentOne.getId())).thenReturn(Optional.of(commentOne));
-
     post.setUser(secondUser);
     post.setAuthor(secondUser);
 
@@ -270,9 +268,6 @@ public class CommentServiceTest {
     when(userService.getCurrentUser()).thenReturn(user);
     when(postService.getPost(post.getId())).thenReturn(post);
     when(commentRepository.findById(commentOne.getId())).thenReturn(Optional.of(commentOne));
-
-    post.setUser(user);
-    post.setAuthor(user);
 
     commentService.editComment(post.getId(), commentOne.getId(), content);
 
