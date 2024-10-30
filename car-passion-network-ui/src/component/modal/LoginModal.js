@@ -33,12 +33,8 @@ export default function LoginModal({ toggleModal }) {
     }
 
     const data = await response.json();
-
     saveToken(data.token);
-
-    const profilePicture = data.profilePicture;
-
-    saveProfilePictureUrl(profilePicture);
+    saveProfilePictureUrl(data.profilePicture);
 
     navigateToDashboardPage();
   };
@@ -54,37 +50,37 @@ export default function LoginModal({ toggleModal }) {
   };
 
   return (
-    <div className="form-container-login">
-      <form className="login-form" onSubmit={login}>
-        <label className="error-label-login">
+    <div className="login-modal-container">
+      <form className="login-modal-form" onSubmit={login}>
+        <label className="login-modal-error-label">
           {errors.email || errors.error}
         </label>
         <input
-          className="form-field-login"
+          className="login-modal-input"
           type="email"
           placeholder="Email"
           name="email"
           value={inputValues.email}
           onChange={handleInputChange}
         />
-        <br />
-        <label className="error-label-login">{errors.password}</label>
+
+        <label className="login-modal-error-label">{errors.password}</label>
         <input
-          className="form-field-login"
+          className="login-modal-input"
           type="password"
           placeholder="Password"
           name="password"
           value={inputValues.password}
           onChange={handleInputChange}
         />
-        <br />
-        <button className="form-button-login" type="submit">
+
+        <button className="login-modal-button" type="submit">
           Login
         </button>
-        <br />
       </form>
+
       <label>Don't have an account? </label>
-      <span className="signUp-button" onClick={toggleModal}>
+      <span className="login-modal-signUp-button" onClick={toggleModal}>
         Sign Up
       </span>
     </div>
