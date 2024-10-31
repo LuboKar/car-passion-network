@@ -1,8 +1,45 @@
-.reply-comment-input{
+.write-reply-container{
     display: flex;
     flex-direction: row;
     align-items: center;
     margin-left: 50px;
     margin-top: 1%;
     margin-right: 50px;
+}
+
+.write-reply-profile-picture-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+    width: 40px;
+    height: 33px;
+    border-radius: 12px;
+    margin-right: 2%;
+    overflow: hidden;
+}
+
+.write-reply-input{
+    width: 100%;
+    height: 28px;
+    border-radius: 10px;
+    padding-left: 1%;
+    border: 2px solid black;
+    margin-right: 1%;
+    font-size: 15px;
+}
+
+.write-reply-cannont-send{
+    width: 22px;
+}
+
+.write-reply-cannont-send:hover{
+    cursor:not-allowed;
+}
+
+.write-reply-send{
+    width: 22px;
+}
+
+.write-reply-send:hover{
+    cursor: pointer;
 }

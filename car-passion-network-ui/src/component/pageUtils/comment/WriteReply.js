@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
-import pic from "../../../images/profile-pic.jpg";
 import send from "../../../images/send.png";
 import cannotSend from "../../../images/cannot-send.png";
 import "./WriteReply.css";
 import { replyComment } from "../../service/CommentService";
 import { PostsContext } from "../../context/PostsProvider";
 import { getProfilePictureUrl } from "../../service/profilePictureService";
+import ProfilePicture from "../user/ProfilePicture";
 
 export default function WriteReply({
   comment,
@@ -65,30 +65,29 @@ export default function WriteReply({
   };
 
   return (
-    <div className="reply-comment-input">
-      <div className="write-comment-profile-pic-container">
-        <img
-          src={profilePicture ? `http://localhost:8080/${profilePicture}` : pic}
-          alt="pic"
-          className="write-comment-profile-pic"
-        />
+    <div className="write-reply-container">
+      <div className="write-reply-profile-picture-container">
+        <ProfilePicture profilePicture={profilePicture} />
       </div>
+
       <input
-        className="comment-input"
+        className="write-reply-input"
         placeholder="Reply...."
         type="text"
         name="content"
         value={reply.content}
         onChange={handleInputChange}
       />
+
       {!sendButton && (
-        <img src={cannotSend} alt="pic" className="cannont-send-comment" />
+        <img src={cannotSend} alt="pic" className="write-reply-cannont-send" />
       )}
+
       {sendButton && (
         <img
           src={send}
           alt="pic"
-          className="send-comment"
+          className="write-reply-send"
           onClick={commentReply}
         />
       )}
