@@ -20,13 +20,12 @@ export default function Friends({ friends, setFriends, userId }) {
     setFilteredFriends(filtered);
   }, [searchTerm, friends]);
 
-  console.log(friends.length);
-
   return (
     <div className="friends-container">
       {friends.length > 0 && (
         <div className="search-friends-container">
-          <img src={searchIcon} alt="pic" className="search-icon" />
+          <img src={searchIcon} alt="pic" className="friends-search-icon" />
+
           <input
             type="text"
             placeholder="Search..."
@@ -47,7 +46,9 @@ export default function Friends({ friends, setFriends, userId }) {
       ))}
 
       {filteredFriends.length < 1 && friends.length > 0 && (
-        <label className="no-results">No results for: {searchTerm}</label>
+        <label className="friends-no-results">
+          No results for: {searchTerm}
+        </label>
       )}
     </div>
   );

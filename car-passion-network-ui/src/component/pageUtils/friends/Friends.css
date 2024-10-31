@@ -19,6 +19,11 @@
     background-color: white;
 }
 
+.friends-search-icon{
+    width: 18px;
+    padding-left: 5px;
+}
+
 .search-friends-input{
     width: 100%;
     height: 30px;
@@ -31,16 +36,11 @@
     padding-left: 5px;
 }
 
-.search-icon{
-    width: 18px;
-    padding-left: 5px;
-}
-
-.no-results{
+.friends-no-results{
     font-size: 150%; 
     color: rgb(70, 70, 70); 
 }
 
-.no-results:hover{
+.friends-no-results:hover{
     cursor: text;
 }

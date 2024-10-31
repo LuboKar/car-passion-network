@@ -72,7 +72,7 @@ export default function NavbarSearch() {
   return (
     <div className="navbar-search-container">
       <div className="navbar-search-field-container">
-        <img src={searchIcon} alt="pic" className="search-icon" />
+        <img src={searchIcon} alt="pic" className="friends-search-icon" />
         <input
           type="text"
           placeholder="Search..."
