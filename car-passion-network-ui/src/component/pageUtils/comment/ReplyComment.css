@@ -1,4 +1,4 @@
-.reply-comment{
+.reply-comment-container{
     margin-left: 5%;
     display: flex;
     flex-direction: row;
@@ -6,7 +6,7 @@
     width: max-content;
 }
 
-.reply-comment:hover{
+.reply-comment-container:hover{
     cursor: pointer;
     text-decoration: underline;
 }
@@ -15,21 +15,21 @@
     width: 15px;
 }
 
-.reply-text{
-    padding-left: 10%;
-    color: rgb(70, 70, 70);
-}
-
-.reply-clicked-text{
+.reply-comment-clicked-text{
     padding-left: 10%;
     font-weight: bold;
     color: rgb(90, 90, 90);
 }
 
-.reply-text:hover{
+.reply-comment-clicked-text:hover{
     cursor: pointer;
 }
 
-.reply-clicked-text:hover{
+.reply-comment-text{
+    padding-left: 10%;
+    color: rgb(70, 70, 70);
+}
+
+.reply-comment-text:hover{
     cursor: pointer;
 }
