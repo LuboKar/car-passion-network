@@ -17,7 +17,7 @@ export default function Navbar() {
 
   return (
     <nav className="navbar">
-      <div className="logo" onClick={handleClick}>
+      <div className="navbar-logo-container" onClick={handleClick}>
         <img src={logo} alt="CPN" className="navbar-logo-image" />
         <p className="navbar-logo-header">Car Passion Network</p>
       </div>

@@ -12,6 +12,17 @@
     height: 55px;
 }
 
+.navbar-logo-container{
+    position: relative;
+    display: flex;
+    width: max-content;
+    border-radius: 60px;
+}
+
+.navbar-logo-container:hover{
+    cursor: pointer;
+}
+
 .navbar-logo-image{
     width: 60px;
     height: 60px;
@@ -27,17 +38,6 @@
   .navbar-logo-header{
     display: none;
   }
-}
-
-.logo{
-    position: relative;
-    display: flex;
-    width: max-content;
-    border-radius: 60px;
-}
-
-.logo:hover{
-    cursor: pointer;
 }
 
 
