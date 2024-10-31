@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Friends.css";
 import Friend from "./Friend";
 import searchIcon from "../../../images/search.png";
+import SearchBar from "../navbar/SearchBar";
 
 export default function Friends({ friends, setFriends, userId }) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -23,17 +24,10 @@ export default function Friends({ friends, setFriends, userId }) {
   return (
     <div className="friends-container">
       {friends.length > 0 && (
-        <div className="search-friends-container">
-          <img src={searchIcon} alt="pic" className="friends-search-icon" />
-
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={handleSearchChange}
-            className="search-friends-input"
-          />
-        </div>
+        <SearchBar
+          searchTerm={searchTerm}
+          handleSearchChange={handleSearchChange}
+        />
       )}
 
       {filteredFriends.map((friend, index) => (
