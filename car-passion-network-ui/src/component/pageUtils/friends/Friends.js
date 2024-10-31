@@ -24,10 +24,12 @@ export default function Friends({ friends, setFriends, userId }) {
   return (
     <div className="friends-container">
       {friends.length > 0 && (
-        <SearchBar
-          searchTerm={searchTerm}
-          handleSearchChange={handleSearchChange}
-        />
+        <div className="friends-search-bar-container">
+          <SearchBar
+            searchTerm={searchTerm}
+            handleSearchChange={handleSearchChange}
+          />
+        </div>
       )}
 
       {filteredFriends.map((friend, index) => (

@@ -8,32 +8,9 @@
     align-items: center;
 }
 
-.search-friends-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50%;
-    border: 2px solid black;
-    border-radius: 8px;
-    margin-bottom: 5%;
-    background-color: white;
-}
-
-.friends-search-icon{
-    width: 18px;
-    padding-left: 5px;
-}
-
-.search-friends-input{
-    width: 100%;
-    height: 30px;
-    border: 2px solid black;
-    border-radius: 10px;
-    font-size: 20px;
-    padding-left: 1%;
-    outline: none;
-    border: none;
-    padding-left: 5px;
+.friends-search-bar-container{
+    padding-left: 20%;
+    padding-right: 20%;
 }
 
 .friends-no-results{
