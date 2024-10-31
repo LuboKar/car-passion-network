@@ -1,39 +1,22 @@
 import React from "react";
-import useNavigation from "../../service/NavigateService";
-import pic from "../../../images/profile-pic.jpg";
 import "./CommentLikesDropdown.css";
+import User from "../user/User";
 
-export default function COmmentLikesDropdown({ comment, clickedLikes }) {
-  const { navigateToProfile } = useNavigation();
+export default function CommentLikesDropdown({ comment, clickedLikes }) {
   return (
     <div className="comment-likes-drowdown-container">
-      <div className="dropdown-menu">
-        <label className="close-likes" onClick={() => clickedLikes(0)}>
+      <div className="comment-likes-dropdown-menu">
+        <label
+          className="comment-likes-close-menu"
+          onClick={() => clickedLikes(0)}
+        >
           X
         </label>
       </div>
+
       <div className="comment-likes-dropdown">
         {comment.likes.map((user, index) => (
-          <div
-            key={index}
-            className="comment-likes-container"
-            onClick={() => navigateToProfile(user.id)}
-          >
-            <div className="comment-user-like-pic-container">
-              <img
-                src={
-                  user.profilePicture
-                    ? `http://localhost:8080/${user.profilePicture}`
-                    : pic
-                }
-                alt="user-pic"
-                className="user-like-pic"
-              />
-            </div>
-            <label key={index} className="user-like-name">
-              {user.firstName} {user.lastName}
-            </label>
-          </div>
+          <User user={user} index={index} />
         ))}
       </div>
     </div>
