@@ -9,6 +9,7 @@ import edit from "../../../images/edit.png";
 
 export default function CommentMenu({ comment, postId, postOwnerId }) {
   const currentUserId = getId();
+
   const {
     clickedCommentMenu,
     toggleCommentMenu,
@@ -32,26 +33,30 @@ export default function CommentMenu({ comment, postId, postOwnerId }) {
         className="comment-menu-button"
         onClick={() => toggleCommentMenu(comment.id)}
       >
-        <img src={menu} alt="menu-pic" className="comment-menu-pic" />
+        <img src={menu} alt="menu-pic" className="comment-menu-icon" />
       </div>
 
       {clickedCommentMenu === comment.id && (
         <div className="comment-menu-dropdown">
           {currentUserId === comment.user.id && (
             <div
-              className="menu-option"
+              className="comment-menu-option"
               onClick={() => toggleEditComment(comment.id)}
             >
-              <img src={edit} alt="option-pic" className="option-pic" />
-              <label className="edit-text">Edit</label>
+              <img src={edit} alt="option-pic" className="comment-edit-icon" />
+              <label className="comment-edit-label">Edit</label>
             </div>
           )}
 
           {(currentUserId === comment.user.id ||
             currentUserId === postOwnerId) && (
-            <div className="menu-option" onClick={deleteCommentById}>
-              <img src={deleteIcon} alt="delete-pic" className="delete-pic" />
-              <label className="delete-text">Delete</label>
+            <div className="comment-menu-option" onClick={deleteCommentById}>
+              <img
+                src={deleteIcon}
+                alt="delete-pic"
+                className="comment-delete-icon"
+              />
+              <label className="comment-delete-label">Delete</label>
             </div>
           )}
         </div>

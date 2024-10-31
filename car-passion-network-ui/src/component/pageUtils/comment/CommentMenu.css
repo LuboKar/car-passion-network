@@ -16,13 +16,13 @@
     user-select: none; 
 }
 
-.comment-menu-pic{
+.comment-menu-icon{
     padding-top: 5px;
     width: 6px;
     height: 20px;
 }
 
-.comment-menu-pic:hover{
+.comment-menu-icon:hover{
     cursor: pointer;
 }
 
@@ -39,4 +39,46 @@
     margin-bottom: 20%;
     padding-bottom: 0.5%;
     transform: translate(-230px ,-150px);
+}
+
+.comment-menu-option{
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-right: 10px;
+    border-radius: 10px;
+}
+
+.comment-menu-option:hover{
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+.comment-edit-icon{
+    width: 25px;
+    padding: 10px 10px 10px 10px;
+}
+
+.comment-edit-label{
+    font-size: 20px;
+}
+
+.comment-edit-label:hover{
+    cursor: pointer;
+}
+
+.comment-delete-icon{
+    width: 35px;
+    height: 30px;
+    padding: 7px 5px 7px 5px;
+}
+
+.comment-delete-label{
+    font-size: 20px;
+}
+
+
+.comment-delete-label:hover{
+    cursor: pointer;
 }
