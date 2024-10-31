@@ -29,6 +29,7 @@ export default function LikeComment({ comment, postIndex, commentIndex }) {
         alt="icon"
         className="like-comment-like-icon"
       />
+
       <label
         className={
           comment.currentUserLike

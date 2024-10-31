@@ -1,20 +1,24 @@
-.show-comment-likes{
+.view-comment-likes-container{
     margin-left: auto;
     display: flex;
     flex-direction: row; 
     align-items: center;
 }
 
-.show-comment-likes:hover{
+.view-comment-likes-container:hover{
     cursor: pointer;
     text-decoration: underline;
 }
 
-.comment-likes-number{
+.view-comment-likes-like-icon{
+    width: 17px;
+}
+
+.view-comment-likes-number{
     margin-left: 5px;
 }
 
-.comment-likes-number:hover{
+.view-comment-likes-number:hover{
     cursor: pointer;
     text-decoration: underline;
 }

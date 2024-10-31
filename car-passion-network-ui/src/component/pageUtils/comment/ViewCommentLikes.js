@@ -5,11 +5,14 @@ import "./ViewCommentLikes.css";
 export default function ViewCommentLikes({ comment, clickedLikes }) {
   return (
     <div
-      className="show-comment-likes"
+      className="view-comment-likes-container"
       onClick={() => clickedLikes(comment.id)}
     >
-      <img src={liked} alt="icon" className={"like-icon"} />
-      <label className="comment-likes-number">{comment.likes.length}</label>
+      <img src={liked} alt="icon" className="view-comment-likes-like-icon" />
+
+      <label className="view-comment-likes-number">
+        {comment.likes.length}
+      </label>
     </div>
   );
 }
