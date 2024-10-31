@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import pic from "../../../images/profile-pic.jpg";
 import useNavigation from "../../service/NavigateService";
 import settings from "../../../images/settings.png";
 import { logoutUser } from "../../service/AuthenticationService";
@@ -8,12 +7,18 @@ import { getId } from "../../service/TokenService";
 import { deleteToken } from "../../service/TokenService";
 import "./NavbarDropdown.css";
 import { getProfilePictureUrl } from "../../service/profilePictureService";
+import ProfilePicture from "../user/ProfilePicture";
 
 export default function NavbarDropdown() {
   const [isOpen, setIsOpen] = useState(false);
+
+  const id = getId();
+
   const dropdownRef = useRef(null);
+
   const { navigateToProfile, navigateToDashboardPage, navigateToSettingsPage } =
     useNavigation();
+
   const profilePicture = getProfilePictureUrl();
 
   const handleClickOutside = (event) => {
@@ -41,48 +46,48 @@ export default function NavbarDropdown() {
     }
 
     deleteToken();
-
     navigateToDashboardPage();
   };
 
   return (
-    <div className="dropdown-container">
-      <div className="dropdown-icon-container">
-        <img
-          src={profilePicture ? `http://localhost:8080/${profilePicture}` : pic}
-          alt="profilepic"
-          className="dropdown-icon"
-          onClick={toggleOptions}
-        />
+    <div className="navbar-dropdown-container">
+      <div className="dropdown-icon-container" onClick={toggleOptions}>
+        <ProfilePicture profilePicture={profilePicture} />
       </div>
 
       {isOpen && (
-        <div className="dropdown" ref={dropdownRef}>
+        <div className="navbar-dropdown" ref={dropdownRef}>
           <div
-            className="profile-span"
-            onClick={() => navigateToProfile(getId())}
+            className="navbar-dropdown-button"
+            onClick={() => navigateToProfile(id)}
           >
-            <div className="dropdown-profile-picture-container">
-              <img
-                src={
-                  profilePicture
-                    ? `http://localhost:8080/${profilePicture}`
-                    : pic
-                }
-                alt="profilepic"
-                className="profile-picture-icon"
-              />
+            <div className="navbar-dropdown-profile-picture-container">
+              <ProfilePicture profilePicture={profilePicture} />
             </div>
+
             <span>Profile</span>
           </div>
 
-          <div className="profile-span" onClick={navigateToSettingsPage}>
-            <img src={settings} alt="profilepic" className="span-icon" />
+          <div
+            className="navbar-dropdown-button"
+            onClick={navigateToSettingsPage}
+          >
+            <img
+              src={settings}
+              alt="profilepic"
+              className="navbar-dropdown-button-icon"
+            />
+
             <span>Settings</span>
           </div>
 
-          <div className="profile-span" onClick={logout}>
-            <img src={logoutIcon} alt="profilepic" className="span-icon" />
+          <div className="navbar-dropdown-button" onClick={logout}>
+            <img
+              src={logoutIcon}
+              alt="profilepic"
+              className="navbar-dropdown-button-icon"
+            />
+
             <span>Logout</span>
           </div>
         </div>

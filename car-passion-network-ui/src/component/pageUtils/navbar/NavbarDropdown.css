@@ -1,3 +1,8 @@
+.navbar-dropdown-container{
+    align-items: center;
+    margin-left: auto;
+}
+
 .dropdown-icon-container{
     display: flex;
     justify-content: center;
@@ -9,22 +14,12 @@
     border-radius: 15px;
     overflow: hidden;
 }
-.dropdown-icon{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;  
-}
 
 .dropdown-icon-container:hover{
     cursor: pointer;
 }
 
-.dropdown-container{
-    align-items: center;
-    margin-left: auto;
-}
-
-.dropdown{
+.navbar-dropdown{
     position: absolute;
     top: 100%;
     right: 0;
@@ -38,22 +33,7 @@
     border-radius: 5px;
 }
 
-.profile-span {
-    display: flex;
-    align-items: center;
-    height: 50px;
-    border-radius: 10px;
-    width: 90%;
-    margin-left: 5%;
-    margin-top: 10px;
-}
-
-.profile-span:hover{
-    background-color: #f0f0f0;
-    cursor: pointer;
-}
-
-.dropdown-profile-picture-container{
+.navbar-dropdown-profile-picture-container{
     display: flex;
     justify-content: center;
     align-items: center;  
@@ -65,13 +45,22 @@
     overflow: hidden;
 }
 
-.profile-picture-icon{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;  
+.navbar-dropdown-button{
+    display: flex;
+    align-items: center;
+    height: 50px;
+    border-radius: 10px;
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 10px;
 }
 
-.span-icon{
+.navbar-dropdown-button:hover{
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+.navbar-dropdown-button-icon{
     width: 30px;
     padding-left: 10px;
     padding-right: 10px;
