@@ -1,4 +1,4 @@
-.form-container{
+.register-modal-container{
     border: 2px solid rgb(200, 200, 200);
     position: absolute;
     top: 50%;
@@ -11,17 +11,34 @@
     margin: 0 auto; 
 }
 
-.form-container:hover{
+.register-modal-container:hover{
     border: 2px solid rgb(180, 180, 180);
 }
 
-.register-form{
+.register-modal-container{
     margin-bottom: 10px;
     text-align: center;
     margin-top: 10px;
 }
 
-.form-field{
+.register-modal-success-label{
+    display: block;
+    color: green; 
+    font-size: 1em;
+    height: 1.5em;
+}
+
+.register-modal-success-label:hover{
+    cursor: text;
+}
+
+.register-modal-error-label{
+    display: block;
+    height: 1.5em;
+    color: red;
+}
+
+.register-modal-input{
     
     width: 65%;
     height: 30px;
@@ -29,84 +46,89 @@
     font-size: 20px;
 }
 
-.form-field::placeholder{
+.register-modal-input::placeholder{
     font-size: 20px;
 }
 
-.form-field:hover{
+.register-modal-input:hover{
     border-color: black;
 }
 
-.form-date{
+.register-modal-date-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.register-modal-date-label{
+    font-size: 20px;
+    margin-bottom: 4%;
+    max-width: fit-content;
+}
+
+.register-modal-date-label:hover{
+    cursor: text;
+}
+
+.register-modal-date-input{
     width: 80%;
     height: 30px;
     font-size: 20px;
     border-radius: 4px;
 }
 
-.form-date:hover{
+.register-modal-date-input:hover{
     border-color: black;
 }
 
-.form-gender{
+.register-modal-gender-container{
     font-size: 20px;
     margin-bottom: 40px;
 }
 
-.form-success{
-    display: block;
-    color: green; 
-    font-size: 1em;
-    height: 1.5em;
+.register-modal-gender-label{
+    padding-right: 10px;
 }
 
-.form-success:hover{
+.register-modal-gender-label:hover{
     cursor: text;
 }
 
-.form-button{
+.register-modal-radio{
+    padding-right: 10px;
+}
+
+.register-modal-radio:hover{
+    cursor: pointer;
+}
+
+.register-modal-button{
     width: 65%;
     height: 35px;
     margin-bottom: 10px;
     font-size: 20px;
 }
 
-.form-button:hover{
+.register-modal-button:hover{
     cursor: pointer;
 }
 
-.form-button:active{
+.register-modal-button:active{
     cursor: pointer;
     width: 295px;
     height: 33px;
 }
 
-.form-date-label{
-    font-size: 20px;
+.register-modal-signIn-label:hover{
+    cursor: text;
 }
 
-.form-radio:hover{
-    cursor: pointer;
-}
-
-.form-radio{
-    padding-right: 10px;
-}
-
-.form-gender-text{
-    padding-right: 10px;
-}
-
-.error-label{
-    display: block;
-    height: 1.5em;
-    color: red;
-}
-
-.signIn-button{
+.register-modal-signIn-button{
+    margin-left: 1%;
     color: #007bff;
 }
 
-.signIn-button:hover{
+.register-modal-signIn-button:hover{
     cursor: pointer;
 }

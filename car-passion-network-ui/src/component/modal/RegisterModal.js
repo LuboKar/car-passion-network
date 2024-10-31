@@ -63,98 +63,103 @@ export default function RegisterModal({ toggleModal }) {
   };
 
   return (
-    <div className="form-container">
-      <form className="register-form" onSubmit={register}>
-        <label className="form-success">{success}</label>
-        <label className="error-label">{errors.firstName}</label>
+    <div className="register-modal-container">
+      <form className="register-modal-form" onSubmit={register}>
+        <label className="register-modal-success-label">{success}</label>
 
+        <label className="register-modal-error-label">{errors.firstName}</label>
         <input
-          className="form-field"
+          className="register-modal-input"
           type="text"
           placeholder="First Name"
           name="firstName"
           value={inputValues.firstName}
           onChange={handleInputChange}
         />
-        <br />
-        <label className="error-label">{errors.lastName}</label>
+
+        <label className="register-modal-error-label">{errors.lastName}</label>
         <input
-          className="form-field"
+          className="register-modal-input"
           type="text"
           placeholder="Last Name"
           name="lastName"
           value={inputValues.lastName}
           onChange={handleInputChange}
         />
-        <br />
-        <label className="error-label">{errors.email || errors.error}</label>
+
+        <label className="register-modal-error-label">
+          {errors.email || errors.error}
+        </label>
         <input
-          className="form-field"
+          className="register-modal-input"
           type="email"
           placeholder="Email"
           name="email"
           value={inputValues.email}
           onChange={handleInputChange}
         />
-        <br />
-        <label className="error-label">{errors.password}</label>
+
+        <label className="register-modal-error-label">{errors.password}</label>
         <input
-          className="form-field"
+          className="register-modal-input"
           type="password"
           placeholder="Password"
           name="password"
           value={inputValues.password}
           onChange={handleInputChange}
         />
-        <br />
-        <label className="error-label">{errors.dateOfBirth}</label>
-        <div>
-          <label className="form-date-label" htmlFor="dateOfBirth">
-            Date of Birth:
-          </label>
-          <br />
+
+        <label className="register-modal-error-label">
+          {errors.dateOfBirth}
+        </label>
+        <div className="register-modal-date-container">
+          <label className="register-modal-date-label">Date of Birth:</label>
           <DatePicker
-            className="form-date"
+            className="register-modal-date-input"
             id="dateOfBirth"
             selected={inputValues.dateOfBirth}
             onChange={handleDateChange}
             dateFormat="yyyy-MM-dd"
           />
         </div>
-        <br />
-        <label className="error-label">{errors.gender}</label>
-        <div className="form-gender">
-          <label className="form-gender-text">Gender:</label>
+
+        <label className="register-modal-error-label">{errors.gender}</label>
+        <div className="register-modal-gender-container">
+          <label className="register-modal-gender-label">Gender:</label>
           <input
-            className="form-radio"
+            className="register-modal-radio"
             type="radio"
             id="male"
             name="gender"
             value="MALE"
             onChange={handleInputChange}
           />
-          <label className="form-radio" htmlFor="male">
+          <label className="register-modal-radio" htmlFor="male">
             Male
           </label>
+
           <input
-            className="form-radio"
+            className="register-modal-radio"
             type="radio"
             id="female"
             name="gender"
             value="FEMALE"
             onChange={handleInputChange}
           />
-          <label className="form-radio" htmlFor="female">
+          <label className="register-modal-radio" htmlFor="female">
             Female
           </label>
         </div>
-        <button className="form-button" type="submit">
+
+        <button className="register-modal-button" type="submit">
           Register
         </button>
-        <br />
       </form>
-      <label>Already have an account? </label>
-      <span className="signIn-button" onClick={toggleModal}>
+
+      <label className="register-modal-signIn-label">
+        Already have an account?
+      </label>
+      <span className="register-modal-signIn-button" onClick={toggleModal}>
         Sign In
       </span>
     </div>
