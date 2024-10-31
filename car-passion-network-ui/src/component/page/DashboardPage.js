@@ -31,11 +31,11 @@ export default function DashboardPage() {
   }, []);
 
   return (
-    <div>
+    <div className="dashboard-container">
       <Navbar />
 
       {!loadingPosts && (
-        <div className="dashboard-container">
+        <div className="dashboard-posts-container">
           <Posts ownerId={currentUserId} />
         </div>
       )}
