@@ -42,7 +42,6 @@ export default function EditComment({ postId, commentId, content }) {
     const editedComment = await response.json();
 
     editCommentContent(commentId, editedComment, postId);
-
     toggleEditComment(0);
   };
 
@@ -56,14 +55,16 @@ export default function EditComment({ postId, commentId, content }) {
         value={editCommentValues.content}
         onChange={handleInputChange}
       />
+
       {!sendButton && (
-        <img src={cannotSend} alt="pic" className="cannont-send-comment" />
+        <img src={cannotSend} alt="pic" className="edit-comment-cannont-send" />
       )}
+
       {sendButton && (
         <img
           src={send}
           alt="pic"
-          className="send-comment"
+          className="edit-comment-send"
           onClick={commentEdit}
         />
       )}
