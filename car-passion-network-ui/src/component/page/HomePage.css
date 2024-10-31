@@ -1,19 +1,4 @@
-
-.page_content{
-    position: absolute;
-    top: 30%;
-    right: 50%;
-  }
-
 .homepage{
-    display: flex; /* Use flexbox to arrange children horizontally */
+    display: flex;
     text-align: center;
-}
-
-.homepage-header{
-    font-size: 70px;
-}
-
-.homepage-text{
-    font-size: 35px;
 }

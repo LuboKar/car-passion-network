@@ -1,0 +1,17 @@
+.page_content{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    top: 30%;
+    right: 50%;
+}
+
+.homepage-header{
+    font-size: 70px;
+}
+
+.homepage-text{
+    font-size: 35px;
+}

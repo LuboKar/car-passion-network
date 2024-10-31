@@ -9,7 +9,7 @@ export default function HomePage() {
   const [registerModal, setRegisterModalOpen] = useState(true);
 
   return (
-    <div className="homepage">
+    <div className="homepage-container">
       <HomePageHeader />
       {registerModal ? (
         <RegisterModal toggleModal={() => setRegisterModalOpen(false)} />
