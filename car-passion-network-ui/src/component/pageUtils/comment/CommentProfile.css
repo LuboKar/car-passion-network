@@ -1,9 +1,9 @@
-.comment-profile{
+.comment-profile-container{
     display: flex;
     flex-direction: row;
 }
 
-.comment-profile-pic-container{
+.comment-profile-picture-container{
     display: flex;
     justify-content: center;
     align-items: center;  
@@ -14,14 +14,9 @@
     overflow: hidden;
 }
 
-.comment-profile-pic{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.comment-profile-pic-container:hover{
-    cursor: pointer;
+.comment-profile-information{
+    display: flex;
+    flex-direction: column;
 }
 
 .comment-profile-name{
@@ -34,16 +29,11 @@
     text-decoration: underline;
 }
 
-.comment-date{
+.comment-profile-comment-date{
     font-size: 12px;
     color: rgb(67, 67, 67);
 }
 
-.comment-date:hover{ 
+.comment-profile-comment-date:hover{ 
     cursor: text;
-}
-
-.comment-profile-information{
-    display: flex;
-    flex-direction: column;
 }
