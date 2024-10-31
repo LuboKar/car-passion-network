@@ -1,39 +1,9 @@
-.comment-content{
-    margin-top: 0;
-    margin-left: 50px;
-    margin-right: 50px;
-    margin-bottom: 1%;
-    background-color: rgb(205, 205, 205);
-    border-radius:10px;
-    padding: 1% 1% 1.5% 2%;
-}
-
-.comment-buttons-border{
-    margin-left: 50px;
-    margin-right: 50px;
-    border-bottom: 1px solid rgb(150, 150, 150);
-}
-
-.view-replies{
-    margin-left: 50px;
-    margin-top: 1%;
-}
-
-.view-comment-container{
+.comment-container{
     position: relative;
     height: max-content;
 }
 
-.horizontal-line{
-    position: absolute;
-    border-bottom: 1px solid rgb(150, 150, 150);
-    width: 30px;
-    margin-left: 20px;
-    height: 20px;
-   border-bottom-left-radius: 10px;
-}
-
-.vertical-line{
+.comment-container-vertical-line{
     position: absolute;
     border-left: 1px solid rgb(150, 150, 150);
     margin-top: 40px;
@@ -41,17 +11,22 @@
     height: 100%;
 }
 
-.fixing-line{
+.comment-container-horizontal-line{
     position: absolute;
-    width:20px;
-    height: 100%;
-    margin-top: 10px;
-    margin-left: 2px;
-    border-radius: 20px;
-    background-color: #e0e0e0;
+    border-left: 1px solid rgb(150, 150, 150);
+    border-bottom: 1px solid rgb(150, 150, 150);
+    width: 28px;
+    margin-left: 20px;
+    margin-top: 40px;
+    height: 67%;
+    border-bottom-left-radius: 10px;
 }
 
-.show-replies-tool{
+.comment-user-container{
+    display: flex;
+}
+
+.comment-show-replies-container{
     margin-top: 20px;
     margin-bottom: 20px;
 }
@@ -67,17 +42,32 @@
     text-decoration: underline;
 }
 
-.show-replies-horizontal-line{
-    position: absolute;
-    border-left: 1px solid rgb(150, 150, 150);
+.comment-buttons-border{
+    margin-left: 50px;
+    margin-right: 50px;
     border-bottom: 1px solid rgb(150, 150, 150);
-    width: 28px;
+}
+
+.view-replies{
+    margin-left: 50px;
+    margin-top: 1%;
+}
+
+.horizontal-line{
+    position: absolute;
+    border-bottom: 1px solid rgb(150, 150, 150);
+    width: 30px;
     margin-left: 20px;
-    margin-top: 40px;
-    height: 67%;
+    height: 20px;
    border-bottom-left-radius: 10px;
 }
 
-.comment-user-container{
-    display: flex;
+.fixing-line{
+    position: absolute;
+    width:20px;
+    height: 100%;
+    margin-top: 10px;
+    margin-left: 2px;
+    border-radius: 20px;
+    background-color: #e0e0e0;
 }
