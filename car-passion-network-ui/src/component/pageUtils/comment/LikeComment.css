@@ -1,35 +1,37 @@
-.like-comment{
+.like-comment-container{
     display: flex;
     flex-direction: row;
     align-items: center;
     width: max-content;
 }
 
-.like-comment:hover{
+.like-comment-container:hover{
     cursor: pointer;
     text-decoration: underline;
     font-weight: normal;
 }
 
-.like-icon{
+.like-comment-like-icon{
     width: 15px;
 }
 
-.liked{
+.like-comment-liked{
     color: rgb(90, 90, 90);
     padding-left: 10%;
     font-weight: bold; 
 }
 
-.notLiked{
+.like-comment-liked:hover{
+    cursor: pointer;
+}
+
+
+.like-comment-not-liked{
     color: rgb(70, 70, 70);
     padding-left: 10%;
 }
 
-.liked:hover{
-    cursor: pointer;
-}
 
-.notLiked:hover{
+.like-comment-not-liked:hover{
     cursor: pointer;
 }

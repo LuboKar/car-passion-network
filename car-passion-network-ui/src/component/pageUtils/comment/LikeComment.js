@@ -23,13 +23,19 @@ export default function LikeComment({ comment, postIndex, commentIndex }) {
   };
 
   return (
-    <div className="like-comment" onClick={likeOrUnlike}>
+    <div className="like-comment-container" onClick={likeOrUnlike}>
       <img
         src={comment.currentUserLike === true ? liked : notLiked}
         alt="icon"
-        className="like-icon"
+        className="like-comment-like-icon"
       />
-      <label className={comment.currentUserLike ? "liked" : "notLiked"}>
+      <label
+        className={
+          comment.currentUserLike
+            ? "like-comment-liked"
+            : "like-comment-not-liked"
+        }
+      >
         Like
       </label>
     </div>
