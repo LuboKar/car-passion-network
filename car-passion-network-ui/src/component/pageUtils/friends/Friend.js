@@ -1,12 +1,12 @@
 import React from "react";
 import "./Friend.css";
-import pic from "../../../images/profile-pic.jpg";
 import useNavigation from "../../service/NavigateService";
 import { getId } from "../../service/TokenService";
 import RemoveFriend from "../user/RemoveFriend";
 import AddFriend from "../user/AddFriend";
 import { removeFriend } from "../../service/UserService";
 import { addFriend } from "../../service/UserService";
+import ProfilePicture from "../user/ProfilePicture";
 
 export default function Friend({ friend, index, userId, setFriends }) {
   const { navigateToProfile } = useNavigation();
@@ -43,18 +43,13 @@ export default function Friend({ friend, index, userId, setFriends }) {
 
   return (
     <div key={index} className="friend-container">
-      <div className="friend-profile-pic-container">
-        <img
-          src={
-            friend.profilePicture
-              ? `http://localhost:8080/${friend.profilePicture}`
-              : pic
-          }
-          alt={"profile-pic"}
-          className="friend-profile-pic"
-          onClick={() => navigateToProfile(friend.id)}
+      <div className="friend-profile-picture-container">
+        <ProfilePicture
+          profilePicture={friend.profilePicture}
+          navigateToProfile={() => navigateToProfile(friend.id)}
         />
       </div>
+
       <label
         className="friend-name"
         onClick={() => navigateToProfile(friend.id)}
@@ -63,7 +58,7 @@ export default function Friend({ friend, index, userId, setFriends }) {
       </label>
 
       {userId === currentUserId && (
-        <div className="friends-remove-friend-button">
+        <div className="friend-remove-friend-button">
           <RemoveFriend handleRemoveFriend={handleRemoveFriend} />
         </div>
       )}
@@ -71,7 +66,7 @@ export default function Friend({ friend, index, userId, setFriends }) {
       {userId !== currentUserId &&
         !friend.friend &&
         friend.id !== currentUserId && (
-          <div className="friends-remove-friend-button">
+          <div className="friend-add-friend-button">
             <AddFriend handleAddFriend={handleAddFriend} />
           </div>
         )}

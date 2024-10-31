@@ -7,18 +7,7 @@
     width: 100%;
 }
 
-.friend-profile{
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    border: 1px solid black;
-}
-
-.friend-profile:hover{
-    cursor: pointer;
-}
-
-.friend-profile-pic-container{
+.friend-profile-picture-container{
     display: flex;
     justify-content: center;
     align-items: center;  
@@ -30,22 +19,11 @@
     overflow: hidden;
 }
 
-.friend-profile-pic{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;  
-}
-
-.friend-profile-pic:hover{
-    cursor: pointer;
-}
-
 .friend-name{
     margin-top: 50px;
     font-size: 20px;
     height: max-content;
 }
-
 
 .friend-name:hover{
     cursor: pointer;
@@ -53,7 +31,14 @@
 }
 
 
-.friends-remove-friend-button{
+.friend-remove-friend-button{
+    margin-left: auto;
+    margin-right: 3%;
+    margin-top: 50px;
+    height: max-content;
+}
+
+.friend-add-friend-button{
     margin-left: auto;
     margin-right: 3%;
     margin-top: 50px;
