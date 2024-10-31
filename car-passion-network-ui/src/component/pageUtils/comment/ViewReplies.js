@@ -1,5 +1,6 @@
 import React from "react";
 import Comment from "./Comment";
+import "./ViewReplies.css";
 
 export default function ViewReplies({
   comment,
@@ -8,14 +9,16 @@ export default function ViewReplies({
   postId,
 }) {
   return (
-    <div>
+    <div className="view-replies-container">
       {comment.replies &&
         comment.replies.map((reply, index) => (
-          <div>
+          <div className="reply-contanier">
             <div className="horizontal-line"></div>
+
             {index === comment.replies.length - 1 && (
               <div className="fixing-line"></div>
             )}
+
             <div className="view-replies" key={index}>
               <Comment
                 comment={reply}

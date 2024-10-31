@@ -1,0 +1,23 @@
+.horizontal-line{
+    position: absolute;
+    border-bottom: 1px solid rgb(150, 150, 150);
+    width: 30px;
+    margin-left: 20px;
+    height: 20px;
+    border-bottom-left-radius: 10px;
+}
+
+.fixing-line{
+    position: absolute;
+    width:20px;
+    height: 100%;
+    margin-top: 10px;
+    margin-left: 2px;
+    border-radius: 20px;
+    background-color: #e0e0e0;
+}
+
+.view-replies{
+    margin-left: 50px;
+    margin-top: 1%;
+}
