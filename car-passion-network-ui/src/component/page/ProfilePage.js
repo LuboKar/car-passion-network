@@ -116,6 +116,7 @@ export default function ProfilePage() {
   return (
     <div className="profile-page-container">
       <Navbar />
+
       <VerticalNavbar topButtons={topButtons} />
       <RightVerticalNabvar />
 

@@ -9,6 +9,7 @@
     width: 30%;
     height: 580px;
     margin: 0 auto; 
+    text-align: center;
 }
 
 .login-modal-container:hover{

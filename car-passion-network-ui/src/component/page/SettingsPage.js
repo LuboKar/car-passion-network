@@ -63,8 +63,10 @@ export default function SettingsPage() {
   return (
     <div className="settings-page-container">
       <Navbar />
+
       <VerticalNavbar topButtons={topButtons} bottomButtons={bottomButtons} />
       <RightVerticalNabvar />
+
       {!loadingUser && editProfileButton && (
         <EditProfile user={user} setUser={setUser} />
       )}
