@@ -1,33 +1,29 @@
 import React from "react";
-import pic from "../../../images/profile-pic.jpg";
 import useNavigation from "../../service/NavigateService";
 import "./PostProfile.css";
+import ProfilePicture from "../user/ProfilePicture";
 
 export default function PostProfile({ post }) {
   const { navigateToProfile } = useNavigation();
 
   return (
-    <div className="post-profile">
-      <div className="post-profile-pic-container">
-        <img
-          src={
-            post.author.profilePicture
-              ? `http://localhost:8080/${post.author.profilePicture}`
-              : pic
-          }
-          alt="profile-pic"
-          className="post-profile-pic"
-          onClick={() => navigateToProfile(post.author.id)}
+    <div className="post-profile-container">
+      <div className="post-profile-profile-picture-container">
+        <ProfilePicture
+          profilePicture={post.user.profilePicture}
+          navigateToProfile={() => navigateToProfile(post.user.id)}
         />
       </div>
+
       <div className="post-profile-information">
         <h1
-          className="post-user-name"
+          className="post-profile-user-name"
           onClick={() => navigateToProfile(post.author.id)}
         >
           {post.author.firstName} {post.author.lastName}
         </h1>
-        <label className="post-date">{post.createdAt}</label>
+
+        <label className="post-profile-date-label">{post.createdAt}</label>
       </div>
     </div>
   );
