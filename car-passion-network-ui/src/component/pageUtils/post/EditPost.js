@@ -34,7 +34,6 @@ export default function EditPost({ post, index }) {
     const editedPost = await response.json();
 
     editPostByIndex(editedPost, postIndex);
-
     setEditPostId(0);
   };
 
@@ -52,6 +51,7 @@ export default function EditPost({ post, index }) {
           value={editPostValues.title}
           onChange={handleInputChange}
         />
+
         <textarea
           className="edit-post-content-input"
           placeholder="Text..."
@@ -60,6 +60,7 @@ export default function EditPost({ post, index }) {
           value={editPostValues.content}
           onChange={handleInputChange}
         />
+
         <button className="edit-post-button" type="submit">
           Save changes
         </button>
