@@ -8,32 +8,9 @@
   flex-direction: column;
 }
 
-.vertical-buttons{
-  border-radius: 10px;
-  width: 90%;
-  margin-top: 10%;
-  margin-left: 5%;
-  height: 45px;
-}
-
-.vertical-buttons:hover{
-  background-color: #d9d9d9;
-  cursor: pointer;
-}
-
-.vertical-top-buttons-label{
-  font-size: 120%;
-}
-
-.vertical-top-buttons-label:hover{
-  cursor: pointer;
-}
-
-.icon{
-  width: 18px;
-   padding-right: 10px;
-   padding-left: 5%;
-   padding-top: 7%;
+.navbar-bottom-buttons{
+  margin-top: auto;
+  margin-bottom: 10%;
 }
 
 @media (max-width: 1080px) {
@@ -41,22 +18,3 @@
     display: none;
   }
 }
-
-.information-visible{
-  background-color: #d9d9d9;
-}
-
-.navbar-bottom-buttons{
-  margin-top: auto;
-  margin-bottom: 10%;
-}
-
-.vertical-bottom-buttons-label{
-  font-size: 120%;
-  color: red;
-}
-
-.vertical-bottom-buttons-label:hover{
-  cursor: pointer;
-}
-
