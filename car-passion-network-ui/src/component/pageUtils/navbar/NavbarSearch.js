@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./NavbarSearch.css";
-import searchIcon from "../../../images/search.png";
 import { findUsersByFullNameStartsWith } from "../../service/UserService";
-import pic from "../../../images/profile-pic.jpg";
 import useNavigation from "../../service/NavigateService";
 import arrow from "../../../images/arrow.png";
+import SearchBar from "./SearchBar";
+import User from "../user/User";
 
 export default function NavbarSearch() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -37,6 +37,7 @@ export default function NavbarSearch() {
     const foundUsers = await response.json();
 
     setFoundUsers(foundUsers);
+    setLoadingResults(false);
   };
 
   useEffect(() => {
@@ -46,10 +47,10 @@ export default function NavbarSearch() {
 
     debounceTimeout.current = setTimeout(() => {
       fetchUsers(searchTerm);
-      setLoadingResults(false);
     }, 500);
 
     setFoundUsersDropdown(searchTerm !== "");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm]);
 
   const navigateToUserProfile = (userId) => {
@@ -71,47 +72,26 @@ export default function NavbarSearch() {
 
   return (
     <div className="navbar-search-container">
-      <div className="navbar-search-field-container">
-        <img src={searchIcon} alt="pic" className="friends-search-icon" />
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchTerm}
-          onChange={handleSearchChange}
-          className="navbar-search-input"
-          onClick={showDropdown}
+      <div className="navbar-search-field-container" onClick={showDropdown}>
+        <SearchBar
+          searchTerm={searchTerm}
+          handleSearchChange={handleSearchChange}
         />
       </div>
 
       {foundUsersDropdown && (
         <div className="navbar-search-dropdown-container">
           {foundUsers.map((user, index) => (
-            <div
-              key={index}
-              className="navbar-search-dropdown"
-              onClick={() => navigateToUserProfile(user.id)}
-            >
-              <div className="navbar-search-profile-pic-container">
-                <img
-                  src={
-                    user.profilePicture
-                      ? `http://localhost:8080/${user.profilePicture}`
-                      : pic
-                  }
-                  alt="user-pic"
-                  className="found-user-pic"
-                />
-              </div>
-
-              <label className="found-user-name">
-                {user.firstName} {user.lastName}
-              </label>
-            </div>
+            <User
+              user={user}
+              index={index}
+              navigateToProfile={() => navigateToUserProfile(user.id)}
+            />
           ))}
 
           {foundUsers.length < 1 && (
-            <div className="search-user-no-results-container">
-              <label className="search-user-no-results">
+            <div className="navbar-search-dropdown-no-results-container">
+              <label className="navbar-search-dropdown-no-results">
                 {loadingResults
                   ? "loading..."
                   : `No results for: ${searchTerm}`}
@@ -120,6 +100,7 @@ export default function NavbarSearch() {
           )}
         </div>
       )}
+
       {foundUsersDropdown && (
         <img
           src={arrow}

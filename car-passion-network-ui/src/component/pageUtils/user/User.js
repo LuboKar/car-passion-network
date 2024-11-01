@@ -1,16 +1,13 @@
 import React from "react";
 import "./User.css";
 import pic from "../../../images/profile-pic.jpg";
-import useNavigation from "../../service/NavigateService";
 
-export default function User({ user, index }) {
-  const { navigateToProfile } = useNavigation();
-
+export default function User({ user, index, navigateToProfile }) {
   return (
     <div
       key={index}
       className="comment-likes-container"
-      onClick={() => navigateToProfile(user.id)}
+      onClick={navigateToProfile}
     >
       <div className="comment-user-like-pic-container">
         <img
