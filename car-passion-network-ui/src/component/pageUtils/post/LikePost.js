@@ -24,13 +24,14 @@ export default function LikePost({ post, index }) {
 
   return (
     <div className="like-post-container">
-      <div className="like-post-text-container" onClick={likeOrDislike}>
+      <div className="like-post-button-container" onClick={likeOrDislike}>
         <img
           src={post.currentUserLike === true ? liked : notLiked}
           alt="icon"
-          className="liked-icon"
+          className="like-post-liked-icon"
         />
-        <label className="like-post-text">Like</label>
+
+        <label className="like-post-label">Like</label>
       </div>
     </div>
   );

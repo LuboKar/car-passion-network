@@ -2,7 +2,7 @@
     width: 50%;
 }
 
-.like-post-text-container{
+.like-post-button-container{
     border-radius: 7px;
     margin-bottom: 2%;
     height: 38px;
@@ -12,24 +12,23 @@
     justify-content: center; 
 }
 
-.like-post-text-container:hover{
+.like-post-button-container:hover{
     cursor: pointer;
     background-color: rgb(200, 200, 200);
 }
 
-.like-post-text{
+.like-post-liked-icon{
+    width: 25px;
+    padding-right: 1%;
+}
+
+.like-post-label{
     font-size: 130%;
     font-weight: bold;
     color: rgb(90, 90, 90);
     padding-left: 2%;
 }
 
-.like-post-text:hover{
+.like-post-label:hover{
     cursor: pointer;
-}
-
-
-.liked-icon{
-    width: 25px;
-    padding-right: 1%;
 }
