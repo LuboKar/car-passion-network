@@ -1,5 +1,4 @@
 import React, { useEffect, useContext } from "react";
-import pic from "../../../images/profile-pic.jpg";
 import send from "../../../images/send.png";
 import "./WriteComment.css";
 import { useState } from "react";
@@ -7,6 +6,7 @@ import cannotSend from "../../../images/cannot-send.png";
 import { writeComment } from "../../service/CommentService";
 import { PostsContext } from "../../context/PostsProvider";
 import { getProfilePictureUrl } from "../../service/profilePictureService";
+import ProfilePicture from "../user/ProfilePicture";
 
 export default function WriteComment({ post, index }) {
   const [comment, setComment] = useState({
@@ -58,30 +58,32 @@ export default function WriteComment({ post, index }) {
 
   return (
     <div className="write-comment-container">
-      <div className="write-comment-profile-pic-container">
-        <img
-          src={profilePicture ? `http://localhost:8080/${profilePicture}` : pic}
-          alt={"profile-pic"}
-          className="write-comment-profile-pic"
-        />
+      <div className="write-comment-profile-picture-container">
+        <ProfilePicture profilePicture={profilePicture} />
       </div>
 
       <input
-        className="comment-input"
+        className="write-comment-input"
         placeholder="Say something...."
         type="text"
         name="content"
         value={comment.content}
         onChange={handleInputChange}
       />
+
       {!sendButton && (
-        <img src={cannotSend} alt="pic" className="cannont-send-comment" />
+        <img
+          src={cannotSend}
+          alt="pic"
+          className="write-comment-cannont-send"
+        />
       )}
+
       {sendButton && (
         <img
           src={send}
           alt="pic"
-          className="send-comment"
+          className="write-comment-send"
           onClick={commentPost}
         />
       )}
