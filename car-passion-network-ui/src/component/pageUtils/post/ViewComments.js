@@ -7,7 +7,7 @@ export default function ViewComments({ post, postIndex }) {
     <div>
       {post.comments &&
         post.comments.map((comment, index) => (
-          <div key={index} className="comments-container">
+          <div key={index} className="view-comments-container">
             <Comment
               comment={comment}
               commentIndex={index}
