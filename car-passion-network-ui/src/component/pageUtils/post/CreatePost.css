@@ -12,12 +12,12 @@
    text-align: center;
 }
 
-.post-form{
+.create-post-form{
     width: 100%;
     height: 100%;
 }
 
-.post-title-input{
+.create-post-title-input{
     width: 100%;
     height: 35px;
     border-radius: 10px;
@@ -27,15 +27,31 @@
     border: 2px solid black;
 }
 
-.post-title-input::placeholder{
+.create-post-title-input::placeholder{
     font-size: 100%;
     font-weight: bold;
 }
-.post-title-input:hover{
+.create-post-title-input:hover{
     border:2px solid rgb(70, 70, 70);
 }
 
-.post-content{
+.create-post-empty-title-imput{
+    width: 100%;
+    height: 35px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 20px;
+    padding-left: 1%;
+    border: 2px solid red;
+}
+
+.create-post-empty-title-imput::placeholder{
+    font-size: 100%;
+    font-weight: bold;
+    color: red;
+}
+
+.create-post-content{
     width: 100%;
     height: 200px;
     border-radius: 10px;
@@ -47,33 +63,17 @@
     margin-top: 3%;
 }
 
-.post-content:hover{
+.create-post-content:hover{
     border:2px solid rgb(70, 70, 70);
 }
 
-.post-button{
+.create-post-button{
     width: 50%;
     height: 40px;
     font-size: 20px;
     overflow: hidden;
 }
 
-.post-button:hover{
+.create-post-button:hover{
     cursor: pointer;
-}
-
-.empty-post-title-imput{
-    width: 100%;
-    height: 35px;
-    border-radius: 10px;
-    font-weight: bold;
-    font-size: 20px;
-    padding-left: 1%;
-    border: 2px solid red;
-}
-
-.empty-post-title-imput::placeholder{
-    font-size: 100%;
-    font-weight: bold;
-    color: red;
 }

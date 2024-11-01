@@ -47,6 +47,7 @@ export default function CreatePost({ ownerId }) {
       }
 
       const createdPost = await response.json();
+
       setCreateNewPost(false);
       addNewPost(createdPost);
       setCreatePostValues({
@@ -58,12 +59,19 @@ export default function CreatePost({ ownerId }) {
       setCreatePostButton(true);
     }
   };
+
   return (
     <div className="create-post-container">
-      <form className="post-form" onSubmit={create} onClick={toggleCreatePost}>
+      <form
+        className="create-post-form"
+        onSubmit={create}
+        onClick={toggleCreatePost}
+      >
         <input
           className={
-            !createPostButton ? "post-title-input" : "empty-post-title-imput"
+            !createPostButton
+              ? "create-post-title-input"
+              : "create-post-empty-title-imput"
           }
           placeholder="Title"
           type="text"
@@ -71,9 +79,10 @@ export default function CreatePost({ ownerId }) {
           value={createPostValues.title}
           onChange={handleInputChange}
         />
+
         {createNewPost && (
           <textarea
-            className="post-content"
+            className="create-post-content"
             placeholder="Text..."
             type="text"
             name="content"
@@ -81,8 +90,9 @@ export default function CreatePost({ ownerId }) {
             onChange={handleInputChange}
           />
         )}
+
         {createNewPost && (
-          <button className="post-button" type="submit">
+          <button className="create-post-button" type="submit">
             Create post
           </button>
         )}
