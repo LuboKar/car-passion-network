@@ -8,6 +8,7 @@ import { PostsContext } from "../../context/PostsProvider";
 import { deletePost } from "../../service/PostService";
 import useNavigation from "../../service/NavigateService";
 import { getId } from "../../service/TokenService";
+import PostMenuButton from "./PostMenuButton.js";
 
 export default function PostMenu({ post, index }) {
   const currentUserId = getId();
@@ -32,37 +33,34 @@ export default function PostMenu({ post, index }) {
   };
 
   return (
-    <div className="menu-post-container">
-      <div className="menu-button" onClick={() => toggleMenu(post.id)}>
-        <img src={menu} alt="menu-pic" className="menu-pic" />
+    <div className="post-menu-container">
+      <div className="post-menu-button" onClick={() => toggleMenu(post.id)}>
+        <img src={menu} alt="menu-pic" className="post-menu-icon" />
       </div>
 
       {clickedMenu === post.id && (
-        <div className="menu-post-dropdown">
-          <div className="menu-option" onClick={openPost}>
-            <img src={open} alt="option-pic" className="option-pic" />
-            <label className="open-text">Open</label>
-          </div>
+        <div className="post-menu-dropdown">
+          <PostMenuButton
+            buttonIcon={open}
+            buttonText="Open"
+            openPost={openPost}
+          />
 
           {currentUserId === post.author.id && (
-            <div
-              className="menu-option"
-              onClick={() => toggleEditPost(post.id)}
-            >
-              <img src={edit} alt="option-pic" className="option-pic" />
-              <label className="edit-text">Edit</label>
-            </div>
+            <PostMenuButton
+              buttonIcon={edit}
+              buttonText="Edit"
+              openPost={() => toggleEditPost(post.id)}
+            />
           )}
 
           {(currentUserId === post.author.id ||
             currentUserId === post.user.id) && (
-            <div
-              className="menu-option"
-              onClick={() => deletePostById(index, post.id)}
-            >
-              <img src={deleteIcon} alt="delete-pic" className="delete-pic" />
-              <label className="delete-text">Delete</label>
-            </div>
+            <PostMenuButton
+              buttonIcon={deleteIcon}
+              buttonText="Delete"
+              openPost={() => deletePostById(index, post.id)}
+            />
           )}
         </div>
       )}

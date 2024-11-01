@@ -1,0 +1,27 @@
+.post-menu-option{
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-right: 10px;
+    border-radius: 10px;
+}
+
+.post-menu-option:hover{
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+.post-menu-option-icon{
+    width: 25px;
+    padding: 10px 10px 10px 10px;
+}
+
+.post-menu-option-label{
+    font-size: 20px;
+    padding-bottom: 4px;
+}
+
+.post-menu-option-label:hover{
+    cursor: pointer;
+}
