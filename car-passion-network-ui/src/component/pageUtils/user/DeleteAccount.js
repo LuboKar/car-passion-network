@@ -17,10 +17,12 @@ export default function DeleteAccount({ userId }) {
 
   const handleDeleteAccount = async (event) => {
     event.preventDefault();
+
     if (option === "No") {
       navigateToProfile(userId);
       return;
     }
+
     const response = await deleteUser(userId);
 
     if (!response.ok) {
@@ -29,13 +31,13 @@ export default function DeleteAccount({ userId }) {
 
     deleteToken();
     deleteProfilePictureUrl();
-
     navigateToDashboardPage();
   };
 
   return (
     <div className="delete-account-container">
-      <label className="delete-account-text">Are you sure?</label>
+      <label className="delete-account-label">Are you sure?</label>
+
       <form className="delete-account-form" onSubmit={handleDeleteAccount}>
         <div className="dalete-account-option">
           <input

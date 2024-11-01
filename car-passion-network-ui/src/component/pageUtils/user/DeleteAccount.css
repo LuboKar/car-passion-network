@@ -10,16 +10,16 @@
     align-items: center;
 }
 
+.delete-account-label{
+    margin-top: 10%;
+    font-size: 60px;
+}
+
 .delete-account-form{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-
-.delete-account-text{
-    margin-top: 10%;
-    font-size: 60px;
 }
 
 .dalete-account-option{
