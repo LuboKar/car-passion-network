@@ -7,6 +7,10 @@
     text-decoration: underline;
 }
 
+.number-of-comments-info-container{
+    width: max-content;
+}
+
 .number-of-comments-icon{
     width: 15px;
     margin-right: 5px;
@@ -16,14 +20,10 @@
     cursor: pointer;
 }
 
-.number-of-posts-info{
-    width: max-content;
-}
-
-.post-comments-length{
+.post-comments-length-label{
     color: rgb(67, 67, 67)
 }
 
-.post-comments-length:hover{
+.post-comments-length-label:hover{
     cursor: pointer;
 }

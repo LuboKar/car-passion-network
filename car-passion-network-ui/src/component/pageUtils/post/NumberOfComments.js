@@ -6,13 +6,19 @@ export default function NumberOfComments({ post, toggleCommentsFunction }) {
   return (
     <div className="number-of-comments-container">
       {post.comments.length > 0 && (
-        <div className="number-of-posts-info" onClick={toggleCommentsFunction}>
+        <div
+          className="number-of-comments-info-container"
+          onClick={toggleCommentsFunction}
+        >
           <img
             src={commentIcon}
             alt="comment icon"
             className="number-of-comments-icon"
           />
-          <label className="post-comments-length">{post.comments.length}</label>
+
+          <label className="post-comments-length-label">
+            {post.comments.length}
+          </label>
         </div>
       )}
     </div>
