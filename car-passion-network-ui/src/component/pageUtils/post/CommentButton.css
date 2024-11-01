@@ -1,15 +1,4 @@
-.comment-button{
-    font-size: 130%;
-    font-weight: bold;
-    color: rgb(90, 90, 90);
-    padding-left: 2%;
-}
-
-.comment-button:hover{
-    cursor: pointer;
-}
-
-.comment-button-div{
+.comment-button-container{
     border-radius: 7px;
     margin-bottom: 2%;
     height: 38px;
@@ -20,12 +9,23 @@
     width: 50%;
 }
 
-.comment-button-div:hover{
+.comment-button-container:hover{
     cursor: pointer;
     background-color: rgb(200, 200, 200);
 }
 
-.comment-icon{
+.comment-button-icon{
     width: 23px;
     padding-right: 1%;
+}
+
+.comment-button-label{
+    font-size: 130%;
+    font-weight: bold;
+    color: rgb(90, 90, 90);
+    padding-left: 2%;
+}
+
+.comment-button-label:hover{
+    cursor: pointer;
 }
