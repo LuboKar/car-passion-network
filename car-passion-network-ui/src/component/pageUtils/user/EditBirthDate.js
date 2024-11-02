@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./EditBirthDate.css";
 import DatePicker from "react-datepicker";
+import EditOption from "./EditOption";
 
 export default function EditBirthDate({ edit, setSuccessMessage }) {
   const [editBirthDateDropdown, setEditBirthDateDropdown] = useState(false);
@@ -54,30 +55,22 @@ export default function EditBirthDate({ edit, setSuccessMessage }) {
     <div className="edit-birth-date-container">
       <div className="change-birth-date-border"></div>
 
-      <div
-        className={
-          editBirthDateDropdown
-            ? "change-birth-date-label-container-selected"
-            : "change-birth-date-label-container"
-        }
-        onClick={toggleBirthDateDropdown}
-      >
-        <label className="change-birth-date-label">Edit date of birth</label>
-        <label className="greater-than-symbol">
-          {editBirthDateDropdown ? "\u25B2" : "\u25BC"}
-        </label>
-      </div>
+      <EditOption
+        dropdown={editBirthDateDropdown}
+        toggleDropdown={toggleBirthDateDropdown}
+        text="Edit date of birth"
+      />
 
       {editBirthDateDropdown && (
         <div className="edit-birth-date-dropdown-container">
           <form className="edit-birth-date-form" onSubmit={editUserBirthDate}>
-            <label className="label-birth-date">Birth Date:</label>
+            <label className="birth-date-form-label">Birth Date:</label>
 
             <DatePicker
               className={
-                emptyDateOfBirth
-                  ? "empty-edit-form-birth-date"
-                  : "edit-form-birth-date"
+                !emptyDateOfBirth
+                  ? "edit-birth-date-form-input"
+                  : "edit-birth-date-form-empty-input"
               }
               id="dateOfBirth"
               selected={dateOfBirthValue.dateOfBirth}
@@ -85,7 +78,7 @@ export default function EditBirthDate({ edit, setSuccessMessage }) {
               dateFormat="yyyy-MM-dd"
             />
 
-            <button className="edit-birth-date-button" type="submit">
+            <button className="edit-birth-date-form-button" type="submit">
               Save changes
             </button>
           </form>

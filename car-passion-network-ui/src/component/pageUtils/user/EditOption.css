@@ -1,0 +1,49 @@
+.edit-option-container{
+    display: flex;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    border-radius: 7px;
+    padding: 1% 1% 2% 1%;
+}
+
+.edit-option-container:hover{
+    background-color: rgb(200, 200, 200);
+    cursor: pointer;
+}
+
+.edit-option-selected-container{
+    display: flex;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    border-radius: 7px;
+    padding: 1% 1% 2% 1%;
+    background-color: rgb(200, 200, 200);
+}
+
+.edit-option-selected-container:hover{
+    background-color: rgb(200, 200, 200);
+    cursor: pointer;
+}
+
+.edit-option-label{
+    font-size: 25px;
+    user-select: none;
+    margin-left: 1%;
+    margin-top: 1%;
+}
+
+.edit-option-label:hover{
+    cursor: pointer;
+}
+
+.edit-option-arrow{
+    font-size: 15px;
+    margin-left: auto;
+    margin-top: 11px;
+    margin-right: 1%;
+    user-select: none;
+}
+
+.edit-option-arrow:hover{
+    cursor: pointer;
+}
