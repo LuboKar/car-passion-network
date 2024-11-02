@@ -1,4 +1,4 @@
-.comment-likes-container{
+.user-container{
     display: flex;
     align-items: center;
     flex-direction: row;
@@ -9,13 +9,13 @@
     border-radius: 10px;
 }
 
-.comment-likes-container:hover{
+.user-container:hover{
     cursor: pointer;
     text-decoration: underline;
     background-color: #f0f0f0;
 }
 
-.comment-user-like-pic-container{
+.user-picture-container{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,16 +26,10 @@
     overflow: hidden;
 }
 
-.user-like-pic{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.user-like-name{
+.user-name{
     padding-left: 3%;
 }
 
-.user-like-name:hover{
+.user-name:hover{
     cursor: pointer;
 }
