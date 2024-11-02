@@ -9,72 +9,22 @@
     border-top: 1px solid rgb(150, 150, 150);
 }
 
-.change-gender-label-container{
-    display: flex;
-    margin-top: 1%;
-    margin-bottom: 1%;
-    border-radius: 7px;
-    padding: 1% 1% 2% 1%;
-}
-
-.change-gender-label-container-selected{
-    display: flex;
-    margin-top: 1%;
-    margin-bottom: 1%;
-    border-radius: 7px;
-    padding: 1% 1% 2% 1%;
-    background-color: rgb(200, 200, 200);
-}
-
-.change-gender-label-container-selected:hover{
-    background-color: rgb(200, 200, 200);
-    cursor: pointer;
-}
-
-.change-gender-label-container:hover{
-    background-color: rgb(200, 200, 200);
-    cursor: pointer;
-}
-
-.change-gender-label{
-    font-size: 25px;
-    user-select: none;
-    margin-left: 1%;
-    margin-top: 1%;
-}
-
-.change-gender-label:hover{
-    cursor: pointer;
-}
-
-.greater-than-symbol{
-    font-size: 15px;
-    margin-left: auto;
-    margin-top: 12px;
-    margin-right: 1%;
-    user-select: none;
-}
-
-.greater-than-symbol:hover{
-    cursor: pointer;
-}
-
-.edit-gender-form{
+.edit-gender-dropdown-form{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.label-gender{
+.edit-gender-dropdown-label{
     color: rgb(50, 50, 50);
 }
 
-.label-gender:hover{
+.edit-gender-dropdown-label:hover{
     cursor: text;
 }
 
-.edit-select-gender{
+.edit-gender-dropdown-select-gender{
     height: 45px;
     border-radius: 7px;
     border: 2px solid black;
@@ -83,7 +33,11 @@
     padding-left: 2%;
 }
 
-.empty-edit-select-gender{
+.edit-gender-dropdown-select-gender:hover{
+    cursor: pointer;
+}
+
+.edit-gender-dropdown-select-empty-gender{
     height: 45px;
     border-radius: 7px;
     border: 2px solid red;
@@ -92,15 +46,11 @@
     padding-left: 2%;
 }
 
-.edit-select-gender:hover{
+.edit-gender-dropdown-select-empty-gender:hover{
     cursor: pointer;
 }
 
-.empty-edit-select-gender{
-    cursor: pointer;
-}
-
-.edit-gender-button{
+.edit-gender-dropdown-button{
     height: 40px;
     width: 40%;
     font-size: 20px;
@@ -108,6 +58,6 @@
     margin-bottom: 1%;
 }
 
-.edit-gender-button:hover{
+.edit-gender-dropdown-button:hover{
     cursor: pointer;
 }

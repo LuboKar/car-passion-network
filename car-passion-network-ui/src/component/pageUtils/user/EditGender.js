@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./EditGender.css";
+import EditOption from "./EditOption";
 
 export default function EditGender({ edit, setSuccessMessage }) {
   const [editGenderDropdown, setEditGenderDropdown] = useState(false);
@@ -44,30 +45,24 @@ export default function EditGender({ edit, setSuccessMessage }) {
     <div className="edit-gender-container">
       <div className="change-gender-border"></div>
 
-      <div
-        className={
-          editGenderDropdown
-            ? "change-gender-label-container-selected"
-            : "change-gender-label-container"
-        }
-        onClick={toggleGenderDropdown}
-      >
-        <label className="change-gender-label">Edit gender</label>
-        <label className="greater-than-symbol">
-          {editGenderDropdown ? "\u25B2" : "\u25BC"}
-        </label>
-      </div>
+      <EditOption
+        dropdown={editGenderDropdown}
+        toggleDropdown={toggleGenderDropdown}
+        text="Edit gender"
+      />
 
       {editGenderDropdown && (
         <div className="edit-gender-dropdown-container">
-          <form className="edit-gender-form" onSubmit={editUserGender}>
-            <label className="label-gender">Gender:</label>
+          <form className="edit-gender-dropdown-form" onSubmit={editUserGender}>
+            <label className="edit-gender-dropdown-label">Gender:</label>
 
             <select
               id="selectOption"
               name="gender"
               className={
-                emptyGender ? "empty-edit-select-gender" : "edit-select-gender"
+                !emptyGender
+                  ? "edit-gender-dropdown-select-gender"
+                  : "edit-gender-dropdown-select-empty-gender"
               }
               value={editGenderValue.gender}
               onChange={handleInputChange}
@@ -77,7 +72,7 @@ export default function EditGender({ edit, setSuccessMessage }) {
               <option value="FEMALE">FEMALE</option>
             </select>
 
-            <button className="edit-gender-button" type="submit">
+            <button className="edit-gender-dropdown-button" type="submit">
               Save changes
             </button>
           </form>
