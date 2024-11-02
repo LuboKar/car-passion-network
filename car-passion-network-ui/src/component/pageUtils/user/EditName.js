@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./EditName.css";
+import EditOption from "./EditOption";
 
 export default function EditName({ user, edit, setSuccessMessage }) {
   const [editNameDropdown, setEditNameDropdown] = useState(false);
@@ -53,27 +54,21 @@ export default function EditName({ user, edit, setSuccessMessage }) {
     <div className="edit-name-container">
       <div className="change-name-border"></div>
 
-      <div
-        className={
-          editNameDropdown
-            ? "change-name-label-container-selected"
-            : "change-name-label-container"
-        }
-        onClick={toggleEditNameDropdown}
-      >
-        <label className="change-name-label">Edit name</label>
-        <label className="greater-than-symbol">
-          {editNameDropdown ? "\u25B2" : "\u25BC"}
-        </label>
-      </div>
+      <EditOption
+        dropdown={editNameDropdown}
+        toggleDropdown={toggleEditNameDropdown}
+        text="Edit name"
+      />
 
       {editNameDropdown && (
         <div className="edit-name-dropdown-container">
-          <form className="edit-name-form" onSubmit={editUserName}>
-            <label className="label-name">First Name:</label>
+          <form className="edit-name-dropdown-form" onSubmit={editUserName}>
+            <label className="edit-name-dropdown-label">First Name:</label>
             <input
               className={
-                emptyFirstName ? "empty-edit-name-input" : "edit-name-input"
+                !emptyFirstName
+                  ? "edit-name-dropdown-input"
+                  : "edit-name-dropdown-name-empty-input"
               }
               placeholder="First Name"
               type="text"
@@ -81,10 +76,13 @@ export default function EditName({ user, edit, setSuccessMessage }) {
               value={editNameValues.firstName}
               onChange={handleInputChange}
             />
-            <label className="label-name">Last Name:</label>
+
+            <label className="edit-name-dropdown-label">Last Name:</label>
             <input
               className={
-                emptyLastName ? "empty-edit-name-input" : "edit-name-input"
+                !emptyLastName
+                  ? "edit-name-dropdown-input"
+                  : "edit-name-dropdown-name-empty-input"
               }
               placeholder="Last Name"
               type="text"
@@ -93,7 +91,7 @@ export default function EditName({ user, edit, setSuccessMessage }) {
               onChange={handleInputChange}
             />
 
-            <button className="edit-name-button" type="submit">
+            <button className="edit-name-dropdown-button" type="submit">
               Save changes
             </button>
           </form>

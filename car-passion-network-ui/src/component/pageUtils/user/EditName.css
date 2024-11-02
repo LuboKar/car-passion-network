@@ -16,56 +16,22 @@
     padding: 1% 1% 2% 1%;
 }
 
-.change-name-label-container-selected{
-    display: flex;
-    margin-top: 1%;
-    margin-bottom: 1%;
-    border-radius: 7px;
-    padding: 1% 1% 2% 1%;
-    background-color: rgb(200, 200, 200);
-}
-
-.change-name-label-container-selected:hover{
-    background-color: rgb(200, 200, 200);
-    cursor: pointer;
-}
-
-.change-name-label-container:hover{
-    background-color: rgb(200, 200, 200);
-    cursor: pointer;
-}
-
-.change-name-label{
-    font-size: 25px;
-    user-select: none;
-    margin-left: 1%;
-    margin-top: 1%;
-}
-
-.change-name-label:hover{
-    cursor: pointer;
-}
-
-.greater-than-symbol{
-    font-size: 15px;
-    margin-left: auto;
-    margin-top: 9px;
-    margin-right: 1%;
-    user-select: none;
-}
-
-.greater-than-symbol:hover{
-    cursor: pointer;
-}
-
-.edit-name-form{
+.edit-name-dropdown-form{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.edit-name-input{
+.edit-name-dropdown-label{
+    color: rgb(50, 50, 50);
+}
+
+.edit-name-dropdown-label:hover{
+    cursor: text;
+}
+
+.edit-name-dropdown-input{
     height: 40px;
     border-radius: 7px;
     border: 2px solid black;
@@ -74,7 +40,7 @@
     padding-left: 2%;
 }
 
-.empty-edit-name-input{
+.edit-name-dropdown-name-empty-input{
     height: 40px;
     border-radius: 7px;
     border: 2px solid red;
@@ -83,11 +49,11 @@
     padding-left: 2%;
 }
 
-.empty-edit-name-input::placeholder{
+.edit-name-dropdown-name-empty-input::placeholder{
     color: red;
 }
 
-.edit-name-button{
+.edit-name-dropdown-button{
     height: 40px;
     width: 40%;
     font-size: 20px;
@@ -95,14 +61,6 @@
     margin-bottom: 1%;
 }
 
-.edit-name-button:hover{
+.edit-name-dropdown-button:hover{
     cursor: pointer;
-}
-
-.label-name{
-    color: rgb(50, 50, 50);
-}
-
-.label-name:hover{
-    cursor: text;
 }
