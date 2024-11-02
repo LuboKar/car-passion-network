@@ -10,22 +10,22 @@
     align-items: center;
 }
 
-.success-message{
+.edit-profile-success-message{
     display: block;
     height: 1.5em;
     color: green;
 }
 
-.success-message:hover{
+.edit-profile-success-message:hover{
     cursor: text;
 }
 
-.error-message{
+.edit-profile-error-message{
     display: block;
     height: 1.5em;
     color: red;
 }
 
-.error-message:hover{
+.edit-profile-error-message:hover{
     cursor: text;
 }

@@ -20,13 +20,20 @@ export default function EditProfile({ user, setUser }) {
     }
 
     const editedUser = await response.json();
+
     setUser(editedUser);
     return true;
   };
 
   return (
     <div className="edit-profile-container">
-      <label className={successMessage ? "success-message" : "error-message"}>
+      <label
+        className={
+          successMessage
+            ? "edit-profile-success-message"
+            : "edit-profile-error-message"
+        }
+      >
         {successMessage ? successMessage : errorMessage}
       </label>
 
