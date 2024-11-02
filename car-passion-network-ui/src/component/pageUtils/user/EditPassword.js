@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./EditPassword.css";
+import EditOption from "./EditOption";
 
 export default function EditPassword({
   edit,
@@ -98,27 +99,26 @@ export default function EditPassword({
     <div className="edit-password-container">
       <div className="change-password-border"></div>
 
-      <div
-        className={
-          editPasswordDropdown
-            ? "change-password-label-container-selected"
-            : "change-password-label-container"
-        }
-        onClick={toggleEditPasswordDropdown}
-      >
-        <label className="change-password-label">Edit password</label>
-        <label className="greater-than-symbol">
-          {editPasswordDropdown ? "\u25B2" : "\u25BC"}
-        </label>
-      </div>
+      <EditOption
+        dropdown={editPasswordDropdown}
+        toggleDropdown={toggleEditPasswordDropdown}
+        text="Edit password"
+      />
 
       {editPasswordDropdown && (
         <div className="edit-password-dropdown-container">
-          <form className="edit-password-form" onSubmit={editUserPassword}>
-            <label className="label-password">Old Password:</label>
+          <form
+            className="edit-password-dropdown-form"
+            onSubmit={editUserPassword}
+          >
+            <label className="edit-password-dropdown-label">
+              Old Password:
+            </label>
             <input
               className={
-                emptyOldPassword ? "empty-password-input" : "password-input"
+                !emptyOldPassword
+                  ? "edit-password-dropdown-input"
+                  : "edit-password-dropdown-empty-input"
               }
               placeholder="Old Password"
               type="password"
@@ -127,10 +127,15 @@ export default function EditPassword({
               value={editPasswordValues.oldPassword}
               onChange={handleInputChange}
             />
-            <label className="label-password">New Password:</label>
+
+            <label className="edit-password-dropdown-label">
+              New Password:
+            </label>
             <input
               className={
-                emptyNewPassword ? "empty-password-input" : "password-input"
+                !emptyNewPassword
+                  ? "edit-password-dropdown-input"
+                  : "edit-password-dropdown-empty-input"
               }
               placeholder="New Password"
               type="password"
@@ -139,10 +144,14 @@ export default function EditPassword({
               onChange={handleInputChange}
             />
 
-            <label className="label-password">Confirm Password:</label>
+            <label className="edit-password-dropdown-label">
+              Confirm Password:
+            </label>
             <input
               className={
-                emptyConfirmPassword ? "empty-password-input" : "password-input"
+                !emptyConfirmPassword
+                  ? "edit-password-dropdown-input"
+                  : "edit-password-dropdown-empty-input"
               }
               placeholder="Confirm Password"
               type="password"
@@ -151,7 +160,7 @@ export default function EditPassword({
               onChange={handleInputChange}
             />
 
-            <button className="edit-password-button" type="submit">
+            <button className="edit-password-dropdown-button" type="submit">
               Save changes
             </button>
           </form>
