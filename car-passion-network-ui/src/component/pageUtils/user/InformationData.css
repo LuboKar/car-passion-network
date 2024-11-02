@@ -1,0 +1,30 @@
+.information-data-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.information-data-icon{
+    width: 5%;
+    height: 60%;
+    padding-right: 1%;
+}
+
+.information-data-header{
+    font-size: 30px;
+    font-weight: bold;
+    padding-bottom: 1%;
+}
+
+.information-data-header:hover{
+    cursor: text;
+}
+
+.information-data-content{
+    font-size: 20px;
+    padding-bottom: 1%;
+    padding-left: 6%;
+}
+
+.information-data-content:hover{
+    cursor: text;
+}
