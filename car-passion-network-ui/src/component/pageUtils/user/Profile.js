@@ -1,13 +1,13 @@
 import React, { useRef } from "react";
 import "./Profile.css";
 import { uploadProfilePicture } from "../../service/UserService";
-import pic from "../../../images/profile-pic.jpg";
 import { getId } from "../../service/TokenService";
 import { saveProfilePictureUrl } from "../../service/profilePictureService";
 import AddFriend from "./AddFriend";
 import RemoveFriend from "./RemoveFriend";
 import { addFriend } from "../../service/UserService";
 import { removeFriend } from "../../service/UserService";
+import ProfilePicture from "./ProfilePicture";
 
 export default function Profile({ user, setUser }) {
   const currentUserId = getId();
@@ -17,6 +17,7 @@ export default function Profile({ user, setUser }) {
     if (user.id !== currentUserId) {
       return;
     }
+
     fileInputRef.current.click();
   };
 
@@ -36,7 +37,6 @@ export default function Profile({ user, setUser }) {
       const data = await response.json();
 
       saveProfilePictureUrl(data.profilePicture);
-
       window.location.reload(false);
     }
   };
@@ -49,6 +49,7 @@ export default function Profile({ user, setUser }) {
     }
 
     const friendUser = await response.json();
+
     setUser(friendUser);
   };
 
@@ -60,21 +61,15 @@ export default function Profile({ user, setUser }) {
     }
 
     const friendUser = await response.json();
+
     setUser(friendUser);
   };
 
   return (
     <div className="profile-container">
-      <div className="image-container" onClick={handleContainerClick}>
-        <img
-          src={
-            user.profilePicture
-              ? `http://localhost:8080/${user.profilePicture}`
-              : pic
-          }
-          alt={"profile-pic"}
-          className="profile-pic"
-        />
+      <div className="profile-image-container" onClick={handleContainerClick}>
+        <ProfilePicture profilePicture={user.profilePicture} />
+
         <input
           type="file"
           ref={fileInputRef}
@@ -82,6 +77,7 @@ export default function Profile({ user, setUser }) {
           onChange={handleFileChange}
         />
       </div>
+
       <label className="profile-name">
         {user.firstName} {user.lastName}
       </label>

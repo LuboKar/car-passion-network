@@ -8,7 +8,7 @@
     height: 185px;
 }
 
-.image-container{
+.profile-image-container{
     display: flex;
     justify-content: center;
     align-items: center;  
@@ -21,13 +21,7 @@
     overflow: hidden;
 }
 
-.profile-pic{
-    width: 100%;
-  height: 100%;
-  object-fit: cover;  
-}
-
-.image-container:hover{
+.profile-image-container:hover{
     cursor: pointer;
 }
 
