@@ -51,6 +51,7 @@ export default function DeleteAccount({ userId }) {
           <label className="delete-account-option-label" htmlFor="yes">
             Yes
           </label>
+
           <input
             className="delete-account-radio-no"
             type="radio"
