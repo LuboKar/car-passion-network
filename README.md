@@ -67,21 +67,12 @@ Before you begin, ensure you have the following installed:
    git clone https://github.com/LuboKar/car-passion-network.git
    cd car-passion-network-api
    ```
-2. **Update Image Storage Path**:  
-   Open the `application.yml` file located in the backend project directory. Update the `profile.pictures.location` path to point to a folder within your project where you’d like to store uploaded profile images. Ensure this path is accessible and writable by the Spring Boot application.
-
-   **Example:**
-   ```yaml
-   profile:
-     pictures:
-       location: "/path/to/your/project/uploads"
-
-3. Start DB.
+2. Start DB.
    ```bash
    run docker-compose up
    ```
 
-4. Build and run the backend:
+3. Build and run the backend:
    ```bash
    ./mvn clean install
    ```
