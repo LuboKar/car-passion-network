@@ -1,4 +1,3 @@
-
 # Car Passion Network
 
 **Car Passion Network** is a social network designed for car enthusiasts. Users can connect with like-minded individuals, share posts about their favorite cars, comment on others' posts, and engage in discussions. This project is built using **React** for the frontend, **Spring Boot** for the backend, and **PostgreSQL** for the database.
@@ -13,14 +12,18 @@
 
 ## Features
 
-- **User Authentication**: Sign up and login using secure authentication.
-- **Feed Page**: View posts from all users in a centralized feed on the dashboard.
-- **User Profile**: Each user has a profile page displaying personal information and a post wall.
+- **User Authentication**: Secure signup and login with JWT-based authentication.
+- **Feed Page**: Centralized feed displaying posts from all users on the dashboard.
+- **User Profile**: Each user has a profile page showcasing personal information, a profile image, and a wall for posts.
 - **Post Creation & Interaction**:
-  - Create, edit, and delete posts.
-  - Posts support a title, content, likes, and comments.
-  - Reply to comments, and like or edit comments.
-  - Intuitive interface with menus for post interaction.
+    - Create, edit, and delete posts with a title, content, likes, and comments.
+    - Reply to comments, like, edit, or delete comments.
+- **Friend System**: Add users as friends and view them in a dedicated "Friends" section on your profile.
+- **User Search**: Search for other users by name to connect and follow.
+- **Enhanced Settings**: Customize account settings and personalize user experience.
+- **Comment Management**: Edit and delete comments on posts.
+- **Profile Image Upload**: Upload and update profile images directly from the profile page.
+
 
 ## Technologies Used
 
@@ -64,13 +67,21 @@ Before you begin, ensure you have the following installed:
    git clone https://github.com/LuboKar/car-passion-network.git
    cd car-passion-network-api
    ```
+2. **Update Image Storage Path**:  
+   Open the `application.yml` file located in the backend project directory. Update the `profile.pictures.location` path to point to a folder within your project where you’d like to store uploaded profile images. Ensure this path is accessible and writable by the Spring Boot application.
 
-2. Start DB.
+   **Example:**
+   ```yaml
+   profile:
+     pictures:
+       location: "/path/to/your/project/uploads"
+
+3. Start DB.
    ```bash
    run docker-compose up
    ```
 
-3. Build and run the backend:
+4. Build and run the backend:
    ```bash
    ./mvn clean install
    ```
@@ -107,10 +118,6 @@ The frontend should now be running at `http://localhost:3000` and the backend at
 
 Some features that could be added in the future:
 - **Groups and Events**: Users can create and join car-related groups and events.
-- **User Search**: Search for users by name.
-- **Settings**: Enhanced user settings for personalization and account management.
-- **Comment Editing and Deletion**: Allow users to edit or delete their comments.
-- **Profile Image Upload**: Users can upload and update their profile images.
 - **Notifications**: Notifications for user interactions and updates.
-- **Add Friend System**: Users can send and manage friend requests.
+
 This version emphasizes that the list is a starting point and may grow as you continue to develop the project.
