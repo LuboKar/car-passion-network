@@ -22,4 +22,4 @@ application:
 
 profile:
   pictures:
-    location: C:/Users/Lubomir/CarPassionNetwork/car-passion-network/car-passion-network-api/ProfilePictures/
+    location: ProfilePictures/
