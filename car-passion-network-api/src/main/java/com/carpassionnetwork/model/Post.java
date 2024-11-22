@@ -47,6 +47,10 @@ public class Post {
   @OrderBy("createdAt ASC")
   private List<Comment> comments;
 
+  @ManyToOne
+  @JoinColumn(name = "group_id")
+  private Group group;
+
   @PrePersist
   public void onPrePersist() {
     setCreatedAt(LocalDateTime.now());

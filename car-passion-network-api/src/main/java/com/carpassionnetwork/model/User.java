@@ -80,6 +80,9 @@ public class User implements UserDetails, Principal {
       inverseJoinColumns = @JoinColumn(name = "friend_id"))
   private Set<User> friends;
 
+  @ManyToMany(mappedBy = "members")
+  private Set<Group> groups = new HashSet<>();
+
   @Override
   public String getName() {
     return email;
