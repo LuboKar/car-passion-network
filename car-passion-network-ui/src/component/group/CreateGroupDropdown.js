@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "./CreateGroupDropdown.css";
 import { createGroup } from "../service/GroupService";
+import useNavigation from "../service/NavigateService";
 
 export default function CreateGroupDropdown({ setCreateGroupDropdown }) {
   const [groupName, setGroupName] = useState("");
   const [emptyGroupName, setEmptyGroupName] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const { navigateToGroupPage } = useNavigation();
 
   useEffect(() => {
     if (groupName !== "") {
@@ -35,7 +38,7 @@ export default function CreateGroupDropdown({ setCreateGroupDropdown }) {
 
     const group = await response.json();
     setCreateGroupDropdown(false);
-    console.log(group);
+    navigateToGroupPage(group.id);
   };
 
   return (

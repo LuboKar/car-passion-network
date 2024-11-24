@@ -28,11 +28,18 @@ const useNavigation = () => {
     } else navigate("/");
   };
 
+  const navigateToGroupPage = (id) => {
+    if (isAuthenticated()) {
+      navigate(`/group/${id}`);
+    } else navigate("/");
+  };
+
   return {
     navigateToProfile,
     navigateToPostPage,
     navigateToDashboardPage,
     navigateToSettingsPage,
+    navigateToGroupPage,
   };
 };
 

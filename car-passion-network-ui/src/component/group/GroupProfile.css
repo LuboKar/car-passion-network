@@ -1,0 +1,23 @@
+.group-profile-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid black;
+    z-index: 0;
+    margin-left: 25%;
+    margin-right: 25%;
+    height: 330px;
+    padding-top: 70px;
+}
+
+.group-profile-name{
+    font-size: 30px;
+    font-weight: bold;
+    width: 80%;
+    text-align: center;
+}
+
+.group-profile-name:hover{
+    cursor: text;
+}

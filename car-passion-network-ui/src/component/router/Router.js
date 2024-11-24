@@ -8,6 +8,7 @@ import PostPage from "../page/PostPage";
 import { PostsProvider } from "../context/PostsProvider";
 import { PostProvider } from "../context/PostProvider";
 import SettingsPage from "../page/SettingsPage";
+import GroupPage from "../page/GroupPage";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
   {
     path: "*",
     element: <ProtectedRoute element={DashboardPage} />,
+  },
+  {
+    path: "/group/:id",
+    element: <ProtectedRoute element={GroupPage} />,
   },
 ]);
 
