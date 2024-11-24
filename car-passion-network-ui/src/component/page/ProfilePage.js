@@ -16,6 +16,8 @@ import friendIcon from "../../images/friendIcon.png";
 import Friends from "../pageUtils/friends/Friends";
 import { getFriends } from "../service/UserService";
 import FriendsHeader from "../pageUtils/friends/FriendsHeader";
+import groups from "../../images/groups.png";
+import Groups from "../group/Groups";
 
 export default function ProfilePage() {
   const { id } = useParams();
@@ -23,6 +25,7 @@ export default function ProfilePage() {
   const [userInformation, setUserInformation] = useState(false);
   const [viewPosts, setViewPosts] = useState(true);
   const [viewFriends, setViewFriends] = useState(false);
+  const [viewGroups, setViewGroups] = useState(false);
   const [loadingUser, setLoadingUser] = useState(true);
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [friends, setFriends] = useState([]);
@@ -78,16 +81,26 @@ export default function ProfilePage() {
     setViewPosts(false);
     setUserInformation(true);
     setViewFriends(false);
+    setViewGroups(false);
   };
 
   const togglePosts = () => {
     setUserInformation(false);
     setViewPosts(true);
     setViewFriends(false);
+    setViewGroups(false);
   };
 
   const toggleFriends = () => {
     setViewFriends(true);
+    setViewPosts(false);
+    setUserInformation(false);
+    setViewGroups(false);
+  };
+
+  const toggleGroups = () => {
+    setViewGroups(true);
+    setViewFriends(false);
     setViewPosts(false);
     setUserInformation(false);
   };
@@ -110,6 +123,12 @@ export default function ProfilePage() {
       icon: friendIcon,
       onClick: toggleFriends,
       isVisible: viewFriends,
+    },
+    {
+      label: "Groups",
+      icon: groups,
+      onClick: toggleGroups,
+      isVisible: viewGroups,
     },
   ];
 
@@ -139,6 +158,8 @@ export default function ProfilePage() {
       {!loadingFriends && friends.length < 1 && viewFriends && (
         <FriendsHeader />
       )}
+
+      {viewGroups && <Groups userId={user.id} />}
     </div>
   );
 }
