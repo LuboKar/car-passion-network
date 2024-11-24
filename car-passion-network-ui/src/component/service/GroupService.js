@@ -16,4 +16,20 @@ const createGroup = async (groupName) => {
   }
 };
 
-export { createGroup };
+const getGroup = async (id) => {
+  try {
+    const token = getToken();
+    const response = await fetch(`http://localhost:8080/group/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+  }
+};
+
+export { createGroup, getGroup };
