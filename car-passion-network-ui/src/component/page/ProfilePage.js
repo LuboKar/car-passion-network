@@ -77,32 +77,31 @@ export default function ProfilePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  const toggleInformation = () => {
+  const disbleAllButtons = () => {
     setViewPosts(false);
-    setUserInformation(true);
+    setUserInformation(false);
     setViewFriends(false);
     setViewGroups(false);
+  };
+
+  const toggleInformation = () => {
+    disbleAllButtons();
+    setUserInformation(true);
   };
 
   const togglePosts = () => {
-    setUserInformation(false);
+    disbleAllButtons();
     setViewPosts(true);
-    setViewFriends(false);
-    setViewGroups(false);
   };
 
   const toggleFriends = () => {
+    disbleAllButtons();
     setViewFriends(true);
-    setViewPosts(false);
-    setUserInformation(false);
-    setViewGroups(false);
   };
 
   const toggleGroups = () => {
+    disbleAllButtons();
     setViewGroups(true);
-    setViewFriends(false);
-    setViewPosts(false);
-    setUserInformation(false);
   };
 
   const topButtons = [
