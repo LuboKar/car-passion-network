@@ -21,7 +21,8 @@ public class GlobalExceptionHandler {
     UserNotAuthorException.class,
     FileNotUploadedException.class,
     FolderNotCreatedException.class,
-    InvalidPasswordException.class
+    InvalidPasswordException.class,
+    AlreadyUsedGroupNameException.class
   })
   public ResponseEntity<Object> handleException(RuntimeException exception) {
     Map<String, String> error = new HashMap<>();
