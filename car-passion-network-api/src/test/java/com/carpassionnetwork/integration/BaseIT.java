@@ -4,9 +4,11 @@ import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserOn
 
 import com.carpassionnetwork.config.LocalDateTypeAdapter;
 import com.carpassionnetwork.model.Comment;
+import com.carpassionnetwork.model.Group;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.CommentRepository;
+import com.carpassionnetwork.repository.GroupRepository;
 import com.carpassionnetwork.repository.PostRepository;
 import com.carpassionnetwork.repository.UserRepository;
 import com.carpassionnetwork.service.AuthenticationService;
@@ -39,6 +41,7 @@ public class BaseIT {
   @Autowired protected UserRepository userRepository;
   @Autowired private PostRepository postRepository;
   @Autowired private CommentRepository commentRepository;
+  @Autowired private GroupRepository groupRepository;
 
   protected final User currentUser;
 
@@ -68,5 +71,9 @@ public class BaseIT {
 
   protected User createSecondUser(User secondUser) {
     return userRepository.save(secondUser);
+  }
+
+  protected Group createGroup(Group group) {
+    return groupRepository.save(group);
   }
 }

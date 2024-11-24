@@ -1,12 +1,14 @@
 package com.carpassionnetwork.service;
 
 import com.carpassionnetwork.exception.AlreadyUsedGroupNameException;
+import com.carpassionnetwork.exception.GroupNotFoundException;
 import com.carpassionnetwork.model.Group;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.GroupRepository;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,10 @@ public class GroupService {
     Group group = buildGroup(groupName, currentUser);
 
     return groupRepository.save(group);
+  }
+
+  public Group getGroup(UUID groupId) {
+    return groupRepository.findById(groupId).orElseThrow(() -> new GroupNotFoundException(groupId));
   }
 
   private Group buildGroup(String name, User admin) {
