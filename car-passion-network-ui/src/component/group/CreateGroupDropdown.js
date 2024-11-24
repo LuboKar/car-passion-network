@@ -5,6 +5,7 @@ import { createGroup } from "../service/GroupService";
 export default function CreateGroupDropdown({ setCreateGroupDropdown }) {
   const [groupName, setGroupName] = useState("");
   const [emptyGroupName, setEmptyGroupName] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     if (groupName !== "") {
@@ -26,6 +27,12 @@ export default function CreateGroupDropdown({ setCreateGroupDropdown }) {
 
     const response = await createGroup(groupName);
 
+    if (!response.ok) {
+      const responseBody = await response.json();
+      setErrorMessage(responseBody.error);
+      return false;
+    }
+
     const group = await response.json();
     setCreateGroupDropdown(false);
     console.log(group);
@@ -34,6 +41,10 @@ export default function CreateGroupDropdown({ setCreateGroupDropdown }) {
   return (
     <div className="create-group-dropdown-container">
       <form className="create-group-dropdown-form" onSubmit={handleCreateGroup}>
+        <label className="create-group-dropdown-form-error-message">
+          {errorMessage}
+        </label>
+
         <label className="create-group-dropdown-form-label">Group Name:</label>
         <input
           className={
