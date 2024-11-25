@@ -2,6 +2,8 @@ package com.carpassionnetwork.mapper;
 
 import com.carpassionnetwork.dto.response.GroupResponseDto;
 import com.carpassionnetwork.model.Group;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -13,5 +15,9 @@ public class GroupMapper {
 
   public GroupResponseDto toGroupResponse(Group group) {
     return modelMapper.map(group, GroupResponseDto.class);
+  }
+
+  public List<GroupResponseDto> toGroupResponseList(List<Group> posts) {
+    return posts.stream().map(this::toGroupResponse).collect(Collectors.toList());
   }
 }

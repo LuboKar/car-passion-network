@@ -5,10 +5,7 @@ import com.carpassionnetwork.exception.GroupNotFoundException;
 import com.carpassionnetwork.model.Group;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.GroupRepository;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +26,10 @@ public class GroupService {
 
   public Group getGroup(UUID groupId) {
     return groupRepository.findById(groupId).orElseThrow(() -> new GroupNotFoundException(groupId));
+  }
+
+  public List<Group> getAllGroupsByAdminId(UUID adminId) {
+    return groupRepository.findAllByAdminId(adminId);
   }
 
   private Group buildGroup(String name, User admin) {

@@ -1,6 +1,7 @@
 package com.carpassionnetwork.integration;
 
-import static com.carpassionnetwork.helper.GroupTestHelper.createNewGroup;
+import static com.carpassionnetwork.helper.GroupTestHelper.createNewGroupOne;
+import static com.carpassionnetwork.helper.GroupTestHelper.createNewGroupTwo;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -9,24 +10,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.carpassionnetwork.exception.InvalidCredentialsException;
 import com.carpassionnetwork.model.Group;
+import com.carpassionnetwork.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.test.context.support.WithMockUser;
 
 public class GroupControllerIT extends BaseIT {
 
-  private Group group;
+  private Group groupOne;
+  private Group groupTwo;
 
   @BeforeEach
   void setUp() {
-    group = createNewGroup();
+    groupOne = createNewGroupOne();
+    groupTwo = createNewGroupTwo();
   }
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void createGroupShouldThrowInvalidCredentialsException() throws Exception {
     mockMvc
-        .perform(post("/group/" + group.getName()))
+        .perform(post("/group/" + groupOne.getName()))
         .andExpect(status().isBadRequest())
         .andExpect(
             result ->
@@ -39,20 +43,48 @@ public class GroupControllerIT extends BaseIT {
     register();
 
     mockMvc
-        .perform(post("/group/" + group.getName()))
+        .perform(post("/group/" + groupOne.getName()))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.name").value(group.getName()));
+        .andExpect(jsonPath("$.name").value(groupOne.getName()));
   }
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void getGroupShouldThrowGroupNotFoundException() throws Exception {
     register();
-    Group savedGroup = createGroup(group);
+    Group savedGroup = createGroup(groupOne);
 
     mockMvc
         .perform(get("/group/" + savedGroup.getId()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.name").value(savedGroup.getName()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void getAllGroupsByAdminIdShouldReturnEmptyArray() throws Exception {
+    User savedUser = createUser(currentUser);
+
+    mockMvc
+        .perform(get("/group/admin/" + savedUser.getId()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$.length()").value(0));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void getAllGroupsByAdminIdSuccessfully() throws Exception {
+    User savedUser = createUser(currentUser);
+    groupOne.setAdmin(savedUser);
+    groupTwo.setAdmin(savedUser);
+    createGroup(groupOne);
+    createGroup(groupTwo);
+
+    mockMvc
+        .perform(get("/group/admin/" + savedUser.getId()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$.length()").value(2));
   }
 }
