@@ -18,6 +18,8 @@ import { getFriends } from "../service/UserService";
 import FriendsHeader from "../pageUtils/friends/FriendsHeader";
 import groups from "../../images/groups.png";
 import Groups from "../group/Groups";
+import { getId } from "../service/TokenService";
+import { getGroupsByAdmin } from "../service/GroupService";
 
 export default function ProfilePage() {
   const { id } = useParams();
@@ -30,6 +32,7 @@ export default function ProfilePage() {
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [friends, setFriends] = useState([]);
   const [loadingFriends, setLoadingFriends] = useState(true);
+  const [userAdminGroups, setUserAdminGroups] = useState([]);
 
   const { posts, setPosts } = useContext(PostsContext);
 
@@ -69,11 +72,23 @@ export default function ProfilePage() {
     setLoadingFriends(false);
   };
 
+  const fetchAdminGroups = async () => {
+    const response = await getGroupsByAdmin(getId());
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const groupData = await response.json();
+    setUserAdminGroups(groupData);
+  };
+
   useEffect(() => {
     fetchUser();
     fetchPosts();
     togglePosts();
     fetchFriends();
+    fetchAdminGroups();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
@@ -158,7 +173,9 @@ export default function ProfilePage() {
         <FriendsHeader />
       )}
 
-      {viewGroups && <Groups userId={user.id} />}
+      {viewGroups && (
+        <Groups userId={user.id} userAdminGroups={userAdminGroups} />
+      )}
     </div>
   );
 }

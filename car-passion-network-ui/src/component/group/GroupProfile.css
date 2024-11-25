@@ -11,8 +11,17 @@
     padding-top: 70px;
 }
 
+.group-profile-profile-picture-container{
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 5px;
+    width: 80%;
+    height: 80%;
+    
+}
+
 .group-profile-name{
-    font-size: 30px;
+    font-size: 25px;
     font-weight: bold;
     width: 80%;
     text-align: center;

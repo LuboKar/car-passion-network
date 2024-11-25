@@ -32,4 +32,20 @@ const getGroup = async (id) => {
   }
 };
 
-export { createGroup, getGroup };
+const getGroupsByAdmin = async (id) => {
+  try {
+    const token = getToken();
+    const response = await fetch(`http://localhost:8080/group/admin/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+  }
+};
+
+export { createGroup, getGroup, getGroupsByAdmin };
