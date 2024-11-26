@@ -32,6 +32,10 @@ public class GroupService {
     return groupRepository.findAllByAdminId(adminId);
   }
 
+  public void deleteGroup(UUID groupId) {
+    groupRepository.deleteById(groupId);
+  }
+
   private Group buildGroup(String name, User admin) {
     return Group.builder()
         .name(name)

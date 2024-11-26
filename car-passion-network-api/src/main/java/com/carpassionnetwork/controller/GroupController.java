@@ -6,6 +6,7 @@ import com.carpassionnetwork.service.GroupService;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,5 +31,11 @@ public class GroupController {
   public ResponseEntity<List<GroupResponseDto>> getAllGroupsByAdminId(@PathVariable UUID id) {
     return ResponseEntity.ok(
         groupMapper.toGroupResponseList(groupService.getAllGroupsByAdminId(id)));
+  }
+
+  @DeleteMapping("/{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void deleteGroup(@PathVariable UUID id) {
+    groupService.deleteGroup(id);
   }
 }
