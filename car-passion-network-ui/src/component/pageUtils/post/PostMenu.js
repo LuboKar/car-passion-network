@@ -8,7 +8,7 @@ import { PostsContext } from "../../context/PostsProvider";
 import { deletePost } from "../../service/PostService";
 import useNavigation from "../../service/NavigateService";
 import { getId } from "../../service/TokenService";
-import PostMenuButton from "./PostMenuButton.js";
+import DropdownButton from "../../button/DropdownButton.js";
 
 export default function PostMenu({ post, index }) {
   const currentUserId = getId();
@@ -40,26 +40,26 @@ export default function PostMenu({ post, index }) {
 
       {clickedMenu === post.id && (
         <div className="post-menu-dropdown">
-          <PostMenuButton
+          <DropdownButton
             buttonIcon={open}
             buttonText="Open"
-            openPost={openPost}
+            buttonOnClick={openPost}
           />
 
           {currentUserId === post.author.id && (
-            <PostMenuButton
+            <DropdownButton
               buttonIcon={edit}
               buttonText="Edit"
-              openPost={() => toggleEditPost(post.id)}
+              buttonOnClick={() => toggleEditPost(post.id)}
             />
           )}
 
           {(currentUserId === post.author.id ||
             currentUserId === post.user.id) && (
-            <PostMenuButton
+            <DropdownButton
               buttonIcon={deleteIcon}
               buttonText="Delete"
-              openPost={() => deletePostById(index, post.id)}
+              buttonOnClick={() => deletePostById(index, post.id)}
             />
           )}
         </div>

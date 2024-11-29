@@ -174,7 +174,11 @@ export default function ProfilePage() {
       )}
 
       {viewGroups && (
-        <Groups userId={user.id} userAdminGroups={userAdminGroups} />
+        <Groups
+          userId={user.id}
+          userAdminGroups={userAdminGroups}
+          setUserAdminGroups={setUserAdminGroups}
+        />
       )}
     </div>
   );

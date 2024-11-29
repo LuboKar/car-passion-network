@@ -11,6 +11,7 @@ export default function GroupPage() {
   const { id } = useParams();
   const [viewPosts, setViewPosts] = useState(true);
   const [group, setGroup] = useState({});
+  const [loadingGroup, setLoadingGroup] = useState(true);
 
   const fetchGroup = async () => {
     const response = await getGroup(id);
@@ -21,6 +22,7 @@ export default function GroupPage() {
 
     const groupData = await response.json();
     setGroup(groupData);
+    setLoadingGroup(false);
   };
 
   useEffect(() => {
@@ -44,7 +46,13 @@ export default function GroupPage() {
       <VerticalNavbar topButtons={topButtons} />
       <RightVerticalNabvar />
 
-      <GroupProfile groupName={group.name} />
+      {!loadingGroup && (
+        <GroupProfile
+          groupId={group.id}
+          groupName={group.name}
+          adminId={group.admin.id}
+        />
+      )}
     </div>
   );
 }

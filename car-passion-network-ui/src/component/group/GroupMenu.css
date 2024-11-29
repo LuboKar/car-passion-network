@@ -1,0 +1,33 @@
+.group-menu-icon-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    width: 30px;
+    border-radius: 8px;
+}
+
+.group-menu-icon-container:hover{
+    cursor: pointer;
+    background-color: rgb(200,200,200);
+}
+
+.group-menu-icon{
+    height: 70%;
+    width: 20%;
+}
+
+.group-menu-dropdown-container{
+    position:absolute; 
+    z-index: 0; 
+    background-color: white; 
+    border: 2px solid #ccc; 
+    width: 230px;
+    height: 165px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    margin-bottom: 20%;
+    padding-bottom: 0.5%;
+    transform: translate(-227px ,0);
+}

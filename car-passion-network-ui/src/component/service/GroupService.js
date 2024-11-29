@@ -48,4 +48,20 @@ const getGroupsByAdmin = async (id) => {
   }
 };
 
-export { createGroup, getGroup, getGroupsByAdmin };
+const deleteGroup = async (id) => {
+  try {
+    const token = getToken();
+    const response = await fetch(`http://localhost:8080/group/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+  }
+};
+
+export { createGroup, getGroup, getGroupsByAdmin, deleteGroup };

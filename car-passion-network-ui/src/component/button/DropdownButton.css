@@ -1,4 +1,4 @@
-.post-menu-option{
+.dropdown-button-option{
     display: flex;
     align-items: center;
     margin-left: 10px;
@@ -7,21 +7,21 @@
     border-radius: 10px;
 }
 
-.post-menu-option:hover{
+.dropdown-button-option:hover{
     background-color: #f0f0f0;
     cursor: pointer;
 }
 
-.post-menu-option-icon{
+.dropdown-button-option-icon{
     width: 25px;
     padding: 10px 10px 10px 10px;
 }
 
-.post-menu-option-label{
+.dropdown-button-option-label{
     font-size: 20px;
     padding-bottom: 4px;
 }
 
-.post-menu-option-label:hover{
+.dropdown-button-option-label:hover{
     cursor: pointer;
 }

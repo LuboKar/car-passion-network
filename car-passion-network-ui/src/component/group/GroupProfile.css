@@ -3,30 +3,48 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-bottom: 1px solid black;
-    z-index: 0;
     margin-left: 25%;
     margin-right: 25%;
-    height: 330px;
-    padding-top: 70px;
+    padding-bottom: 10px;
 }
 
 .group-profile-profile-picture-container{
     border-radius: 12px;
     overflow: hidden;
     margin-bottom: 5px;
-    width: 80%;
-    height: 80%;
-    
+    width: 610px;
+    height: 300px;
+    flex-shrink: 0;
+    margin-top: 70px;
+}
+
+.group-profile-name-and-menu-container{
+    width: 770px;
+    display: flex;
+    flex-direction: row;
+    align-items:center;
+    justify-content: center;
+    text-align: left;
 }
 
 .group-profile-name{
     font-size: 25px;
     font-weight: bold;
-    width: 80%;
-    text-align: center;
+    width: 100%;
+    padding-left: 11%;
 }
 
 .group-profile-name:hover{
     cursor: text;
+}
+
+.group-profile-group-menu{
+    margin-right: 6%;
+
+}
+
+.group-profile-bottom-border{
+    border-top: 1px solid black;
+    width: 770px;
+    margin-top: 1%;
 }

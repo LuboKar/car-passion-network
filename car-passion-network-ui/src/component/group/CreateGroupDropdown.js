@@ -58,7 +58,7 @@ export default function CreateGroupDropdown({ setCreateGroupDropdown }) {
           placeholder="Group Name"
           type="text"
           name="groupName"
-          maxlength="49"
+          maxlength="51"
           value={groupName}
           onChange={handleInputChange}
         />
