@@ -23,7 +23,7 @@ public class PostTestHelper {
 
   public static PostCreateRequestDto createNewPostCreateRequest() {
     return PostCreateRequestDto.builder()
-        .ownerId(UUID.randomUUID())
+        .owner(UUID.randomUUID())
         .title("PostTitle")
         .content("PostContent")
         .build();

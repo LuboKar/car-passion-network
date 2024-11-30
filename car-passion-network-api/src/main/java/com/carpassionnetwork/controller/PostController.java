@@ -41,7 +41,9 @@ public class PostController {
       @RequestBody @Valid PostCreateRequestDto postCreateRequestDto) {
     Post post = postMapper.toPostEntity(postCreateRequestDto);
     return ResponseEntity.ok(
-        postMapper.toPostResponse(postService.createPost(post, postCreateRequestDto.getOwnerId())));
+        postMapper.toPostResponse(
+            postService.createPost(
+                post, postCreateRequestDto.getOwner(), postCreateRequestDto.getGroup())));
   }
 
   @PostMapping("/like/{id}")

@@ -14,10 +14,12 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PostCreateRequestDto {
   @NotNull(message = "Owner id must not be empty or null!")
-  private UUID ownerId;
+  private UUID owner;
 
   @NotBlank(message = "Title must not be empty or null!")
   private String title;
 
   private String content;
+
+  private UUID group;
 }

@@ -2,13 +2,16 @@ package com.carpassionnetwork.service;
 
 import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserOne;
 import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserTwo;
+import static com.carpassionnetwork.helper.GroupTestHelper.createNewGroupOne;
 import static com.carpassionnetwork.helper.PostTestHelper.createNewPost;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import com.carpassionnetwork.exception.GroupNotFoundException;
 import com.carpassionnetwork.exception.InvalidCredentialsException;
 import com.carpassionnetwork.exception.PostNotFoundException;
 import com.carpassionnetwork.exception.UserNotAuthorException;
+import com.carpassionnetwork.model.Group;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.PostRepository;
@@ -26,12 +29,14 @@ public class PostServiceTest {
 
   @Mock private UserService userService;
   @Mock private PostRepository postRepository;
+  @Mock private GroupService groupService;
 
   private static final String TITLE = "New title";
 
   private User currentUser;
   private User owner;
   private Post post;
+  private Group group;
 
   @BeforeEach
   void setUp() {
@@ -42,6 +47,7 @@ public class PostServiceTest {
     currentUser.setPosts(new ArrayList<>());
     post.setUser(owner);
     post.setAuthor(currentUser);
+    group = createNewGroupOne();
   }
 
   @Test
@@ -49,7 +55,7 @@ public class PostServiceTest {
     when(userService.getUser(owner.getId())).thenThrow(InvalidCredentialsException.class);
 
     assertThrows(
-        InvalidCredentialsException.class, () -> postService.createPost(post, owner.getId()));
+        InvalidCredentialsException.class, () -> postService.createPost(post, owner.getId(), null));
   }
 
   @Test
@@ -58,7 +64,18 @@ public class PostServiceTest {
     when(userService.getCurrentUser()).thenThrow(InvalidCredentialsException.class);
 
     assertThrows(
-        InvalidCredentialsException.class, () -> postService.createPost(post, owner.getId()));
+        InvalidCredentialsException.class, () -> postService.createPost(post, owner.getId(), null));
+  }
+
+  @Test
+  void createPostShouldThrowGroupNotFoundException() {
+    when(userService.getUser(owner.getId())).thenReturn(owner);
+    when(userService.getCurrentUser()).thenReturn(currentUser);
+    when(groupService.getGroup(group.getId())).thenThrow(GroupNotFoundException.class);
+
+    assertThrows(
+        GroupNotFoundException.class,
+        () -> postService.createPost(post, owner.getId(), group.getId()));
   }
 
   @Test
@@ -67,13 +84,33 @@ public class PostServiceTest {
     when(userService.getUser(owner.getId())).thenReturn(currentUser);
     when(postRepository.save(post)).thenReturn(post);
 
-    Post savedPost = postService.createPost(post, owner.getId());
+    Post savedPost = postService.createPost(post, owner.getId(), null);
 
     assertNotNull(savedPost);
     assertEquals(savedPost.getTitle(), "PostTitle");
     assertEquals(savedPost.getContent(), "PostContent");
     verify(userService, times(1)).getCurrentUser();
     verify(userService, times(1)).getUser(owner.getId());
+    verify(postRepository, times(1)).save(post);
+  }
+
+  @Test
+  void createGroupPostSuccessfully() {
+    when(userService.getCurrentUser()).thenReturn(currentUser);
+    when(userService.getUser(owner.getId())).thenReturn(currentUser);
+    post.setGroup(group);
+    when(postRepository.save(post)).thenReturn(post);
+    when(groupService.getGroup(group.getId())).thenReturn(group);
+
+    Post savedPost = postService.createPost(post, owner.getId(), group.getId());
+
+    assertNotNull(savedPost);
+    assertEquals(savedPost.getTitle(), "PostTitle");
+    assertEquals(savedPost.getContent(), "PostContent");
+    assertEquals(savedPost.getGroup(), group);
+    verify(userService, times(1)).getCurrentUser();
+    verify(userService, times(1)).getUser(owner.getId());
+    verify(groupService, times(1)).getGroup(group.getId());
     verify(postRepository, times(1)).save(post);
   }
 

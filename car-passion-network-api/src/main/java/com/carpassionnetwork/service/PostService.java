@@ -2,6 +2,7 @@ package com.carpassionnetwork.service;
 
 import com.carpassionnetwork.exception.PostNotFoundException;
 import com.carpassionnetwork.exception.UserNotAuthorException;
+import com.carpassionnetwork.model.Group;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.PostRepository;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class PostService {
   private final PostRepository postRepository;
   private final UserService userService;
+  private final GroupService groupService;
 
   public Post getPost(UUID id) {
     return postRepository.findById(id).orElseThrow(() -> new PostNotFoundException(id));
@@ -26,14 +28,16 @@ public class PostService {
     return postRepository.findAllByUserIdOrderByCreatedAtDesc(id);
   }
 
-  public Post createPost(Post post, UUID ownerId) {
+  public Post createPost(Post post, UUID ownerId, UUID groupId) {
     User owner = userService.getUser(ownerId);
     User author = userService.getCurrentUser();
+    Group group = groupId != null ? groupService.getGroup(groupId) : null;
 
     post.setUser(owner);
     post.setAuthor(author);
     post.setLikes(new HashSet<>());
     post.setComments(new ArrayList<>());
+    post.setGroup(group);
 
     return postRepository.save(post);
   }

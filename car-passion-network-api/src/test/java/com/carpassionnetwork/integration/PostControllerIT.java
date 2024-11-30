@@ -1,6 +1,7 @@
 package com.carpassionnetwork.integration;
 
 import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserTwo;
+import static com.carpassionnetwork.helper.GroupTestHelper.createNewGroupOne;
 import static com.carpassionnetwork.helper.PostTestHelper.*;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -9,10 +10,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.carpassionnetwork.dto.request.PostCreateRequestDto;
 import com.carpassionnetwork.dto.request.PostEditRequestDto;
-import com.carpassionnetwork.exception.InvalidCredentialsException;
-import com.carpassionnetwork.exception.PostNotFoundException;
-import com.carpassionnetwork.exception.UserNotAuthorException;
-import com.carpassionnetwork.exception.UserNotFoundException;
+import com.carpassionnetwork.exception.*;
+import com.carpassionnetwork.model.Group;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.PostRepository;
@@ -28,6 +27,7 @@ public class PostControllerIT extends BaseIT {
   private PostEditRequestDto postEditRequestDto;
   private Post post;
   private User owner;
+  private Group group;
   @Autowired private PostRepository postRepository;
 
   @BeforeEach
@@ -36,6 +36,7 @@ public class PostControllerIT extends BaseIT {
     post = createNewPost();
     owner = createUserTwo();
     postEditRequestDto = createNewPostEditRequest();
+    group = createNewGroupOne();
   }
 
   @Test
@@ -56,7 +57,7 @@ public class PostControllerIT extends BaseIT {
   void testCreatePostShouldThrowInvalidCredentialsExceptionWhenAuthorDoesNotExists()
       throws Exception {
     User savedOwner = createUser(owner);
-    postCreateRequestDto.setOwnerId(savedOwner.getId());
+    postCreateRequestDto.setOwner(savedOwner.getId());
 
     mockMvc
         .perform(
@@ -71,10 +72,49 @@ public class PostControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testCreatePostShouldThrowGroupNotFoundException() throws Exception {
+    register();
+    User savedOwner = createUser(owner);
+    postCreateRequestDto.setOwner(savedOwner.getId());
+    postCreateRequestDto.setGroup(group.getId());
+
+    mockMvc
+        .perform(
+            post("/post")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(postCreateRequestDto)))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(GroupNotFoundException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testCreatePostSuccessfully() throws Exception {
     User savedOwner = createUser(owner);
-    postCreateRequestDto.setOwnerId(savedOwner.getId());
+    postCreateRequestDto.setOwner(savedOwner.getId());
     register();
+
+    mockMvc
+        .perform(
+            post("/post")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(postCreateRequestDto)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.title").value(postCreateRequestDto.getTitle()))
+        .andExpect(jsonPath("$.content").value(postCreateRequestDto.getContent()))
+        .andExpect(jsonPath("$.currentUserLike").value(false));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testCreateGroupPostSuccessfully() throws Exception {
+    User savedCurrentUser = createUser(currentUser);
+    postCreateRequestDto.setOwner(savedCurrentUser.getId());
+    group.setAdmin(savedCurrentUser);
+    Group savedGroup = createGroup(group);
+    postCreateRequestDto.setGroup(savedGroup.getId());
 
     mockMvc
         .perform(
