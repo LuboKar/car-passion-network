@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 public interface PostRepository extends JpaRepository<Post, UUID> {
   List<Post> findAllByUserIdOrderByCreatedAtDesc(UUID userId);
 
+  List<Post> findAllByGroupIdOrderByCreatedAtDesc(UUID groupId);
+
   @Query("SELECT p FROM Post p WHERE p.user = p.author ORDER BY p.createdAt DESC")
   List<Post> findAllWhereUserIdEqualsAuthorIdOrderByCreatedAtDesc();
 }

@@ -170,6 +170,21 @@ public class PostServiceTest {
   }
 
   @Test
+  void getAllPostsByGroupIdSuccessfully() {
+    when(postRepository.findAllByGroupIdOrderByCreatedAtDesc(group.getId()))
+        .thenReturn(group.getPosts());
+    group.getPosts().add(post);
+    group.getPosts().add(post);
+
+    List<Post> responseList = postService.getAllPostsByGroupId(group.getId());
+
+    assertNotNull(responseList);
+    assertEquals(responseList.size(), 2);
+    assertEquals(responseList.get(0), responseList.get(1));
+    verify(postRepository, times(1)).findAllByGroupIdOrderByCreatedAtDesc(group.getId());
+  }
+
+  @Test
   void getPostShouldThrowPostNotFoundException() {
     when(postRepository.findById(post.getId())).thenThrow(PostNotFoundException.class);
 

@@ -28,6 +28,10 @@ public class PostService {
     return postRepository.findAllByUserIdOrderByCreatedAtDesc(id);
   }
 
+  public List<Post> getAllPostsByGroupId(UUID id) {
+    return postRepository.findAllByGroupIdOrderByCreatedAtDesc(id);
+  }
+
   public Post createPost(Post post, UUID ownerId, UUID groupId) {
     User owner = ownerId != null ? userService.getUser(ownerId) : null;
     User author = userService.getCurrentUser();

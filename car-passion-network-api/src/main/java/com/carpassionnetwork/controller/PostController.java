@@ -36,6 +36,11 @@ public class PostController {
     return ResponseEntity.ok(postMapper.toDtoList(postService.getAllPostsByUserId(id)));
   }
 
+  @GetMapping("/group/{id}")
+  public ResponseEntity<List<PostResponseDto>> getAllPostsByGroupId(@PathVariable UUID id) {
+    return ResponseEntity.ok(postMapper.toDtoList(postService.getAllPostsByGroupId(id)));
+  }
+
   @PostMapping
   public ResponseEntity<PostResponseDto> createPost(
       @RequestBody @Valid PostCreateRequestDto postCreateRequestDto) {

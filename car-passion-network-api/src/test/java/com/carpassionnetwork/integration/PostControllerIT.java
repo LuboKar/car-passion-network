@@ -197,6 +197,22 @@ public class PostControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void testGetAllPostsByGroupIdSuccessfully() throws Exception {
+    User savedUser = createUser(currentUser);
+    group.setAdmin(savedUser);
+    Group savedGroup = createGroup(group);
+    Post createdPost = createPost(post);
+    createdPost.setGroup(savedGroup);
+
+    mockMvc
+        .perform(get("/post/group/" + savedGroup.getId()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$[0].id").value(createdPost.getId().toString()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testGetPostShouldThrowPostNotFoundException() throws Exception {
     mockMvc
         .perform(get("/post/" + post.getId()))
