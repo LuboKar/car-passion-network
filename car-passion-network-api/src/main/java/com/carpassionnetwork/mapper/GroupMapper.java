@@ -17,7 +17,7 @@ public class GroupMapper {
     return modelMapper.map(group, GroupResponseDto.class);
   }
 
-  public List<GroupResponseDto> toGroupResponseList(List<Group> posts) {
-    return posts.stream().map(this::toGroupResponse).collect(Collectors.toList());
+  public List<GroupResponseDto> toGroupResponseList(List<Group> groups) {
+    return groups.stream().map(this::toGroupResponse).collect(Collectors.toList());
   }
 }

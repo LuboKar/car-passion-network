@@ -29,7 +29,7 @@ public class PostService {
   }
 
   public Post createPost(Post post, UUID ownerId, UUID groupId) {
-    User owner = userService.getUser(ownerId);
+    User owner = ownerId != null ? userService.getUser(ownerId) : null;
     User author = userService.getCurrentUser();
     Group group = groupId != null ? groupService.getGroup(groupId) : null;
 
