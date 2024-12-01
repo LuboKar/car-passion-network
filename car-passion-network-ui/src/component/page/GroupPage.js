@@ -6,6 +6,7 @@ import postIcon from "../../images/post.png";
 import GroupProfile from "../group/GroupProfile";
 import { getGroup } from "../service/GroupService";
 import { useParams } from "react-router-dom";
+import CreatePost from "../pageUtils/post/CreatePost";
 
 export default function GroupPage() {
   const { id } = useParams();
@@ -53,6 +54,8 @@ export default function GroupPage() {
           adminId={group.admin.id}
         />
       )}
+
+      {!loadingGroup && <CreatePost groupId={group.id} />}
     </div>
   );
 }

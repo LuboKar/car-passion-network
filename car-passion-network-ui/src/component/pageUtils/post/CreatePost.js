@@ -3,14 +3,15 @@ import "./CreatePost.css";
 import { createPost } from "../../service/PostService";
 import { PostsContext } from "../../context/PostsProvider";
 
-export default function CreatePost({ ownerId }) {
+export default function CreatePost({ ownerId, groupId }) {
   const [createNewPost, setCreateNewPost] = useState(false);
   const [createPostButton, setCreatePostButton] = useState(false);
 
   const [createPostValues, setCreatePostValues] = useState({
-    ownerId: ownerId,
+    owner: ownerId || null,
     title: "",
     content: "",
+    group: groupId || null,
   });
 
   const { addNewPost } = useContext(PostsContext);
@@ -25,7 +26,6 @@ export default function CreatePost({ ownerId }) {
     const { name, value } = event.target;
     setCreatePostValues((createPostValues) => ({
       ...createPostValues,
-      ownerId: ownerId,
       [name]: value,
     }));
   };
@@ -51,7 +51,6 @@ export default function CreatePost({ ownerId }) {
       setCreateNewPost(false);
       addNewPost(createdPost);
       setCreatePostValues({
-        ownerId: ownerId,
         title: "",
         content: "",
       });
@@ -59,6 +58,8 @@ export default function CreatePost({ ownerId }) {
       setCreatePostButton(true);
     }
   };
+
+  console.log(createPostValues);
 
   return (
     <div className="create-post-container">

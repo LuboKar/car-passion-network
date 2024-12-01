@@ -51,7 +51,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/group/:id",
-    element: <ProtectedRoute element={GroupPage} />,
+    element: (
+      <PostsProvider>
+        <ProtectedRoute element={GroupPage} />
+      </PostsProvider>
+    ),
   },
 ]);
 
