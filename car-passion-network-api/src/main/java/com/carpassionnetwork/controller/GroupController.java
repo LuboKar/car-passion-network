@@ -33,6 +33,11 @@ public class GroupController {
         groupMapper.toGroupResponseList(groupService.getAllGroupsByAdminId(id)));
   }
 
+  @GetMapping("/other/{id}")
+  public ResponseEntity<List<GroupResponseDto>> getAllOtherGroups(@PathVariable UUID id) {
+    return ResponseEntity.ok(groupMapper.toGroupResponseList(groupService.getAllOtherGroups(id)));
+  }
+
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteGroup(@PathVariable UUID id) {

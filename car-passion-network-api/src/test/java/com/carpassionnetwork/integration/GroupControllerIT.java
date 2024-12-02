@@ -1,5 +1,6 @@
 package com.carpassionnetwork.integration;
 
+import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserTwo;
 import static com.carpassionnetwork.helper.GroupTestHelper.createNewGroupOne;
 import static com.carpassionnetwork.helper.GroupTestHelper.createNewGroupTwo;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -19,11 +20,13 @@ public class GroupControllerIT extends BaseIT {
 
   private Group groupOne;
   private Group groupTwo;
+  private User user;
 
   @BeforeEach
   void setUp() {
     groupOne = createNewGroupOne();
     groupTwo = createNewGroupTwo();
+    user = createUserTwo();
   }
 
   @Test
@@ -83,6 +86,23 @@ public class GroupControllerIT extends BaseIT {
 
     mockMvc
         .perform(get("/group/admin/" + savedUser.getId()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$.length()").value(2));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void getAllOtherGroupsSuccessfully() throws Exception {
+    User savedCurrentUser = createUser(currentUser);
+    User savedUser = createUser(user);
+    groupOne.setAdmin(savedUser);
+    groupTwo.setAdmin(savedUser);
+    createGroup(groupOne);
+    createGroup(groupTwo);
+
+    mockMvc
+        .perform(get("/group/other/" + savedCurrentUser.getId()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$").isArray())
         .andExpect(jsonPath("$.length()").value(2));

@@ -84,4 +84,17 @@ public class GroupServiceTest {
     assertNotEquals(groups.get(0), groups.get(1));
     verify(groupRepository, times(1)).findAllByAdminId(currentUser.getId());
   }
+
+  @Test
+  void getALlGroupsGroupsSuccessfully() {
+    when(groupRepository.findAllOtherGroups(currentUser.getId()))
+        .thenReturn(List.of(groupOne, groupTwo));
+
+    List<Group> groups = groupService.getAllOtherGroups(currentUser.getId());
+
+    assertNotNull(groups);
+    assertEquals(groups.size(), 2);
+    assertNotEquals(groups.get(0), groups.get(1));
+    verify(groupRepository, times(1)).findAllOtherGroups(currentUser.getId());
+  }
 }

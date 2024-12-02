@@ -32,6 +32,10 @@ public class GroupService {
     return groupRepository.findAllByAdminId(adminId);
   }
 
+  public List<Group> getAllOtherGroups(UUID userId) {
+    return groupRepository.findAllOtherGroups(userId);
+  }
+
   public void deleteGroup(UUID groupId) {
     groupRepository.deleteById(groupId);
   }
