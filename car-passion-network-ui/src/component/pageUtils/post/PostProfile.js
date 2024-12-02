@@ -10,8 +10,8 @@ export default function PostProfile({ post }) {
     <div className="post-profile-container">
       <div className="post-profile-profile-picture-container">
         <ProfilePicture
-          profilePicture={post.user.profilePicture}
-          navigateToProfile={() => navigateToProfile(post.user.id)}
+          profilePicture={post.author.profilePicture}
+          navigateToProfile={() => navigateToProfile(post.author.id)}
         />
       </div>
 

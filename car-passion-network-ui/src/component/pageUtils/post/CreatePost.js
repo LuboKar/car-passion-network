@@ -59,8 +59,6 @@ export default function CreatePost({ ownerId, groupId }) {
     }
   };
 
-  console.log(createPostValues);
-
   return (
     <div className="create-post-container">
       <form

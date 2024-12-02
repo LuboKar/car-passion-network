@@ -17,6 +17,23 @@ const getPosts = async (id) => {
   }
 };
 
+const getGroupPosts = async (id) => {
+  try {
+    const token = getToken();
+    const response = await fetch(`http://localhost:8080/post/group/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+  }
+};
+
 const getAllPosts = async () => {
   try {
     const token = getToken();
@@ -128,4 +145,5 @@ export {
   getAllPosts,
   deletePost,
   editPost,
+  getGroupPosts,
 };
