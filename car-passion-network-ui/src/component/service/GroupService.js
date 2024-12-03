@@ -69,6 +69,22 @@ const getOtherGroups = async (id) => {
   }
 };
 
+const getParticipatingGroups = async (id) => {
+  try {
+    const token = getToken();
+    const response = await fetch(`http://localhost:8080/group/user/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+  }
+};
+
 const deleteGroup = async (id) => {
   try {
     const token = getToken();
@@ -111,4 +127,5 @@ export {
   deleteGroup,
   getOtherGroups,
   joinGroup,
+  getParticipatingGroups,
 };

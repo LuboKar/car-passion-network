@@ -21,6 +21,7 @@ import Groups from "../group/Groups";
 import { getId } from "../service/TokenService";
 import { getGroupsByAdmin } from "../service/GroupService";
 import { getOtherGroups } from "../service/GroupService";
+import { getParticipatingGroups } from "../service/GroupService";
 
 export default function ProfilePage() {
   const { id } = useParams();
@@ -34,6 +35,7 @@ export default function ProfilePage() {
   const [friends, setFriends] = useState([]);
   const [loadingFriends, setLoadingFriends] = useState(true);
   const [userAdminGroups, setUserAdminGroups] = useState([]);
+  const [participatingGroups, setParticipatingGroups] = useState([]);
   const [otherGroups, setOtherGroups] = useState([]);
 
   const { posts, setPosts } = useContext(PostsContext);
@@ -96,6 +98,17 @@ export default function ProfilePage() {
     setOtherGroups(groupData);
   };
 
+  const fetchParticipatingGroups = async () => {
+    const response = await getParticipatingGroups(id);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const groupData = await response.json();
+    setParticipatingGroups(groupData);
+  };
+
   useEffect(() => {
     fetchUser();
     fetchPosts();
@@ -103,6 +116,7 @@ export default function ProfilePage() {
     fetchFriends();
     fetchAdminGroups();
     fetchOtherGroups();
+    fetchParticipatingGroups();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
@@ -193,6 +207,7 @@ export default function ProfilePage() {
           userAdminGroups={userAdminGroups}
           setUserAdminGroups={setUserAdminGroups}
           otherGroups={otherGroups}
+          participatingGroups={participatingGroups}
         />
       )}
     </div>

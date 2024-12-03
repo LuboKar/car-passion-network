@@ -9,6 +9,7 @@ export default function Groups({
   userAdminGroups,
   setUserAdminGroups,
   otherGroups,
+  participatingGroups,
 }) {
   const currentUserId = getId();
 
@@ -20,6 +21,7 @@ export default function Groups({
         userAdminGroups={userAdminGroups}
         setUserAdminGroups={setUserAdminGroups}
         otherGroups={otherGroups}
+        participatingGroups={participatingGroups}
       />
     </div>
   );
