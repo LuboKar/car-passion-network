@@ -3,12 +3,17 @@ import { getToken } from "./TokenService";
 const createGroup = async (groupName) => {
   try {
     const token = getToken();
-    const response = await fetch("http://localhost:8080/group/" + groupName, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const encodedGroupName = encodeURIComponent(groupName);
+    const response = await fetch(
+      `http://localhost:8080/group/${encodedGroupName}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     return response;
   } catch (error) {
