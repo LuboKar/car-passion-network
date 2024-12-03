@@ -85,4 +85,30 @@ const deleteGroup = async (id) => {
   }
 };
 
-export { createGroup, getGroup, getGroupsByAdmin, deleteGroup, getOtherGroups };
+const joinGroup = async (groupId) => {
+  try {
+    const token = getToken();
+    const response = await fetch(
+      `http://localhost:8080/group/join/${groupId}`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Error sending data to backend:", error);
+  }
+};
+
+export {
+  createGroup,
+  getGroup,
+  getGroupsByAdmin,
+  deleteGroup,
+  getOtherGroups,
+  joinGroup,
+};

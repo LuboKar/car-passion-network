@@ -4,6 +4,7 @@ import GroupProfilePicture from "./GroupProfilePicture";
 import useNavigation from "../service/NavigateService";
 import GroupMenu from "./GroupMenu";
 import { deleteGroup } from "../service/GroupService";
+import { joinGroup } from "../service/GroupService";
 
 export default function Group({ group, setUserAdminGroups, index }) {
   const { navigateToGroupPage } = useNavigation();
@@ -19,6 +20,16 @@ export default function Group({ group, setUserAdminGroups, index }) {
       ...prevUserAdminGroups.slice(0, index),
       ...prevUserAdminGroups.slice(index + 1),
     ]);
+  };
+
+  const handleJoinGroup = async () => {
+    const response = await joinGroup(group.id);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    navigateToGroupPage(group.id);
   };
 
   return (
@@ -38,7 +49,11 @@ export default function Group({ group, setUserAdminGroups, index }) {
       </label>
 
       <div className="group-menu">
-        <GroupMenu adminId={group.admin.id} deleteGroupById={deleteGroupById} />
+        <GroupMenu
+          group={group}
+          deleteGroupById={deleteGroupById}
+          handleJoinGroup={handleJoinGroup}
+        />
       </div>
     </div>
   );

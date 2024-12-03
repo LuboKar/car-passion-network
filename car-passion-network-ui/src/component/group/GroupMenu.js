@@ -4,8 +4,9 @@ import "./GroupMenu.css";
 import DropdownButton from "../button/DropdownButton";
 import { getId } from "../service/TokenService";
 import deleteIcon from "../../images/delete.png";
+import joinIcon from "../../images/join.png";
 
-export default function GroupMenu({ adminId, deleteGroupById }) {
+export default function GroupMenu({ group, deleteGroupById, handleJoinGroup }) {
   const [groupMenuDropdown, setGroupMenuGropdown] = useState(false);
   const [currentUserId] = useState(getId());
 
@@ -29,11 +30,19 @@ export default function GroupMenu({ adminId, deleteGroupById }) {
 
       {groupMenuDropdown && (
         <div className="group-menu-dropdown-container">
-          {adminId === currentUserId && (
+          {group.admin.id === currentUserId && (
             <DropdownButton
               buttonIcon={deleteIcon}
               buttonText="Delete"
               buttonOnClick={handleDeleteGroup}
+            />
+          )}
+
+          {group.admin.id !== currentUserId && !group.currentUserMember && (
+            <DropdownButton
+              buttonIcon={joinIcon}
+              buttonText="Join"
+              buttonOnClick={handleJoinGroup}
             />
           )}
         </div>
