@@ -4,7 +4,12 @@ import CreateGroup from "./CreateGroup";
 import { getId } from "../service/TokenService";
 import ViewGroups from "./ViewGroups";
 
-export default function Group({ userId, userAdminGroups, setUserAdminGroups }) {
+export default function Groups({
+  userId,
+  userAdminGroups,
+  setUserAdminGroups,
+  otherGroups,
+}) {
   const currentUserId = getId();
 
   return (
@@ -14,6 +19,7 @@ export default function Group({ userId, userAdminGroups, setUserAdminGroups }) {
       <ViewGroups
         userAdminGroups={userAdminGroups}
         setUserAdminGroups={setUserAdminGroups}
+        otherGroups={otherGroups}
       />
     </div>
   );

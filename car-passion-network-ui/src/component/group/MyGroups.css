@@ -1,0 +1,24 @@
+.my-groups-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.my-groups-label{
+    font-size: 130%;
+    font-weight: bold;
+    color: rgb(90, 90, 90);
+    width: 100%;
+    text-align: center;
+}
+
+.my-groups-label:hover{
+    cursor: text;
+}
+
+.my-groups-border{
+    margin-top: 1%;
+    border-top: 1px solid black;
+    width: 125%;
+}

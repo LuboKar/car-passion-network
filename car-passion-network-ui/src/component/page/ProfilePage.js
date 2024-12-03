@@ -20,6 +20,7 @@ import groups from "../../images/groups.png";
 import Groups from "../group/Groups";
 import { getId } from "../service/TokenService";
 import { getGroupsByAdmin } from "../service/GroupService";
+import { getOtherGroups } from "../service/GroupService";
 
 export default function ProfilePage() {
   const { id } = useParams();
@@ -33,6 +34,7 @@ export default function ProfilePage() {
   const [friends, setFriends] = useState([]);
   const [loadingFriends, setLoadingFriends] = useState(true);
   const [userAdminGroups, setUserAdminGroups] = useState([]);
+  const [otherGroups, setOtherGroups] = useState([]);
 
   const { posts, setPosts } = useContext(PostsContext);
 
@@ -83,12 +85,24 @@ export default function ProfilePage() {
     setUserAdminGroups(groupData);
   };
 
+  const fetchOtherGroups = async () => {
+    const response = await getOtherGroups(id);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const groupData = await response.json();
+    setOtherGroups(groupData);
+  };
+
   useEffect(() => {
     fetchUser();
     fetchPosts();
     togglePosts();
     fetchFriends();
     fetchAdminGroups();
+    fetchOtherGroups();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
@@ -178,6 +192,7 @@ export default function ProfilePage() {
           userId={user.id}
           userAdminGroups={userAdminGroups}
           setUserAdminGroups={setUserAdminGroups}
+          otherGroups={otherGroups}
         />
       )}
     </div>

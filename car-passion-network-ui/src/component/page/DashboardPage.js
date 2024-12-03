@@ -11,12 +11,14 @@ import feedIcon from "../../images/feed.png";
 import groupIcon from "../../images/groups.png";
 import { getGroupsByAdmin } from "../service/GroupService.js";
 import Groups from "../group/Groups.js";
+import { getOtherGroups } from "../service/GroupService.js";
 
 export default function DashboardPage() {
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [viewFeed, setViewFeed] = useState(true);
   const [viewGroups, setViewGroups] = useState(false);
   const [userAdminGroups, setUserAdminGroups] = useState([]);
+  const [otherGroups, setOtherGroups] = useState([]);
   const currentUserId = getId();
 
   const { posts, setPosts } = useContext(PostsContext);
@@ -44,9 +46,21 @@ export default function DashboardPage() {
     setUserAdminGroups(groupData);
   };
 
+  const fetchOtherGroups = async () => {
+    const response = await getOtherGroups(currentUserId);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const groupData = await response.json();
+    setOtherGroups(groupData);
+  };
+
   useEffect(() => {
     fetchPosts();
     fetchAdminGroups();
+    fetchOtherGroups();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -100,6 +114,7 @@ export default function DashboardPage() {
             userId={currentUserId}
             userAdminGroups={userAdminGroups}
             setUserAdminGroups={setUserAdminGroups}
+            otherGroups={otherGroups}
           />
         </div>
       )}
