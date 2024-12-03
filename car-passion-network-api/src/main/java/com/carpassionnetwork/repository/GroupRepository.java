@@ -15,4 +15,6 @@ public interface GroupRepository extends JpaRepository<Group, UUID> {
   @Query(
       "SELECT g FROM Group g WHERE g.admin.id != :userId AND NOT EXISTS ( SELECT 1 FROM g.members m WHERE m.id = :userId)")
   List<Group> findAllOtherGroups(UUID userId);
+
+  List<Group> findByMembersId(UUID userId);
 }

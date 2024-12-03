@@ -124,6 +124,25 @@ public class GroupControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void getUserParticipatingGroupsSuccessfully() throws Exception {
+    User savedCurrentUser = createUser(currentUser);
+    User savedUser = createUser(user);
+    groupOne.setAdmin(savedUser);
+    groupTwo.setAdmin(savedUser);
+    groupOne.getMembers().add(savedCurrentUser);
+    groupTwo.getMembers().add(savedCurrentUser);
+    createGroup(groupOne);
+    createGroup(groupTwo);
+
+    mockMvc
+        .perform(get("/group/user/" + savedCurrentUser.getId()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$.length()").value(2));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void joinGroupShouldThrowInvalidCredentialsException() throws Exception {
     mockMvc
         .perform(post("/group/join/" + groupOne.getId()))

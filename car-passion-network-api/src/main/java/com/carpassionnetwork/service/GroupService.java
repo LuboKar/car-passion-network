@@ -45,6 +45,10 @@ public class GroupService {
     return groupRepository.save(group);
   }
 
+  public List<Group> getUserParticipatingGroups(UUID userId) {
+    return groupRepository.findByMembersId(userId);
+  }
+
   public void deleteGroup(UUID groupId) {
     groupRepository.deleteById(groupId);
   }

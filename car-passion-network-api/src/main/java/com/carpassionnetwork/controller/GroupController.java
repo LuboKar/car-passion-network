@@ -43,6 +43,12 @@ public class GroupController {
     return ResponseEntity.ok(groupMapper.toGroupResponse(groupService.joinGroup(id)));
   }
 
+  @GetMapping("/user/{id}")
+  public ResponseEntity<List<GroupResponseDto>> getUserParticipatingGroups(@PathVariable UUID id) {
+    return ResponseEntity.ok(
+        groupMapper.toGroupResponseList(groupService.getUserParticipatingGroups(id)));
+  }
+
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteGroup(@PathVariable UUID id) {

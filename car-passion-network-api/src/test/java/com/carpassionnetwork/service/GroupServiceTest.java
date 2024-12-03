@@ -99,6 +99,20 @@ public class GroupServiceTest {
   }
 
   @Test
+  void getUserParticipatingGroupsSuccessfully() {
+    when(groupRepository.findByMembersId(currentUser.getId()))
+            .thenReturn(List.of(groupOne, groupTwo));
+
+    List<Group> groups = groupService.getUserParticipatingGroups(currentUser.getId());
+
+    assertNotNull(groups);
+    assertEquals(groups.size(), 2);
+    assertNotEquals(groups.get(0), groups.get(1));
+    verify(groupRepository, times(1)).findByMembersId(currentUser.getId());
+  }
+
+
+  @Test
   void joinGroupShouldThrowInvalidCredentialsException() {
     when(userService.getCurrentUser()).thenThrow(InvalidCredentialsException.class);
 
