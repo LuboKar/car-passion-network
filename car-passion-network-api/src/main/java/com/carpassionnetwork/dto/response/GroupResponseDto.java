@@ -25,4 +25,6 @@ public class GroupResponseDto {
 
   private Set<UserResponseDto> members;
   private List<PostResponseDto> posts = new ArrayList<>();
+
+  private boolean isCurrentUserMember;
 }

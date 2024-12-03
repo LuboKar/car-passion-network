@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,10 +16,21 @@ public class GroupMapper {
   private final ModelMapper modelMapper;
 
   public GroupResponseDto toGroupResponse(Group group) {
-    return modelMapper.map(group, GroupResponseDto.class);
+    GroupResponseDto groupResponseDto = modelMapper.map(group, GroupResponseDto.class);
+
+    groupResponseDto.setCurrentUserMember(isCurrentUserMember(group));
+
+    return groupResponseDto;
   }
 
   public List<GroupResponseDto> toGroupResponseList(List<Group> groups) {
     return groups.stream().map(this::toGroupResponse).collect(Collectors.toList());
+  }
+
+  private boolean isCurrentUserMember(Group group) {
+    UserDetails currentUser =
+        (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+    return group.getMembers().contains(currentUser);
   }
 }
