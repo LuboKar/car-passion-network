@@ -67,13 +67,7 @@ export default function GroupPage() {
       <VerticalNavbar topButtons={topButtons} />
       <RightVerticalNabvar />
 
-      {!loadingGroup && (
-        <GroupProfile
-          groupId={group.id}
-          groupName={group.name}
-          adminId={group.admin.id}
-        />
-      )}
+      {!loadingGroup && <GroupProfile group={group} />}
 
       {!loadingGroup && !loadingPosts && <Posts groupId={group.id} />}
     </div>

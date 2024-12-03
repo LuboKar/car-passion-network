@@ -5,11 +5,11 @@ import GroupMenu from "./GroupMenu";
 import { deleteGroup } from "../service/GroupService";
 import useNavigation from "../service/NavigateService";
 
-export default function GroupProfile({ groupId, groupName, adminId }) {
+export default function GroupProfile({ group }) {
   const { navigateToDashboardPage } = useNavigation();
 
   const deleteGroupById = async () => {
-    const response = await deleteGroup(groupId);
+    const response = await deleteGroup(group.id);
 
     if (!response.ok) {
       throw new Error("Network response was not ok");
@@ -25,10 +25,10 @@ export default function GroupProfile({ groupId, groupName, adminId }) {
       </div>
 
       <div className="group-profile-name-and-menu-container">
-        <label className="group-profile-name">{groupName}</label>
+        <label className="group-profile-name">{group.name}</label>
 
         <div className="group-profile-group-menu">
-          <GroupMenu adminId={adminId} deleteGroupById={deleteGroupById} />
+          <GroupMenu group={group} deleteGroupById={deleteGroupById} />
         </div>
       </div>
 
