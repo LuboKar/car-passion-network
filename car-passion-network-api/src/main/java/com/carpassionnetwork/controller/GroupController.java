@@ -38,6 +38,11 @@ public class GroupController {
     return ResponseEntity.ok(groupMapper.toGroupResponseList(groupService.getAllOtherGroups(id)));
   }
 
+  @PostMapping("/join/{id}")
+  public ResponseEntity<GroupResponseDto> joinGroup(@PathVariable UUID id) {
+    return ResponseEntity.ok(groupMapper.toGroupResponse(groupService.joinGroup(id)));
+  }
+
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteGroup(@PathVariable UUID id) {

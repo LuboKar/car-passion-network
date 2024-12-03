@@ -36,6 +36,15 @@ public class GroupService {
     return groupRepository.findAllOtherGroups(userId);
   }
 
+  public Group joinGroup(UUID groupId) {
+    User currentUser = userService.getCurrentUser();
+    Group group = getGroup(groupId);
+
+    group.getMembers().add(currentUser);
+
+    return groupRepository.save(group);
+  }
+
   public void deleteGroup(UUID groupId) {
     groupRepository.deleteById(groupId);
   }

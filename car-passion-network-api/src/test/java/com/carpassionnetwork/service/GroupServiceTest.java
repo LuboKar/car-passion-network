@@ -97,4 +97,34 @@ public class GroupServiceTest {
     assertNotEquals(groups.get(0), groups.get(1));
     verify(groupRepository, times(1)).findAllOtherGroups(currentUser.getId());
   }
+
+  @Test
+  void joinGroupShouldThrowInvalidCredentialsException() {
+    when(userService.getCurrentUser()).thenThrow(InvalidCredentialsException.class);
+
+    assertThrows(InvalidCredentialsException.class, () -> groupService.joinGroup(groupOne.getId()));
+  }
+
+  @Test
+  void joinGroupShouldThrowGroupNotFoundException() {
+    when(userService.getCurrentUser()).thenReturn(currentUser);
+    when(groupRepository.findById(groupOne.getId())).thenThrow(GroupNotFoundException.class);
+
+    assertThrows(GroupNotFoundException.class, () -> groupService.joinGroup(groupOne.getId()));
+  }
+
+  @Test
+  void joinGroupSuccessfully() {
+    when(userService.getCurrentUser()).thenReturn(currentUser);
+    when(groupRepository.findById(groupOne.getId())).thenReturn(Optional.of(groupOne));
+    when(groupRepository.save(groupOne)).thenReturn(groupOne);
+
+    Group savedGroup = groupService.joinGroup(groupOne.getId());
+
+    assertNotNull(savedGroup);
+    assertEquals(savedGroup.getMembers().size(), 1);
+    assertTrue(savedGroup.getMembers().contains(currentUser));
+    verify(userService, times(1)).getCurrentUser();
+    verify(groupRepository, times(1)).save(groupOne);
+  }
 }

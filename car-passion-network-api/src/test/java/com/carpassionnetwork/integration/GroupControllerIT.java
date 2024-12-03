@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.carpassionnetwork.exception.GroupNotFoundException;
 import com.carpassionnetwork.exception.InvalidCredentialsException;
 import com.carpassionnetwork.model.Group;
 import com.carpassionnetwork.model.User;
@@ -54,6 +55,19 @@ public class GroupControllerIT extends BaseIT {
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void getGroupShouldThrowGroupNotFoundException() throws Exception {
+    register();
+
+    mockMvc
+        .perform(get("/group/" + groupOne.getId()))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(GroupNotFoundException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void getGroupSuccessfully() throws Exception {
     register();
     Group savedGroup = createGroup(groupOne);
 
@@ -106,5 +120,43 @@ public class GroupControllerIT extends BaseIT {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$").isArray())
         .andExpect(jsonPath("$.length()").value(2));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void joinGroupShouldThrowInvalidCredentialsException() throws Exception {
+    mockMvc
+        .perform(post("/group/join/" + groupOne.getId()))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void joinGroupShouldThrowGroupNotFoundException() throws Exception {
+    register();
+
+    mockMvc
+        .perform(post("/group/join/" + groupOne.getId()))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(GroupNotFoundException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void joinGroupSuccessfully() throws Exception {
+    User savedCurrentUser = createUser(currentUser);
+    groupOne.setAdmin(savedCurrentUser);
+    Group savedGroup = createGroup(groupOne);
+
+    mockMvc
+        .perform(post("/group/join/" + savedGroup.getId()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(savedGroup.getId().toString()))
+        .andExpect(jsonPath("$.members[0].id").value(savedCurrentUser.getId().toString()));
   }
 }
