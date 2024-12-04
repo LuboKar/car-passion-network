@@ -7,6 +7,7 @@ export default function MyGroups({
   userAdminGroups,
   setUserAdminGroups,
   participatingGroups,
+  setParticipatingGroups,
 }) {
   return (
     <div className="my-groups-container">
@@ -19,7 +20,10 @@ export default function MyGroups({
         setUserAdminGroups={setUserAdminGroups}
       />
 
-      <ParticipatingGroups participatingGroups={participatingGroups} />
+      <ParticipatingGroups
+        participatingGroups={participatingGroups}
+        setParticipatingGroups={setParticipatingGroups}
+      />
     </div>
   );
 }

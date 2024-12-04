@@ -5,9 +5,17 @@ import useNavigation from "../service/NavigateService";
 import GroupMenu from "./GroupMenu";
 import { deleteGroup } from "../service/GroupService";
 import { joinGroup } from "../service/GroupService";
+import { leaveGroup } from "../service/GroupService";
+import { getId } from "../service/TokenService";
 
-export default function Group({ group, setUserAdminGroups, index }) {
-  const { navigateToGroupPage } = useNavigation();
+export default function Group({
+  group,
+  setUserAdminGroups,
+  index,
+  setParticipatingGroups,
+}) {
+  const currentUserId = getId();
+  const { navigateToGroupPage, navigateToProfile } = useNavigation();
 
   const deleteGroupById = async () => {
     const response = await deleteGroup(group.id);
@@ -32,6 +40,19 @@ export default function Group({ group, setUserAdminGroups, index }) {
     navigateToGroupPage(group.id);
   };
 
+  const handleLeaveGroup = async () => {
+    const response = await leaveGroup(group.id);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    setParticipatingGroups((prevParticipatingGroups) => [
+      ...prevParticipatingGroups.slice(0, index),
+      ...prevParticipatingGroups.slice(index + 1),
+    ]);
+  };
+
   return (
     <div className="group-container">
       <div
@@ -53,6 +74,7 @@ export default function Group({ group, setUserAdminGroups, index }) {
           group={group}
           deleteGroupById={deleteGroupById}
           handleJoinGroup={handleJoinGroup}
+          handleLeaveGroup={handleLeaveGroup}
         />
       </div>
     </div>

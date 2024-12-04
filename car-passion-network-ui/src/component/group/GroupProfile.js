@@ -4,9 +4,12 @@ import GroupProfilePicture from "./GroupProfilePicture";
 import GroupMenu from "./GroupMenu";
 import { deleteGroup } from "../service/GroupService";
 import useNavigation from "../service/NavigateService";
+import { leaveGroup } from "../service/GroupService";
+import { getId } from "../service/TokenService";
 
 export default function GroupProfile({ group }) {
-  const { navigateToDashboardPage } = useNavigation();
+  const currentUserId = getId();
+  const { navigateToDashboardPage, navigateToProfile } = useNavigation();
 
   const deleteGroupById = async () => {
     const response = await deleteGroup(group.id);
@@ -16,6 +19,16 @@ export default function GroupProfile({ group }) {
     }
 
     navigateToDashboardPage();
+  };
+
+  const handleLeaveGroup = async () => {
+    const response = await leaveGroup(group.id);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    navigateToProfile(currentUserId);
   };
 
   return (
@@ -28,7 +41,11 @@ export default function GroupProfile({ group }) {
         <label className="group-profile-name">{group.name}</label>
 
         <div className="group-profile-group-menu">
-          <GroupMenu group={group} deleteGroupById={deleteGroupById} />
+          <GroupMenu
+            group={group}
+            deleteGroupById={deleteGroupById}
+            handleLeaveGroup={handleLeaveGroup}
+          />
         </div>
       </div>
 

@@ -8,6 +8,7 @@ export default function ViewGroups({
   setUserAdminGroups,
   otherGroups,
   participatingGroups,
+  setParticipatingGroups,
 }) {
   return (
     <div className="view-groups-container">
@@ -15,6 +16,7 @@ export default function ViewGroups({
         userAdminGroups={userAdminGroups}
         setUserAdminGroups={setUserAdminGroups}
         participatingGroups={participatingGroups}
+        setParticipatingGroups={setParticipatingGroups}
       />
 
       <OtherGroups otherGroups={otherGroups} />

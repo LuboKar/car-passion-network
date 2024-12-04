@@ -120,6 +120,25 @@ const joinGroup = async (groupId) => {
   }
 };
 
+const leaveGroup = async (groupId) => {
+  try {
+    const token = getToken();
+    const response = await fetch(
+      `http://localhost:8080/group/leave/${groupId}`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Error sending data to backend:", error);
+  }
+};
+
 export {
   createGroup,
   getGroup,
@@ -128,4 +147,5 @@ export {
   getOtherGroups,
   joinGroup,
   getParticipatingGroups,
+  leaveGroup,
 };

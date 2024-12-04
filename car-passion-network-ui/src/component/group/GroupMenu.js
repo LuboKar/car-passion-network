@@ -5,8 +5,14 @@ import DropdownButton from "../button/DropdownButton";
 import { getId } from "../service/TokenService";
 import deleteIcon from "../../images/delete.png";
 import joinIcon from "../../images/join.png";
+import leaveIcon from "../../images/logout.png";
 
-export default function GroupMenu({ group, deleteGroupById, handleJoinGroup }) {
+export default function GroupMenu({
+  group,
+  deleteGroupById,
+  handleJoinGroup,
+  handleLeaveGroup,
+}) {
   const [groupMenuDropdown, setGroupMenuGropdown] = useState(false);
   const [currentUserId] = useState(getId());
 
@@ -43,6 +49,14 @@ export default function GroupMenu({ group, deleteGroupById, handleJoinGroup }) {
               buttonIcon={joinIcon}
               buttonText="Join"
               buttonOnClick={handleJoinGroup}
+            />
+          )}
+
+          {group.currentUserMember && (
+            <DropdownButton
+              buttonIcon={leaveIcon}
+              buttonText="Leave"
+              buttonOnClick={handleLeaveGroup}
             />
           )}
         </div>

@@ -208,6 +208,7 @@ export default function ProfilePage() {
           setUserAdminGroups={setUserAdminGroups}
           otherGroups={otherGroups}
           participatingGroups={participatingGroups}
+          setParticipatingGroups={setParticipatingGroups}
         />
       )}
     </div>
