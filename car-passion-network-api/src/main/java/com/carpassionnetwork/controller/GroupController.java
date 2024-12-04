@@ -43,6 +43,11 @@ public class GroupController {
     return ResponseEntity.ok(groupMapper.toGroupResponse(groupService.joinGroup(id)));
   }
 
+  @PostMapping("/leave/{id}")
+  public ResponseEntity<GroupResponseDto> leaveGroup(@PathVariable UUID id) {
+    return ResponseEntity.ok(groupMapper.toGroupResponse(groupService.leaveGroup(id)));
+  }
+
   @GetMapping("/user/{id}")
   public ResponseEntity<List<GroupResponseDto>> getUserParticipatingGroups(@PathVariable UUID id) {
     return ResponseEntity.ok(

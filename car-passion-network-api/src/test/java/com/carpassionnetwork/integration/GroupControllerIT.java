@@ -178,4 +178,43 @@ public class GroupControllerIT extends BaseIT {
         .andExpect(jsonPath("$.id").value(savedGroup.getId().toString()))
         .andExpect(jsonPath("$.members[0].id").value(savedCurrentUser.getId().toString()));
   }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void leaveGroupShouldThrowInvalidCredentialsException() throws Exception {
+    mockMvc
+        .perform(post("/group/leave/" + groupOne.getId()))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void leaveGroupShouldThrowGroupNotFoundException() throws Exception {
+    register();
+
+    mockMvc
+        .perform(post("/group/leave/" + groupOne.getId()))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(GroupNotFoundException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void leaveGroupSuccessfully() throws Exception {
+    User savedCurrentUser = createUser(currentUser);
+    groupOne.setAdmin(savedCurrentUser);
+    groupOne.getMembers().add(savedCurrentUser);
+    Group savedGroup = createGroup(groupOne);
+
+    mockMvc
+        .perform(post("/group/leave/" + savedGroup.getId()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.members").isArray())
+        .andExpect(jsonPath("$.members").isEmpty());
+  }
 }

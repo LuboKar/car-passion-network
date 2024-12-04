@@ -45,6 +45,15 @@ public class GroupService {
     return groupRepository.save(group);
   }
 
+  public Group leaveGroup(UUID groupId) {
+    User currentUser = userService.getCurrentUser();
+    Group group = getGroup(groupId);
+
+    group.getMembers().remove(currentUser);
+
+    return groupRepository.save(group);
+  }
+
   public List<Group> getUserParticipatingGroups(UUID userId) {
     return groupRepository.findByMembersId(userId);
   }

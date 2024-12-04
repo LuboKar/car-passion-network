@@ -1,6 +1,7 @@
 package com.carpassionnetwork.service;
 
 import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserOne;
+import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserTwo;
 import static com.carpassionnetwork.helper.GroupTestHelper.createNewGroupOne;
 import static com.carpassionnetwork.helper.GroupTestHelper.createNewGroupTwo;
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,12 +31,14 @@ public class GroupServiceTest {
   private Group groupOne;
   private Group groupTwo;
   private User currentUser;
+  private User secondUser;
 
   @BeforeEach
   void setUp() {
     groupOne = createNewGroupOne();
     groupTwo = createNewGroupTwo();
     currentUser = createUserOne();
+    secondUser = createUserTwo();
   }
 
   @Test
@@ -101,7 +104,7 @@ public class GroupServiceTest {
   @Test
   void getUserParticipatingGroupsSuccessfully() {
     when(groupRepository.findByMembersId(currentUser.getId()))
-            .thenReturn(List.of(groupOne, groupTwo));
+        .thenReturn(List.of(groupOne, groupTwo));
 
     List<Group> groups = groupService.getUserParticipatingGroups(currentUser.getId());
 
@@ -110,7 +113,6 @@ public class GroupServiceTest {
     assertNotEquals(groups.get(0), groups.get(1));
     verify(groupRepository, times(1)).findByMembersId(currentUser.getId());
   }
-
 
   @Test
   void joinGroupShouldThrowInvalidCredentialsException() {
@@ -138,6 +140,39 @@ public class GroupServiceTest {
     assertNotNull(savedGroup);
     assertEquals(savedGroup.getMembers().size(), 1);
     assertTrue(savedGroup.getMembers().contains(currentUser));
+    verify(userService, times(1)).getCurrentUser();
+    verify(groupRepository, times(1)).save(groupOne);
+  }
+
+  @Test
+  void leaveGroupShouldThrowInvalidCredentialsException() {
+    when(userService.getCurrentUser()).thenThrow(InvalidCredentialsException.class);
+
+    assertThrows(
+        InvalidCredentialsException.class, () -> groupService.leaveGroup(groupOne.getId()));
+  }
+
+  @Test
+  void leaveGroupShouldThrowGroupNotFoundException() {
+    when(userService.getCurrentUser()).thenReturn(currentUser);
+    when(groupRepository.findById(groupOne.getId())).thenThrow(GroupNotFoundException.class);
+
+    assertThrows(GroupNotFoundException.class, () -> groupService.leaveGroup(groupOne.getId()));
+  }
+
+  @Test
+  void leaveGroupSuccessfully() {
+    when(userService.getCurrentUser()).thenReturn(currentUser);
+    groupOne.getMembers().add(currentUser);
+    groupOne.getMembers().add(secondUser);
+    when(groupRepository.findById(groupOne.getId())).thenReturn(Optional.of(groupOne));
+    when(groupRepository.save(groupOne)).thenReturn(groupOne);
+
+    Group savedGroup = groupService.leaveGroup(groupOne.getId());
+
+    assertNotNull(savedGroup);
+    assertEquals(savedGroup.getMembers().size(), 1);
+    assertFalse(savedGroup.getMembers().contains(currentUser));
     verify(userService, times(1)).getCurrentUser();
     verify(groupRepository, times(1)).save(groupOne);
   }
