@@ -1,0 +1,45 @@
+.group-members-container{
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-top: 2%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.groups-members-admin-label{
+    font-size: 130%;
+    font-weight: bold;
+    color: rgb(90, 90, 90);
+    width: 100%;
+    text-align: center;
+}
+
+.groups-members-admin-label:hover{
+    cursor: text;
+}
+
+.groups-members-admin-border{
+    width: 100%;
+    border-bottom: 1px solid black;
+    margin-bottom: 5%;
+}
+
+.groups-members-members-label{
+    font-size: 130%;
+    font-weight: bold;
+    color: rgb(90, 90, 90);
+    width: 100%;
+    text-align: center;
+}
+
+.groups-members-members-label:hover{
+    cursor: text;
+}
+
+.groups-members-members-border{
+    width: 100%;
+    border-bottom: 1px solid black;
+    margin-bottom: 5%;
+}

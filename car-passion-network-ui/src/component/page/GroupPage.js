@@ -9,6 +9,8 @@ import { useParams } from "react-router-dom";
 import { getGroupPosts } from "../service/PostService";
 import { PostsContext } from "../context/PostsProvider";
 import Posts from "../pageUtils/post/Posts";
+import membersIcon from "../../images/friendIcon.png";
+import GroupMembers from "../group/GroupMembers";
 
 export default function GroupPage() {
   const { id } = useParams();
@@ -16,6 +18,7 @@ export default function GroupPage() {
   const [group, setGroup] = useState({});
   const [loadingGroup, setLoadingGroup] = useState(true);
   const [loadingPosts, setLoadingPosts] = useState(true);
+  const [viewMembers, setViewMembers] = useState(false);
 
   const { posts, setPosts } = useContext(PostsContext);
 
@@ -49,16 +52,36 @@ export default function GroupPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
+  const disbleAllButtons = () => {
+    setViewPosts(false);
+    setViewMembers(false);
+  };
+
+  const togglePosts = () => {
+    disbleAllButtons();
+    setViewPosts(true);
+  };
+
+  const toggleMembers = () => {
+    disbleAllButtons();
+    setViewMembers(true);
+  };
+
   const topButtons = [
     {
       label: "Posts",
       icon: postIcon,
-      //   onClick: togglePosts,
+      onClick: togglePosts,
       isVisible: viewPosts,
     },
-  ];
 
-  console.log(posts);
+    {
+      label: "Members",
+      icon: membersIcon,
+      onClick: toggleMembers,
+      isVisible: viewMembers,
+    },
+  ];
 
   return (
     <div className="group-page-container">
@@ -69,7 +92,11 @@ export default function GroupPage() {
 
       {!loadingGroup && <GroupProfile group={group} />}
 
-      {!loadingGroup && !loadingPosts && <Posts groupId={group.id} />}
+      {!loadingGroup && !loadingPosts && viewPosts && (
+        <Posts groupId={group.id} />
+      )}
+
+      {viewMembers && <GroupMembers group={group} />}
     </div>
   );
 }

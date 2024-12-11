@@ -1,0 +1,33 @@
+.group-member-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #e0e0e0;
+    border-radius: 15px;
+    margin-bottom: 5%;
+    width: 100%;
+    text-wrap: wrap;
+}
+
+.group-member-profile-picture-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+    width: 100px;
+    height: 100px;
+    margin: 3% 3% 3% 3%;
+    border-radius: 36px;
+    background-color: gray;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.group-member-name-label{
+    font-size: 20px;
+    width: max-content;
+}
+
+.group-member-name-label:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
