@@ -59,4 +59,11 @@ public class GroupController {
   public void deleteGroup(@PathVariable UUID id) {
     groupService.deleteGroup(id);
   }
+
+  @PostMapping("/remove/{groupId}/{userId}")
+  public ResponseEntity<GroupResponseDto> removeMember(
+      @PathVariable UUID groupId, @PathVariable UUID userId) {
+    return ResponseEntity.ok(
+        groupMapper.toGroupResponse(groupService.removeMember(groupId, userId)));
+  }
 }

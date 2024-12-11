@@ -62,6 +62,15 @@ public class GroupService {
     groupRepository.deleteById(groupId);
   }
 
+  public Group removeMember(UUID groupId, UUID memberId) {
+    Group group = getGroup(groupId);
+    User member = userService.getUser(memberId);
+
+    group.getMembers().remove(member);
+
+    return groupRepository.save(group);
+  }
+
   private Group buildGroup(String name, User admin) {
     return Group.builder()
         .name(name)

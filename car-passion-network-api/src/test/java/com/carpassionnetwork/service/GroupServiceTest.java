@@ -9,6 +9,7 @@ import static org.mockito.Mockito.*;
 
 import com.carpassionnetwork.exception.GroupNotFoundException;
 import com.carpassionnetwork.exception.InvalidCredentialsException;
+import com.carpassionnetwork.exception.UserNotFoundException;
 import com.carpassionnetwork.model.Group;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.GroupRepository;
@@ -174,6 +175,41 @@ public class GroupServiceTest {
     assertEquals(savedGroup.getMembers().size(), 1);
     assertFalse(savedGroup.getMembers().contains(currentUser));
     verify(userService, times(1)).getCurrentUser();
+    verify(groupRepository, times(1)).save(groupOne);
+  }
+
+  @Test
+  void removeMemberShouldThrowGroupNotFoundException() {
+    when(groupRepository.findById(groupOne.getId())).thenThrow(GroupNotFoundException.class);
+
+    assertThrows(
+        GroupNotFoundException.class,
+        () -> groupService.removeMember(groupOne.getId(), secondUser.getId()));
+  }
+
+  @Test
+  void removeMemberShouldThrowUserNotFoundException() {
+    when(groupRepository.findById(groupOne.getId())).thenReturn(Optional.of(groupOne));
+    when(userService.getUser(secondUser.getId())).thenThrow(UserNotFoundException.class);
+
+    assertThrows(
+        UserNotFoundException.class,
+        () -> groupService.removeMember(groupOne.getId(), secondUser.getId()));
+  }
+
+  @Test
+  void removeMemberSuccessfully() {
+    when(groupRepository.findById(groupOne.getId())).thenReturn(Optional.of(groupOne));
+    when(userService.getUser(secondUser.getId())).thenReturn(secondUser);
+    when(groupRepository.save(groupOne)).thenReturn(groupOne);
+    groupOne.getMembers().add(secondUser);
+
+    Group savedGroup = groupService.removeMember(groupOne.getId(), secondUser.getId());
+
+    assertNotNull(savedGroup);
+    assertEquals(savedGroup.getMembers().size(), 0);
+    verify(groupRepository, times(1)).findById(groupOne.getId());
+    verify(userService, times(1)).getUser(secondUser.getId());
     verify(groupRepository, times(1)).save(groupOne);
   }
 }

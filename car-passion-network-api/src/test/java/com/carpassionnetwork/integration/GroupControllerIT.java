@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.carpassionnetwork.exception.GroupNotFoundException;
 import com.carpassionnetwork.exception.InvalidCredentialsException;
+import com.carpassionnetwork.exception.UserNotFoundException;
 import com.carpassionnetwork.model.Group;
 import com.carpassionnetwork.model.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -216,5 +217,43 @@ public class GroupControllerIT extends BaseIT {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.members").isArray())
         .andExpect(jsonPath("$.members").isEmpty());
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void removeMemberShouldThrowGroupNotFoundException() throws Exception {
+    mockMvc
+        .perform(post("/group/remove/" + groupOne.getId() + "/" + user.getId()))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(GroupNotFoundException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void removeMemberShouldThrowUserNotFoundException() throws Exception {
+    Group savedGroup = createGroup(groupOne);
+
+    mockMvc
+        .perform(post("/group/remove/" + savedGroup.getId() + "/" + user.getId()))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result -> assertInstanceOf(UserNotFoundException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void removeMemberSuccessfully() throws Exception {
+    User savedUser = createUser(user);
+    groupOne.getMembers().add(savedUser);
+    Group savedGroup = createGroup(groupOne);
+
+    mockMvc
+        .perform(post("/group/remove/" + savedGroup.getId() + "/" + savedUser.getId()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.members").isArray())
+        .andExpect(jsonPath("$.members").isEmpty());
+    ;
   }
 }
