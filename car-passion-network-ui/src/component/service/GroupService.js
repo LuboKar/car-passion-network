@@ -139,6 +139,25 @@ const leaveGroup = async (groupId) => {
   }
 };
 
+const removeMember = async (groupId, memberId) => {
+  try {
+    const token = getToken();
+    const response = await fetch(
+      `http://localhost:8080/group/remove/${groupId}/${memberId}`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Error sending data to backend:", error);
+  }
+};
+
 export {
   createGroup,
   getGroup,
@@ -148,4 +167,5 @@ export {
   joinGroup,
   getParticipatingGroups,
   leaveGroup,
+  removeMember,
 };

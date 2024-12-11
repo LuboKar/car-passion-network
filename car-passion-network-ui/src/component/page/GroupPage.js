@@ -96,7 +96,7 @@ export default function GroupPage() {
         <Posts groupId={group.id} />
       )}
 
-      {viewMembers && <GroupMembers group={group} />}
+      {viewMembers && <GroupMembers group={group} setGroup={setGroup} />}
     </div>
   );
 }

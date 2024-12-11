@@ -2,9 +2,18 @@ import React from "react";
 import "./GroupMember.css";
 import ProfilePicture from "../pageUtils/user/ProfilePicture";
 import useNavigation from "../service/NavigateService";
+import RemoveGroupMember from "./RemoveGroupMember";
+import { getId } from "../service/TokenService";
 
-export default function GroupMember({ member }) {
+export default function GroupMember({
+  member,
+  index,
+  adminId,
+  toggleRemoveMember,
+}) {
   const { navigateToProfile } = useNavigation();
+  const currentUserId = getId();
+
   return (
     <div className="group-member-container">
       <div className="group-member-profile-picture-container">
@@ -20,6 +29,14 @@ export default function GroupMember({ member }) {
       >
         {member.firstName} {member.lastName}
       </label>
+
+      {currentUserId === adminId && (
+        <RemoveGroupMember
+          member={member}
+          index={index}
+          toggleRemoveMember={toggleRemoveMember}
+        />
+      )}
     </div>
   );
 }
