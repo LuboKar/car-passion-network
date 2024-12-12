@@ -1,17 +1,26 @@
 package com.carpassionnetwork.service;
 
 import com.carpassionnetwork.exception.AlreadyUsedGroupNameException;
+import com.carpassionnetwork.exception.FileNotUploadedException;
+import com.carpassionnetwork.exception.FolderNotCreatedException;
 import com.carpassionnetwork.exception.GroupNotFoundException;
 import com.carpassionnetwork.model.Group;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.GroupRepository;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
 public class GroupService {
+  private static final String PARENT_DIRECTORY = "GroupPictures";
+  private static final String FILE_NAME = "group picture";
   private final GroupRepository groupRepository;
   private final UserService userService;
 
@@ -21,7 +30,11 @@ public class GroupService {
     User currentUser = userService.getCurrentUser();
     Group group = buildGroup(groupName, currentUser);
 
-    return groupRepository.save(group);
+    Group savedGroup = groupRepository.save(group);
+
+    createDirectory(savedGroup.getId());
+
+    return savedGroup;
   }
 
   public Group getGroup(UUID groupId) {
@@ -71,6 +84,17 @@ public class GroupService {
     return groupRepository.save(group);
   }
 
+  public Group uploadGroupPicture(MultipartFile file, UUID groupId) {
+    verifyFile(file);
+
+    Group group = getGroup(groupId);
+    Path targetPath = buildTargetPath(file, groupId);
+
+    createFile(file, targetPath);
+
+    return saveGroupPicture(group, targetPath);
+  }
+
   private Group buildGroup(String name, User admin) {
     return Group.builder()
         .name(name)
@@ -83,5 +107,53 @@ public class GroupService {
   private void validateGroupName(String groupName) {
     Optional<Group> savedGroup = groupRepository.findByName(groupName);
     if (savedGroup.isPresent()) throw new AlreadyUsedGroupNameException();
+  }
+
+  private void verifyFile(MultipartFile file) {
+    if (file == null
+        || file.isEmpty()
+        || file.getOriginalFilename() == null
+        || file.getOriginalFilename().isEmpty()) {
+      throw new FileNotUploadedException();
+    }
+  }
+
+  private Path buildTargetPath(MultipartFile file, UUID groupId) {
+    String fileExtension = getFileExtension(file);
+
+    Path targetDir = Paths.get(PARENT_DIRECTORY, groupId.toString());
+
+    return targetDir.resolve(FILE_NAME + fileExtension);
+  }
+
+  private String getFileExtension(MultipartFile file) {
+    String originalFilename = file.getOriginalFilename();
+
+    return originalFilename.substring(originalFilename.lastIndexOf("."));
+  }
+
+  private void createFile(MultipartFile file, Path targetPath) {
+    try {
+      Files.write(targetPath, file.getBytes());
+    } catch (IOException e) {
+      throw new FileNotUploadedException();
+    }
+  }
+
+  private void createDirectory(UUID groupId) {
+    Path path = Paths.get(PARENT_DIRECTORY, groupId.toString());
+
+    try {
+      if (Files.notExists(path)) {
+        Files.createDirectory(path);
+      }
+    } catch (IOException e) {
+      throw new FolderNotCreatedException();
+    }
+  }
+
+  private Group saveGroupPicture(Group group, Path targetPath) {
+    group.setGroupPicture(targetPath.toString());
+    return groupRepository.save(group);
   }
 }

@@ -7,12 +7,17 @@ import static com.carpassionnetwork.helper.GroupTestHelper.createNewGroupTwo;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import com.carpassionnetwork.exception.FileNotUploadedException;
 import com.carpassionnetwork.exception.GroupNotFoundException;
 import com.carpassionnetwork.exception.InvalidCredentialsException;
 import com.carpassionnetwork.exception.UserNotFoundException;
 import com.carpassionnetwork.model.Group;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.GroupRepository;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +26,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.multipart.MultipartFile;
 
 @ExtendWith(MockitoExtension.class)
 public class GroupServiceTest {
@@ -28,6 +34,7 @@ public class GroupServiceTest {
 
   @Mock private UserService userService;
   @Mock private GroupRepository groupRepository;
+  @Mock private MultipartFile file;
 
   private Group groupOne;
   private Group groupTwo;
@@ -53,6 +60,7 @@ public class GroupServiceTest {
   @Test
   void createGroupSuccessfully() {
     when(userService.getCurrentUser()).thenReturn(currentUser);
+    when(groupRepository.save(any(Group.class))).thenReturn(groupOne);
 
     groupService.createGroup(groupOne.getName());
 
@@ -210,6 +218,70 @@ public class GroupServiceTest {
     assertEquals(savedGroup.getMembers().size(), 0);
     verify(groupRepository, times(1)).findById(groupOne.getId());
     verify(userService, times(1)).getUser(secondUser.getId());
+    verify(groupRepository, times(1)).save(groupOne);
+  }
+
+  @Test
+  void uploadGroupPictureShouldThrowFileNotUploadedExceptionWhenFileIsNull() {
+    assertThrows(
+        FileNotUploadedException.class,
+        () -> groupService.uploadGroupPicture(null, groupOne.getId()));
+  }
+
+  @Test
+  void uploadGroupPictureShouldThrowFileNotUploadedExceptionWhenFileIsEmpty() {
+    when(file.isEmpty()).thenReturn(true);
+
+    assertThrows(
+        FileNotUploadedException.class,
+        () -> groupService.uploadGroupPicture(file, groupOne.getId()));
+  }
+
+  @Test
+  void uploadGroupPictureShouldThrowFileNotUploadedExceptionWhenFileNameIsNull() {
+    when(file.getOriginalFilename()).thenReturn(null);
+
+    assertThrows(
+        FileNotUploadedException.class,
+        () -> groupService.uploadGroupPicture(file, groupOne.getId()));
+  }
+
+  @Test
+  void uploadGroupPictureShouldThrowFileNotUploadedExceptionWhenFileNameIsEmpty() {
+    when(file.getOriginalFilename()).thenReturn("");
+
+    assertThrows(
+        FileNotUploadedException.class,
+        () -> groupService.uploadGroupPicture(file, groupOne.getId()));
+  }
+
+  @Test
+  void uploadGroupPictureShouldThrowGroupNotFoundException() throws IOException {
+    String fileName = "test.png";
+    when(file.isEmpty()).thenReturn(false);
+    when(file.getOriginalFilename()).thenReturn(fileName);
+
+    assertThrows(
+        GroupNotFoundException.class,
+        () -> groupService.uploadGroupPicture(file, groupOne.getId()));
+  }
+
+  @Test
+  void uploadGroupPictureSuccessfully() throws IOException {
+    Path path = Paths.get("GroupPictures", groupOne.getId().toString());
+    Files.createDirectory(path);
+    String fileName = "test.png";
+    byte[] fileContent = "file content".getBytes();
+    when(groupRepository.findById(groupOne.getId())).thenReturn(Optional.of(groupOne));
+    when(file.isEmpty()).thenReturn(false);
+    when(file.getOriginalFilename()).thenReturn(fileName);
+    when(file.getBytes()).thenReturn(fileContent);
+    when(groupRepository.save(groupOne)).thenReturn(groupOne);
+
+    Group savedGroup = groupService.uploadGroupPicture(file, groupOne.getId());
+
+    assertNotNull(savedGroup);
+    verify(groupRepository, times(1)).findById(groupOne.getId());
     verify(groupRepository, times(1)).save(groupOne);
   }
 }

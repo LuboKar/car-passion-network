@@ -20,6 +20,8 @@ public class GroupResponseDto {
   private String name;
   private UserResponseDto admin;
 
+  private String groupPicture;
+
   @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
   private LocalDateTime createdAt;
 

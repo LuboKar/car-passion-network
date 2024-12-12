@@ -4,18 +4,23 @@ import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserTw
 import static com.carpassionnetwork.helper.GroupTestHelper.createNewGroupOne;
 import static com.carpassionnetwork.helper.GroupTestHelper.createNewGroupTwo;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.carpassionnetwork.exception.FileNotUploadedException;
 import com.carpassionnetwork.exception.GroupNotFoundException;
 import com.carpassionnetwork.exception.InvalidCredentialsException;
 import com.carpassionnetwork.exception.UserNotFoundException;
 import com.carpassionnetwork.model.Group;
 import com.carpassionnetwork.model.User;
+import com.carpassionnetwork.service.GroupService;
+import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 
 public class GroupControllerIT extends BaseIT {
@@ -23,9 +28,10 @@ public class GroupControllerIT extends BaseIT {
   private Group groupOne;
   private Group groupTwo;
   private User user;
+  @Autowired private GroupService groupService;
 
   @BeforeEach
-  void setUp() {
+  void setUp() throws IOException {
     groupOne = createNewGroupOne();
     groupTwo = createNewGroupTwo();
     user = createUserTwo();
@@ -254,6 +260,148 @@ public class GroupControllerIT extends BaseIT {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.members").isArray())
         .andExpect(jsonPath("$.members").isEmpty());
-    ;
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void uploadGroupPictureShouldThrowFileNotUploadedExceptionWhenFileIsFileIsEmpty()
+      throws Exception {
+    register();
+    MockMultipartFile file =
+        new MockMultipartFile(
+            "file", "groupPicture.png", MediaType.IMAGE_JPEG_VALUE, "".getBytes());
+
+    mockMvc
+        .perform(
+            multipart("/group/upload/" + groupOne.getId())
+                .file(file)
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .with(
+                    request -> {
+                      request.setMethod("PUT");
+                      return request;
+                    }))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(FileNotUploadedException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void uploadGroupPictureShouldThrowFileNotUploadedExceptionWhenFileNameIsNull() throws Exception {
+    register();
+    MockMultipartFile file =
+        new MockMultipartFile("file", null, MediaType.IMAGE_JPEG_VALUE, "file content".getBytes());
+
+    mockMvc
+        .perform(
+            multipart("/group/upload/" + groupOne.getId())
+                .file(file)
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .with(
+                    request -> {
+                      request.setMethod("PUT");
+                      return request;
+                    }))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(FileNotUploadedException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void uploadGroupPictureShouldThrowFileNotUploadedExceptionWhenFileNameIsEmpty() throws Exception {
+    register();
+    MockMultipartFile file =
+        new MockMultipartFile("file", "", MediaType.IMAGE_JPEG_VALUE, "file content".getBytes());
+
+    mockMvc
+        .perform(
+            multipart("/group/upload/" + groupOne.getId())
+                .file(file)
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .with(
+                    request -> {
+                      request.setMethod("PUT");
+                      return request;
+                    }))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(FileNotUploadedException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "user", roles = "USER")
+  void uploadGroupPictureShouldThrowGroupNotFoundException() throws Exception {
+    register();
+    MockMultipartFile file =
+        new MockMultipartFile(
+            "file", "groupPicture.png", MediaType.IMAGE_JPEG_VALUE, "file content".getBytes());
+
+    mockMvc
+        .perform(
+            multipart("/group/upload/" + groupOne.getId())
+                .file(file)
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .with(
+                    request -> {
+                      request.setMethod("PUT");
+                      return request;
+                    }))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(GroupNotFoundException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "user", roles = "USER")
+  void uploadGroupPictureShouldThrowFileNotUploadedExceptionWhenUserFolderDoesNotExists()
+      throws Exception {
+    register();
+    Group savedGroup = createGroup(groupOne);
+    MockMultipartFile file =
+        new MockMultipartFile(
+            "file", "groupPicture.png", MediaType.IMAGE_JPEG_VALUE, "file content".getBytes());
+
+    mockMvc
+        .perform(
+            multipart("/group/upload/" + savedGroup.getId())
+                .file(file)
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .with(
+                    request -> {
+                      request.setMethod("PUT");
+                      return request;
+                    }))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            result ->
+                assertInstanceOf(FileNotUploadedException.class, result.getResolvedException()));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void uploadGroupPictureSuccessfully() throws Exception {
+    register();
+    Group savedGroup = groupService.createGroup("Group Name");
+    MockMultipartFile file =
+        new MockMultipartFile(
+            "file", "groupPicture.png", MediaType.IMAGE_PNG_VALUE, "file content".getBytes());
+
+    mockMvc
+        .perform(
+            multipart("/group/upload/" + savedGroup.getId())
+                .file(file)
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .with(
+                    request -> {
+                      request.setMethod("PUT");
+                      return request;
+                    }))
+        .andExpect(status().isOk());
   }
 }

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -65,5 +66,12 @@ public class GroupController {
       @PathVariable UUID groupId, @PathVariable UUID userId) {
     return ResponseEntity.ok(
         groupMapper.toGroupResponse(groupService.removeMember(groupId, userId)));
+  }
+
+  @PutMapping("/upload/{groupId}")
+  public ResponseEntity<GroupResponseDto> uploadGroupPicture(
+      @RequestParam("file") MultipartFile file, @PathVariable UUID groupId) {
+    return ResponseEntity.ok(
+        groupMapper.toGroupResponse(groupService.uploadGroupPicture(file, groupId)));
   }
 }

@@ -23,3 +23,7 @@ application:
 profile:
   pictures:
     location: ProfilePictures/
+
+group:
+  pictures:
+    location: GroupPictures/
