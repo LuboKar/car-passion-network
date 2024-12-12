@@ -6,7 +6,6 @@ import GroupMenu from "./GroupMenu";
 import { deleteGroup } from "../service/GroupService";
 import { joinGroup } from "../service/GroupService";
 import { leaveGroup } from "../service/GroupService";
-import { getId } from "../service/TokenService";
 
 export default function Group({
   group,
@@ -14,8 +13,7 @@ export default function Group({
   index,
   setParticipatingGroups,
 }) {
-  const currentUserId = getId();
-  const { navigateToGroupPage, navigateToProfile } = useNavigation();
+  const { navigateToGroupPage } = useNavigation();
 
   const deleteGroupById = async () => {
     const response = await deleteGroup(group.id);
@@ -59,7 +57,7 @@ export default function Group({
         className="group-profile-picture"
         onClick={() => navigateToGroupPage(group.id)}
       >
-        <GroupProfilePicture />
+        <GroupProfilePicture groupPicture={group.groupPicture} />
       </div>
 
       <label

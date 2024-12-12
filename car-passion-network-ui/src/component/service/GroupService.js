@@ -158,6 +158,26 @@ const removeMember = async (groupId, memberId) => {
   }
 };
 
+const uploadGroupPicture = async (formData, groupId) => {
+  try {
+    const token = getToken();
+    const response = await fetch(
+      `http://localhost:8080/group/upload/${groupId}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+  }
+};
+
 export {
   createGroup,
   getGroup,
@@ -168,4 +188,5 @@ export {
   getParticipatingGroups,
   leaveGroup,
   removeMember,
+  uploadGroupPicture,
 };

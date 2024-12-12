@@ -90,7 +90,7 @@ export default function GroupPage() {
       <VerticalNavbar topButtons={topButtons} />
       <RightVerticalNabvar />
 
-      {!loadingGroup && <GroupProfile group={group} />}
+      {!loadingGroup && <GroupProfile group={group} setGroup={setGroup} />}
 
       {!loadingGroup && !loadingPosts && viewPosts && (
         <Posts groupId={group.id} />
