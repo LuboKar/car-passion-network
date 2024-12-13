@@ -4,22 +4,8 @@
     align-items: center;
     width: 100%;
     height: 100%;
-    margin-top: 5%;
 }
 
-.created-groups-label{
-    font-size: 130%;
-    font-weight: bold;
-    color: rgb(90, 90, 90);
-    width: 100%;
-    text-align: center;
-}
-
-.created-groups-label:hover{
-    cursor: text;
-}
-
-.created-groups-border{
-    border-top: 1px solid black;
+.created-groups-group{
     width: 100%;
 }

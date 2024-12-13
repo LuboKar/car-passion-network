@@ -8,10 +8,6 @@ export default function ParticipatingGroups({
 }) {
   return (
     <div className="participating-groups-container">
-      <label className="participating-groups-label">Participating</label>
-
-      <div className="participating-groups-border"></div>
-
       {participatingGroups.map((group, index) => (
         <Group
           group={group}

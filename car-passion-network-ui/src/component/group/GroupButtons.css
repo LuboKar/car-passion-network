@@ -1,0 +1,12 @@
+.group-buttons-container{
+    width: 125%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2px;
+}
+
+.group-buttons-button{
+    width: 100%;
+}

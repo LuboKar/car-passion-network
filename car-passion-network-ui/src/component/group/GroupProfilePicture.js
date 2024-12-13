@@ -3,7 +3,6 @@ import "./GroupProfilePicture.css";
 import groupImage from "../../images/group image.png";
 
 export default function GroupProfilePicture({ groupPicture }) {
-  console.log(groupPicture);
   return (
     <div className="group-profile-picture-container">
       <img
