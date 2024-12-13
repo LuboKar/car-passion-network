@@ -1,6 +1,7 @@
 package com.carpassionnetwork.mapper;
 
 import com.carpassionnetwork.dto.response.GroupResponseDto;
+import com.carpassionnetwork.dto.response.UserGroupResponseDto;
 import com.carpassionnetwork.model.Group;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +26,18 @@ public class GroupMapper {
 
   public List<GroupResponseDto> toGroupResponseList(List<Group> groups) {
     return groups.stream().map(this::toGroupResponse).collect(Collectors.toList());
+  }
+
+  public UserGroupResponseDto toUserGroupResponse(Group group) {
+    UserGroupResponseDto groupResponseDto = modelMapper.map(group, UserGroupResponseDto.class);
+
+    groupResponseDto.setCurrentUserMember(isCurrentUserMember(group));
+
+    return groupResponseDto;
+  }
+
+  public List<UserGroupResponseDto> toUserGroupResponseList(List<Group> groups) {
+    return groups.stream().map(this::toUserGroupResponse).collect(Collectors.toList());
   }
 
   private boolean isCurrentUserMember(Group group) {

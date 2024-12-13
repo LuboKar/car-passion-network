@@ -1,6 +1,7 @@
 package com.carpassionnetwork.controller;
 
 import com.carpassionnetwork.dto.response.GroupResponseDto;
+import com.carpassionnetwork.dto.response.UserGroupResponseDto;
 import com.carpassionnetwork.mapper.GroupMapper;
 import com.carpassionnetwork.service.GroupService;
 import java.util.List;
@@ -29,14 +30,15 @@ public class GroupController {
   }
 
   @GetMapping("/admin/{id}")
-  public ResponseEntity<List<GroupResponseDto>> getAllGroupsByAdminId(@PathVariable UUID id) {
+  public ResponseEntity<List<UserGroupResponseDto>> getAllGroupsByAdminId(@PathVariable UUID id) {
     return ResponseEntity.ok(
-        groupMapper.toGroupResponseList(groupService.getAllGroupsByAdminId(id)));
+        groupMapper.toUserGroupResponseList(groupService.getAllGroupsByAdminId(id)));
   }
 
   @GetMapping("/other/{id}")
-  public ResponseEntity<List<GroupResponseDto>> getAllOtherGroups(@PathVariable UUID id) {
-    return ResponseEntity.ok(groupMapper.toGroupResponseList(groupService.getAllOtherGroups(id)));
+  public ResponseEntity<List<UserGroupResponseDto>> getAllOtherGroups(@PathVariable UUID id) {
+    return ResponseEntity.ok(
+        groupMapper.toUserGroupResponseList(groupService.getAllOtherGroups(id)));
   }
 
   @PostMapping("/join/{id}")
@@ -50,9 +52,10 @@ public class GroupController {
   }
 
   @GetMapping("/user/{id}")
-  public ResponseEntity<List<GroupResponseDto>> getUserParticipatingGroups(@PathVariable UUID id) {
+  public ResponseEntity<List<UserGroupResponseDto>> getUserParticipatingGroups(
+      @PathVariable UUID id) {
     return ResponseEntity.ok(
-        groupMapper.toGroupResponseList(groupService.getUserParticipatingGroups(id)));
+        groupMapper.toUserGroupResponseList(groupService.getUserParticipatingGroups(id)));
   }
 
   @DeleteMapping("/{id}")
