@@ -18,7 +18,6 @@ import { getFriends } from "../service/UserService";
 import FriendsHeader from "../pageUtils/friends/FriendsHeader";
 import groups from "../../images/groups.png";
 import Groups from "../group/Groups";
-import { getId } from "../service/TokenService";
 import { getGroupsByAdmin } from "../service/GroupService";
 import { getOtherGroups } from "../service/GroupService";
 import { getParticipatingGroups } from "../service/GroupService";
@@ -77,7 +76,7 @@ export default function ProfilePage() {
   };
 
   const fetchAdminGroups = async () => {
-    const response = await getGroupsByAdmin(getId());
+    const response = await getGroupsByAdmin(id);
 
     if (!response.ok) {
       throw new Error("Network response was not ok");
