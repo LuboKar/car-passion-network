@@ -13,9 +13,6 @@ import { PostsContext } from "../context/PostsProvider";
 import infoIcon from "../../images/info.png";
 import postIcon from "../../images/post.png";
 import friendIcon from "../../images/friendIcon.png";
-import Friends from "../pageUtils/friends/Friends";
-import { getFriends } from "../service/UserService";
-import FriendsHeader from "../pageUtils/friends/FriendsHeader";
 import groupsIcon from "../../images/groups.png";
 import useNavigation from "../service/NavigateService";
 
@@ -24,14 +21,13 @@ export default function ProfilePage() {
   const [user, setUser] = useState({});
   const [userInformation, setUserInformation] = useState(false);
   const [viewPosts, setViewPosts] = useState(true);
-  const [viewFriends, setViewFriends] = useState(false);
+  const [viewFriends] = useState(false);
   const [viewGroups] = useState(false);
   const [loadingUser, setLoadingUser] = useState(true);
   const [loadingPosts, setLoadingPosts] = useState(true);
-  const [friends, setFriends] = useState([]);
-  const [loadingFriends, setLoadingFriends] = useState(true);
 
-  const { navigateToProfileGroupPage } = useNavigation();
+  const { navigateToProfileGroupPage, navigateToProfileFriendsPage } =
+    useNavigation();
 
   const { posts, setPosts } = useContext(PostsContext);
 
@@ -59,30 +55,16 @@ export default function ProfilePage() {
     setLoadingPosts(false);
   };
 
-  const fetchFriends = async () => {
-    const response = await getFriends(id);
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const friendsList = await response.json();
-    setFriends(friendsList);
-    setLoadingFriends(false);
-  };
-
   useEffect(() => {
     fetchUser();
     fetchPosts();
     togglePosts();
-    fetchFriends();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const disbleAllButtons = () => {
     setViewPosts(false);
     setUserInformation(false);
-    setViewFriends(false);
   };
 
   const toggleInformation = () => {
@@ -97,7 +79,7 @@ export default function ProfilePage() {
 
   const toggleFriends = () => {
     disbleAllButtons();
-    setViewFriends(true);
+    navigateToProfileFriendsPage(id);
   };
 
   const toggleGroups = () => {
@@ -151,13 +133,6 @@ export default function ProfilePage() {
       )}
 
       {userInformation && <Information user={user} />}
-
-      {!loadingFriends && viewFriends && (
-        <Friends friends={friends} setFriends={setFriends} userId={user.id} />
-      )}
-      {!loadingFriends && friends.length < 1 && viewFriends && (
-        <FriendsHeader />
-      )}
     </div>
   );
 }

@@ -17,14 +17,14 @@ import { getOtherGroups } from "../service/GroupService";
 
 export default function ProfileGroupPage() {
   const { id } = useParams();
-  const [viewGroups] = useState(true);
   const [user, setUser] = useState({});
   const [loadingUser, setLoadingUser] = useState(true);
+  const [viewGroups] = useState(true);
   const [userAdminGroups, setUserAdminGroups] = useState([]);
   const [participatingGroups, setParticipatingGroups] = useState([]);
   const [otherGroups, setOtherGroups] = useState([]);
 
-  const { navigateToProfile } = useNavigation();
+  const { navigateToProfile, navigateToProfileFriendsPage } = useNavigation();
 
   const fetchUser = async () => {
     const response = await getUser(id);
@@ -88,7 +88,7 @@ export default function ProfileGroupPage() {
   };
 
   const toggleFriends = () => {
-    navigateToProfile(id);
+    navigateToProfileFriendsPage(id);
   };
 
   const topButtons = [

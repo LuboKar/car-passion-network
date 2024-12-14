@@ -40,6 +40,12 @@ const useNavigation = () => {
     } else navigate("/");
   };
 
+  const navigateToProfileFriendsPage = (id) => {
+    if (isAuthenticated()) {
+      navigate(`/${id}/friends`);
+    } else navigate("/");
+  };
+
   return {
     navigateToProfile,
     navigateToPostPage,
@@ -47,6 +53,7 @@ const useNavigation = () => {
     navigateToSettingsPage,
     navigateToGroupPage,
     navigateToProfileGroupPage,
+    navigateToProfileFriendsPage,
   };
 };
 
