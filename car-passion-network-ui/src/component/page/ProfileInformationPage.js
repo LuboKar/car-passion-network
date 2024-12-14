@@ -13,6 +13,7 @@ export default function ProfileInformationPage() {
   const { user, setUser, loadingUser } = useContext(ProfileContext);
 
   const { profileButtons } = useButtons(id);
+  profileButtons[1].isVisible = true;
 
   return (
     <div className="profile-information-page-container">

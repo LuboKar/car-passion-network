@@ -23,6 +23,7 @@ export default function ProfileGroupPage() {
   const [loadingOtherGroups, setLoadingOtherGroups] = useState(true);
 
   const { profileButtons } = useButtons(id);
+  profileButtons[3].isVisible = true;
 
   const fetchAdminGroups = async () => {
     const response = await getGroupsByAdmin(id);

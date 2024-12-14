@@ -5,7 +5,6 @@ import RightVerticalNabvar from "../pageUtils/navbar/RightVerticalNavbar";
 import Profile from "../pageUtils/user/Profile";
 import Posts from "../pageUtils/post/Posts";
 import { useParams } from "react-router-dom";
-import { getUser } from "../service/UserService";
 import { getPosts } from "../service/PostService";
 import ProfilePageHeader from "../pageUtils/user/ProfilePageHeader";
 import { PostsContext } from "../context/PostsProvider";
@@ -18,6 +17,7 @@ export default function ProfilePage() {
   const [loadingPosts, setLoadingPosts] = useState(true);
 
   const { profileButtons } = useButtons(id);
+  profileButtons[0].isVisible = true;
 
   const { posts, setPosts } = useContext(PostsContext);
 

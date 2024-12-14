@@ -18,6 +18,7 @@ export default function ProfileFriendsPage() {
   const [loadingFriends, setLoadingFriends] = useState(true);
 
   const { profileButtons } = useButtons(id);
+  profileButtons[2].isVisible = true;
 
   const fetchFriends = async () => {
     const response = await getFriends(id);

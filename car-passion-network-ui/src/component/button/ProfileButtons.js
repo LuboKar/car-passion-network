@@ -33,21 +33,25 @@ const useButtons = (id) => {
       label: "Posts",
       icon: postIcon,
       onClick: togglePosts,
+      isVisible: false,
     },
     {
       label: "Information",
       icon: infoIcon,
       onClick: toggleInformation,
+      isVisible: false,
     },
     {
       label: "Friends",
       icon: friendIcon,
       onClick: toggleFriends,
+      isVisible: false,
     },
     {
       label: "Groups",
       icon: groupsIcon,
       onClick: toggleGroups,
+      isVisible: false,
     },
   ];
   return { profileButtons };
