@@ -2,11 +2,10 @@ import React from "react";
 import "./Friend.css";
 import useNavigation from "../../service/NavigateService";
 import { getId } from "../../service/TokenService";
-import RemoveFriend from "../user/RemoveFriend";
-import AddFriend from "../user/AddFriend";
 import { removeFriend } from "../../service/UserService";
 import { addFriend } from "../../service/UserService";
 import ProfilePicture from "../user/ProfilePicture";
+import FriendActionButton from "../user/FriendActionButton";
 
 export default function Friend({ friend, index, userId, setFriends }) {
   const { navigateToProfile } = useNavigation();
@@ -59,7 +58,10 @@ export default function Friend({ friend, index, userId, setFriends }) {
 
       {userId === currentUserId && (
         <div className="friend-remove-friend-button">
-          <RemoveFriend handleRemoveFriend={handleRemoveFriend} />
+          <FriendActionButton
+            buttonText="Remove Friend"
+            handleAction={handleRemoveFriend}
+          />
         </div>
       )}
 
@@ -67,7 +69,10 @@ export default function Friend({ friend, index, userId, setFriends }) {
         !friend.friend &&
         friend.id !== currentUserId && (
           <div className="friend-add-friend-button">
-            <AddFriend handleAddFriend={handleAddFriend} />
+            <FriendActionButton
+              buttonText="Add Friend"
+              handleAction={handleAddFriend}
+            />
           </div>
         )}
     </div>

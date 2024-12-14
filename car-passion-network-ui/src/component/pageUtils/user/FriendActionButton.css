@@ -1,4 +1,4 @@
-.remove-friend-button{
+.friend-action-button{
     width: 150px;
     height: 30px;
     border: 2px solid black;
@@ -6,6 +6,6 @@
     font-size: 18px;
 }
 
-.remove-friend-button:hover{
+.friend-action-button:hover{
     cursor: pointer;
 }

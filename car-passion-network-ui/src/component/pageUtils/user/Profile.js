@@ -3,17 +3,15 @@ import "./Profile.css";
 import { uploadProfilePicture } from "../../service/UserService";
 import { getId } from "../../service/TokenService";
 import { saveProfilePictureUrl } from "../../service/profilePictureService";
-import AddFriend from "./AddFriend";
-import RemoveFriend from "./RemoveFriend";
-import { addFriend } from "../../service/UserService";
-import { removeFriend } from "../../service/UserService";
+import FriendActionButton from "./FriendActionButton";
 import ProfilePicture from "./ProfilePicture";
 import { ProfileContext } from "../../context/ProfileProvider";
 
 export default function Profile() {
   const currentUserId = getId();
   const fileInputRef = useRef(null);
-  const { user, setUser } = useContext(ProfileContext);
+  const { user, handleAddFriend, handleRemoveFriend } =
+    useContext(ProfileContext);
 
   const handleContainerClick = () => {
     if (user.id !== currentUserId) {
@@ -43,30 +41,6 @@ export default function Profile() {
     }
   };
 
-  const handleAddFriend = async () => {
-    const response = await addFriend(user.id);
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const friendUser = await response.json();
-
-    setUser(friendUser);
-  };
-
-  const handleRemoveFriend = async () => {
-    const response = await removeFriend(user.id);
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const friendUser = await response.json();
-
-    setUser(friendUser);
-  };
-
   return (
     <div className="profile-container">
       <div className="profile-image-container" onClick={handleContainerClick}>
@@ -87,9 +61,15 @@ export default function Profile() {
       {currentUserId !== user.id && (
         <div className="profile-friend-request">
           {user.friend ? (
-            <RemoveFriend handleRemoveFriend={handleRemoveFriend} />
+            <FriendActionButton
+              buttonText="Remove Friend"
+              handleAction={handleRemoveFriend}
+            />
           ) : (
-            <AddFriend handleAddFriend={handleAddFriend} />
+            <FriendActionButton
+              buttonText="Add Friend"
+              handleAction={handleAddFriend}
+            />
           )}
         </div>
       )}
