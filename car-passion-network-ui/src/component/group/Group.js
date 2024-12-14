@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Group.css";
 import GroupProfilePicture from "./GroupProfilePicture";
 import useNavigation from "../service/NavigateService";
@@ -6,14 +6,13 @@ import GroupMenu from "./GroupMenu";
 import { deleteGroup } from "../service/GroupService";
 import { joinGroup } from "../service/GroupService";
 import { leaveGroup } from "../service/GroupService";
+import { ProfileGroupsContext } from "../context/ProfileGroupsProvider";
 
-export default function Group({
-  group,
-  setUserAdminGroups,
-  index,
-  setParticipatingGroups,
-}) {
+export default function Group({ group, index }) {
   const { navigateToGroupPage } = useNavigation();
+
+  const { setUserAdminGroups, setParticipatingGroups, setOtherGroups } =
+    useContext(ProfileGroupsContext);
 
   const deleteGroupById = async () => {
     const response = await deleteGroup(group.id);
@@ -44,6 +43,9 @@ export default function Group({
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
+
+    const leftGroup = await response.json();
+    setOtherGroups((prevOtherGroups) => [...prevOtherGroups, leftGroup]);
 
     setParticipatingGroups((prevParticipatingGroups) => [
       ...prevParticipatingGroups.slice(0, index),

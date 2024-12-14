@@ -10,11 +10,7 @@ export default function ParticipatingGroups() {
   return (
     <div className="participating-groups-container">
       {participatingGroups.map((group, index) => (
-        <Group
-          group={group}
-          index={index}
-          setParticipatingGroups={setParticipatingGroups}
-        />
+        <Group group={group} index={index} />
       ))}
     </div>
   );
