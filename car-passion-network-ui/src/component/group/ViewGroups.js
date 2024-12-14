@@ -1,20 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./ViewGroups.css";
 import OtherGroups from "./OtherGroups";
 import GroupButtons from "./GroupButtons";
 import CreatedGroups from "./CreatedGroups.js";
 import ParticipatingGroups from "./ParticipatingGroups.js";
+import { ProfileGroupsContext } from "../context/ProfileGroupsProvider.js";
 
-export default function ViewGroups({
-  userAdminGroups,
-  setUserAdminGroups,
-  otherGroups,
-  participatingGroups,
-  setParticipatingGroups,
-}) {
+export default function ViewGroups() {
   const [viewCreated, setViewCreated] = useState(true);
   const [viewParticipating, setViewParticipating] = useState(false);
   const [viewOthers, setViewOthers] = useState(false);
+
+  const {
+    userAdminGroups,
+    setUserAdminGroups,
+    loadingAdminGroups,
+    participatingGroups,
+    setParticipatingGroups,
+    loadingParticipatingGroups,
+    otherGroups,
+    loadingOtherGroups,
+  } = useContext(ProfileGroupsContext);
 
   const disableAllButtons = () => {
     setViewCreated(false);
@@ -60,21 +66,23 @@ export default function ViewGroups({
       <GroupButtons groupButtons={groupButtons} />
       <div className="view-groups-border"></div>
 
-      {viewCreated && (
+      {!loadingAdminGroups && viewCreated && (
         <CreatedGroups
           userAdminGroups={userAdminGroups}
           setUserAdminGroups={setUserAdminGroups}
         />
       )}
 
-      {viewParticipating && (
+      {!loadingParticipatingGroups && viewParticipating && (
         <ParticipatingGroups
           participatingGroups={participatingGroups}
           setParticipatingGroups={setParticipatingGroups}
         />
       )}
 
-      {viewOthers && <OtherGroups otherGroups={otherGroups} />}
+      {!loadingOtherGroups && viewOthers && (
+        <OtherGroups otherGroups={otherGroups} />
+      )}
     </div>
   );
 }

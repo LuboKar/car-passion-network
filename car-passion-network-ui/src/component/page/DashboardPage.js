@@ -100,12 +100,12 @@ export default function DashboardPage() {
       onClick: toggleFeed,
       isVisible: viewFeed,
     },
-    {
-      label: "Groups",
-      icon: groupIcon,
-      onClick: toggleGroups,
-      isVisible: viewGroups,
-    },
+    // {
+    //   label: "Groups",
+    //   icon: groupIcon,
+    //   onClick: toggleGroups,
+    //   isVisible: viewGroups,
+    // },
   ];
 
   return (
