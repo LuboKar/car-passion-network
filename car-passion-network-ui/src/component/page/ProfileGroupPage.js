@@ -21,10 +21,18 @@ export default function ProfileGroupPage() {
   const [loadingUser, setLoadingUser] = useState(true);
   const [viewGroups] = useState(true);
   const [userAdminGroups, setUserAdminGroups] = useState([]);
+  const [loadingAdminGroups, setLoadingAdminGroups] = useState(true);
   const [participatingGroups, setParticipatingGroups] = useState([]);
+  const [loadingParticipatingGroups, setLoadingParticipatingGroups] =
+    useState(true);
   const [otherGroups, setOtherGroups] = useState([]);
+  const [loadingOtherGroups, setLoadingOtherGroups] = useState(true);
 
-  const { navigateToProfile, navigateToProfileFriendsPage } = useNavigation();
+  const {
+    navigateToProfile,
+    navigateToProfileFriendsPage,
+    navigateToProfileInformationPage,
+  } = useNavigation();
 
   const fetchUser = async () => {
     const response = await getUser(id);
@@ -47,6 +55,7 @@ export default function ProfileGroupPage() {
 
     const groupData = await response.json();
     setUserAdminGroups(groupData);
+    setLoadingAdminGroups(false);
   };
 
   const fetchParticipatingGroups = async () => {
@@ -58,6 +67,7 @@ export default function ProfileGroupPage() {
 
     const groupData = await response.json();
     setParticipatingGroups(groupData);
+    setLoadingParticipatingGroups(false);
   };
 
   const fetchOtherGroups = async () => {
@@ -69,6 +79,7 @@ export default function ProfileGroupPage() {
 
     const groupData = await response.json();
     setOtherGroups(groupData);
+    setLoadingOtherGroups(false);
   };
 
   useEffect(() => {
@@ -84,7 +95,7 @@ export default function ProfileGroupPage() {
   };
 
   const toggleInformation = () => {
-    navigateToProfile(id);
+    navigateToProfileInformationPage(id);
   };
 
   const toggleFriends = () => {
@@ -123,16 +134,18 @@ export default function ProfileGroupPage() {
 
       {!loadingUser && <Profile user={user} setUser={setUser} />}
 
-      {viewGroups && (
-        <Groups
-          userId={user.id}
-          userAdminGroups={userAdminGroups}
-          setUserAdminGroups={setUserAdminGroups}
-          otherGroups={otherGroups}
-          participatingGroups={participatingGroups}
-          setParticipatingGroups={setParticipatingGroups}
-        />
-      )}
+      {!loadingAdminGroups &&
+        !loadingParticipatingGroups &&
+        !loadingOtherGroups && (
+          <Groups
+            userId={user.id}
+            userAdminGroups={userAdminGroups}
+            setUserAdminGroups={setUserAdminGroups}
+            otherGroups={otherGroups}
+            participatingGroups={participatingGroups}
+            setParticipatingGroups={setParticipatingGroups}
+          />
+        )}
     </div>
   );
 }

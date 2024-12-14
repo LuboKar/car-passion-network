@@ -22,7 +22,11 @@ export default function ProfileFriendsPage() {
   const [friends, setFriends] = useState([]);
   const [loadingFriends, setLoadingFriends] = useState(true);
 
-  const { navigateToProfile, navigateToProfileGroupPage } = useNavigation();
+  const {
+    navigateToProfile,
+    navigateToProfileGroupPage,
+    navigateToProfileInformationPage,
+  } = useNavigation();
 
   const fetchUser = async () => {
     const response = await getUser(id);
@@ -59,7 +63,7 @@ export default function ProfileFriendsPage() {
   };
 
   const toggleInformation = () => {
-    navigateToProfile(id);
+    navigateToProfileInformationPage(id);
   };
 
   const toggleGroups = () => {

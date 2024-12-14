@@ -6,7 +6,7 @@ const useNavigation = () => {
 
   const navigateToProfile = (id) => {
     if (isAuthenticated()) {
-      navigate(`/profile/${id}`);
+      navigate(`/${id}`);
     } else navigate("/");
   };
 
@@ -46,6 +46,12 @@ const useNavigation = () => {
     } else navigate("/");
   };
 
+  const navigateToProfileInformationPage = (id) => {
+    if (isAuthenticated()) {
+      navigate(`/${id}/information`);
+    } else navigate("/");
+  };
+
   return {
     navigateToProfile,
     navigateToPostPage,
@@ -54,6 +60,7 @@ const useNavigation = () => {
     navigateToGroupPage,
     navigateToProfileGroupPage,
     navigateToProfileFriendsPage,
+    navigateToProfileInformationPage,
   };
 };
 

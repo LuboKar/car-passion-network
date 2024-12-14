@@ -1,34 +1,28 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../pageUtils/navbar/Navbar";
 import VerticalNavbar from "../pageUtils/navbar/VerticalNavbar";
 import RightVerticalNabvar from "../pageUtils/navbar/RightVerticalNavbar";
-import Profile from "../pageUtils/user/Profile";
-import Posts from "../pageUtils/post/Posts";
-import { useParams } from "react-router-dom";
-import { getUser } from "../service/UserService";
-import { getPosts } from "../service/PostService";
-import ProfilePageHeader from "../pageUtils/user/ProfilePageHeader";
-import { PostsContext } from "../context/PostsProvider";
-import infoIcon from "../../images/info.png";
 import postIcon from "../../images/post.png";
+import infoIcon from "../../images/info.png";
 import friendIcon from "../../images/friendIcon.png";
 import groupsIcon from "../../images/groups.png";
 import useNavigation from "../service/NavigateService";
+import Profile from "../pageUtils/user/Profile";
+import { useParams } from "react-router-dom";
+import { getUser } from "../service/UserService";
+import Information from "../pageUtils/user/Information";
 
-export default function ProfilePage() {
+export default function ProfileInformationPage() {
   const { id } = useParams();
+  const [viewInformation] = useState(true);
   const [user, setUser] = useState({});
-  const [viewPosts, setViewPosts] = useState(true);
   const [loadingUser, setLoadingUser] = useState(true);
-  const [loadingPosts, setLoadingPosts] = useState(true);
 
   const {
-    navigateToProfileGroupPage,
+    navigateToProfile,
     navigateToProfileFriendsPage,
-    navigateToProfileInformationPage,
+    navigateToProfileGroupPage,
   } = useNavigation();
-
-  const { posts, setPosts } = useContext(PostsContext);
 
   const fetchUser = async () => {
     const response = await getUser(id);
@@ -42,31 +36,13 @@ export default function ProfilePage() {
     setLoadingUser(false);
   };
 
-  const fetchPosts = async () => {
-    const response = await getPosts(id);
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const postData = await response.json();
-    setPosts(postData);
-    setLoadingPosts(false);
-  };
-
   useEffect(() => {
     fetchUser();
-    fetchPosts();
-    togglePosts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  const toggleInformation = () => {
-    navigateToProfileInformationPage(id);
-  };
-
   const togglePosts = () => {
-    setViewPosts(true);
+    navigateToProfile(id);
   };
 
   const toggleFriends = () => {
@@ -82,12 +58,11 @@ export default function ProfilePage() {
       label: "Posts",
       icon: postIcon,
       onClick: togglePosts,
-      isVisible: viewPosts,
     },
     {
       label: "Information",
       icon: infoIcon,
-      onClick: toggleInformation,
+      isVisible: viewInformation,
     },
     {
       label: "Friends",
@@ -100,24 +75,16 @@ export default function ProfilePage() {
       onClick: toggleGroups,
     },
   ];
-
   return (
-    <div className="profile-page-container">
+    <div className="profile-information-page-container">
       <Navbar />
 
       <VerticalNavbar topButtons={topButtons} />
       <RightVerticalNabvar />
 
-      {!loadingUser && !loadingPosts && (
-        <Profile user={user} setUser={setUser} />
-      )}
+      {!loadingUser && <Profile user={user} setUser={setUser} />}
 
-      {!loadingUser && !loadingPosts && viewPosts && (
-        <Posts ownerId={user.id} />
-      )}
-      {posts.length < 1 && viewPosts && !loadingUser && !loadingPosts && (
-        <ProfilePageHeader />
-      )}
+      {!loadingUser && <Information user={user} />}
     </div>
   );
 }
