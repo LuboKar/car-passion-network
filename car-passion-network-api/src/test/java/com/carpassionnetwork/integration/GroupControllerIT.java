@@ -220,9 +220,7 @@ public class GroupControllerIT extends BaseIT {
 
     mockMvc
         .perform(post("/group/leave/" + savedGroup.getId()))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.members").isArray())
-        .andExpect(jsonPath("$.members").isEmpty());
+        .andExpect(status().isOk());
   }
 
   @Test
