@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Information.css";
 import nameIcon from "../../../images/name.png";
 import dateOfBirth from "../../../images/dateOfBirth.png";
@@ -6,8 +6,11 @@ import email from "../../../images/email.png";
 import gender from "../../../images/gender.png";
 import creationDate from "../../../images/creationDate.png";
 import InformationData from "./InformationData";
+import { ProfileContext } from "../../context/ProfileProvider";
 
-export default function Information({ user }) {
+export default function Information() {
+  const { user } = useContext(ProfileContext);
+
   return (
     <div className="information-container">
       <InformationData

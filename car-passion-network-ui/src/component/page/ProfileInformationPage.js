@@ -10,7 +10,7 @@ import { ProfileContext } from "../context/ProfileProvider";
 
 export default function ProfileInformationPage() {
   const { id } = useParams();
-  const { user, setUser, loadingUser } = useContext(ProfileContext);
+  const { loadingUser } = useContext(ProfileContext);
 
   const { profileButtons } = useButtons(id);
   profileButtons[1].isVisible = true;
@@ -22,9 +22,9 @@ export default function ProfileInformationPage() {
       <VerticalNavbar topButtons={profileButtons} />
       <RightVerticalNabvar />
 
-      {!loadingUser && <Profile user={user} setUser={setUser} />}
+      {!loadingUser && <Profile />}
 
-      {!loadingUser && <Information user={user} />}
+      {!loadingUser && <Information />}
     </div>
   );
 }

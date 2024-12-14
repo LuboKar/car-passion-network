@@ -13,7 +13,7 @@ import { ProfileContext } from "../context/ProfileProvider";
 
 export default function ProfileGroupPage() {
   const { id } = useParams();
-  const { user, setUser, loadingUser } = useContext(ProfileContext);
+  const { loadingUser } = useContext(ProfileContext);
   const [userAdminGroups, setUserAdminGroups] = useState([]);
   const [loadingAdminGroups, setLoadingAdminGroups] = useState(true);
   const [participatingGroups, setParticipatingGroups] = useState([]);
@@ -75,13 +75,13 @@ export default function ProfileGroupPage() {
       <VerticalNavbar topButtons={profileButtons} />
       <RightVerticalNabvar />
 
-      {!loadingUser && <Profile user={user} setUser={setUser} />}
+      {!loadingUser && <Profile />}
 
       {!loadingAdminGroups &&
         !loadingParticipatingGroups &&
         !loadingOtherGroups && (
           <Groups
-            userId={user.id}
+            userId={id}
             userAdminGroups={userAdminGroups}
             setUserAdminGroups={setUserAdminGroups}
             otherGroups={otherGroups}

@@ -12,7 +12,7 @@ import { ProfileContext } from "../context/ProfileProvider";
 
 export default function ProfileFriendsPage() {
   const { id } = useParams();
-  const { user, setUser, loadingUser } = useContext(ProfileContext);
+  const { loadingUser } = useContext(ProfileContext);
   const [viewFriends] = useState(true);
   const [friends, setFriends] = useState([]);
   const [loadingFriends, setLoadingFriends] = useState(true);
@@ -44,10 +44,10 @@ export default function ProfileFriendsPage() {
       <VerticalNavbar topButtons={profileButtons} />
       <RightVerticalNabvar />
 
-      {!loadingUser && <Profile user={user} setUser={setUser} />}
+      {!loadingUser && <Profile />}
 
       {!loadingFriends && viewFriends && (
-        <Friends friends={friends} setFriends={setFriends} userId={user.id} />
+        <Friends friends={friends} setFriends={setFriends} userId={id} />
       )}
       {!loadingFriends && friends.length < 1 && viewFriends && (
         <FriendsHeader />

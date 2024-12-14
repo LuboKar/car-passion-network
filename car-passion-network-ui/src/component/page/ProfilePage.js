@@ -13,7 +13,7 @@ import { ProfileContext } from "../context/ProfileProvider";
 
 export default function ProfilePage() {
   const { id } = useParams();
-  const { user, setUser, loadingUser } = useContext(ProfileContext);
+  const { loadingUser } = useContext(ProfileContext);
   const [loadingPosts, setLoadingPosts] = useState(true);
 
   const { profileButtons } = useButtons(id);
@@ -45,9 +45,9 @@ export default function ProfilePage() {
       <VerticalNavbar topButtons={profileButtons} />
       <RightVerticalNabvar />
 
-      {!loadingUser && <Profile user={user} setUser={setUser} />}
+      {!loadingUser && <Profile />}
 
-      {!loadingUser && !loadingPosts && <Posts ownerId={user.id} />}
+      {!loadingUser && !loadingPosts && <Posts ownerId={id} />}
       {posts.length < 1 && !loadingUser && !loadingPosts && (
         <ProfilePageHeader />
       )}

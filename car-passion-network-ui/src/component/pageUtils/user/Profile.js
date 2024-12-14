@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import "./Profile.css";
 import { uploadProfilePicture } from "../../service/UserService";
 import { getId } from "../../service/TokenService";
@@ -8,10 +8,12 @@ import RemoveFriend from "./RemoveFriend";
 import { addFriend } from "../../service/UserService";
 import { removeFriend } from "../../service/UserService";
 import ProfilePicture from "./ProfilePicture";
+import { ProfileContext } from "../../context/ProfileProvider";
 
-export default function Profile({ user, setUser }) {
+export default function Profile() {
   const currentUserId = getId();
   const fileInputRef = useRef(null);
+  const { user, setUser } = useContext(ProfileContext);
 
   const handleContainerClick = () => {
     if (user.id !== currentUserId) {
