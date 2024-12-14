@@ -12,6 +12,7 @@ import GroupPage from "../page/GroupPage";
 import ProfileGroupPage from "../page/ProfileGroupPage";
 import ProfileFriendsPage from "../page/ProfileFriendsPage";
 import ProfileInformationPage from "../page/ProfileInformationPage";
+import { ProfileProvider } from "../context/ProfileProvider";
 
 const router = createBrowserRouter([
   {
@@ -29,9 +30,11 @@ const router = createBrowserRouter([
   {
     path: "/:id",
     element: (
-      <PostsProvider>
-        <ProtectedRoute element={ProfilePage} />
-      </PostsProvider>
+      <ProfileProvider>
+        <PostsProvider>
+          <ProtectedRoute element={ProfilePage} />
+        </PostsProvider>
+      </ProfileProvider>
     ),
   },
   {
@@ -58,15 +61,27 @@ const router = createBrowserRouter([
   },
   {
     path: "/:id/groups",
-    element: <ProtectedRoute element={ProfileGroupPage} />,
+    element: (
+      <ProfileProvider>
+        <ProtectedRoute element={ProfileGroupPage} />
+      </ProfileProvider>
+    ),
   },
   {
     path: "/:id/friends",
-    element: <ProtectedRoute element={ProfileFriendsPage} />,
+    element: (
+      <ProfileProvider>
+        <ProtectedRoute element={ProfileFriendsPage} />
+      </ProfileProvider>
+    ),
   },
   {
     path: "/:id/information",
-    element: <ProtectedRoute element={ProfileInformationPage} />,
+    element: (
+      <ProfileProvider>
+        <ProtectedRoute element={ProfileInformationPage} />
+      </ProfileProvider>
+    ),
   },
   {
     path: "*",

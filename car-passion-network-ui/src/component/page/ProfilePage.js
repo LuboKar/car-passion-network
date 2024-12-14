@@ -10,28 +10,16 @@ import { getPosts } from "../service/PostService";
 import ProfilePageHeader from "../pageUtils/user/ProfilePageHeader";
 import { PostsContext } from "../context/PostsProvider";
 import useButtons from "../button/ProfileButtons";
+import { ProfileContext } from "../context/ProfileProvider";
 
 export default function ProfilePage() {
   const { id } = useParams();
-  const [user, setUser] = useState({});
-  const [loadingUser, setLoadingUser] = useState(true);
+  const { user, setUser, loadingUser } = useContext(ProfileContext);
   const [loadingPosts, setLoadingPosts] = useState(true);
 
   const { profileButtons } = useButtons(id);
 
   const { posts, setPosts } = useContext(PostsContext);
-
-  const fetchUser = async () => {
-    const response = await getUser(id);
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const userData = await response.json();
-    setUser(userData);
-    setLoadingUser(false);
-  };
 
   const fetchPosts = async () => {
     const response = await getPosts(id);
@@ -46,7 +34,6 @@ export default function ProfilePage() {
   };
 
   useEffect(() => {
-    fetchUser();
     fetchPosts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);

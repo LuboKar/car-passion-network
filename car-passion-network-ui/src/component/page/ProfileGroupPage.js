@@ -1,20 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Navbar from "../pageUtils/navbar/Navbar";
 import VerticalNavbar from "../pageUtils/navbar/VerticalNavbar";
 import RightVerticalNabvar from "../pageUtils/navbar/RightVerticalNavbar";
 import { useParams } from "react-router-dom";
 import Profile from "../pageUtils/user/Profile";
-import { getUser } from "../service/UserService";
 import Groups from "../group/Groups";
 import { getGroupsByAdmin } from "../service/GroupService";
 import { getParticipatingGroups } from "../service/GroupService";
 import { getOtherGroups } from "../service/GroupService";
 import useButtons from "../button/ProfileButtons";
+import { ProfileContext } from "../context/ProfileProvider";
 
 export default function ProfileGroupPage() {
   const { id } = useParams();
-  const [user, setUser] = useState({});
-  const [loadingUser, setLoadingUser] = useState(true);
+  const { user, setUser, loadingUser } = useContext(ProfileContext);
   const [userAdminGroups, setUserAdminGroups] = useState([]);
   const [loadingAdminGroups, setLoadingAdminGroups] = useState(true);
   const [participatingGroups, setParticipatingGroups] = useState([]);
@@ -24,18 +23,6 @@ export default function ProfileGroupPage() {
   const [loadingOtherGroups, setLoadingOtherGroups] = useState(true);
 
   const { profileButtons } = useButtons(id);
-
-  const fetchUser = async () => {
-    const response = await getUser(id);
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const userData = await response.json();
-    setUser(userData);
-    setLoadingUser(false);
-  };
 
   const fetchAdminGroups = async () => {
     const response = await getGroupsByAdmin(id);
@@ -74,7 +61,6 @@ export default function ProfileGroupPage() {
   };
 
   useEffect(() => {
-    fetchUser();
     fetchAdminGroups();
     fetchParticipatingGroups();
     fetchOtherGroups();
