@@ -16,11 +16,8 @@ import friendIcon from "../../images/friendIcon.png";
 import Friends from "../pageUtils/friends/Friends";
 import { getFriends } from "../service/UserService";
 import FriendsHeader from "../pageUtils/friends/FriendsHeader";
-import groups from "../../images/groups.png";
-import Groups from "../group/Groups";
-import { getGroupsByAdmin } from "../service/GroupService";
-import { getOtherGroups } from "../service/GroupService";
-import { getParticipatingGroups } from "../service/GroupService";
+import groupsIcon from "../../images/groups.png";
+import useNavigation from "../service/NavigateService";
 
 export default function ProfilePage() {
   const { id } = useParams();
@@ -28,14 +25,13 @@ export default function ProfilePage() {
   const [userInformation, setUserInformation] = useState(false);
   const [viewPosts, setViewPosts] = useState(true);
   const [viewFriends, setViewFriends] = useState(false);
-  const [viewGroups, setViewGroups] = useState(false);
+  const [viewGroups] = useState(false);
   const [loadingUser, setLoadingUser] = useState(true);
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [friends, setFriends] = useState([]);
   const [loadingFriends, setLoadingFriends] = useState(true);
-  const [userAdminGroups, setUserAdminGroups] = useState([]);
-  const [participatingGroups, setParticipatingGroups] = useState([]);
-  const [otherGroups, setOtherGroups] = useState([]);
+
+  const { navigateToProfileGroupPage } = useNavigation();
 
   const { posts, setPosts } = useContext(PostsContext);
 
@@ -75,47 +71,11 @@ export default function ProfilePage() {
     setLoadingFriends(false);
   };
 
-  const fetchAdminGroups = async () => {
-    const response = await getGroupsByAdmin(id);
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const groupData = await response.json();
-    setUserAdminGroups(groupData);
-  };
-
-  const fetchOtherGroups = async () => {
-    const response = await getOtherGroups(id);
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const groupData = await response.json();
-    setOtherGroups(groupData);
-  };
-
-  const fetchParticipatingGroups = async () => {
-    const response = await getParticipatingGroups(id);
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const groupData = await response.json();
-    setParticipatingGroups(groupData);
-  };
-
   useEffect(() => {
     fetchUser();
     fetchPosts();
     togglePosts();
     fetchFriends();
-    fetchAdminGroups();
-    fetchOtherGroups();
-    fetchParticipatingGroups();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
@@ -123,7 +83,6 @@ export default function ProfilePage() {
     setViewPosts(false);
     setUserInformation(false);
     setViewFriends(false);
-    setViewGroups(false);
   };
 
   const toggleInformation = () => {
@@ -143,7 +102,7 @@ export default function ProfilePage() {
 
   const toggleGroups = () => {
     disbleAllButtons();
-    setViewGroups(true);
+    navigateToProfileGroupPage(id);
   };
 
   const topButtons = [
@@ -167,7 +126,7 @@ export default function ProfilePage() {
     },
     {
       label: "Groups",
-      icon: groups,
+      icon: groupsIcon,
       onClick: toggleGroups,
       isVisible: viewGroups,
     },
@@ -198,17 +157,6 @@ export default function ProfilePage() {
       )}
       {!loadingFriends && friends.length < 1 && viewFriends && (
         <FriendsHeader />
-      )}
-
-      {viewGroups && (
-        <Groups
-          userId={user.id}
-          userAdminGroups={userAdminGroups}
-          setUserAdminGroups={setUserAdminGroups}
-          otherGroups={otherGroups}
-          participatingGroups={participatingGroups}
-          setParticipatingGroups={setParticipatingGroups}
-        />
       )}
     </div>
   );

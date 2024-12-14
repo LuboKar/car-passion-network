@@ -34,12 +34,19 @@ const useNavigation = () => {
     } else navigate("/");
   };
 
+  const navigateToProfileGroupPage = (id) => {
+    if (isAuthenticated()) {
+      navigate(`/${id}/groups`);
+    } else navigate("/");
+  };
+
   return {
     navigateToProfile,
     navigateToPostPage,
     navigateToDashboardPage,
     navigateToSettingsPage,
     navigateToGroupPage,
+    navigateToProfileGroupPage,
   };
 };
 
