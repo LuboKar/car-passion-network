@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import Group from "./Group";
 import "./CreatedGroups.css";
+import { ProfileGroupsContext } from "../context/ProfileGroupsProvider";
 
-export default function CreatedGroups({ userAdminGroups, setUserAdminGroups }) {
+export default function CreatedGroups() {
+  const { userAdminGroups, setUserAdminGroups } =
+    useContext(ProfileGroupsContext);
+
   return (
     <div className="created-groups-container">
       {userAdminGroups.map((group, index) => (

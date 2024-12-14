@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./ParticipatingGroups.css";
 import Group from "./Group";
+import { ProfileGroupsContext } from "../context/ProfileGroupsProvider";
 
-export default function ParticipatingGroups({
-  participatingGroups,
-  setParticipatingGroups,
-}) {
+export default function ParticipatingGroups() {
+  const { participatingGroups, setParticipatingGroups } =
+    useContext(ProfileGroupsContext);
+
   return (
     <div className="participating-groups-container">
       {participatingGroups.map((group, index) => (

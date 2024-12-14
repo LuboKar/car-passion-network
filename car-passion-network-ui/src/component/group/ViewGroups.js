@@ -11,39 +11,21 @@ export default function ViewGroups() {
   const { profileGroupButtons, viewCreated, viewParticipating, viewOthers } =
     useProfileGroupButtons();
 
-  const {
-    userAdminGroups,
-    setUserAdminGroups,
-    loadingAdminGroups,
-    participatingGroups,
-    setParticipatingGroups,
-    loadingParticipatingGroups,
-    otherGroups,
-    loadingOtherGroups,
-  } = useContext(ProfileGroupsContext);
+  const { loadingAdminGroups, loadingParticipatingGroups, loadingOtherGroups } =
+    useContext(ProfileGroupsContext);
 
   return (
     <div className="view-groups-container">
       <GroupButtons groupButtons={profileGroupButtons} />
       <div className="view-groups-border"></div>
 
-      {!loadingAdminGroups && viewCreated && (
-        <CreatedGroups
-          userAdminGroups={userAdminGroups}
-          setUserAdminGroups={setUserAdminGroups}
-        />
-      )}
+      {!loadingAdminGroups && viewCreated && <CreatedGroups />}
 
       {!loadingParticipatingGroups && viewParticipating && (
-        <ParticipatingGroups
-          participatingGroups={participatingGroups}
-          setParticipatingGroups={setParticipatingGroups}
-        />
+        <ParticipatingGroups />
       )}
 
-      {!loadingOtherGroups && viewOthers && (
-        <OtherGroups otherGroups={otherGroups} />
-      )}
+      {!loadingOtherGroups && viewOthers && <OtherGroups />}
     </div>
   );
 }
