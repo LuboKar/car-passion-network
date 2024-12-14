@@ -9,24 +9,15 @@ import { getUser } from "../service/UserService";
 import { getPosts } from "../service/PostService";
 import ProfilePageHeader from "../pageUtils/user/ProfilePageHeader";
 import { PostsContext } from "../context/PostsProvider";
-import infoIcon from "../../images/info.png";
-import postIcon from "../../images/post.png";
-import friendIcon from "../../images/friendIcon.png";
-import groupsIcon from "../../images/groups.png";
-import useNavigation from "../service/NavigateService";
+import useButtons from "../button/ProfileButtons";
 
 export default function ProfilePage() {
   const { id } = useParams();
   const [user, setUser] = useState({});
-  const [viewPosts, setViewPosts] = useState(true);
   const [loadingUser, setLoadingUser] = useState(true);
   const [loadingPosts, setLoadingPosts] = useState(true);
 
-  const {
-    navigateToProfileGroupPage,
-    navigateToProfileFriendsPage,
-    navigateToProfileInformationPage,
-  } = useNavigation();
+  const { profileButtons } = useButtons(id);
 
   const { posts, setPosts } = useContext(PostsContext);
 
@@ -57,65 +48,20 @@ export default function ProfilePage() {
   useEffect(() => {
     fetchUser();
     fetchPosts();
-    togglePosts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
-
-  const toggleInformation = () => {
-    navigateToProfileInformationPage(id);
-  };
-
-  const togglePosts = () => {
-    setViewPosts(true);
-  };
-
-  const toggleFriends = () => {
-    navigateToProfileFriendsPage(id);
-  };
-
-  const toggleGroups = () => {
-    navigateToProfileGroupPage(id);
-  };
-
-  const topButtons = [
-    {
-      label: "Posts",
-      icon: postIcon,
-      onClick: togglePosts,
-      isVisible: viewPosts,
-    },
-    {
-      label: "Information",
-      icon: infoIcon,
-      onClick: toggleInformation,
-    },
-    {
-      label: "Friends",
-      icon: friendIcon,
-      onClick: toggleFriends,
-    },
-    {
-      label: "Groups",
-      icon: groupsIcon,
-      onClick: toggleGroups,
-    },
-  ];
 
   return (
     <div className="profile-page-container">
       <Navbar />
 
-      <VerticalNavbar topButtons={topButtons} />
+      <VerticalNavbar topButtons={profileButtons} />
       <RightVerticalNabvar />
 
-      {!loadingUser && !loadingPosts && (
-        <Profile user={user} setUser={setUser} />
-      )}
+      {!loadingUser && <Profile user={user} setUser={setUser} />}
 
-      {!loadingUser && !loadingPosts && viewPosts && (
-        <Posts ownerId={user.id} />
-      )}
-      {posts.length < 1 && viewPosts && !loadingUser && !loadingPosts && (
+      {!loadingUser && !loadingPosts && <Posts ownerId={user.id} />}
+      {posts.length < 1 && !loadingUser && !loadingPosts && (
         <ProfilePageHeader />
       )}
     </div>

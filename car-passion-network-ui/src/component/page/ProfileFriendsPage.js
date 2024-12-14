@@ -2,17 +2,13 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../pageUtils/navbar/Navbar";
 import VerticalNavbar from "../pageUtils/navbar/VerticalNavbar";
 import RightVerticalNabvar from "../pageUtils/navbar/RightVerticalNavbar";
-import postIcon from "../../images/post.png";
-import infoIcon from "../../images/info.png";
-import friendIcon from "../../images/friendIcon.png";
-import groupsIcon from "../../images/groups.png";
-import useNavigation from "../service/NavigateService";
 import { useParams } from "react-router-dom";
 import { getUser } from "../service/UserService";
 import Profile from "../pageUtils/user/Profile";
 import Friends from "../pageUtils/friends/Friends";
 import FriendsHeader from "../pageUtils/friends/FriendsHeader";
 import { getFriends } from "../service/UserService";
+import useButtons from "../button/ProfileButtons";
 
 export default function ProfileFriendsPage() {
   const { id } = useParams();
@@ -22,11 +18,7 @@ export default function ProfileFriendsPage() {
   const [friends, setFriends] = useState([]);
   const [loadingFriends, setLoadingFriends] = useState(true);
 
-  const {
-    navigateToProfile,
-    navigateToProfileGroupPage,
-    navigateToProfileInformationPage,
-  } = useNavigation();
+  const { profileButtons } = useButtons(id);
 
   const fetchUser = async () => {
     const response = await getUser(id);
@@ -58,46 +50,11 @@ export default function ProfileFriendsPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  const togglePosts = () => {
-    navigateToProfile(id);
-  };
-
-  const toggleInformation = () => {
-    navigateToProfileInformationPage(id);
-  };
-
-  const toggleGroups = () => {
-    navigateToProfileGroupPage(id);
-  };
-
-  const topButtons = [
-    {
-      label: "Posts",
-      icon: postIcon,
-      onClick: togglePosts,
-    },
-    {
-      label: "Information",
-      icon: infoIcon,
-      onClick: toggleInformation,
-    },
-    {
-      label: "Friends",
-      icon: friendIcon,
-      isVisible: viewFriends,
-    },
-    {
-      label: "Groups",
-      icon: groupsIcon,
-      onClick: toggleGroups,
-    },
-  ];
-
   return (
     <div className="profile-friends-page-conteiner">
       <Navbar />
 
-      <VerticalNavbar topButtons={topButtons} />
+      <VerticalNavbar topButtons={profileButtons} />
       <RightVerticalNabvar />
 
       {!loadingUser && <Profile user={user} setUser={setUser} />}
