@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import "./Groups.css";
 import CreateGroup from "./CreateGroup";
 import { getId } from "../service/TokenService";
