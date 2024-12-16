@@ -14,6 +14,7 @@ import ProfileFriendsPage from "../page/ProfileFriendsPage";
 import ProfileInformationPage from "../page/ProfileInformationPage";
 import { ProfileProvider } from "../context/ProfileProvider";
 import { ProfileFriendsProvider } from "../context/ProfileFriendsProvider";
+import GroupsFeedPage from "../page/GroupsFeedPage";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
         <ProtectedRoute element={DashboardPage} />
       </PostsProvider>
     ),
+  },
+  {
+    path: "/groups/feed",
+    element: <ProtectedRoute element={GroupsFeedPage} />,
   },
   {
     path: "/:id",

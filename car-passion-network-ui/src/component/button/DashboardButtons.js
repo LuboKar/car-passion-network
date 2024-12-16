@@ -1,24 +1,16 @@
-import { useState } from "react";
 import feedIcon from "../../images/feed.png";
 import groupIcon from "../../images/groups.png";
+import useNavigation from "../service/NavigateService";
 
 const useDashboardButtons = () => {
-  const [viewFeed, setViewFeed] = useState(true);
-  const [viewGroups, setViewGroups] = useState(false);
-
-  const disbleAllButtons = () => {
-    setViewFeed(false);
-    setViewGroups(false);
-  };
+  const { navigateToDashboardPage, navigateToGroupsFeedPage } = useNavigation();
 
   const toggleFeed = () => {
-    disbleAllButtons();
-    setViewFeed(true);
+    navigateToDashboardPage();
   };
 
   const toggleGroups = () => {
-    disbleAllButtons();
-    setViewGroups(true);
+    navigateToGroupsFeedPage();
   };
 
   const dashboardButtons = [
@@ -26,16 +18,16 @@ const useDashboardButtons = () => {
       label: "Feed",
       icon: feedIcon,
       onClick: toggleFeed,
-      isVisible: viewFeed,
+      isVisible: false,
     },
     {
       label: "Groups",
       icon: groupIcon,
       onClick: toggleGroups,
-      isVisible: viewGroups,
+      isVisible: false,
     },
   ];
-  return { dashboardButtons, viewFeed, viewGroups };
+  return { dashboardButtons };
 };
 
 export default useDashboardButtons;

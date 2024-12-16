@@ -7,14 +7,14 @@ import DashboardHeader from "../pageUtils/dashboard/DashboardHeader.js";
 import { getId } from "../service/TokenService.js";
 import { PostsContext } from "../context/PostsProvider.js";
 import VerticalNavbar from "../pageUtils/navbar/VerticalNavbar.js";
-import Groups from "../group/Groups.js";
 import useDashboardButtons from "../button/DashboardButtons.js";
 
 export default function DashboardPage() {
   const [loadingPosts, setLoadingPosts] = useState(true);
   const currentUserId = getId();
 
-  const { dashboardButtons, viewFeed, viewGroups } = useDashboardButtons();
+  const { dashboardButtons } = useDashboardButtons();
+  dashboardButtons[0].isVisible = true;
 
   const { posts, setPosts } = useContext(PostsContext);
 
@@ -41,19 +41,13 @@ export default function DashboardPage() {
 
       <VerticalNavbar topButtons={dashboardButtons} />
 
-      {!loadingPosts && viewFeed && (
+      {!loadingPosts && (
         <div className="dashboard-posts-container">
           <Posts ownerId={currentUserId} />
         </div>
       )}
 
       {posts.length < 1 && !loadingPosts && <DashboardHeader />}
-
-      {viewGroups && (
-        <div className="dashboard-groups-container">
-          <Groups userId={currentUserId} />
-        </div>
-      )}
     </div>
   );
 }

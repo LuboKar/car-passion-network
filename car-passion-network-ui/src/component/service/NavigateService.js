@@ -52,6 +52,12 @@ const useNavigation = () => {
     } else navigate("/");
   };
 
+  const navigateToGroupsFeedPage = () => {
+    if (isAuthenticated()) {
+      navigate(`/groups/feed`);
+    } else navigate("/");
+  };
+
   return {
     navigateToProfile,
     navigateToPostPage,
@@ -61,6 +67,7 @@ const useNavigation = () => {
     navigateToProfileGroupPage,
     navigateToProfileFriendsPage,
     navigateToProfileInformationPage,
+    navigateToGroupsFeedPage,
   };
 };
 
