@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import ProtectedHome from "../Authentication/ProtectedHome";
 import ProtectedRoute from "../Authentication/ProtectedRoute";
 import HomePage from "../page/HomePage";
-import DashboardPage from "../page/DashboardPage";
+import FeedPage from "../page/FeedPage";
 import ProfilePage from "../page/ProfilePage";
 import PostPage from "../page/PostPage";
 import { PostsProvider } from "../context/PostsProvider";
@@ -22,10 +22,10 @@ const router = createBrowserRouter([
     element: <ProtectedHome element={HomePage} />,
   },
   {
-    path: "/dashboard",
+    path: "/feed",
     element: (
       <PostsProvider>
-        <ProtectedRoute element={DashboardPage} />
+        <ProtectedRoute element={FeedPage} />
       </PostsProvider>
     ),
   },
@@ -93,7 +93,7 @@ const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <ProtectedRoute element={DashboardPage} />,
+    element: <ProtectedRoute element={FeedPage} />,
   },
 ]);
 

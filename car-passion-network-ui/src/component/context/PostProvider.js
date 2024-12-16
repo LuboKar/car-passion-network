@@ -7,10 +7,10 @@ export const PostProvider = ({ children }) => {
 
   const [post, setPost] = useState(null);
 
-  const { navigateToDashboardPage } = useNavigation();
+  const { navigateToFeedPage } = useNavigation();
 
   const deletePost = () => {
-    navigateToDashboardPage();
+    navigateToFeedPage();
   };
 
   const editPost = (editedPost) => {

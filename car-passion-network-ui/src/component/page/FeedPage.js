@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
 import Navbar from "../pageUtils/navbar/Navbar.js";
-import { getAllPosts } from "../service/PostService";
+import { getAllPosts } from "../service/PostService.js";
 import Posts from "../pageUtils/post/Posts.js";
-import "./DashboardPage.css";
+import "./FeedPage.css";
 import DashboardHeader from "../pageUtils/dashboard/DashboardHeader.js";
 import { getId } from "../service/TokenService.js";
 import { PostsContext } from "../context/PostsProvider.js";
 import VerticalNavbar from "../pageUtils/navbar/VerticalNavbar.js";
 import useDashboardButtons from "../button/DashboardButtons.js";
 
-export default function DashboardPage() {
+export default function FeedPage() {
   const [loadingPosts, setLoadingPosts] = useState(true);
   const currentUserId = getId();
 

@@ -11,7 +11,7 @@ import { uploadGroupPicture } from "../service/GroupService";
 
 export default function GroupProfile({ group, setGroup }) {
   const currentUserId = getId();
-  const { navigateToDashboardPage, navigateToProfile } = useNavigation();
+  const { navigateToFeedPage, navigateToProfile } = useNavigation();
   const fileInputRef = useRef(null);
 
   const handleContainerClick = () => {
@@ -48,7 +48,7 @@ export default function GroupProfile({ group, setGroup }) {
       throw new Error("Network response was not ok");
     }
 
-    navigateToDashboardPage();
+    navigateToFeedPage();
   };
 
   const handleLeaveGroup = async () => {

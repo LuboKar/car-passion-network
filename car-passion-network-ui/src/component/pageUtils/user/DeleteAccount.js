@@ -8,7 +8,7 @@ import { deleteProfilePictureUrl } from "../../service/profilePictureService";
 export default function DeleteAccount({ userId }) {
   const [option, setOption] = useState("");
 
-  const { navigateToDashboardPage, navigateToProfile } = useNavigation();
+  const { navigateToFeedPage, navigateToProfile } = useNavigation();
 
   const handleInputChange = (event) => {
     const { value } = event.target;
@@ -31,7 +31,7 @@ export default function DeleteAccount({ userId }) {
 
     deleteToken();
     deleteProfilePictureUrl();
-    navigateToDashboardPage();
+    navigateToFeedPage();
   };
 
   return (

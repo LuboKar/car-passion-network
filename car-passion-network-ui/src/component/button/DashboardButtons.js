@@ -3,10 +3,10 @@ import groupIcon from "../../images/groups.png";
 import useNavigation from "../service/NavigateService";
 
 const useDashboardButtons = () => {
-  const { navigateToDashboardPage, navigateToGroupsFeedPage } = useNavigation();
+  const { navigateToFeedPage, navigateToGroupsFeedPage } = useNavigation();
 
   const toggleFeed = () => {
-    navigateToDashboardPage();
+    navigateToFeedPage();
   };
 
   const toggleGroups = () => {

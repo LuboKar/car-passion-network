@@ -13,7 +13,7 @@ export default function LoginModal({ toggleModal }) {
 
   const [errors, setErrors] = useState({});
 
-  const { navigateToDashboardPage } = useNavigation();
+  const { navigateToFeedPage } = useNavigation();
 
   const login = async (event) => {
     event.preventDefault();
@@ -36,7 +36,7 @@ export default function LoginModal({ toggleModal }) {
     saveToken(data.token);
     saveProfilePictureUrl(data.profilePicture);
 
-    navigateToDashboardPage();
+    navigateToFeedPage();
   };
 
   const handleInputChange = (event) => {

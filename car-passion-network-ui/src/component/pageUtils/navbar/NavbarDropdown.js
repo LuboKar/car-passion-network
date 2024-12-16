@@ -16,7 +16,7 @@ export default function NavbarDropdown() {
 
   const dropdownRef = useRef(null);
 
-  const { navigateToProfile, navigateToDashboardPage, navigateToSettingsPage } =
+  const { navigateToProfile, navigateToFeedPage, navigateToSettingsPage } =
     useNavigation();
 
   const profilePicture = getProfilePictureUrl();
@@ -46,7 +46,7 @@ export default function NavbarDropdown() {
     }
 
     deleteToken();
-    navigateToDashboardPage();
+    navigateToFeedPage();
   };
 
   return (

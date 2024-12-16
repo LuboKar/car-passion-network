@@ -16,9 +16,9 @@ const useNavigation = () => {
     } else navigate("/");
   };
 
-  const navigateToDashboardPage = () => {
+  const navigateToFeedPage = () => {
     if (isAuthenticated()) {
-      navigate(`/dashboard`);
+      navigate(`/feed`);
     } else navigate("/");
   };
 
@@ -61,7 +61,7 @@ const useNavigation = () => {
   return {
     navigateToProfile,
     navigateToPostPage,
-    navigateToDashboardPage,
+    navigateToFeedPage,
     navigateToSettingsPage,
     navigateToGroupPage,
     navigateToProfileGroupPage,
