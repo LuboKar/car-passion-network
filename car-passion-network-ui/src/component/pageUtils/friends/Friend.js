@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Friend.css";
 import useNavigation from "../../service/NavigateService";
 import { getId } from "../../service/TokenService";
@@ -6,10 +6,15 @@ import { removeFriend } from "../../service/UserService";
 import { addFriend } from "../../service/UserService";
 import ProfilePicture from "../user/ProfilePicture";
 import FriendActionButton from "../user/FriendActionButton";
+import { useParams } from "react-router-dom";
+import { ProfileFriendsContext } from "../../context/ProfileFriendsProvider";
 
-export default function Friend({ friend, index, userId, setFriends }) {
+export default function Friend({ friend, index }) {
+  const { id } = useParams();
   const { navigateToProfile } = useNavigation();
   const currentUserId = getId();
+
+  const { setFriends } = useContext(ProfileFriendsContext);
 
   const handleRemoveFriend = async () => {
     const response = await removeFriend(friend.id);
@@ -56,7 +61,7 @@ export default function Friend({ friend, index, userId, setFriends }) {
         {friend.firstName} {friend.lastName}
       </label>
 
-      {userId === currentUserId && (
+      {id === currentUserId && (
         <div className="friend-remove-friend-button">
           <FriendActionButton
             buttonText="Remove Friend"
@@ -65,7 +70,7 @@ export default function Friend({ friend, index, userId, setFriends }) {
         </div>
       )}
 
-      {userId !== currentUserId &&
+      {id !== currentUserId &&
         !friend.friend &&
         friend.id !== currentUserId && (
           <div className="friend-add-friend-button">

@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./Friends.css";
 import Friend from "./Friend";
-import searchIcon from "../../../images/search.png";
 import SearchBar from "../navbar/SearchBar";
+import FriendsHeader from "./FriendsHeader.js";
+import { ProfileFriendsContext } from "../../context/ProfileFriendsProvider.js";
 
-export default function Friends({ friends, setFriends, userId }) {
+export default function Friends() {
+  const { friends } = useContext(ProfileFriendsContext);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredFriends, setFilteredFriends] = useState(friends);
 
@@ -33,12 +35,9 @@ export default function Friends({ friends, setFriends, userId }) {
       )}
 
       {filteredFriends.map((friend, index) => (
-        <Friend
-          friend={friend}
-          index={index}
-          userId={userId}
-          setFriends={setFriends}
-        />
+        <div className="friends-friend">
+          <Friend friend={friend} index={index} />
+        </div>
       ))}
 
       {filteredFriends.length < 1 && friends.length > 0 && (
@@ -46,6 +45,8 @@ export default function Friends({ friends, setFriends, userId }) {
           No results for: {searchTerm}
         </label>
       )}
+
+      {friends.length < 1 && <FriendsHeader />}
     </div>
   );
 }
