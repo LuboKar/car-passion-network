@@ -58,7 +58,7 @@ public class CommentService {
     Post post = postService.getPost(postId);
     Comment commentToDelete = getComment(commentID);
 
-    validateUserCanEditComment(currentUser, post);
+    validateUserCanEditComment(currentUser, post, commentToDelete);
 
     commentRepository.delete(commentToDelete);
   }
@@ -68,7 +68,7 @@ public class CommentService {
     Post post = postService.getPost(postId);
     Comment commentToEdit = getComment(commentId);
 
-    validateUserCanEditComment(currentUser, post);
+    validateUserCanEditComment(currentUser, post, commentToEdit);
 
     commentToEdit.setContent(content);
 
@@ -111,8 +111,10 @@ public class CommentService {
     }
   }
 
-  private void validateUserCanEditComment(User user, Post post) {
-    if (!post.getAuthor().equals(user) && !post.getUser().equals(user)) {
+  private void validateUserCanEditComment(User user, Post post, Comment comment) {
+    if (!post.getAuthor().equals(user)
+        && !post.getUser().equals(user)
+        && !comment.getUser().equals(user)) {
       throw new UserNotAuthorException(user.getId(), post.getId());
     }
   }
