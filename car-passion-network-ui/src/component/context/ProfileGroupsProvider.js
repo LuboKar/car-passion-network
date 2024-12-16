@@ -3,11 +3,13 @@ import { useParams } from "react-router-dom";
 import { getGroupsByAdmin } from "../service/GroupService";
 import { getParticipatingGroups } from "../service/GroupService";
 import { getOtherGroups } from "../service/GroupService";
+import { getId } from "../service/TokenService";
 
 export const ProfileGroupsContext = createContext();
 
 export const ProfileGroupsProvider = ({ children }) => {
   const { id } = useParams();
+  const userId = id || getId();
   const [userAdminGroups, setUserAdminGroups] = useState([]);
   const [loadingAdminGroups, setLoadingAdminGroups] = useState(true);
   const [participatingGroups, setParticipatingGroups] = useState([]);
@@ -17,7 +19,7 @@ export const ProfileGroupsProvider = ({ children }) => {
   const [loadingOtherGroups, setLoadingOtherGroups] = useState(true);
 
   const fetchAdminGroups = async () => {
-    const response = await getGroupsByAdmin(id);
+    const response = await getGroupsByAdmin(userId);
 
     if (!response.ok) {
       throw new Error("Network response was not ok");
@@ -29,7 +31,7 @@ export const ProfileGroupsProvider = ({ children }) => {
   };
 
   const fetchParticipatingGroups = async () => {
-    const response = await getParticipatingGroups(id);
+    const response = await getParticipatingGroups(userId);
 
     if (!response.ok) {
       throw new Error("Network response was not ok");
@@ -41,7 +43,7 @@ export const ProfileGroupsProvider = ({ children }) => {
   };
 
   const fetchOtherGroups = async () => {
-    const response = await getOtherGroups(id);
+    const response = await getOtherGroups(userId);
 
     if (!response.ok) {
       throw new Error("Network response was not ok");
@@ -57,7 +59,7 @@ export const ProfileGroupsProvider = ({ children }) => {
     fetchParticipatingGroups();
     fetchOtherGroups();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [userId]);
 
   return (
     <ProfileGroupsContext.Provider

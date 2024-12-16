@@ -35,7 +35,7 @@ export default function Friends() {
       )}
 
       {filteredFriends.map((friend, index) => (
-        <div className="friends-friend">
+        <div className="friends-friend" key={index}>
           <Friend friend={friend} index={index} />
         </div>
       ))}

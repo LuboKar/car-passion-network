@@ -3,16 +3,14 @@ import "./Groups.css";
 import CreateGroup from "./CreateGroup";
 import { getId } from "../service/TokenService";
 import ViewGroups from "./ViewGroups";
-import { useParams } from "react-router-dom";
 import { ProfileGroupsProvider } from "../context/ProfileGroupsProvider";
 
-export default function Groups() {
-  const { id } = useParams();
+export default function Groups({ userId }) {
   const currentUserId = getId();
 
   return (
     <div className="groups-container">
-      {currentUserId === id && <CreateGroup />}
+      {currentUserId === userId && <CreateGroup />}
 
       <ProfileGroupsProvider>
         <ViewGroups />

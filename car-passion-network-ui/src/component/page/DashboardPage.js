@@ -9,18 +9,12 @@ import { PostsContext } from "../context/PostsProvider.js";
 import VerticalNavbar from "../pageUtils/navbar/VerticalNavbar.js";
 import feedIcon from "../../images/feed.png";
 import groupIcon from "../../images/groups.png";
-import { getGroupsByAdmin } from "../service/GroupService.js";
 import Groups from "../group/Groups.js";
-import { getOtherGroups } from "../service/GroupService.js";
-import { getParticipatingGroups } from "../service/GroupService.js";
 
 export default function DashboardPage() {
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [viewFeed, setViewFeed] = useState(true);
   const [viewGroups, setViewGroups] = useState(false);
-  const [userAdminGroups, setUserAdminGroups] = useState([]);
-  const [participatingGroups, setParticipatingGroups] = useState([]);
-  const [otherGroups, setOtherGroups] = useState([]);
   const currentUserId = getId();
 
   const { posts, setPosts } = useContext(PostsContext);
@@ -37,44 +31,8 @@ export default function DashboardPage() {
     setLoadingPosts(false);
   };
 
-  const fetchAdminGroups = async () => {
-    const response = await getGroupsByAdmin(currentUserId);
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const groupData = await response.json();
-    setUserAdminGroups(groupData);
-  };
-
-  const fetchOtherGroups = async () => {
-    const response = await getOtherGroups(currentUserId);
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const groupData = await response.json();
-    setOtherGroups(groupData);
-  };
-
-  const fetchParticipatingGroups = async () => {
-    const response = await getParticipatingGroups(currentUserId);
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const groupData = await response.json();
-    setParticipatingGroups(groupData);
-  };
-
   useEffect(() => {
     fetchPosts();
-    fetchAdminGroups();
-    fetchOtherGroups();
-    fetchParticipatingGroups();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -100,12 +58,12 @@ export default function DashboardPage() {
       onClick: toggleFeed,
       isVisible: viewFeed,
     },
-    // {
-    //   label: "Groups",
-    //   icon: groupIcon,
-    //   onClick: toggleGroups,
-    //   isVisible: viewGroups,
-    // },
+    {
+      label: "Groups",
+      icon: groupIcon,
+      onClick: toggleGroups,
+      isVisible: viewGroups,
+    },
   ];
 
   return (
@@ -124,13 +82,7 @@ export default function DashboardPage() {
 
       {viewGroups && (
         <div className="dashboard-groups-container">
-          <Groups
-            userId={currentUserId}
-            userAdminGroups={userAdminGroups}
-            setUserAdminGroups={setUserAdminGroups}
-            otherGroups={otherGroups}
-            participatingGroups={participatingGroups}
-          />
+          <Groups userId={currentUserId} />
         </div>
       )}
     </div>

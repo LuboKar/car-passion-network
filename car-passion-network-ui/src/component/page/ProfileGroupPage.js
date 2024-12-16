@@ -24,7 +24,7 @@ export default function ProfileGroupPage() {
 
       {!loadingUser && <Profile />}
 
-      <Groups />
+      <Groups userId={id} />
     </div>
   );
 }
