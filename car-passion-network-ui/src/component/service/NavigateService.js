@@ -34,6 +34,12 @@ const useNavigation = () => {
     } else navigate("/");
   };
 
+  const navigateToGroupMembersPage = (id) => {
+    if (isAuthenticated()) {
+      navigate(`/group/${id}/members`);
+    } else navigate("/");
+  };
+
   const navigateToProfileGroupPage = (id) => {
     if (isAuthenticated()) {
       navigate(`/${id}/groups`);
@@ -68,6 +74,7 @@ const useNavigation = () => {
     navigateToProfileFriendsPage,
     navigateToProfileInformationPage,
     navigateToGroupsFeedPage,
+    navigateToGroupMembersPage,
   };
 };
 
