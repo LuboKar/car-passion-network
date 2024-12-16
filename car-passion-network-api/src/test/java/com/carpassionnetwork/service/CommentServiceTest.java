@@ -200,6 +200,8 @@ public class CommentServiceTest {
 
     post.setUser(secondUser);
     post.setAuthor(secondUser);
+    commentOne.setUser(secondUser);
+
 
     assertThrows(
         UserNotAuthorException.class,
@@ -255,8 +257,10 @@ public class CommentServiceTest {
     when(userService.getCurrentUser()).thenReturn(user);
     when(postService.getPost(post.getId())).thenReturn(post);
     when(commentRepository.findById(commentOne.getId())).thenReturn(Optional.of(commentOne));
+
     post.setUser(secondUser);
     post.setAuthor(secondUser);
+    commentOne.setUser(secondUser);
 
     assertThrows(
         UserNotAuthorException.class,
