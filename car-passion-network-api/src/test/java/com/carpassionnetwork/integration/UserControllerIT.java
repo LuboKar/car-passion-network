@@ -3,6 +3,7 @@ package com.carpassionnetwork.integration;
 import static com.carpassionnetwork.helper.AuthenticationTestHelper.EMAIL;
 import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserTwo;
 import static com.carpassionnetwork.helper.CommentTestHelper.createNewCommentOne;
+import static com.carpassionnetwork.helper.GroupTestHelper.createNewGroupOne;
 import static com.carpassionnetwork.helper.PostTestHelper.*;
 import static com.carpassionnetwork.helper.UserTestHelper.createUserEditRequest;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -14,10 +15,7 @@ import com.carpassionnetwork.exception.FileNotUploadedException;
 import com.carpassionnetwork.exception.InvalidCredentialsException;
 import com.carpassionnetwork.exception.InvalidPasswordException;
 import com.carpassionnetwork.exception.UserNotFoundException;
-import com.carpassionnetwork.model.Comment;
-import com.carpassionnetwork.model.Gender;
-import com.carpassionnetwork.model.Post;
-import com.carpassionnetwork.model.User;
+import com.carpassionnetwork.model.*;
 import com.carpassionnetwork.repository.CommentRepository;
 import com.carpassionnetwork.repository.PostRepository;
 import java.io.IOException;
@@ -38,6 +36,7 @@ public class UserControllerIT extends BaseIT {
   private User secondUser;
   private Post post;
   private Comment comment;
+  private Group group;
 
   @Autowired private PostRepository postRepository;
   @Autowired private CommentRepository commentRepository;
@@ -50,6 +49,7 @@ public class UserControllerIT extends BaseIT {
     secondUser = createUserTwo();
     post = createNewPost();
     comment = createNewCommentOne();
+    group = createNewGroupOne();
   }
 
   @Test
@@ -406,5 +406,34 @@ public class UserControllerIT extends BaseIT {
     savedCurrentUser.setFriends(Set.of(savedSecondUser));
 
     mockMvc.perform(delete("/users/" + savedCurrentUser.getId())).andExpect(status().isNoContent());
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void getAllGroupMembersShouldReturnEmptyList() throws Exception {
+    User savedCurrentUser = createUser(currentUser);
+    group.setAdmin(savedCurrentUser);
+    Group savedGroup = createGroup(group);
+
+    mockMvc
+        .perform(get("/users/group/" + savedGroup.getId() + "/members"))
+        .andExpect(status().isOk())
+        .andExpect(content().json("[]"));
+  }
+
+  @Test
+  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
+  void getGroupMembersSuccessfully() throws Exception {
+    User savedCurrentUser = createUser(currentUser);
+    User savedSecondUser = createUser(secondUser);
+    group.setAdmin(savedCurrentUser);
+    group.getMembers().add(savedSecondUser);
+    Group savedGroup = createGroup(group);
+
+    mockMvc
+        .perform(get("/users/group/" + savedGroup.getId() + "/members"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.length()").value(1))
+        .andExpect(jsonPath("$[0].id").value(savedSecondUser.getId().toString()));
   }
 }

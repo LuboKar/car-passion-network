@@ -2,6 +2,7 @@ package com.carpassionnetwork.service;
 
 import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserOne;
 import static com.carpassionnetwork.helper.AuthenticationTestHelper.createUserTwo;
+import static com.carpassionnetwork.helper.GroupTestHelper.createNewGroupOne;
 import static com.carpassionnetwork.helper.UserTestHelper.createUserEditRequest;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -12,6 +13,7 @@ import com.carpassionnetwork.exception.FileNotUploadedException;
 import com.carpassionnetwork.exception.InvalidCredentialsException;
 import com.carpassionnetwork.exception.InvalidPasswordException;
 import com.carpassionnetwork.exception.UserNotFoundException;
+import com.carpassionnetwork.model.Group;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.UserRepository;
 import java.io.IOException;
@@ -45,6 +47,7 @@ public class UserServiceTest {
   private User user;
   private User secondUser;
   private UserEditRequest userEditRequest;
+  private Group group;
 
   @BeforeEach
   void setUp() {
@@ -52,6 +55,7 @@ public class UserServiceTest {
     userEditRequest = createUserEditRequest();
     secondUser = createUserTwo();
     user.setLikedComments(new HashSet<>());
+    group = createNewGroupOne();
   }
 
   @Test
@@ -306,5 +310,25 @@ public class UserServiceTest {
 
     verify(userRepository, times(1)).findById(user.getId());
     verify(userRepository, times(1)).delete(user);
+  }
+
+  @Test
+  void getAllGroupMembersShouldReturnEmptyList() {
+    when(userRepository.findAllByGroupId(group.getId())).thenReturn(Collections.emptyList());
+
+    List<User> members = userService.getAllGroupMembers(group.getId());
+
+    assertEquals(members.size(), 0);
+    verify(userRepository, times(1)).findAllByGroupId(group.getId());
+  }
+
+  @Test
+  void getAllGroupMembersSuccessfully() {
+    when(userRepository.findAllByGroupId(group.getId())).thenReturn(List.of(secondUser));
+
+    List<User> members = userService.getAllGroupMembers(group.getId());
+
+    assertEquals(members.size(), 1);
+    verify(userRepository, times(1)).findAllByGroupId(group.getId());
   }
 }

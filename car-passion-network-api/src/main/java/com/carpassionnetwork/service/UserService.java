@@ -88,6 +88,10 @@ public class UserService {
     return userRepository.findAllFriendsByUserId(id);
   }
 
+  public List<User> getAllGroupMembers(UUID groupId) {
+    return userRepository.findAllByGroupId(groupId);
+  }
+
   public List<User> findUsersByFullNameStartsWith(String term) {
     Pageable limit = PageRequest.of(0, 6);
 

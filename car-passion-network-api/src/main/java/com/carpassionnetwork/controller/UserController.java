@@ -51,6 +51,12 @@ public class UserController {
         userMapper.toUserResponseList(userService.getAllFriendsByUserId(userId)));
   }
 
+  @GetMapping("/group/{groupId}/members")
+  public ResponseEntity<List<UserResponseDto>> getAllGroupMembers(@PathVariable UUID groupId) {
+    return ResponseEntity.ok(
+        userMapper.toUserResponseList(userService.getAllGroupMembers(groupId)));
+  }
+
   @GetMapping("/findBy/{term}")
   public ResponseEntity<List<UserResponseDto>> findUsersByFullNameStartsWith(
       @PathVariable String term) {
