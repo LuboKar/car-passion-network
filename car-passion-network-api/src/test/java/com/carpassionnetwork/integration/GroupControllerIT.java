@@ -182,8 +182,7 @@ public class GroupControllerIT extends BaseIT {
     mockMvc
         .perform(post("/group/join/" + savedGroup.getId()))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(savedGroup.getId().toString()))
-        .andExpect(jsonPath("$.members[0].id").value(savedCurrentUser.getId().toString()));
+        .andExpect(jsonPath("$.id").value(savedGroup.getId().toString()));
   }
 
   @Test
@@ -218,9 +217,7 @@ public class GroupControllerIT extends BaseIT {
     groupOne.getMembers().add(savedCurrentUser);
     Group savedGroup = createGroup(groupOne);
 
-    mockMvc
-        .perform(post("/group/leave/" + savedGroup.getId()))
-        .andExpect(status().isOk());
+    mockMvc.perform(post("/group/leave/" + savedGroup.getId())).andExpect(status().isOk());
   }
 
   @Test
@@ -255,9 +252,7 @@ public class GroupControllerIT extends BaseIT {
 
     mockMvc
         .perform(post("/group/remove/" + savedGroup.getId() + "/" + savedUser.getId()))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.members").isArray())
-        .andExpect(jsonPath("$.members").isEmpty());
+        .andExpect(status().isOk());
   }
 
   @Test

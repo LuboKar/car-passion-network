@@ -25,8 +25,5 @@ public class GroupResponseDto {
   @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
   private LocalDateTime createdAt;
 
-  private Set<UserResponseDto> members;
-  private List<PostResponseDto> posts = new ArrayList<>();
-
   private boolean isCurrentUserMember;
 }
