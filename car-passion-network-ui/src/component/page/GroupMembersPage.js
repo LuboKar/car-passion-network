@@ -14,7 +14,7 @@ export default function GroupMembersPage() {
   const [groupMembers, setGroupMembers] = useState([]);
   const [loadingGroupMembers, setLoadingGroupMembers] = useState(true);
 
-  const { group, loadingGroup } = useContext(GroupProfileContext);
+  const { loadingGroup } = useContext(GroupProfileContext);
 
   const { groupButtons } = useGroupButtons(id);
   groupButtons[1].isVisible = true;
@@ -47,9 +47,8 @@ export default function GroupMembersPage() {
 
       {!loadingGroup && !loadingGroupMembers && (
         <GroupMembers
-          group={group}
-          setGroupMembers={setGroupMembers}
           groupMembers={groupMembers}
+          setGroupMembers={setGroupMembers}
         />
       )}
     </div>

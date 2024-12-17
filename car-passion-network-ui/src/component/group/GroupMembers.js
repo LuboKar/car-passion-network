@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./GroupMembers.css";
 import GroupMember from "./GroupMember";
 import { removeMember } from "../service/GroupService";
+import { GroupProfileContext } from "../context/GroupProfileProvider";
 
-export default function GroupMembers({ group, setGroupMembers, groupMembers }) {
+export default function GroupMembers({ groupMembers, setGroupMembers }) {
+  const { group } = useContext(GroupProfileContext);
+
   const toggleRemoveMember = async (memberId, index) => {
     const response = await removeMember(group.id, memberId);
 
