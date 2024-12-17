@@ -3,7 +3,7 @@ import "./GroupMembers.css";
 import GroupMember from "./GroupMember";
 import { removeMember } from "../service/GroupService";
 
-export default function GroupMembers({ group, setGroup }) {
+export default function GroupMembers({ group, setGroupMembers, groupMembers }) {
   const toggleRemoveMember = async (memberId, index) => {
     const response = await removeMember(group.id, memberId);
 
@@ -11,9 +11,10 @@ export default function GroupMembers({ group, setGroup }) {
       throw new Error("Network response was not ok");
     }
 
-    const groupData = await response.json();
-
-    setGroup(groupData);
+    setGroupMembers((prevGroupMembers) => [
+      ...prevGroupMembers.slice(0, index),
+      ...prevGroupMembers.slice(index + 1),
+    ]);
   };
 
   return (
@@ -24,7 +25,7 @@ export default function GroupMembers({ group, setGroup }) {
 
       <label className="groups-members-members-label"> Members:</label>
       <div className="groups-members-members-border"></div>
-      {group.members.map((member, index) => (
+      {groupMembers.map((member, index) => (
         <GroupMember
           member={member}
           index={index}

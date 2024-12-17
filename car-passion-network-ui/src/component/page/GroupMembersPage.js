@@ -9,11 +9,14 @@ import { getGroup } from "../service/GroupService";
 import GroupProfile from "../group/GroupProfile";
 import useNavigation from "../service/NavigateService";
 import GroupMembers from "../group/GroupMembers";
+import { getAllGroupMembers } from "../service/UserService";
 
 export default function GroupMembersPage() {
   const { id } = useParams();
   const [group, setGroup] = useState({});
   const [loadingGroup, setLoadingGroup] = useState(true);
+  const [groupMembers, setGroupMembers] = useState([]);
+  const [loadingGroupMembers, setLoadingGroupMembers] = useState(true);
   const [viewMembers] = useState(true);
 
   const { navigateToGroupPage } = useNavigation();
@@ -30,8 +33,21 @@ export default function GroupMembersPage() {
     setLoadingGroup(false);
   };
 
+  const fetchGroupMembers = async () => {
+    const response = await getAllGroupMembers(id);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const membersData = await response.json();
+    setGroupMembers(membersData);
+    setLoadingGroupMembers(false);
+  };
+
   useEffect(() => {
     fetchGroup();
+    fetchGroupMembers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
@@ -61,7 +77,13 @@ export default function GroupMembersPage() {
 
       {!loadingGroup && <GroupProfile group={group} setGroup={setGroup} />}
 
-      {!loadingGroup && <GroupMembers group={group} setGroup={setGroup} />}
+      {!loadingGroup && !loadingGroupMembers && (
+        <GroupMembers
+          group={group}
+          setGroupMembers={setGroupMembers}
+          groupMembers={groupMembers}
+        />
+      )}
     </div>
   );
 }
