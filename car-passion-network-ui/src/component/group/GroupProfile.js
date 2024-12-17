@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import "./GroupProfile.css";
 import GroupProfilePicture from "./GroupProfilePicture";
 import GroupMenu from "./GroupMenu";
@@ -8,9 +8,11 @@ import { leaveGroup } from "../service/GroupService";
 import { getId } from "../service/TokenService";
 import { joinGroup } from "../service/GroupService";
 import { uploadGroupPicture } from "../service/GroupService";
+import { GroupProfileContext } from "../context/GroupProfileProvider";
 
-export default function GroupProfile({ group, setGroup }) {
+export default function GroupProfile() {
   const currentUserId = getId();
+  const { group, setGroup } = useContext(GroupProfileContext);
   const { navigateToFeedPage, navigateToProfile } = useNavigation();
   const fileInputRef = useRef(null);
 

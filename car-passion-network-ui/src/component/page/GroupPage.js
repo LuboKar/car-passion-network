@@ -21,7 +21,7 @@ export default function GroupPage() {
 
   const { setPosts } = useContext(PostsContext);
 
-  const { group, setGroup, loadingGroup } = useContext(GroupProfileContext);
+  const { group, loadingGroup } = useContext(GroupProfileContext);
 
   const fetchPosts = async () => {
     const response = await getGroupPosts(id);
@@ -65,7 +65,7 @@ export default function GroupPage() {
       <VerticalNavbar topButtons={topButtons} />
       <RightVerticalNabvar />
 
-      {!loadingGroup && <GroupProfile group={group} setGroup={setGroup} />}
+      {!loadingGroup && <GroupProfile />}
 
       {!loadingGroup && !loadingPosts && viewPosts && (
         <Posts groupId={group.id} />

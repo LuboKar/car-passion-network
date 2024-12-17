@@ -17,7 +17,7 @@ export default function GroupMembersPage() {
   const [loadingGroupMembers, setLoadingGroupMembers] = useState(true);
   const [viewMembers] = useState(true);
 
-  const { group, setGroup, loadingGroup } = useContext(GroupProfileContext);
+  const { group, loadingGroup } = useContext(GroupProfileContext);
 
   const { navigateToGroupPage } = useNavigation();
 
@@ -62,7 +62,7 @@ export default function GroupMembersPage() {
       <VerticalNavbar topButtons={topButtons} />
       <RightVerticalNabvar />
 
-      {!loadingGroup && <GroupProfile group={group} setGroup={setGroup} />}
+      {!loadingGroup && <GroupProfile />}
 
       {!loadingGroup && !loadingGroupMembers && (
         <GroupMembers
