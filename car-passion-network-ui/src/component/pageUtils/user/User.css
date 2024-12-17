@@ -2,34 +2,25 @@
     display: flex;
     align-items: center;
     flex-direction: row;
-    margin-top: 2%;
-    margin-left: 3%;
-    margin-right: 3%;
-    margin-bottom: 2%;
-    border-radius: 10px;
-}
-
-.user-container:hover{
-    cursor: pointer;
-    text-decoration: underline;
-    background-color: #f0f0f0;
+    width: 100%;
+    height: 100%;
 }
 
 .user-picture-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 35px; 
-    height: 35px;
-    margin: 2% 2% 2% 2%;
-    border-radius: 12px;
+    height: 70%;
+    aspect-ratio: 1 / 1;
+    margin-left: 4%;
+    border-radius: 30%;
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .user-name{
     padding-left: 3%;
+    font-size: 120%;
 }
 
 .user-name:hover{
     cursor: pointer;
+    text-decoration: underline;
 }

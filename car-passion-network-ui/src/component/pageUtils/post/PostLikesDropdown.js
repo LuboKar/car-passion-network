@@ -19,11 +19,13 @@ export default function PostLikesDropdown({ post, clickedLikes }) {
 
       <div className="post-likes-likes-dropdown">
         {post.likes.map((user, index) => (
-          <User
-            user={user}
-            index={index}
-            navigateToProfile={() => navigateToProfile(user.id)}
-          />
+          <div
+            key={index}
+            className="post-likes-likes-dropdown-user"
+            onClick={() => navigateToProfile(user.id)}
+          >
+            <User user={user} />
+          </div>
         ))}
       </div>
     </div>

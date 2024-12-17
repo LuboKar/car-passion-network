@@ -2,14 +2,17 @@ import React from "react";
 import "./User.css";
 import ProfilePicture from "./ProfilePicture";
 
-export default function User({ user, index, navigateToProfile }) {
+export default function User({ user, navigateToProfile }) {
   return (
-    <div key={index} className="user-container" onClick={navigateToProfile}>
+    <div className="user-container">
       <div className="user-picture-container">
-        <ProfilePicture profilePicture={user.profilePicture} />
+        <ProfilePicture
+          profilePicture={user.profilePicture}
+          navigateToProfile={navigateToProfile}
+        />
       </div>
 
-      <label key={index} className="user-name">
+      <label className="user-name" onClick={navigateToProfile}>
         {user.firstName} {user.lastName}
       </label>
     </div>

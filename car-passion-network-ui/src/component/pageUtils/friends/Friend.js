@@ -8,6 +8,7 @@ import ProfilePicture from "../user/ProfilePicture";
 import FriendActionButton from "../user/FriendActionButton";
 import { useParams } from "react-router-dom";
 import { ProfileFriendsContext } from "../../context/ProfileFriendsProvider";
+import User from "../user/User";
 
 export default function Friend({ friend, index }) {
   const { id } = useParams();
@@ -47,19 +48,10 @@ export default function Friend({ friend, index }) {
 
   return (
     <div key={index} className="friend-container">
-      <div className="friend-profile-picture-container">
-        <ProfilePicture
-          profilePicture={friend.profilePicture}
-          navigateToProfile={() => navigateToProfile(friend.id)}
-        />
-      </div>
-
-      <label
-        className="friend-name"
-        onClick={() => navigateToProfile(friend.id)}
-      >
-        {friend.firstName} {friend.lastName}
-      </label>
+      <User
+        user={friend}
+        navigateToProfile={() => navigateToProfile(friend.id)}
+      />
 
       {id === currentUserId && (
         <div className="friend-remove-friend-button">
@@ -73,7 +65,7 @@ export default function Friend({ friend, index }) {
       {id !== currentUserId &&
         !friend.friend &&
         friend.id !== currentUserId && (
-          <div className="friend-add-friend-button">
+          <div className="friend-action-button">
             <FriendActionButton
               buttonText="Add Friend"
               handleAction={handleAddFriend}

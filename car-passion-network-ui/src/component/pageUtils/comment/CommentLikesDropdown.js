@@ -19,11 +19,13 @@ export default function CommentLikesDropdown({ comment, clickedLikes }) {
 
       <div className="comment-likes-dropdown">
         {comment.likes.map((user, index) => (
-          <User
-            user={user}
-            index={index}
-            navigateToProfile={() => navigateToProfile(user.id)}
-          />
+          <div
+            key={index}
+            className="comment-likes-dropdown-user"
+            onClick={() => navigateToProfile(user.id)}
+          >
+            <User user={user} />
+          </div>
         ))}
       </div>
     </div>

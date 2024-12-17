@@ -82,11 +82,13 @@ export default function NavbarSearch() {
       {foundUsersDropdown && (
         <div className="navbar-search-dropdown-container">
           {foundUsers.map((user, index) => (
-            <User
-              user={user}
-              index={index}
-              navigateToProfile={() => navigateToUserProfile(user.id)}
-            />
+            <div
+              key={index}
+              className="navbar-search-dropdown-user"
+              onClick={() => navigateToUserProfile(user.id)}
+            >
+              <User user={user} />
+            </div>
           ))}
 
           {foundUsers.length < 1 && (

@@ -35,3 +35,18 @@
 .comment-likes-dropdown{
     overflow: auto;
 }
+
+.comment-likes-dropdown-user{
+    margin-top: 2%;
+    margin-left: 3%;
+    margin-right: 3%;
+    margin-bottom: 2%;
+    border-radius: 10px;
+    height: 45px;
+}
+
+.comment-likes-dropdown-user:hover{
+    cursor: pointer;
+    text-decoration: underline;
+    background-color: #f0f0f0;
+}

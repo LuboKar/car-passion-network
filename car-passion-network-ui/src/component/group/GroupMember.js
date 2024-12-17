@@ -4,6 +4,7 @@ import ProfilePicture from "../pageUtils/user/ProfilePicture";
 import useNavigation from "../service/NavigateService";
 import RemoveGroupMember from "./RemoveGroupMember";
 import { getId } from "../service/TokenService";
+import User from "../pageUtils/user/User";
 
 export default function GroupMember({
   member,
@@ -16,19 +17,10 @@ export default function GroupMember({
 
   return (
     <div className="group-member-container">
-      <div className="group-member-profile-picture-container">
-        <ProfilePicture
-          profilePicture={member.profilePicture}
-          navigateToProfile={() => navigateToProfile(member.id)}
-        />
-      </div>
-
-      <label
-        className="group-member-name-label"
-        onClick={() => navigateToProfile(member.id)}
-      >
-        {member.firstName} {member.lastName}
-      </label>
+      <User
+        user={member}
+        navigateToProfile={() => navigateToProfile(member.id)}
+      />
 
       {currentUserId === adminId && (
         <RemoveGroupMember
