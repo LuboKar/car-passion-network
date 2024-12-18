@@ -49,7 +49,8 @@ export default function CommentMenu({ comment, post }) {
           )}
 
           {(currentUserId === comment.user.id ||
-            (post.user !== null && currentUserId === post.user.id)) && (
+            (post.user !== null && currentUserId === post.user.id) ||
+            post.author.id === currentUserId) && (
             <div className="comment-menu-option" onClick={deleteCommentById}>
               <img
                 src={deleteIcon}
