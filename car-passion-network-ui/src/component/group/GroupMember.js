@@ -1,18 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./GroupMember.css";
-import ProfilePicture from "../pageUtils/user/ProfilePicture";
 import useNavigation from "../service/NavigateService";
-import RemoveGroupMember from "./RemoveGroupMember";
 import { getId } from "../service/TokenService";
 import User from "../pageUtils/user/User";
+import { GroupMembersContext } from "../context/GroupMembersProvider";
+import { GroupProfileContext } from "../context/GroupProfileProvider";
+import UserActionButton from "../pageUtils/user/UserActionButton";
 
-export default function GroupMember({
-  member,
-  index,
-  adminId,
-  toggleRemoveMember,
-}) {
+export default function GroupMember({ member, index }) {
   const { navigateToProfile } = useNavigation();
+  const { handleRemoveMember } = useContext(GroupMembersContext);
+  const { group } = useContext(GroupProfileContext);
   const currentUserId = getId();
 
   return (
@@ -22,11 +20,10 @@ export default function GroupMember({
         navigateToProfile={() => navigateToProfile(member.id)}
       />
 
-      {currentUserId === adminId && (
-        <RemoveGroupMember
-          member={member}
-          index={index}
-          toggleRemoveMember={toggleRemoveMember}
+      {currentUserId === group.admin.id && group.admin !== member && (
+        <UserActionButton
+          buttonText="Remove"
+          handleAction={() => handleRemoveMember(group.id, member.id, index)}
         />
       )}
     </div>

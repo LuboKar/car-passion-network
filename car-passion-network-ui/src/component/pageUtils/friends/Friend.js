@@ -4,8 +4,7 @@ import useNavigation from "../../service/NavigateService";
 import { getId } from "../../service/TokenService";
 import { removeFriend } from "../../service/UserService";
 import { addFriend } from "../../service/UserService";
-import ProfilePicture from "../user/ProfilePicture";
-import FriendActionButton from "../user/FriendActionButton";
+import UserActionButton from "../user/UserActionButton";
 import { useParams } from "react-router-dom";
 import { ProfileFriendsContext } from "../../context/ProfileFriendsProvider";
 import User from "../user/User";
@@ -55,7 +54,7 @@ export default function Friend({ friend, index }) {
 
       {id === currentUserId && (
         <div className="friend-remove-friend-button">
-          <FriendActionButton
+          <UserActionButton
             buttonText="Remove Friend"
             handleAction={handleRemoveFriend}
           />
@@ -66,7 +65,7 @@ export default function Friend({ friend, index }) {
         !friend.friend &&
         friend.id !== currentUserId && (
           <div className="friend-action-button">
-            <FriendActionButton
+            <UserActionButton
               buttonText="Add Friend"
               handleAction={handleAddFriend}
             />

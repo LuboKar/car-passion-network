@@ -1,7 +1,7 @@
 import React from "react";
-import "./FriendActionButton.css";
+import "./UserActionButton.css";
 
-export default function FriendActionButton({ buttonText, handleAction }) {
+export default function UserActionButton({ buttonText, handleAction }) {
   return (
     <div className="friend-action-button-container">
       <button className="friend-action-button" onClick={handleAction}>

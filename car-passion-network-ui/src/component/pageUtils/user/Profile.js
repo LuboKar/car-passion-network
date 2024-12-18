@@ -3,7 +3,7 @@ import "./Profile.css";
 import { uploadProfilePicture } from "../../service/UserService";
 import { getId } from "../../service/TokenService";
 import { saveProfilePictureUrl } from "../../service/profilePictureService";
-import FriendActionButton from "./FriendActionButton";
+import UserActionButton from "./UserActionButton";
 import ProfilePicture from "./ProfilePicture";
 import { ProfileContext } from "../../context/ProfileProvider";
 
@@ -61,12 +61,12 @@ export default function Profile() {
       {currentUserId !== user.id && (
         <div className="profile-friend-request">
           {user.friend ? (
-            <FriendActionButton
+            <UserActionButton
               buttonText="Remove Friend"
               handleAction={handleRemoveFriend}
             />
           ) : (
-            <FriendActionButton
+            <UserActionButton
               buttonText="Add Friend"
               handleAction={handleAddFriend}
             />

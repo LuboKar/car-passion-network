@@ -1,24 +1,12 @@
 import React, { useContext } from "react";
 import "./GroupMembers.css";
 import GroupMember from "./GroupMember";
-import { removeMember } from "../service/GroupService";
 import { GroupProfileContext } from "../context/GroupProfileProvider";
+import { GroupMembersContext } from "../context/GroupMembersProvider";
 
-export default function GroupMembers({ groupMembers, setGroupMembers }) {
+export default function GroupMembers() {
   const { group } = useContext(GroupProfileContext);
-
-  const toggleRemoveMember = async (memberId, index) => {
-    const response = await removeMember(group.id, memberId);
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    setGroupMembers((prevGroupMembers) => [
-      ...prevGroupMembers.slice(0, index),
-      ...prevGroupMembers.slice(index + 1),
-    ]);
-  };
+  const { groupMembers } = useContext(GroupMembersContext);
 
   return (
     <div className="group-members-container">
@@ -29,12 +17,7 @@ export default function GroupMembers({ groupMembers, setGroupMembers }) {
       <label className="groups-members-members-label"> Members:</label>
       <div className="groups-members-members-border"></div>
       {groupMembers.map((member, index) => (
-        <GroupMember
-          member={member}
-          index={index}
-          adminId={group.admin.id}
-          toggleRemoveMember={toggleRemoveMember}
-        />
+        <GroupMember member={member} index={index} />
       ))}
     </div>
   );
