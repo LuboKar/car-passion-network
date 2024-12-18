@@ -1,6 +1,9 @@
 import { getToken } from "./TokenService";
+import { checkAuthentication } from "../Authentication/Authentication";
 
 const writeComment = async (comment) => {
+  checkAuthentication();
+
   try {
     const token = getToken();
     const response = await fetch("http://localhost:8080/comment", {
@@ -14,11 +17,13 @@ const writeComment = async (comment) => {
 
     return response;
   } catch (error) {
-    console.error("Error sending data to backend:", error);
+    console.error("Error writing comment:", error);
   }
 };
 
 const replyComment = async (comment) => {
+  checkAuthentication();
+
   try {
     const token = getToken();
     const response = await fetch("http://localhost:8080/comment/reply", {
@@ -32,11 +37,13 @@ const replyComment = async (comment) => {
 
     return response;
   } catch (error) {
-    console.error("Error sending data to backend:", error);
+    console.error("Error repling comment:", error);
   }
 };
 
 const likeComment = async (comment) => {
+  checkAuthentication();
+
   try {
     const token = getToken();
     const response = await fetch(
@@ -51,11 +58,13 @@ const likeComment = async (comment) => {
 
     return response;
   } catch (error) {
-    console.error("Error sending data to backend:", error);
+    console.error("Error liking comment:", error);
   }
 };
 
 const deleteComment = async (postId, commentId) => {
+  checkAuthentication();
+
   try {
     const token = getToken();
     const response = await fetch(
@@ -63,7 +72,6 @@ const deleteComment = async (postId, commentId) => {
       {
         method: "DELETE",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       }
@@ -71,11 +79,13 @@ const deleteComment = async (postId, commentId) => {
 
     return response;
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error deleting comment:", error);
   }
 };
 
 const editComment = async (editCommentValues) => {
+  checkAuthentication();
+
   try {
     const token = getToken();
     const response = await fetch("http://localhost:8080/comment/edit", {
@@ -89,7 +99,7 @@ const editComment = async (editCommentValues) => {
 
     return response;
   } catch (error) {
-    console.error("Error sending data to backend:", error);
+    console.error("Error editting comment:", error);
   }
 };
 
