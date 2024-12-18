@@ -9,13 +9,7 @@ import EditComment from "./EditComment";
 import { PostsContext } from "../../context/PostsProvider";
 import CommentContent from "./CommentContent";
 
-export default function Comment({
-  comment,
-  commentIndex,
-  postIndex,
-  postId,
-  postOwnerId,
-}) {
+export default function Comment({ comment, commentIndex, postIndex, post }) {
   const [clickedReply, setClickedReply] = useState(0);
 
   const [showReplies, setShowReplies] = useState(false);
@@ -45,18 +39,14 @@ export default function Comment({
       <div className="comment-user-container">
         <CommentProfile comment={comment} />
 
-        <CommentMenu
-          comment={comment}
-          postId={postId}
-          postOwnerId={postOwnerId}
-        />
+        <CommentMenu comment={comment} post={post} />
       </div>
 
       {editCommentId !== comment.id ? (
         <CommentContent commentContent={comment.content} />
       ) : (
         <EditComment
-          postId={postId}
+          postId={post.id}
           commentId={comment.id}
           content={comment.content}
         />
@@ -76,7 +66,7 @@ export default function Comment({
         <WriteReply
           comment={comment}
           commentIndex={commentIndex}
-          postId={postId}
+          postId={post.id}
           postIndex={postIndex}
           toggleReply={toggleReply}
           toggleReplies={toggleReplies}
@@ -96,7 +86,7 @@ export default function Comment({
           comment={comment}
           commentIndex={commentIndex}
           postIndex={postIndex}
-          postId={postId}
+          postId={post.id}
         />
       )}
     </div>

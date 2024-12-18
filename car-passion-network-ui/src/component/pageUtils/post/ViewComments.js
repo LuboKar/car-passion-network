@@ -12,8 +12,7 @@ export default function ViewComments({ post, postIndex }) {
               comment={comment}
               commentIndex={index}
               postIndex={postIndex}
-              postId={post.id}
-              postOwnerId={post.user.id}
+              post={post}
             />
           </div>
         ))}

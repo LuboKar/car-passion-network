@@ -7,7 +7,7 @@ import deleteIcon from "../../../images/delete.png";
 import { deleteComment } from "../../service/CommentService";
 import edit from "../../../images/edit.png";
 
-export default function CommentMenu({ comment, postId, postOwnerId }) {
+export default function CommentMenu({ comment, post }) {
   const currentUserId = getId();
 
   const {
@@ -18,13 +18,13 @@ export default function CommentMenu({ comment, postId, postOwnerId }) {
   } = useContext(PostsContext);
 
   const deleteCommentById = async () => {
-    const response = await deleteComment(postId, comment.id);
+    const response = await deleteComment(post.id, comment.id);
 
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
 
-    removeComment(comment.id, postId);
+    removeComment(comment.id, post.id);
   };
 
   return (
@@ -49,7 +49,7 @@ export default function CommentMenu({ comment, postId, postOwnerId }) {
           )}
 
           {(currentUserId === comment.user.id ||
-            currentUserId === postOwnerId) && (
+            (post.user !== null && currentUserId === post.user.id)) && (
             <div className="comment-menu-option" onClick={deleteCommentById}>
               <img
                 src={deleteIcon}
