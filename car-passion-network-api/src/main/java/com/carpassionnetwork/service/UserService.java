@@ -6,8 +6,10 @@ import com.carpassionnetwork.exception.InvalidCredentialsException;
 import com.carpassionnetwork.exception.InvalidPasswordException;
 import com.carpassionnetwork.exception.UserNotFoundException;
 import com.carpassionnetwork.model.Comment;
+import com.carpassionnetwork.model.Group;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
+import com.carpassionnetwork.repository.GroupRepository;
 import com.carpassionnetwork.repository.UserRepository;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -30,6 +32,7 @@ public class UserService {
   private static final String FILE_NAME = "profile picture";
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
+  private final GroupRepository groupRepository;
 
   public User getUser(UUID id) {
     return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
@@ -104,6 +107,7 @@ public class UserService {
     removeUserPostLikes(userToDelete);
     removeUserCommentLikes(userToDelete);
     removeUserFriends(userToDelete);
+    removeUserGroups(userToDelete);
 
     userRepository.delete(userToDelete);
   }
@@ -194,6 +198,12 @@ public class UserService {
   private void removeUserFriends(User user) {
     for (User frienduser : user.getFriends()) {
       frienduser.getFriends().remove(user);
+    }
+  }
+
+  private void removeUserGroups(User user) {
+    for (Group group : user.getGroups()) {
+      group.getMembers().remove(user);
     }
   }
 }

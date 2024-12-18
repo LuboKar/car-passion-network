@@ -80,6 +80,9 @@ public class User implements UserDetails, Principal {
       inverseJoinColumns = @JoinColumn(name = "friend_id"))
   private Set<User> friends;
 
+  @OneToMany(mappedBy = "admin", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private Set<Group> adminGroups;
+
   @ManyToMany(mappedBy = "members")
   private Set<Group> groups = new HashSet<>();
 

@@ -24,6 +24,7 @@ public class AuthenticationTestHelper {
         .gender(Gender.MALE)
         .likedPosts(new HashSet<>())
         .friends(new HashSet<>())
+        .groups(new HashSet<>())
         .build();
   }
 
@@ -37,6 +38,7 @@ public class AuthenticationTestHelper {
         .password("password")
         .gender(Gender.MALE)
         .friends(new HashSet<>())
+        .groups(new HashSet<>())
         .build();
   }
 
