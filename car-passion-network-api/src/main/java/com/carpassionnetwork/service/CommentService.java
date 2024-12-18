@@ -113,7 +113,7 @@ public class CommentService {
 
   private void validateUserCanEditComment(User user, Post post, Comment comment) {
     if (!post.getAuthor().equals(user)
-        && !post.getUser().equals(user)
+        && (post.getUser() != null && !post.getUser().equals(user))
         && !comment.getUser().equals(user)) {
       throw new UserNotAuthorException(user.getId(), post.getId());
     }
