@@ -1,12 +1,14 @@
 import { getToken } from "./TokenService";
+import { checkAuthentication } from "../Authentication/Authentication";
 
 const getUser = async (id) => {
+  checkAuthentication();
+
   try {
     const token = getToken();
     const response = await fetch(`http://localhost:8080/users/${id}`, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     });
@@ -18,6 +20,8 @@ const getUser = async (id) => {
 };
 
 const uploadProfilePicture = async (formData) => {
+  checkAuthentication();
+
   try {
     const token = getToken();
     const response = await fetch(`http://localhost:8080/users/upload`, {
@@ -30,11 +34,13 @@ const uploadProfilePicture = async (formData) => {
 
     return response;
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error uploading profile picture:", error);
   }
 };
 
 const editUser = async (editValues) => {
+  checkAuthentication();
+
   try {
     const token = getToken();
     const response = await fetch(`http://localhost:8080/users/edit`, {
@@ -48,11 +54,13 @@ const editUser = async (editValues) => {
 
     return response;
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error editing user:", error);
   }
 };
 
 const addFriend = async (userId) => {
+  checkAuthentication();
+
   try {
     const token = getToken();
     const response = await fetch(
@@ -60,7 +68,6 @@ const addFriend = async (userId) => {
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       }
@@ -68,11 +75,13 @@ const addFriend = async (userId) => {
 
     return response;
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error adding friend:", error);
   }
 };
 
 const removeFriend = async (userId) => {
+  checkAuthentication();
+
   try {
     const token = getToken();
     const response = await fetch(
@@ -80,7 +89,6 @@ const removeFriend = async (userId) => {
       {
         method: "DELETE",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       }
@@ -88,11 +96,13 @@ const removeFriend = async (userId) => {
 
     return response;
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error removing friend:", error);
   }
 };
 
 const getFriends = async (userId) => {
+  checkAuthentication();
+
   try {
     const token = getToken();
     const response = await fetch(
@@ -100,7 +110,6 @@ const getFriends = async (userId) => {
       {
         method: "GET",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       }
@@ -108,45 +117,49 @@ const getFriends = async (userId) => {
 
     return response;
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error fetching friends:", error);
   }
 };
 
 const findUsersByFullNameStartsWith = async (term) => {
+  checkAuthentication();
+
   try {
     const token = getToken();
     const response = await fetch(`http://localhost:8080/users/findBy/${term}`, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     });
 
     return response;
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error fetching user by full name starts with...:", error);
   }
 };
 
 const deleteUser = async (userId) => {
+  checkAuthentication();
+
   try {
     const token = getToken();
     const response = await fetch(`http://localhost:8080/users/${userId}`, {
       method: "DELETE",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     });
 
     return response;
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error deleting user:", error);
   }
 };
 
 const getAllGroupMembers = async (groupId) => {
+  checkAuthentication();
+
   try {
     const token = getToken();
     const response = await fetch(
@@ -154,7 +167,6 @@ const getAllGroupMembers = async (groupId) => {
       {
         method: "GET",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       }
@@ -162,7 +174,7 @@ const getAllGroupMembers = async (groupId) => {
 
     return response;
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error fetching all group members:", error);
   }
 };
 
