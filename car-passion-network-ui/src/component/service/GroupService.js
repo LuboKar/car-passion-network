@@ -1,6 +1,9 @@
 import { getToken } from "./TokenService";
+import { checkAuthentication } from "../Authentication/Authentication";
 
 const createGroup = async (groupName) => {
+  checkAuthentication();
+
   try {
     const token = getToken();
     const encodedGroupName = encodeURIComponent(groupName);
@@ -9,7 +12,6 @@ const createGroup = async (groupName) => {
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       }
@@ -17,11 +19,13 @@ const createGroup = async (groupName) => {
 
     return response;
   } catch (error) {
-    console.error("Error sending data to backend:", error);
+    console.error("Error creating group:", error);
   }
 };
 
 const getGroup = async (id) => {
+  checkAuthentication();
+
   try {
     const token = getToken();
     const response = await fetch(`http://localhost:8080/group/${id}`, {
@@ -33,11 +37,13 @@ const getGroup = async (id) => {
 
     return response;
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error fetching group:", error);
   }
 };
 
 const getGroupsByAdmin = async (id) => {
+  checkAuthentication();
+
   try {
     const token = getToken();
     const response = await fetch(`http://localhost:8080/group/admin/${id}`, {
@@ -49,11 +55,13 @@ const getGroupsByAdmin = async (id) => {
 
     return response;
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error fetching groups by admin:", error);
   }
 };
 
 const getOtherGroups = async (id) => {
+  checkAuthentication();
+
   try {
     const token = getToken();
     const response = await fetch(`http://localhost:8080/group/other/${id}`, {
@@ -65,11 +73,13 @@ const getOtherGroups = async (id) => {
 
     return response;
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error fetching other groups:", error);
   }
 };
 
 const getParticipatingGroups = async (id) => {
+  checkAuthentication();
+
   try {
     const token = getToken();
     const response = await fetch(`http://localhost:8080/group/user/${id}`, {
@@ -81,11 +91,13 @@ const getParticipatingGroups = async (id) => {
 
     return response;
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error fetching participating groups:", error);
   }
 };
 
 const deleteGroup = async (id) => {
+  checkAuthentication();
+
   try {
     const token = getToken();
     const response = await fetch(`http://localhost:8080/group/${id}`, {
@@ -97,11 +109,13 @@ const deleteGroup = async (id) => {
 
     return response;
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error deleting group:", error);
   }
 };
 
 const joinGroup = async (groupId) => {
+  checkAuthentication();
+
   try {
     const token = getToken();
     const response = await fetch(
@@ -116,11 +130,13 @@ const joinGroup = async (groupId) => {
 
     return response;
   } catch (error) {
-    console.error("Error sending data to backend:", error);
+    console.error("Error joining group:", error);
   }
 };
 
 const leaveGroup = async (groupId) => {
+  checkAuthentication();
+
   try {
     const token = getToken();
     const response = await fetch(
@@ -135,11 +151,13 @@ const leaveGroup = async (groupId) => {
 
     return response;
   } catch (error) {
-    console.error("Error sending data to backend:", error);
+    console.error("Error leaving group:", error);
   }
 };
 
 const removeMember = async (groupId, memberId) => {
+  checkAuthentication();
+
   try {
     const token = getToken();
     const response = await fetch(
@@ -154,11 +172,13 @@ const removeMember = async (groupId, memberId) => {
 
     return response;
   } catch (error) {
-    console.error("Error sending data to backend:", error);
+    console.error("Error removing memeber:", error);
   }
 };
 
 const uploadGroupPicture = async (formData, groupId) => {
+  checkAuthentication();
+
   try {
     const token = getToken();
     const response = await fetch(
@@ -174,7 +194,7 @@ const uploadGroupPicture = async (formData, groupId) => {
 
     return response;
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error uploading group picture:", error);
   }
 };
 
