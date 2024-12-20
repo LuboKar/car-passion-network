@@ -48,9 +48,6 @@ export default function ProfilePage() {
       {!loadingUser && <Profile />}
 
       {!loadingUser && !loadingPosts && <Posts ownerId={id} />}
-      {posts.length < 1 && !loadingUser && !loadingPosts && (
-        <ProfilePageHeader />
-      )}
     </div>
   );
 }
