@@ -18,11 +18,54 @@ import GroupsFeedPage from "../page/GroupsFeedPage";
 import GroupMembersPage from "../page/GroupMembersPage";
 import { GroupProfileProvider } from "../context/GroupProfileProvider";
 import { GroupMembersProvider } from "../context/GroupMembersProvider";
+import Layout from "../pageUtils/navbar/Layout";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <ProtectedHome element={HomePage} />,
+  },
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      {
+        path: ":id",
+        element: (
+          <ProfileProvider>
+            <PostsProvider>
+              <ProtectedRoute element={ProfilePage} />
+            </PostsProvider>
+          </ProfileProvider>
+        ),
+      },
+      {
+        path: ":id/information",
+        element: (
+          <ProfileProvider>
+            <ProtectedRoute element={ProfileInformationPage} />
+          </ProfileProvider>
+        ),
+      },
+      {
+        path: "/:id/friends",
+        element: (
+          <ProfileProvider>
+            <ProfileFriendsProvider>
+              <ProtectedRoute element={ProfileFriendsPage} />
+            </ProfileFriendsProvider>
+          </ProfileProvider>
+        ),
+      },
+      {
+        path: "/:id/groups",
+        element: (
+          <ProfileProvider>
+            <ProtectedRoute element={ProfileGroupPage} />
+          </ProfileProvider>
+        ),
+      },
+    ],
   },
   {
     path: "/feed",
@@ -35,16 +78,6 @@ const router = createBrowserRouter([
   {
     path: "/groups/feed",
     element: <ProtectedRoute element={GroupsFeedPage} />,
-  },
-  {
-    path: "/:id",
-    element: (
-      <ProfileProvider>
-        <PostsProvider>
-          <ProtectedRoute element={ProfilePage} />
-        </PostsProvider>
-      </ProfileProvider>
-    ),
   },
   {
     path: "/post/:id",
@@ -78,32 +111,6 @@ const router = createBrowserRouter([
           <ProtectedRoute element={GroupMembersPage} />
         </GroupMembersProvider>
       </GroupProfileProvider>
-    ),
-  },
-  {
-    path: "/:id/groups",
-    element: (
-      <ProfileProvider>
-        <ProtectedRoute element={ProfileGroupPage} />
-      </ProfileProvider>
-    ),
-  },
-  {
-    path: "/:id/friends",
-    element: (
-      <ProfileProvider>
-        <ProfileFriendsProvider>
-          <ProtectedRoute element={ProfileFriendsPage} />
-        </ProfileFriendsProvider>
-      </ProfileProvider>
-    ),
-  },
-  {
-    path: "/:id/information",
-    element: (
-      <ProfileProvider>
-        <ProtectedRoute element={ProfileInformationPage} />
-      </ProfileProvider>
     ),
   },
   {

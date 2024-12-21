@@ -1,12 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
-import Navbar from "../pageUtils/navbar/Navbar";
-import VerticalNavbar from "../pageUtils/navbar/VerticalNavbar";
-import RightVerticalNabvar from "../pageUtils/navbar/RightVerticalNavbar";
 import Profile from "../pageUtils/user/Profile";
 import Posts from "../pageUtils/post/Posts";
 import { useParams } from "react-router-dom";
 import { getPosts } from "../service/PostService";
-import ProfilePageHeader from "../pageUtils/user/ProfilePageHeader";
 import { PostsContext } from "../context/PostsProvider";
 import useButtons from "../button/ProfileButtons";
 import { ProfileContext } from "../context/ProfileProvider";
@@ -19,7 +15,7 @@ export default function ProfilePage() {
   const { profileButtons } = useButtons(id);
   profileButtons[0].isVisible = true;
 
-  const { posts, setPosts } = useContext(PostsContext);
+  const { setPosts } = useContext(PostsContext);
 
   const fetchPosts = async () => {
     const response = await getPosts(id);
@@ -40,11 +36,6 @@ export default function ProfilePage() {
 
   return (
     <div className="profile-page-container">
-      <Navbar />
-
-      <VerticalNavbar topButtons={profileButtons} />
-      <RightVerticalNabvar />
-
       {!loadingUser && <Profile />}
 
       {!loadingUser && !loadingPosts && <Posts ownerId={id} />}

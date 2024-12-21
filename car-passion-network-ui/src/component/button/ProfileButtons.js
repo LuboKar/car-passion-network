@@ -4,7 +4,12 @@ import friendIcon from "../../images/friendIcon.png";
 import groupsIcon from "../../images/groups.png";
 import useNavigation from "../service/NavigateService";
 
-const useButtons = (id) => {
+const useButtons = (id, currentPath) => {
+  const postsUrl = `/${id}`;
+  const informationUrl = `/${id}/information`;
+  const friendsUrl = `/${id}/friends`;
+  const groupsUrl = `/${id}/groups`;
+
   const {
     navigateToProfile,
     navigateToProfileFriendsPage,
@@ -13,19 +18,27 @@ const useButtons = (id) => {
   } = useNavigation();
 
   const togglePosts = () => {
-    navigateToProfile(id);
+    if (postsUrl !== currentPath) {
+      navigateToProfile(id);
+    }
   };
 
   const toggleInformation = () => {
-    navigateToProfileInformationPage(id);
+    if (informationUrl !== currentPath) {
+      navigateToProfileInformationPage(id);
+    }
   };
 
   const toggleFriends = () => {
-    navigateToProfileFriendsPage(id);
+    if (friendsUrl !== currentPath) {
+      navigateToProfileFriendsPage(id);
+    }
   };
 
   const toggleGroups = () => {
-    navigateToProfileGroupPage(id);
+    if (groupsUrl !== currentPath) {
+      navigateToProfileGroupPage(id);
+    }
   };
 
   const profileButtons = [
@@ -33,25 +46,25 @@ const useButtons = (id) => {
       label: "Posts",
       icon: postIcon,
       onClick: togglePosts,
-      isVisible: false,
+      isVisible: currentPath === postsUrl,
     },
     {
       label: "Information",
       icon: infoIcon,
       onClick: toggleInformation,
-      isVisible: false,
+      isVisible: currentPath === informationUrl,
     },
     {
       label: "Friends",
       icon: friendIcon,
       onClick: toggleFriends,
-      isVisible: false,
+      isVisible: currentPath === friendsUrl,
     },
     {
       label: "Groups",
       icon: groupsIcon,
       onClick: toggleGroups,
-      isVisible: false,
+      isVisible: currentPath === groupsUrl,
     },
   ];
   return { profileButtons };
