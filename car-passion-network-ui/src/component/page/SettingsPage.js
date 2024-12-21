@@ -5,19 +5,14 @@ import RightVerticalNabvar from "../pageUtils/navbar/RightVerticalNavbar";
 import EditProfile from "../pageUtils/user/EditProfile";
 import { getUser } from "../service/UserService";
 import { getId } from "../service/TokenService";
-import DeleteAccount from "../pageUtils/user/DeleteAccount";
 import useSettingsButtons from "../button/SettingsButtons";
 
 export default function SettingsPage() {
   const [user, setUser] = useState({});
   const [loadingUser, setLoadingUser] = useState(true);
 
-  const {
-    topSettingsButtons,
-    bottomSettingsButtons,
-    editProfileButton,
-    deleteAccountButton,
-  } = useSettingsButtons();
+  const { topSettingsButtons, bottomSettingsButtons } = useSettingsButtons();
+  topSettingsButtons[0].isVisible = true;
 
   const fetchUser = async () => {
     const response = await getUser(getId());
@@ -46,11 +41,7 @@ export default function SettingsPage() {
       />
       <RightVerticalNabvar />
 
-      {!loadingUser && editProfileButton && (
-        <EditProfile user={user} setUser={setUser} />
-      )}
-
-      {deleteAccountButton && <DeleteAccount userId={user.id} />}
+      {!loadingUser && <EditProfile user={user} setUser={setUser} />}
     </div>
   );
 }

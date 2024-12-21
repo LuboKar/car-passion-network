@@ -19,6 +19,7 @@ import GroupMembersPage from "../page/GroupMembersPage";
 import { GroupProfileProvider } from "../context/GroupProfileProvider";
 import { GroupMembersProvider } from "../context/GroupMembersProvider";
 import Layout from "../pageUtils/navbar/Layout";
+import SettingsDeletePage from "../page/SettingsDeletePage";
 
 const router = createBrowserRouter([
   {
@@ -112,6 +113,10 @@ const router = createBrowserRouter([
   {
     path: "/settings",
     element: <ProtectedRoute element={SettingsPage} />,
+  },
+  {
+    path: "/settings/delete",
+    element: <ProtectedRoute element={SettingsDeletePage} />,
   },
   {
     path: "*",

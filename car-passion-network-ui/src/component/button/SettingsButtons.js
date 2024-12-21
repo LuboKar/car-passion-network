@@ -1,19 +1,18 @@
 import { useState } from "react";
 import editIcon from "../../images/edit.png";
 import deleteProfileIcon from "../../images/delete.png";
+import useNavigation from "../service/NavigateService";
 
 const useSettingsButtons = () => {
-  const [editProfileButton, setEditProfileButton] = useState(true);
-  const [deleteAccountButton, setDeleteAccountButton] = useState(false);
+  const { navigateToSettingsPage, navigateToSettingsDeletePage } =
+    useNavigation();
 
   const toggleEditProfile = () => {
-    setDeleteAccountButton(false);
-    setEditProfileButton(true);
+    navigateToSettingsPage();
   };
 
   const toggleDeleteAccount = () => {
-    setEditProfileButton(false);
-    setDeleteAccountButton(true);
+    navigateToSettingsDeletePage();
   };
 
   const topSettingsButtons = [
@@ -21,7 +20,7 @@ const useSettingsButtons = () => {
       label: "Edit Profile",
       icon: editIcon,
       onClick: toggleEditProfile,
-      isVisible: editProfileButton,
+      isVisible: false,
     },
   ];
 
@@ -30,14 +29,12 @@ const useSettingsButtons = () => {
       label: "Delete Account",
       icon: deleteProfileIcon,
       onClick: toggleDeleteAccount,
-      isVisible: deleteAccountButton,
+      isVisible: false,
     },
   ];
   return {
     topSettingsButtons,
     bottomSettingsButtons,
-    editProfileButton,
-    deleteAccountButton,
   };
 };
 

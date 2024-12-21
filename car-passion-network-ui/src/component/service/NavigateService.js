@@ -28,6 +28,12 @@ const useNavigation = () => {
     } else navigate("/");
   };
 
+  const navigateToSettingsDeletePage = () => {
+    if (isAuthenticated()) {
+      navigate(`/settings/delete`);
+    } else navigate("/");
+  };
+
   const navigateToGroupPage = (id) => {
     if (isAuthenticated()) {
       navigate(`/group/${id}`);
@@ -69,6 +75,7 @@ const useNavigation = () => {
     navigateToPostPage,
     navigateToFeedPage,
     navigateToSettingsPage,
+    navigateToSettingsDeletePage,
     navigateToGroupPage,
     navigateToProfileGroupPage,
     navigateToProfileFriendsPage,
