@@ -2,15 +2,22 @@ import feedIcon from "../../images/feed.png";
 import groupIcon from "../../images/groups.png";
 import useNavigation from "../service/NavigateService";
 
-const useDashboardButtons = () => {
+const useDashboardButtons = (currentPath) => {
+  const feedUrl = "/feed";
+  const feedGroupsUrl = "/feed/groups";
+
   const { navigateToFeedPage, navigateToGroupsFeedPage } = useNavigation();
 
   const toggleFeed = () => {
-    navigateToFeedPage();
+    if (currentPath !== feedUrl) {
+      navigateToFeedPage();
+    }
   };
 
   const toggleGroups = () => {
-    navigateToGroupsFeedPage();
+    if (currentPath !== feedGroupsUrl) {
+      navigateToGroupsFeedPage();
+    }
   };
 
   const dashboardButtons = [
@@ -18,13 +25,13 @@ const useDashboardButtons = () => {
       label: "Feed",
       icon: feedIcon,
       onClick: toggleFeed,
-      isVisible: false,
+      isVisible: currentPath === feedUrl,
     },
     {
       label: "Groups",
       icon: groupIcon,
       onClick: toggleGroups,
-      isVisible: false,
+      isVisible: currentPath === feedGroupsUrl,
     },
   ];
   return { dashboardButtons };

@@ -1,20 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
-import Navbar from "../pageUtils/navbar/Navbar.js";
 import { getAllPosts } from "../service/PostService.js";
 import Posts from "../pageUtils/post/Posts.js";
 import "./FeedPage.css";
 import DashboardHeader from "../pageUtils/dashboard/DashboardHeader.js";
 import { getId } from "../service/TokenService.js";
 import { PostsContext } from "../context/PostsProvider.js";
-import VerticalNavbar from "../pageUtils/navbar/VerticalNavbar.js";
 import useDashboardButtons from "../button/DashboardButtons.js";
 
 export default function FeedPage() {
   const [loadingPosts, setLoadingPosts] = useState(true);
   const currentUserId = getId();
-
-  const { dashboardButtons } = useDashboardButtons();
-  dashboardButtons[0].isVisible = true;
 
   const { posts, setPosts } = useContext(PostsContext);
 
@@ -37,10 +32,6 @@ export default function FeedPage() {
 
   return (
     <div className="dashboard-container">
-      <Navbar />
-
-      <VerticalNavbar topButtons={dashboardButtons} />
-
       {!loadingPosts && (
         <div className="dashboard-posts-container">
           <Posts ownerId={currentUserId} />

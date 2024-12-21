@@ -65,19 +65,19 @@ const router = createBrowserRouter([
           </ProfileProvider>
         ),
       },
+      {
+        path: "/feed",
+        element: (
+          <PostsProvider>
+            <ProtectedRoute element={FeedPage} />
+          </PostsProvider>
+        ),
+      },
+      {
+        path: "/feed/groups",
+        element: <ProtectedRoute element={GroupsFeedPage} />,
+      },
     ],
-  },
-  {
-    path: "/feed",
-    element: (
-      <PostsProvider>
-        <ProtectedRoute element={FeedPage} />
-      </PostsProvider>
-    ),
-  },
-  {
-    path: "/groups/feed",
-    element: <ProtectedRoute element={GroupsFeedPage} />,
   },
   {
     path: "/post/:id",

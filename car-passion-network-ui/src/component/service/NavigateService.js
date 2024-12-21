@@ -60,7 +60,7 @@ const useNavigation = () => {
 
   const navigateToGroupsFeedPage = () => {
     if (isAuthenticated()) {
-      navigate(`/groups/feed`);
+      navigate(`/feed/groups`);
     } else navigate("/");
   };
 
