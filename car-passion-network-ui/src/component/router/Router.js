@@ -77,6 +77,26 @@ const router = createBrowserRouter([
         path: "/feed/groups",
         element: <ProtectedRoute element={GroupsFeedPage} />,
       },
+      {
+        path: "/group/:id",
+        element: (
+          <GroupProfileProvider>
+            <PostsProvider>
+              <ProtectedRoute element={GroupPage} />
+            </PostsProvider>
+          </GroupProfileProvider>
+        ),
+      },
+      {
+        path: "/group/:id/members",
+        element: (
+          <GroupProfileProvider>
+            <GroupMembersProvider>
+              <ProtectedRoute element={GroupMembersPage} />
+            </GroupMembersProvider>
+          </GroupProfileProvider>
+        ),
+      },
     ],
   },
   {
@@ -92,26 +112,6 @@ const router = createBrowserRouter([
   {
     path: "/settings",
     element: <ProtectedRoute element={SettingsPage} />,
-  },
-  {
-    path: "/group/:id",
-    element: (
-      <GroupProfileProvider>
-        <PostsProvider>
-          <ProtectedRoute element={GroupPage} />
-        </PostsProvider>
-      </GroupProfileProvider>
-    ),
-  },
-  {
-    path: "/group/:id/members",
-    element: (
-      <GroupProfileProvider>
-        <GroupMembersProvider>
-          <ProtectedRoute element={GroupMembersPage} />
-        </GroupMembersProvider>
-      </GroupProfileProvider>
-    ),
   },
   {
     path: "*",
