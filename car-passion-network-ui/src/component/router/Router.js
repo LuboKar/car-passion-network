@@ -98,6 +98,14 @@ const router = createBrowserRouter([
           </GroupProfileProvider>
         ),
       },
+      {
+        path: "/settings",
+        element: <ProtectedRoute element={SettingsPage} />,
+      },
+      {
+        path: "/settings/delete",
+        element: <ProtectedRoute element={SettingsDeletePage} />,
+      },
     ],
   },
   {
@@ -109,14 +117,6 @@ const router = createBrowserRouter([
         </PostProvider>
       </PostsProvider>
     ),
-  },
-  {
-    path: "/settings",
-    element: <ProtectedRoute element={SettingsPage} />,
-  },
-  {
-    path: "/settings/delete",
-    element: <ProtectedRoute element={SettingsDeletePage} />,
   },
   {
     path: "*",

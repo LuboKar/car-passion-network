@@ -6,7 +6,7 @@ import { deleteToken } from "../../service/TokenService";
 import { deleteProfilePictureUrl } from "../../service/profilePictureService";
 
 export default function DeleteAccount({ userId }) {
-  const [option, setOption] = useState("");
+  const [option, setOption] = useState("No");
 
   const { navigateToFeedPage, navigateToProfile } = useNavigation();
 

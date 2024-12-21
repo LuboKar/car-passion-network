@@ -122,7 +122,6 @@ export default function EditPassword({
               }
               placeholder="Old Password"
               type="password"
-              autocomplete="new-password"
               name="oldPassword"
               value={editPasswordValues.oldPassword}
               onChange={handleInputChange}

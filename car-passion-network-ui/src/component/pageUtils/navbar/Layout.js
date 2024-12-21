@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import RightVerticalNabvar from "./RightVerticalNavbar";
 import useDashboardButtons from "../../button/DashboardButtons";
 import useGroupButtons from "../../button/GroupButtons";
+import useSettingsButtons from "../../button/SettingsButtons";
 
 export default function Layout() {
   const { id } = useParams();
@@ -15,7 +16,10 @@ export default function Layout() {
   const { profileButtons } = useButtons(id, currentPath);
   const { dashboardButtons } = useDashboardButtons(currentPath);
   const { groupButtons } = useGroupButtons(id, currentPath);
+  const { topSettingsButtons, bottomSettingsButtons } =
+    useSettingsButtons(currentPath);
   let topButtons = null;
+  let bottomButtons = null;
 
   if (currentPath.startsWith(`/${id}`)) {
     topButtons = profileButtons;
@@ -23,13 +27,16 @@ export default function Layout() {
     topButtons = dashboardButtons;
   } else if (currentPath.startsWith(`/group`)) {
     topButtons = groupButtons;
+  } else if (currentPath.startsWith(`/settings`)) {
+    topButtons = topSettingsButtons;
+    bottomButtons = bottomSettingsButtons;
   }
 
   return (
     <div>
       <Navbar />
 
-      <VerticalNavbar topButtons={topButtons} />
+      <VerticalNavbar topButtons={topButtons} bottomButtons={bottomButtons} />
       <RightVerticalNabvar />
 
       <Outlet />
