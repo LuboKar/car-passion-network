@@ -1,8 +1,11 @@
 import React from "react";
 import "./VerticalNavbar.css";
 import NavbarButtons from "./NavbarButtons";
+import useNavbarButtons from "../../button/NavbarButtons";
 
-export default function VerticalNavbar({ topButtons, bottomButtons }) {
+export default function VerticalNavbar() {
+  const { topButtons, bottomButtons } = useNavbarButtons();
+
   return (
     <div className="navbar-container">
       <div className="navbar-top-bottons">
