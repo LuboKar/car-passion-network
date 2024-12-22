@@ -49,7 +49,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/:id/friends",
+        path: ":id/friends",
         element: (
           <ProfileProvider>
             <ProfileFriendsProvider>
@@ -59,7 +59,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/:id/groups",
+        path: ":id/groups",
         element: (
           <ProfileProvider>
             <ProtectedRoute element={ProfileGroupPage} />
@@ -67,7 +67,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/feed",
+        path: "feed",
         element: (
           <PostsProvider>
             <ProtectedRoute element={FeedPage} />
@@ -75,11 +75,11 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/feed/groups",
+        path: "feed/groups",
         element: <ProtectedRoute element={GroupsFeedPage} />,
       },
       {
-        path: "/group/:id",
+        path: "group/:id",
         element: (
           <GroupProfileProvider>
             <PostsProvider>
@@ -89,7 +89,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/group/:id/members",
+        path: "group/:id/members",
         element: (
           <GroupProfileProvider>
             <GroupMembersProvider>
@@ -99,11 +99,11 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/settings",
+        path: "settings",
         element: <ProtectedRoute element={SettingsPage} />,
       },
       {
-        path: "/settings/delete",
+        path: "settings/delete",
         element: <ProtectedRoute element={SettingsDeletePage} />,
       },
     ],
