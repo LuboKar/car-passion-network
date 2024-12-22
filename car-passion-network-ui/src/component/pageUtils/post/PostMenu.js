@@ -55,7 +55,8 @@ export default function PostMenu({ post, index }) {
           )}
 
           {(currentUserId === post.author.id ||
-            currentUserId === post.user.id) && (
+            (post.user !== null && currentUserId === post.user.id) ||
+            post.author.id === currentUserId) && (
             <DropdownButton
               buttonIcon={deleteIcon}
               buttonText="Delete"
