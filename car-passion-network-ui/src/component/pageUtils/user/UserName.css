@@ -1,0 +1,15 @@
+.user-name-container{
+    margin-top: 20px;
+    margin-left: 60px;
+    height: max-content;
+}
+
+.profile-name{
+    font-size: 25px;
+    height: 5%;
+    font-weight: bold;
+}
+
+.profile-name:hover{
+    cursor:text;
+}

@@ -1,22 +1,14 @@
-import React, { useEffect, useState, useContext } from "react";
-import Profile from "../pageUtils/user/Profile";
+import React, { useContext, useEffect, useState } from "react";
 import Posts from "../pageUtils/post/Posts";
-import { useParams } from "react-router-dom";
-import { getPosts } from "../service/PostService";
 import { PostsContext } from "../context/PostsProvider";
-import useButtons from "../button/ProfileButtons";
-import { ProfileContext } from "../context/ProfileProvider";
 import ProfilePageHeader from "../pageUtils/user/ProfilePageHeader.js";
+import { useParams } from "react-router-dom";
+import { getPosts } from "../service/PostService.js";
 
 export default function ProfilePage() {
   const { id } = useParams();
-  const { loadingUser } = useContext(ProfileContext);
-  const [loadingPosts, setLoadingPosts] = useState(true);
-
-  const { profileButtons } = useButtons(id);
-  profileButtons[0].isVisible = true;
-
   const { posts, setPosts } = useContext(PostsContext);
+  const [loadingPosts, setLoadingPosts] = useState(true);
 
   const fetchPosts = async () => {
     const response = await getPosts(id);
@@ -37,11 +29,9 @@ export default function ProfilePage() {
 
   return (
     <div className="profile-page-container">
-      {!loadingUser && <Profile />}
+      {!loadingPosts && <Posts ownerId={id} />}
 
-      {!loadingUser && !loadingPosts && <Posts ownerId={id} />}
-
-      {posts.length < 1 && <ProfilePageHeader />}
+      {posts.length < 1 && !loadingPosts && <ProfilePageHeader />}
     </div>
   );
 }

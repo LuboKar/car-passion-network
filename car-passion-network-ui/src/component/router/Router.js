@@ -12,7 +12,6 @@ import GroupPage from "../page/GroupPage";
 import ProfileGroupPage from "../page/ProfileGroupPage";
 import ProfileFriendsPage from "../page/ProfileFriendsPage";
 import ProfileInformationPage from "../page/ProfileInformationPage";
-import { ProfileProvider } from "../context/ProfileProvider";
 import { ProfileFriendsProvider } from "../context/ProfileFriendsProvider";
 import GroupsFeedPage from "../page/GroupsFeedPage";
 import GroupMembersPage from "../page/GroupMembersPage";
@@ -20,6 +19,7 @@ import { GroupProfileProvider } from "../context/GroupProfileProvider";
 import { GroupMembersProvider } from "../context/GroupMembersProvider";
 import Layout from "../pageUtils/navbar/Layout";
 import SettingsDeletePage from "../page/SettingsDeletePage";
+import ProfileLayout from "../pageUtils/user/ProfileLayout";
 
 const router = createBrowserRouter([
   {
@@ -31,40 +31,33 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: ":id",
-        element: (
-          <ProfileProvider>
-            <PostsProvider>
-              <ProtectedRoute element={ProfilePage} />
-            </PostsProvider>
-          </ProfileProvider>
-        ),
-      },
-      {
-        path: ":id/information",
-        element: (
-          <ProfileProvider>
-            <ProtectedRoute element={ProfileInformationPage} />
-          </ProfileProvider>
-        ),
-      },
-      {
-        path: ":id/friends",
-        element: (
-          <ProfileProvider>
-            <ProfileFriendsProvider>
-              <ProtectedRoute element={ProfileFriendsPage} />
-            </ProfileFriendsProvider>
-          </ProfileProvider>
-        ),
-      },
-      {
-        path: ":id/groups",
-        element: (
-          <ProfileProvider>
-            <ProtectedRoute element={ProfileGroupPage} />
-          </ProfileProvider>
-        ),
+        element: <ProfileLayout />,
+        children: [
+          {
+            path: ":id",
+            element: (
+              <PostsProvider>
+                <ProtectedRoute element={ProfilePage} />
+              </PostsProvider>
+            ),
+          },
+          {
+            path: ":id/information",
+            element: <ProtectedRoute element={ProfileInformationPage} />,
+          },
+          {
+            path: ":id/friends",
+            element: (
+              <ProfileFriendsProvider>
+                <ProtectedRoute element={ProfileFriendsPage} />
+              </ProfileFriendsProvider>
+            ),
+          },
+          {
+            path: ":id/groups",
+            element: <ProtectedRoute element={ProfileGroupPage} />,
+          },
+        ],
       },
       {
         path: "feed",

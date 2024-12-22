@@ -1,0 +1,16 @@
+.user-profile-picture-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+    width: 150px;
+    height: 150px;
+    margin-left: 10%;
+    margin-top: 20px;
+    border-radius: 50px;
+    background-color: gray;
+    overflow: hidden;
+}
+
+.user-profile-picture-container:hover{
+    cursor: pointer;
+}

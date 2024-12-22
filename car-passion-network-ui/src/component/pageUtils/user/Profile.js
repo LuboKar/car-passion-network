@@ -1,77 +1,43 @@
-import React, { useContext, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import "./Profile.css";
-import { uploadProfilePicture } from "../../service/UserService";
 import { getId } from "../../service/TokenService";
-import { saveProfilePictureUrl } from "../../service/profilePictureService";
-import UserActionButton from "./UserActionButton";
-import ProfilePicture from "./ProfilePicture";
-import { ProfileContext } from "../../context/ProfileProvider";
+import { getUser } from "../../service/UserService";
+import { useParams } from "react-router-dom";
+import UserProfilePicture from "./UserProfilePicture";
+import UserName from "./UserName";
+import ProfileMenu from "./ProfileMenu";
 
 export default function Profile() {
+  const { id } = useParams();
   const currentUserId = getId();
-  const fileInputRef = useRef(null);
-  const { user, handleAddFriend, handleRemoveFriend } =
-    useContext(ProfileContext);
+  const [user, setUser] = useState({});
+  const [loadingUser, setLoadingUser] = useState(true);
 
-  const handleContainerClick = () => {
-    if (user.id !== currentUserId) {
-      return;
+  const fetchUser = async () => {
+    const response = await getUser(id);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
     }
 
-    fileInputRef.current.click();
+    const userData = await response.json();
+    setUser(userData);
+    setLoadingUser(false);
   };
 
-  const handleFileChange = async (event) => {
-    const file = event.target.files[0];
-
-    const formData = new FormData();
-    formData.append("file", file);
-
-    if (file) {
-      const response = await uploadProfilePicture(formData);
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const data = await response.json();
-
-      saveProfilePictureUrl(data.profilePicture);
-      window.location.reload(false);
-    }
-  };
+  useEffect(() => {
+    fetchUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   return (
     <div className="profile-container">
-      <div className="profile-image-container" onClick={handleContainerClick}>
-        <ProfilePicture profilePicture={user.profilePicture} />
+      {!loadingUser && <UserProfilePicture user={user} />}
 
-        <input
-          type="file"
-          ref={fileInputRef}
-          style={{ display: "none" }}
-          onChange={handleFileChange}
-        />
-      </div>
+      {!loadingUser && <UserName user={user} />}
 
-      <label className="profile-name">
-        {user.firstName} {user.lastName}
-      </label>
-
-      {currentUserId !== user.id && (
-        <div className="profile-friend-request">
-          {user.friend ? (
-            <UserActionButton
-              buttonText="Remove Friend"
-              handleAction={handleRemoveFriend}
-            />
-          ) : (
-            <UserActionButton
-              buttonText="Add Friend"
-              handleAction={handleAddFriend}
-            />
-          )}
-        </div>
+      {currentUserId !== user.id && !loadingUser && (
+        <ProfileMenu user={user} setUser={setUser} />
       )}
     </div>
   );
