@@ -8,6 +8,7 @@ import { deleteToken } from "../../service/TokenService";
 import "./NavbarDropdown.css";
 import { getProfilePictureUrl } from "../../service/profilePictureService";
 import ProfilePicture from "../user/ProfilePicture";
+import defaultProfilePicture from "../../../images/profile-pic.jpg";
 
 export default function NavbarDropdown() {
   const [isOpen, setIsOpen] = useState(false);
@@ -52,7 +53,10 @@ export default function NavbarDropdown() {
   return (
     <div className="navbar-dropdown-container">
       <div className="dropdown-icon-container" onClick={toggleOptions}>
-        <ProfilePicture profilePicture={profilePicture} />
+        <ProfilePicture
+          profilePicture={profilePicture}
+          defaultProfilePicture={defaultProfilePicture}
+        />
       </div>
 
       {isOpen && (
@@ -62,7 +66,10 @@ export default function NavbarDropdown() {
             onClick={() => navigateToProfile(id)}
           >
             <div className="navbar-dropdown-profile-picture-container">
-              <ProfilePicture profilePicture={profilePicture} />
+              <ProfilePicture
+                profilePicture={profilePicture}
+                defaultProfilePicture={defaultProfilePicture}
+              />
             </div>
 
             <span>Profile</span>

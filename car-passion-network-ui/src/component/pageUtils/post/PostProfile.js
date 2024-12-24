@@ -2,6 +2,7 @@ import React from "react";
 import useNavigation from "../../service/NavigateService";
 import "./PostProfile.css";
 import ProfilePicture from "../user/ProfilePicture";
+import defaultProfilePicture from "../../../images/profile-pic.jpg";
 
 export default function PostProfile({ post }) {
   const { navigateToProfile } = useNavigation();
@@ -11,6 +12,7 @@ export default function PostProfile({ post }) {
       <div className="post-profile-profile-picture-container">
         <ProfilePicture
           profilePicture={post.author.profilePicture}
+          defaultProfilePicture={defaultProfilePicture}
           navigateToProfile={() => navigateToProfile(post.author.id)}
         />
       </div>

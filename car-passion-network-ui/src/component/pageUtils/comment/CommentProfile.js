@@ -2,6 +2,7 @@ import React from "react";
 import "./CommentProfile.css";
 import useNavigation from "../../service/NavigateService";
 import ProfilePicture from "../user/ProfilePicture";
+import defaultProfilePicture from "../../../images/profile-pic.jpg";
 
 export default function CommentProfile({ comment }) {
   const { navigateToProfile } = useNavigation();
@@ -11,6 +12,7 @@ export default function CommentProfile({ comment }) {
       <div className="comment-profile-picture-container">
         <ProfilePicture
           profilePicture={comment.user.profilePicture}
+          defaultProfilePicture={defaultProfilePicture}
           navigateToProfile={() => navigateToProfile(comment.user.id)}
         />
       </div>

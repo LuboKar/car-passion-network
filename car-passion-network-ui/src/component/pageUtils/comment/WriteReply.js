@@ -6,6 +6,7 @@ import { replyComment } from "../../service/CommentService";
 import { PostsContext } from "../../context/PostsProvider";
 import { getProfilePictureUrl } from "../../service/profilePictureService";
 import ProfilePicture from "../user/ProfilePicture";
+import defaultProfilePicture from "../../../images/profile-pic.jpg";
 
 export default function WriteReply({
   comment,
@@ -67,7 +68,10 @@ export default function WriteReply({
   return (
     <div className="write-reply-container">
       <div className="write-reply-profile-picture-container">
-        <ProfilePicture profilePicture={profilePicture} />
+        <ProfilePicture
+          profilePicture={profilePicture}
+          defaultProfilePicture={defaultProfilePicture}
+        />
       </div>
 
       <input

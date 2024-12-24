@@ -7,6 +7,7 @@ import { writeComment } from "../../service/CommentService";
 import { PostsContext } from "../../context/PostsProvider";
 import { getProfilePictureUrl } from "../../service/profilePictureService";
 import ProfilePicture from "../user/ProfilePicture";
+import defaultProfilePicture from "../../../images/profile-pic.jpg";
 
 export default function WriteComment({ post, index }) {
   const [comment, setComment] = useState({
@@ -59,7 +60,10 @@ export default function WriteComment({ post, index }) {
   return (
     <div className="write-comment-container">
       <div className="write-comment-profile-picture-container">
-        <ProfilePicture profilePicture={profilePicture} />
+        <ProfilePicture
+          profilePicture={profilePicture}
+          defaultProfilePicture={defaultProfilePicture}
+        />
       </div>
 
       <input

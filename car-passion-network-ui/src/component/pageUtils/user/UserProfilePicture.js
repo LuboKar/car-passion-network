@@ -4,6 +4,7 @@ import ProfilePicture from "./ProfilePicture";
 import { saveProfilePictureUrl } from "../../service/profilePictureService";
 import { getId } from "../../service/TokenService";
 import { uploadProfilePicture } from "../../service/UserService";
+import defaultProfilePicture from "../../../images/profile-pic.jpg";
 
 export default function UserProfilePicture({ user }) {
   const currentUserId = getId();
@@ -42,7 +43,10 @@ export default function UserProfilePicture({ user }) {
       className="user-profile-picture-container"
       onClick={handleContainerClick}
     >
-      <ProfilePicture profilePicture={user.profilePicture} />
+      <ProfilePicture
+        profilePicture={user.profilePicture}
+        defaultProfilePicture={defaultProfilePicture}
+      />
 
       <input
         type="file"

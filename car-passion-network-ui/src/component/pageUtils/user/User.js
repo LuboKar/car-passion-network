@@ -1,6 +1,7 @@
 import React from "react";
 import "./User.css";
 import ProfilePicture from "./ProfilePicture";
+import defaultProfilePicture from "../../../images/profile-pic.jpg";
 
 export default function User({ user, navigateToProfile }) {
   return (
@@ -8,6 +9,7 @@ export default function User({ user, navigateToProfile }) {
       <div className="user-picture-container">
         <ProfilePicture
           profilePicture={user.profilePicture}
+          defaultProfilePicture={defaultProfilePicture}
           navigateToProfile={navigateToProfile}
         />
       </div>
