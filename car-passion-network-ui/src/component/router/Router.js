@@ -20,6 +20,7 @@ import { GroupMembersProvider } from "../context/GroupMembersProvider";
 import Layout from "../pageUtils/navbar/Layout";
 import SettingsDeletePage from "../page/SettingsDeletePage";
 import ProfileLayout from "../pageUtils/user/ProfileLayout";
+import GroupLayout from "../group/GroupLayout";
 
 const router = createBrowserRouter([
   {
@@ -60,6 +61,29 @@ const router = createBrowserRouter([
         ],
       },
       {
+        element: <GroupLayout />,
+        children: [
+          {
+            path: "group/:id",
+            element: (
+              <PostsProvider>
+                <ProtectedRoute element={GroupPage} />
+              </PostsProvider>
+            ),
+          },
+          {
+            path: "group/:id/members",
+            element: (
+              <GroupProfileProvider>
+                <GroupMembersProvider>
+                  <ProtectedRoute element={GroupMembersPage} />
+                </GroupMembersProvider>
+              </GroupProfileProvider>
+            ),
+          },
+        ],
+      },
+      {
         path: "feed",
         element: (
           <PostsProvider>
@@ -70,26 +94,6 @@ const router = createBrowserRouter([
       {
         path: "feed/groups",
         element: <ProtectedRoute element={GroupsFeedPage} />,
-      },
-      {
-        path: "group/:id",
-        element: (
-          <GroupProfileProvider>
-            <PostsProvider>
-              <ProtectedRoute element={GroupPage} />
-            </PostsProvider>
-          </GroupProfileProvider>
-        ),
-      },
-      {
-        path: "group/:id/members",
-        element: (
-          <GroupProfileProvider>
-            <GroupMembersProvider>
-              <ProtectedRoute element={GroupMembersPage} />
-            </GroupMembersProvider>
-          </GroupProfileProvider>
-        ),
       },
       {
         path: "settings",

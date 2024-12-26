@@ -9,7 +9,6 @@ import leaveIcon from "../../images/logout.png";
 
 export default function GroupMenu({
   group,
-  setGroup,
   deleteGroupById,
   handleJoinGroup,
   handleLeaveGroup,

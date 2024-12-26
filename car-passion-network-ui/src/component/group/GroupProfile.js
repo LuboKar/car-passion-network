@@ -1,47 +1,40 @@
-import React, { useContext, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import "./GroupProfile.css";
 import GroupProfilePicture from "./GroupProfilePicture";
 import GroupMenu from "./GroupMenu";
-import { deleteGroup } from "../service/GroupService";
+import {
+  deleteGroup,
+  leaveGroup,
+  joinGroup,
+  getGroup,
+} from "../service/GroupService";
 import useNavigation from "../service/NavigateService";
-import { leaveGroup } from "../service/GroupService";
 import { getId } from "../service/TokenService";
-import { joinGroup } from "../service/GroupService";
-import { uploadGroupPicture } from "../service/GroupService";
-import { GroupProfileContext } from "../context/GroupProfileProvider";
+import { useParams } from "react-router-dom";
 
 export default function GroupProfile() {
   const currentUserId = getId();
-  const { group, setGroup } = useContext(GroupProfileContext);
   const { navigateToFeedPage, navigateToProfile } = useNavigation();
-  const fileInputRef = useRef(null);
+  const { id } = useParams();
+  const [group, setGroup] = useState({});
+  const [loadingGroup, setLoadingGroup] = useState(true);
 
-  const handleContainerClick = () => {
-    if (group.admin.id !== currentUserId) {
-      return;
+  const fetchGroup = async () => {
+    const response = await getGroup(id);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
     }
 
-    fileInputRef.current.click();
+    const groupData = await response.json();
+    setGroup(groupData);
+    setLoadingGroup(false);
   };
 
-  const handleFileChange = async (event) => {
-    const file = event.target.files[0];
-
-    const formData = new FormData();
-    formData.append("file", file);
-
-    if (file) {
-      const response = await uploadGroupPicture(formData, group.id);
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const data = await response.json();
-
-      setGroup(data);
-    }
-  };
+  useEffect(() => {
+    fetchGroup();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   const deleteGroupById = async () => {
     const response = await deleteGroup(group.id);
@@ -77,32 +70,24 @@ export default function GroupProfile() {
 
   return (
     <div className="group-profile-container">
-      <div
-        className="group-profile-profile-picture-container"
-        onClick={handleContainerClick}
-      >
-        <GroupProfilePicture groupPicture={group.groupPicture} />
+      {!loadingGroup && (
+        <GroupProfilePicture group={group} setGroup={setGroup} />
+      )}
 
-        <input
-          type="file"
-          ref={fileInputRef}
-          style={{ display: "none" }}
-          onChange={handleFileChange}
-        />
-      </div>
+      {!loadingGroup && (
+        <div className="group-profile-name-and-menu-container">
+          <label className="group-profile-name">{group.name}</label>
 
-      <div className="group-profile-name-and-menu-container">
-        <label className="group-profile-name">{group.name}</label>
-
-        <div className="group-profile-group-menu">
-          <GroupMenu
-            group={group}
-            deleteGroupById={deleteGroupById}
-            handleJoinGroup={handleJoinGroup}
-            handleLeaveGroup={handleLeaveGroup}
-          />
+          <div className="group-profile-group-menu">
+            <GroupMenu
+              group={group}
+              deleteGroupById={deleteGroupById}
+              handleJoinGroup={handleJoinGroup}
+              handleLeaveGroup={handleLeaveGroup}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="group-profile-bottom-border"></div>
     </div>

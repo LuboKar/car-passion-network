@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
-import GroupProfile from "../group/GroupProfile";
 import { useParams } from "react-router-dom";
 import { getGroupPosts } from "../service/PostService";
 import { PostsContext } from "../context/PostsProvider";
 import Posts from "../pageUtils/post/Posts";
-import { GroupProfileContext } from "../context/GroupProfileProvider";
 
 export default function GroupPage() {
   const { id } = useParams();
@@ -12,8 +10,6 @@ export default function GroupPage() {
   const [loadingPosts, setLoadingPosts] = useState(true);
 
   const { setPosts } = useContext(PostsContext);
-
-  const { group, loadingGroup } = useContext(GroupProfileContext);
 
   const fetchPosts = async () => {
     const response = await getGroupPosts(id);
@@ -34,11 +30,7 @@ export default function GroupPage() {
 
   return (
     <div className="group-page-container">
-      {!loadingGroup && <GroupProfile />}
-
-      {!loadingGroup && !loadingPosts && viewPosts && (
-        <Posts groupId={group.id} />
-      )}
+      {!loadingPosts && viewPosts && <Posts groupId={id} />}
     </div>
   );
 }

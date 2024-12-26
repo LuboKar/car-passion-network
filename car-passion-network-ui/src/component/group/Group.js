@@ -1,12 +1,13 @@
 import React, { useContext } from "react";
 import "./Group.css";
-import GroupProfilePicture from "./GroupProfilePicture";
 import useNavigation from "../service/NavigateService";
 import GroupMenu from "./GroupMenu";
 import { deleteGroup } from "../service/GroupService";
 import { joinGroup } from "../service/GroupService";
 import { leaveGroup } from "../service/GroupService";
 import { ProfileGroupsContext } from "../context/ProfileGroupsProvider";
+import ProfilePicture from "../pageUtils/user/ProfilePicture";
+import defaultProfilePicture from "../../images/group image.png";
 
 export default function Group({ group, index }) {
   const { navigateToGroupPage } = useNavigation();
@@ -59,7 +60,10 @@ export default function Group({ group, index }) {
         className="group-profile-picture"
         onClick={() => navigateToGroupPage(group.id)}
       >
-        <GroupProfilePicture groupPicture={group.groupPicture} />
+        <ProfilePicture
+          group={group}
+          defaultProfilePicture={defaultProfilePicture}
+        />
       </div>
 
       <label
