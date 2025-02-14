@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import liked from "../../../images/liked.png";
 import "./ViewLikes.css";
 import PostLikesDropdown from "./PostLikesDropdown";

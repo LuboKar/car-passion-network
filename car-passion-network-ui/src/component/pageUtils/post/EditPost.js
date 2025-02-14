@@ -1,16 +1,12 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import "./EditPost.css";
-import { editPost } from "../../service/PostService";
-import { PostsContext } from "../../context/PostsProvider";
 
-export default function EditPost({ post, index }) {
+export default function EditPost({ post, editAuthorPost }) {
   const [editPostValues, setEditPostValues] = useState({
     postId: post.id,
     title: post.title,
     content: post.content,
   });
-
-  const { editPostByIndex, setEditPostId } = useContext(PostsContext);
 
   const handleInputChange = (event) => {
     event.preventDefault();
@@ -22,27 +18,15 @@ export default function EditPost({ post, index }) {
     }));
   };
 
-  const editAuthorPost = async (event, editPostValues, postIndex) => {
+  const handleEditAuthorPost = (event) => {
     event.preventDefault();
 
-    const response = await editPost(editPostValues);
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const editedPost = await response.json();
-
-    editPostByIndex(editedPost, postIndex);
-    setEditPostId(0);
+    editAuthorPost(editPostValues);
   };
 
   return (
     <div className="edit-post-container">
-      <form
-        className="edit-post-form"
-        onSubmit={(event) => editAuthorPost(event, editPostValues, index)}
-      >
+      <form className="edit-post-form" onSubmit={handleEditAuthorPost}>
         <input
           className="edit-post-title-input"
           placeholder="Title"

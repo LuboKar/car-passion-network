@@ -1,15 +1,14 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, memo } from "react";
 import send from "../../../images/send.png";
 import "./WriteComment.css";
 import { useState } from "react";
 import cannotSend from "../../../images/cannot-send.png";
 import { writeComment } from "../../service/CommentService";
-import { PostsContext } from "../../context/PostsProvider";
 import { getProfilePictureUrl } from "../../service/profilePictureService";
 import ProfilePicture from "../user/ProfilePicture";
 import defaultProfilePicture from "../../../images/profile-pic.jpg";
 
-export default function WriteComment({ post, index }) {
+const WriteComment = memo(({ post, index, commentPostByIndex }) => {
   const [comment, setComment] = useState({
     postId: post.id,
     content: "",
@@ -18,8 +17,6 @@ export default function WriteComment({ post, index }) {
   const profilePicture = getProfilePictureUrl();
 
   const [sendButton, setSendButton] = useState(false);
-
-  const { commentPostByIndex } = useContext(PostsContext);
 
   const handleInputChange = (event) => {
     event.preventDefault();
@@ -93,4 +90,6 @@ export default function WriteComment({ post, index }) {
       )}
     </div>
   );
-}
+});
+
+export default WriteComment;

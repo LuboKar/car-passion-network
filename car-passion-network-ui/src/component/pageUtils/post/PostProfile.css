@@ -1,44 +1,4 @@
 .post-profile-container{
     display: flex;
-}
-
-.post-profile-profile-picture-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;  
-    width: 45px;
-    border-radius: 15px;
-    height: 45px;
-    overflow: hidden;
-}
-
-.post-profile-profile-picture-container:hover{
-    cursor: pointer;
-}
-
-.post-profile-information{
-    display: flex;
-    flex-direction: column;
-}
-
-.post-profile-user-name{
-    font-size: 15px;
-    margin-top: 0;
-    margin-left: 10px;
-}
-
-.post-profile-user-name:hover{
-    cursor: pointer;
-    text-decoration: underline;
-}
-
-.post-profile-date-label{
-    font-size: 12px;
-    margin-left: 10px;
-    padding-top: 0;
-    color: rgb(67, 67, 67);
-}
-
-.post-profile-date-label:hover{
-    cursor: text;
+    width: 100%;
 }

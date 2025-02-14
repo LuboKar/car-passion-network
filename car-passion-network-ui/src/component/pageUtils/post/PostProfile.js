@@ -1,32 +1,22 @@
-import React from "react";
-import useNavigation from "../../service/NavigateService";
+import React, { memo } from "react";
 import "./PostProfile.css";
-import ProfilePicture from "../user/ProfilePicture";
-import defaultProfilePicture from "../../../images/profile-pic.jpg";
+import PostMenu from "./PostMenu";
+import PostProfileInformation from "./PostProfileInformation";
 
-export default function PostProfile({ post }) {
-  const { navigateToProfile } = useNavigation();
+const PostProfile = memo(
+  ({ post, index }) => {
+    return (
+      <div className="post-profile-container">
+        <PostProfileInformation post={post} />
 
-  return (
-    <div className="post-profile-container">
-      <div className="post-profile-profile-picture-container">
-        <ProfilePicture
-          profilePicture={post.author.profilePicture}
-          defaultProfilePicture={defaultProfilePicture}
-          navigateToProfile={() => navigateToProfile(post.author.id)}
-        />
+        <PostMenu post={post} index={index} />
       </div>
+    );
+  },
 
-      <div className="post-profile-information">
-        <h1
-          className="post-profile-user-name"
-          onClick={() => navigateToProfile(post.author.id)}
-        >
-          {post.author.firstName} {post.author.lastName}
-        </h1>
+  (prevProps, nextProps) => {
+    return prevProps.post.id === nextProps.post.id;
+  }
+);
 
-        <label className="post-profile-date-label">{post.createdAt}</label>
-      </div>
-    </div>
-  );
-}
+export default PostProfile;

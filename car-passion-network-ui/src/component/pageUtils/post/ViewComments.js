@@ -1,8 +1,8 @@
-import React from "react";
+import React, { memo } from "react";
 import "./ViewComments.css";
 import Comment from "../comment/Comment";
 
-export default function ViewComments({ post, postIndex }) {
+const ViewComments = memo(({ post, postIndex }) => {
   return (
     <div>
       {post.comments &&
@@ -18,4 +18,6 @@ export default function ViewComments({ post, postIndex }) {
         ))}
     </div>
   );
-}
+});
+
+export default ViewComments;

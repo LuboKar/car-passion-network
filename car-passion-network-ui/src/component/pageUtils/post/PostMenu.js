@@ -14,7 +14,6 @@ export default function PostMenu({ post, index }) {
   const currentUserId = getId();
   const { removePost, toggleEditPost, toggleMenu, clickedMenu } =
     useContext(PostsContext);
-
   const { navigateToPostPage } = useNavigation();
 
   const deletePostById = async (index, id) => {

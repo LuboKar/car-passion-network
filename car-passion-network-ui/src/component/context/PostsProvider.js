@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useCallback } from "react";
 
 export const PostsContext = createContext();
 
@@ -13,15 +13,16 @@ export const PostsProvider = ({ children }) => {
     setPosts((prevPosts) => [createdPost, ...prevPosts]);
   };
 
-  const toggleLike = (post, index) => {
+  const toggleLike = useCallback((post, index) => {
     setPosts((prevPosts) => {
       const updatedPosts = [...prevPosts];
-
-      updatedPosts[index] = post;
-
+      updatedPosts[index] = {
+        ...updatedPosts[index],
+        ...post,
+      };
       return updatedPosts;
     });
-  };
+  }, []);
 
   const removePost = async (index, id) => {
     setPosts((prevPosts) => [
@@ -30,25 +31,35 @@ export const PostsProvider = ({ children }) => {
     ]);
   };
 
-  const commentPostByIndex = (createdComment, index) => {
-    setPosts((prevPosts) => {
-      const newPosts = [...prevPosts];
-      const updatedPost = { ...newPosts[index] };
+  const commentPostByIndex = useCallback(
+    (createdComment, index) => {
+      setPosts((prevPosts) => {
+        const newPosts = [...prevPosts];
+        const updatedPost = { ...newPosts[index] };
 
-      updatedPost.comments = updatedPost.comments
-        ? [...updatedPost.comments, createdComment]
-        : [createdComment];
+        updatedPost.comments = updatedPost.comments
+          ? [...updatedPost.comments, createdComment]
+          : [createdComment];
 
-      newPosts[index] = updatedPost;
+        newPosts[index] = updatedPost;
 
-      return newPosts;
-    });
-  };
+        return newPosts;
+      });
+    },
+    [setPosts]
+  );
 
   const editComment = (comment, commentIndex, postIndex) => {
-    const updatedPosts = [...posts];
-    updatedPosts[postIndex].comments[commentIndex] = comment;
-    setPosts(updatedPosts);
+    setPosts((prevPosts) => {
+      return prevPosts.map((post, index) => {
+        if (index === postIndex) {
+          const updatedComments = [...post.comments];
+          updatedComments[commentIndex] = comment;
+          return { ...post, comments: updatedComments };
+        }
+        return post;
+      });
+    });
   };
 
   const editPostByIndex = (editedPost, postIndex) => {

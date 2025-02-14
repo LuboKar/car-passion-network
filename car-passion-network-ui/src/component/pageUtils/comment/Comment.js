@@ -86,7 +86,7 @@ export default function Comment({ comment, commentIndex, postIndex, post }) {
           comment={comment}
           commentIndex={commentIndex}
           postIndex={postIndex}
-          postId={post.id}
+          post={post}
         />
       )}
     </div>

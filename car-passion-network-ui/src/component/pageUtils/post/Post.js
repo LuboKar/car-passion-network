@@ -1,71 +1,44 @@
-import React, { useState, useContext } from "react";
-import LikePost from "./LikePost";
-import ViewLikes from "./ViewLikes";
-import CommentButton from "./CommentButton";
-import WriteComment from "./WriteComment";
-import ViewComments from "./ViewComments";
-import NumberOfComments from "./NumberOfComments";
+import React, { useState, memo, useMemo, useCallback } from "react";
 import PostProfile from "./PostProfile";
 import PostContent from "./PostContent";
 import "./Post.css";
-import PostMenu from "./PostMenu";
-import EditPost from "./EditPost";
-import { PostsContext } from "../../context/PostsProvider";
+import PostInformation from "./PostInformation";
+import PostButtons from "./PostButtons";
+import PostComments from "./PostComments";
 
-export default function Post({ post, index, postId }) {
+const Post = memo(({ post, index, postId }) => {
   const [toggleComments, setToggleComments] = useState(postId ? postId : -1);
 
-  const { editPostId } = useContext(PostsContext);
-
-  const toggleCommentsFunction = (id) => {
-    if (id === toggleComments) {
+  const toggleCommentsFunction = useCallback(() => {
+    if (post.id === toggleComments) {
       setToggleComments(-1);
-    } else setToggleComments(id);
-  };
+    } else {
+      setToggleComments(post.id);
+    }
+  }, [toggleComments, post.id]);
 
   return (
     <div className="post-container">
-      <div className="post-user-container">
-        <PostProfile post={post} />
+      <PostProfile post={post} index={index} />
 
-        <PostMenu post={post} index={index} />
-      </div>
+      <PostContent post={post} index={index} />
 
-      {editPostId !== post.id && <PostContent post={post} />}
+      <PostInformation
+        post={post}
+        toggleCommentsFunction={toggleCommentsFunction}
+      />
 
-      {editPostId === post.id && <EditPost post={post} index={index} />}
+      <div className="post-buttons-border"></div>
 
-      {editPostId !== post.id && (
-        <div className="post-tools">
-          <div className="post-information">
-            <ViewLikes post={post} />
+      <PostButtons
+        post={post}
+        index={index}
+        toggleCommentsFunction={toggleCommentsFunction}
+      />
 
-            <NumberOfComments
-              post={post}
-              toggleCommentsFunction={() => toggleCommentsFunction(post.id)}
-            />
-          </div>
-
-          <div className="post-buttons-border"></div>
-
-          <div className="post-buttons">
-            <LikePost post={post} index={index} />
-
-            <CommentButton
-              toggleCommentsFunction={() => toggleCommentsFunction(post.id)}
-            />
-          </div>
-
-          {toggleComments === post.id && (
-            <div className="post-comments-container">
-              <div className="post-buttons-border"></div>
-              <WriteComment post={post} index={index} />
-
-              <ViewComments post={post} postIndex={index} />
-            </div>
-          )}
-        </div>
-      )}
+      {toggleComments === post.id && <PostComments post={post} index={index} />}
     </div>
   );
-}
+});
+
+export default Post;

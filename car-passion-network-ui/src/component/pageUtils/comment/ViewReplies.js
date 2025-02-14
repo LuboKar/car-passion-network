@@ -6,7 +6,7 @@ export default function ViewReplies({
   comment,
   commentIndex,
   postIndex,
-  postId,
+  post,
 }) {
   return (
     <div className="view-replies-container">
@@ -24,7 +24,7 @@ export default function ViewReplies({
                 comment={reply}
                 commentIndex={commentIndex}
                 postIndex={postIndex}
-                postId={postId}
+                post={post}
               />
             </div>
           </div>
