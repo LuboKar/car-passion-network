@@ -12,19 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-  @ExceptionHandler({
-    AlreadyUsedEmailException.class,
-    InvalidCredentialsException.class,
-    UserNotFoundException.class,
-    PostNotFoundException.class,
-    CommentNotFoundException.class,
-    UserNotAuthorException.class,
-    FileNotUploadedException.class,
-    FolderNotCreatedException.class,
-    InvalidPasswordException.class,
-    AlreadyUsedGroupNameException.class,
-    GroupNotFoundException.class
-  })
+  @ExceptionHandler({ValidationException.class})
   public ResponseEntity<Object> handleException(RuntimeException exception) {
     Map<String, String> error = new HashMap<>();
     error.put("error", exception.getMessage());

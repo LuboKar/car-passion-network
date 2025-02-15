@@ -1,7 +1,6 @@
 package com.carpassionnetwork.service;
 
-import com.carpassionnetwork.exception.PostNotFoundException;
-import com.carpassionnetwork.exception.UserNotAuthorException;
+import com.carpassionnetwork.exception.ValidationException;
 import com.carpassionnetwork.model.Group;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
@@ -21,7 +20,9 @@ public class PostService {
   private final GroupService groupService;
 
   public Post getPost(UUID id) {
-    return postRepository.findById(id).orElseThrow(() -> new PostNotFoundException(id));
+    return postRepository
+        .findById(id)
+        .orElseThrow(() -> new ValidationException("Post with " + id + " does not exists!"));
   }
 
   public List<Post> getAllPostsByUserId(UUID id) {
@@ -88,13 +89,15 @@ public class PostService {
 
   private void validateUserCanDeletePost(User user, Post post) {
     if (!post.getAuthor().equals(user) && !post.getUser().equals(user)) {
-      throw new UserNotAuthorException(user.getId(), post.getId());
+      throw new ValidationException(
+          "User with " + user.getId() + " is not author of post with " + post.getId() + "!");
     }
   }
 
   private void validateUserCanEditPost(User currentUser, Post post) {
     if (!post.getAuthor().equals(currentUser)) {
-      throw new UserNotAuthorException(currentUser.getId(), post.getId());
+      throw new ValidationException(
+          "User with " + currentUser.getId() + " is not author of post with " + post.getId() + "!");
     }
   }
 }

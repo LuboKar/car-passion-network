@@ -11,10 +11,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.carpassionnetwork.dto.request.UserEditRequest;
-import com.carpassionnetwork.exception.FileNotUploadedException;
-import com.carpassionnetwork.exception.InvalidCredentialsException;
-import com.carpassionnetwork.exception.InvalidPasswordException;
-import com.carpassionnetwork.exception.UserNotFoundException;
+import com.carpassionnetwork.exception.ValidationException;
 import com.carpassionnetwork.model.*;
 import com.carpassionnetwork.repository.CommentRepository;
 import com.carpassionnetwork.repository.PostRepository;
@@ -59,7 +56,7 @@ public class UserControllerIT extends BaseIT {
         .perform(get("/users/" + currentUser.getId()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result -> assertInstanceOf(UserNotFoundException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -97,8 +94,7 @@ public class UserControllerIT extends BaseIT {
                     }))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(FileNotUploadedException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -121,8 +117,7 @@ public class UserControllerIT extends BaseIT {
                     }))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(FileNotUploadedException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -145,8 +140,7 @@ public class UserControllerIT extends BaseIT {
                     }))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(FileNotUploadedException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -170,8 +164,7 @@ public class UserControllerIT extends BaseIT {
                     }))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(FileNotUploadedException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -192,8 +185,7 @@ public class UserControllerIT extends BaseIT {
                     }))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(FileNotUploadedException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -227,8 +219,7 @@ public class UserControllerIT extends BaseIT {
                 .content(gson.toJson(userEditRequest)))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -245,8 +236,7 @@ public class UserControllerIT extends BaseIT {
                 .content(gson.toJson(userEditRequest)))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(InvalidPasswordException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -274,8 +264,7 @@ public class UserControllerIT extends BaseIT {
         .perform(post("/users/friends/" + secondUser.getId()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -287,7 +276,7 @@ public class UserControllerIT extends BaseIT {
         .perform(post("/users/friends/" + secondUser.getId()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result -> assertInstanceOf(UserNotFoundException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -306,8 +295,7 @@ public class UserControllerIT extends BaseIT {
         .perform(delete("/users/friends/" + secondUser.getId()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -319,7 +307,7 @@ public class UserControllerIT extends BaseIT {
         .perform(delete("/users/friends/" + secondUser.getId()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result -> assertInstanceOf(UserNotFoundException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -391,7 +379,7 @@ public class UserControllerIT extends BaseIT {
         .perform(delete("/users/" + currentUser.getId()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result -> assertInstanceOf(UserNotFoundException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test

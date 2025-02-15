@@ -8,10 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.carpassionnetwork.exception.FileNotUploadedException;
-import com.carpassionnetwork.exception.GroupNotFoundException;
-import com.carpassionnetwork.exception.InvalidCredentialsException;
-import com.carpassionnetwork.exception.UserNotFoundException;
+import com.carpassionnetwork.exception.ValidationException;
 import com.carpassionnetwork.model.Group;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.service.GroupService;
@@ -44,8 +41,7 @@ public class GroupControllerIT extends BaseIT {
         .perform(post("/group/" + groupOne.getName()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -68,8 +64,7 @@ public class GroupControllerIT extends BaseIT {
         .perform(get("/group/" + groupOne.getId()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(GroupNotFoundException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -155,8 +150,7 @@ public class GroupControllerIT extends BaseIT {
         .perform(post("/group/join/" + groupOne.getId()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -168,8 +162,7 @@ public class GroupControllerIT extends BaseIT {
         .perform(post("/group/join/" + groupOne.getId()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(GroupNotFoundException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -192,8 +185,7 @@ public class GroupControllerIT extends BaseIT {
         .perform(post("/group/leave/" + groupOne.getId()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -205,8 +197,7 @@ public class GroupControllerIT extends BaseIT {
         .perform(post("/group/leave/" + groupOne.getId()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(GroupNotFoundException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -227,8 +218,7 @@ public class GroupControllerIT extends BaseIT {
         .perform(post("/group/remove/" + groupOne.getId() + "/" + user.getId()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(GroupNotFoundException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -240,7 +230,7 @@ public class GroupControllerIT extends BaseIT {
         .perform(post("/group/remove/" + savedGroup.getId() + "/" + user.getId()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result -> assertInstanceOf(UserNotFoundException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -276,8 +266,7 @@ public class GroupControllerIT extends BaseIT {
                     }))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(FileNotUploadedException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -299,8 +288,7 @@ public class GroupControllerIT extends BaseIT {
                     }))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(FileNotUploadedException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -322,8 +310,7 @@ public class GroupControllerIT extends BaseIT {
                     }))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(FileNotUploadedException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -346,8 +333,7 @@ public class GroupControllerIT extends BaseIT {
                     }))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(GroupNotFoundException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -372,8 +358,7 @@ public class GroupControllerIT extends BaseIT {
                     }))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(FileNotUploadedException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test

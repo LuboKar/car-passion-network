@@ -1,10 +1,7 @@
 package com.carpassionnetwork.service;
 
 import com.carpassionnetwork.dto.request.UserEditRequest;
-import com.carpassionnetwork.exception.FileNotUploadedException;
-import com.carpassionnetwork.exception.InvalidCredentialsException;
-import com.carpassionnetwork.exception.InvalidPasswordException;
-import com.carpassionnetwork.exception.UserNotFoundException;
+import com.carpassionnetwork.exception.*;
 import com.carpassionnetwork.model.Comment;
 import com.carpassionnetwork.model.Group;
 import com.carpassionnetwork.model.Post;
@@ -35,7 +32,9 @@ public class UserService {
   private final GroupRepository groupRepository;
 
   public User getUser(UUID id) {
-    return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+    return userRepository
+        .findById(id)
+        .orElseThrow(() -> new ValidationException("User with Id:" + id + " does not exists!"));
   }
 
   public User getCurrentUser() {
@@ -43,7 +42,10 @@ public class UserService {
 
     return userRepository
         .findByEmail(currentUserEmail)
-        .orElseThrow(InvalidCredentialsException::new);
+        .orElseThrow(
+            () ->
+                new ValidationException(
+                    "User with email: " + currentUserEmail + " does not exists!"));
   }
 
   public User uploadProfilePicture(MultipartFile file) {
@@ -121,7 +123,7 @@ public class UserService {
         || file.isEmpty()
         || file.getOriginalFilename() == null
         || file.getOriginalFilename().isEmpty()) {
-      throw new FileNotUploadedException();
+      throw new ValidationException("The uploaded file is invalid.");
     }
   }
 
@@ -144,7 +146,7 @@ public class UserService {
     try {
       Files.write(targetPath, file.getBytes());
     } catch (IOException e) {
-      throw new FileNotUploadedException();
+      throw new ValidationException("Failed to create file!");
     }
   }
 
@@ -166,7 +168,7 @@ public class UserService {
       if (passwordEncoder.matches(userEditRequest.getOldPassword(), currentUser.getPassword())) {
         currentUser.setPassword(passwordEncoder.encode(userEditRequest.getNewPassword()));
       } else {
-        throw new InvalidPasswordException();
+        throw new ValidationException("The old password is incorrect.");
       }
     }
   }

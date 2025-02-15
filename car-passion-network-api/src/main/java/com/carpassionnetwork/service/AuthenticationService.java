@@ -2,10 +2,7 @@ package com.carpassionnetwork.service;
 
 import com.carpassionnetwork.dto.request.LoginRequest;
 import com.carpassionnetwork.dto.response.AuthenticationResponse;
-import com.carpassionnetwork.exception.AlreadyUsedEmailException;
-import com.carpassionnetwork.exception.FolderNotCreatedException;
-import com.carpassionnetwork.exception.InvalidCredentialsException;
-import com.carpassionnetwork.exception.UserNotFoundException;
+import com.carpassionnetwork.exception.*;
 import com.carpassionnetwork.model.Role;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.UserRepository;
@@ -52,7 +49,7 @@ public class AuthenticationService {
 
   private void validateUserEmail(User user) {
     Optional<User> savedUser = userRepository.findByEmail(user.getEmail());
-    if (savedUser.isPresent()) throw new AlreadyUsedEmailException();
+    if (savedUser.isPresent()) throw new ValidationException("This email is already used!");
   }
 
   private void createDirectory(String name) {
@@ -63,7 +60,7 @@ public class AuthenticationService {
         Files.createDirectory(path);
       }
     } catch (IOException e) {
-      throw new FolderNotCreatedException();
+      throw new ValidationException("Failed to create folder!");
     }
   }
 
@@ -86,7 +83,7 @@ public class AuthenticationService {
           new UsernamePasswordAuthenticationToken(
               loginRequest.getEmail(), loginRequest.getPassword()));
     } catch (AuthenticationException e) {
-      throw new InvalidCredentialsException();
+      throw new ValidationException("Wrong email or password!");
     }
   }
 
@@ -102,7 +99,10 @@ public class AuthenticationService {
   }
 
   private User findUserByEmail(String email) {
-    return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
+    return userRepository
+        .findByEmail(email)
+        .orElseThrow(
+            () -> new ValidationException("User with email:" + email + " does not exists!"));
   }
 
   private Map<String, Object> buildClaims(User user) {

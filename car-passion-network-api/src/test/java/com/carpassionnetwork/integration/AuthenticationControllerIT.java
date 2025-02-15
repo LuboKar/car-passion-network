@@ -7,8 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.carpassionnetwork.dto.request.LoginRequest;
 import com.carpassionnetwork.dto.request.RegistrationRequest;
-import com.carpassionnetwork.exception.AlreadyUsedEmailException;
-import com.carpassionnetwork.exception.InvalidCredentialsException;
+import com.carpassionnetwork.exception.ValidationException;
 import java.util.Objects;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,8 +46,7 @@ public class AuthenticationControllerIT extends BaseIT {
                 .content(gson.toJson(registrationRequest)))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(AlreadyUsedEmailException.class, result.getResolvedException()))
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()))
         .andExpect(
             result ->
                 assertEquals(
@@ -95,8 +93,7 @@ public class AuthenticationControllerIT extends BaseIT {
                 .content(gson.toJson(loginRequest)))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test

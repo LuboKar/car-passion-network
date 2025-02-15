@@ -7,10 +7,7 @@ import static com.carpassionnetwork.helper.GroupTestHelper.createNewGroupTwo;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import com.carpassionnetwork.exception.FileNotUploadedException;
-import com.carpassionnetwork.exception.GroupNotFoundException;
-import com.carpassionnetwork.exception.InvalidCredentialsException;
-import com.carpassionnetwork.exception.UserNotFoundException;
+import com.carpassionnetwork.exception.ValidationException;
 import com.carpassionnetwork.model.Group;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.GroupRepository;
@@ -51,10 +48,9 @@ public class GroupServiceTest {
 
   @Test
   void createGroupShouldThrowInvalidCredentialsException() {
-    when(userService.getCurrentUser()).thenThrow(InvalidCredentialsException.class);
+    when(userService.getCurrentUser()).thenThrow(ValidationException.class);
 
-    assertThrows(
-        InvalidCredentialsException.class, () -> groupService.createGroup(groupOne.getName()));
+    assertThrows(ValidationException.class, () -> groupService.createGroup(groupOne.getName()));
   }
 
   @Test
@@ -70,9 +66,9 @@ public class GroupServiceTest {
 
   @Test
   void getGroupShouldThrowGroupNotFoundException() {
-    when(groupRepository.findById(groupOne.getId())).thenThrow(GroupNotFoundException.class);
+    when(groupRepository.findById(groupOne.getId())).thenThrow(ValidationException.class);
 
-    assertThrows(GroupNotFoundException.class, () -> groupService.getGroup(groupOne.getId()));
+    assertThrows(ValidationException.class, () -> groupService.getGroup(groupOne.getId()));
   }
 
   @Test
@@ -125,17 +121,17 @@ public class GroupServiceTest {
 
   @Test
   void joinGroupShouldThrowInvalidCredentialsException() {
-    when(userService.getCurrentUser()).thenThrow(InvalidCredentialsException.class);
+    when(userService.getCurrentUser()).thenThrow(ValidationException.class);
 
-    assertThrows(InvalidCredentialsException.class, () -> groupService.joinGroup(groupOne.getId()));
+    assertThrows(ValidationException.class, () -> groupService.joinGroup(groupOne.getId()));
   }
 
   @Test
   void joinGroupShouldThrowGroupNotFoundException() {
     when(userService.getCurrentUser()).thenReturn(currentUser);
-    when(groupRepository.findById(groupOne.getId())).thenThrow(GroupNotFoundException.class);
+    when(groupRepository.findById(groupOne.getId())).thenThrow(ValidationException.class);
 
-    assertThrows(GroupNotFoundException.class, () -> groupService.joinGroup(groupOne.getId()));
+    assertThrows(ValidationException.class, () -> groupService.joinGroup(groupOne.getId()));
   }
 
   @Test
@@ -155,18 +151,17 @@ public class GroupServiceTest {
 
   @Test
   void leaveGroupShouldThrowInvalidCredentialsException() {
-    when(userService.getCurrentUser()).thenThrow(InvalidCredentialsException.class);
+    when(userService.getCurrentUser()).thenThrow(ValidationException.class);
 
-    assertThrows(
-        InvalidCredentialsException.class, () -> groupService.leaveGroup(groupOne.getId()));
+    assertThrows(ValidationException.class, () -> groupService.leaveGroup(groupOne.getId()));
   }
 
   @Test
   void leaveGroupShouldThrowGroupNotFoundException() {
     when(userService.getCurrentUser()).thenReturn(currentUser);
-    when(groupRepository.findById(groupOne.getId())).thenThrow(GroupNotFoundException.class);
+    when(groupRepository.findById(groupOne.getId())).thenThrow(ValidationException.class);
 
-    assertThrows(GroupNotFoundException.class, () -> groupService.leaveGroup(groupOne.getId()));
+    assertThrows(ValidationException.class, () -> groupService.leaveGroup(groupOne.getId()));
   }
 
   @Test
@@ -188,20 +183,20 @@ public class GroupServiceTest {
 
   @Test
   void removeMemberShouldThrowGroupNotFoundException() {
-    when(groupRepository.findById(groupOne.getId())).thenThrow(GroupNotFoundException.class);
+    when(groupRepository.findById(groupOne.getId())).thenThrow(ValidationException.class);
 
     assertThrows(
-        GroupNotFoundException.class,
+        ValidationException.class,
         () -> groupService.removeMember(groupOne.getId(), secondUser.getId()));
   }
 
   @Test
   void removeMemberShouldThrowUserNotFoundException() {
     when(groupRepository.findById(groupOne.getId())).thenReturn(Optional.of(groupOne));
-    when(userService.getUser(secondUser.getId())).thenThrow(UserNotFoundException.class);
+    when(userService.getUser(secondUser.getId())).thenThrow(ValidationException.class);
 
     assertThrows(
-        UserNotFoundException.class,
+        ValidationException.class,
         () -> groupService.removeMember(groupOne.getId(), secondUser.getId()));
   }
 
@@ -224,8 +219,7 @@ public class GroupServiceTest {
   @Test
   void uploadGroupPictureShouldThrowFileNotUploadedExceptionWhenFileIsNull() {
     assertThrows(
-        FileNotUploadedException.class,
-        () -> groupService.uploadGroupPicture(null, groupOne.getId()));
+        ValidationException.class, () -> groupService.uploadGroupPicture(null, groupOne.getId()));
   }
 
   @Test
@@ -233,8 +227,7 @@ public class GroupServiceTest {
     when(file.isEmpty()).thenReturn(true);
 
     assertThrows(
-        FileNotUploadedException.class,
-        () -> groupService.uploadGroupPicture(file, groupOne.getId()));
+        ValidationException.class, () -> groupService.uploadGroupPicture(file, groupOne.getId()));
   }
 
   @Test
@@ -242,8 +235,7 @@ public class GroupServiceTest {
     when(file.getOriginalFilename()).thenReturn(null);
 
     assertThrows(
-        FileNotUploadedException.class,
-        () -> groupService.uploadGroupPicture(file, groupOne.getId()));
+        ValidationException.class, () -> groupService.uploadGroupPicture(file, groupOne.getId()));
   }
 
   @Test
@@ -251,8 +243,7 @@ public class GroupServiceTest {
     when(file.getOriginalFilename()).thenReturn("");
 
     assertThrows(
-        FileNotUploadedException.class,
-        () -> groupService.uploadGroupPicture(file, groupOne.getId()));
+        ValidationException.class, () -> groupService.uploadGroupPicture(file, groupOne.getId()));
   }
 
   @Test
@@ -262,8 +253,7 @@ public class GroupServiceTest {
     when(file.getOriginalFilename()).thenReturn(fileName);
 
     assertThrows(
-        GroupNotFoundException.class,
-        () -> groupService.uploadGroupPicture(file, groupOne.getId()));
+        ValidationException.class, () -> groupService.uploadGroupPicture(file, groupOne.getId()));
   }
 
   @Test

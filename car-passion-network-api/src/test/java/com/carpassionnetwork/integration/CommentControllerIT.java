@@ -11,10 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.carpassionnetwork.dto.request.CommentEditRequestDto;
 import com.carpassionnetwork.dto.request.CommentRequestDto;
-import com.carpassionnetwork.exception.CommentNotFoundException;
-import com.carpassionnetwork.exception.InvalidCredentialsException;
-import com.carpassionnetwork.exception.PostNotFoundException;
-import com.carpassionnetwork.exception.UserNotAuthorException;
+import com.carpassionnetwork.exception.ValidationException;
 import com.carpassionnetwork.model.Comment;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
@@ -52,8 +49,7 @@ public class CommentControllerIT extends BaseIT {
                 .content(gson.toJson(commentRequestDto)))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -67,7 +63,7 @@ public class CommentControllerIT extends BaseIT {
                 .content(gson.toJson(commentRequestDto)))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result -> assertInstanceOf(PostNotFoundException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -93,8 +89,7 @@ public class CommentControllerIT extends BaseIT {
         .perform(post("/comment/like/" + comment.getId()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -106,8 +101,7 @@ public class CommentControllerIT extends BaseIT {
         .perform(post("/comment/like/" + comment.getId()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(CommentNotFoundException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -153,8 +147,7 @@ public class CommentControllerIT extends BaseIT {
                 .content(gson.toJson(commentRequestDto)))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -170,8 +163,7 @@ public class CommentControllerIT extends BaseIT {
                 .content(gson.toJson(commentRequestDto)))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(CommentNotFoundException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -200,8 +192,7 @@ public class CommentControllerIT extends BaseIT {
         .perform(delete("/comment/delete/" + post.getId() + "/" + comment.getId()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -213,7 +204,7 @@ public class CommentControllerIT extends BaseIT {
         .perform(delete("/comment/delete/" + post.getId() + "/" + comment.getId()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result -> assertInstanceOf(PostNotFoundException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -226,8 +217,7 @@ public class CommentControllerIT extends BaseIT {
         .perform(delete("/comment/delete/" + savedPost.getId() + "/" + comment.getId()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(CommentNotFoundException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -246,8 +236,7 @@ public class CommentControllerIT extends BaseIT {
         .perform(delete("/comment/delete/" + savedPost.getId() + "/" + savedComment.getId()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(UserNotAuthorException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -276,8 +265,7 @@ public class CommentControllerIT extends BaseIT {
                 .content(gson.toJson(commentEditRequestDto)))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -292,7 +280,7 @@ public class CommentControllerIT extends BaseIT {
                 .content(gson.toJson(commentEditRequestDto)))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result -> assertInstanceOf(PostNotFoundException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -309,8 +297,7 @@ public class CommentControllerIT extends BaseIT {
                 .content(gson.toJson(commentEditRequestDto)))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(CommentNotFoundException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -334,8 +321,7 @@ public class CommentControllerIT extends BaseIT {
                 .content(gson.toJson(commentEditRequestDto)))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(UserNotAuthorException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test

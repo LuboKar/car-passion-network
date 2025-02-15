@@ -9,10 +9,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.carpassionnetwork.dto.request.UserEditRequest;
-import com.carpassionnetwork.exception.FileNotUploadedException;
-import com.carpassionnetwork.exception.InvalidCredentialsException;
-import com.carpassionnetwork.exception.InvalidPasswordException;
-import com.carpassionnetwork.exception.UserNotFoundException;
+import com.carpassionnetwork.exception.ValidationException;
 import com.carpassionnetwork.model.Group;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.UserRepository;
@@ -62,7 +59,7 @@ public class UserServiceTest {
   void getUserShouldThrowUserNotFoundException() {
     when(userRepository.findById(any())).thenReturn(Optional.empty());
 
-    assertThrows(UserNotFoundException.class, () -> userService.getUser(user.getId()));
+    assertThrows(ValidationException.class, () -> userService.getUser(user.getId()));
   }
 
   @Test
@@ -78,28 +75,28 @@ public class UserServiceTest {
 
   @Test
   void uploadProfilePictureShouldThrowFileNotUploadedExceptionWhenFileIsNull() {
-    assertThrows(FileNotUploadedException.class, () -> userService.uploadProfilePicture(null));
+    assertThrows(ValidationException.class, () -> userService.uploadProfilePicture(null));
   }
 
   @Test
   void uploadProfilePictureShouldThrowFileNotUploadedExceptionWhenFileIsEmpty() {
     when(file.isEmpty()).thenReturn(true);
 
-    assertThrows(FileNotUploadedException.class, () -> userService.uploadProfilePicture(file));
+    assertThrows(ValidationException.class, () -> userService.uploadProfilePicture(file));
   }
 
   @Test
   void uploadProfilePictureShouldThrowFileNotUploadedExceptionWhenFileNameIsNull() {
     when(file.getOriginalFilename()).thenReturn(null);
 
-    assertThrows(FileNotUploadedException.class, () -> userService.uploadProfilePicture(file));
+    assertThrows(ValidationException.class, () -> userService.uploadProfilePicture(file));
   }
 
   @Test
   void uploadProfilePictureShouldThrowFileNotUploadedExceptionWhenFileNameIsEmpty() {
     when(file.getOriginalFilename()).thenReturn("");
 
-    assertThrows(FileNotUploadedException.class, () -> userService.uploadProfilePicture(file));
+    assertThrows(ValidationException.class, () -> userService.uploadProfilePicture(file));
   }
 
   @Test
@@ -111,10 +108,10 @@ public class UserServiceTest {
     SecurityContextHolder.setContext(securityContext);
     when(authentication.getName()).thenReturn(user.getEmail());
     when(securityContext.getAuthentication()).thenReturn(authentication);
-    when(userRepository.findByEmail(user.getEmail())).thenThrow(InvalidCredentialsException.class);
+    when(userRepository.findByEmail(user.getEmail())).thenThrow(ValidationException.class);
     when(file.getBytes()).thenReturn(fileContent);
 
-    assertThrows(InvalidCredentialsException.class, () -> userService.uploadProfilePicture(file));
+    assertThrows(ValidationException.class, () -> userService.uploadProfilePicture(file));
   }
 
   @Test
@@ -140,9 +137,9 @@ public class UserServiceTest {
     SecurityContextHolder.setContext(securityContext);
     when(authentication.getName()).thenReturn(user.getEmail());
     when(securityContext.getAuthentication()).thenReturn(authentication);
-    when(userRepository.findByEmail(user.getEmail())).thenThrow(InvalidCredentialsException.class);
+    when(userRepository.findByEmail(user.getEmail())).thenThrow(ValidationException.class);
 
-    assertThrows(InvalidCredentialsException.class, () -> userService.editUser(userEditRequest));
+    assertThrows(ValidationException.class, () -> userService.editUser(userEditRequest));
   }
 
   @Test
@@ -155,7 +152,7 @@ public class UserServiceTest {
     userEditRequest.setOldPassword("pass");
     userEditRequest.setNewPassword("password");
 
-    assertThrows(InvalidPasswordException.class, () -> userService.editUser(userEditRequest));
+    assertThrows(ValidationException.class, () -> userService.editUser(userEditRequest));
   }
 
   @Test
@@ -178,10 +175,9 @@ public class UserServiceTest {
     SecurityContextHolder.setContext(securityContext);
     when(securityContext.getAuthentication()).thenReturn(authentication);
     when(authentication.getName()).thenReturn(user.getEmail());
-    when(userRepository.findByEmail(user.getEmail())).thenThrow(InvalidCredentialsException.class);
+    when(userRepository.findByEmail(user.getEmail())).thenThrow(ValidationException.class);
 
-    assertThrows(
-        InvalidCredentialsException.class, () -> userService.addFriend(secondUser.getId()));
+    assertThrows(ValidationException.class, () -> userService.addFriend(secondUser.getId()));
   }
 
   @Test
@@ -190,9 +186,9 @@ public class UserServiceTest {
     when(securityContext.getAuthentication()).thenReturn(authentication);
     when(authentication.getName()).thenReturn(user.getEmail());
     when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
-    when(userRepository.findById(secondUser.getId())).thenThrow(UserNotFoundException.class);
+    when(userRepository.findById(secondUser.getId())).thenThrow(ValidationException.class);
 
-    assertThrows(UserNotFoundException.class, () -> userService.addFriend(secondUser.getId()));
+    assertThrows(ValidationException.class, () -> userService.addFriend(secondUser.getId()));
   }
 
   @Test
@@ -217,10 +213,9 @@ public class UserServiceTest {
     SecurityContextHolder.setContext(securityContext);
     when(securityContext.getAuthentication()).thenReturn(authentication);
     when(authentication.getName()).thenReturn(user.getEmail());
-    when(userRepository.findByEmail(user.getEmail())).thenThrow(InvalidCredentialsException.class);
+    when(userRepository.findByEmail(user.getEmail())).thenThrow(ValidationException.class);
 
-    assertThrows(
-        InvalidCredentialsException.class, () -> userService.removeFriend(secondUser.getId()));
+    assertThrows(ValidationException.class, () -> userService.removeFriend(secondUser.getId()));
   }
 
   @Test
@@ -229,9 +224,9 @@ public class UserServiceTest {
     when(securityContext.getAuthentication()).thenReturn(authentication);
     when(authentication.getName()).thenReturn(user.getEmail());
     when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
-    when(userRepository.findById(secondUser.getId())).thenThrow(UserNotFoundException.class);
+    when(userRepository.findById(secondUser.getId())).thenThrow(ValidationException.class);
 
-    assertThrows(UserNotFoundException.class, () -> userService.removeFriend(secondUser.getId()));
+    assertThrows(ValidationException.class, () -> userService.removeFriend(secondUser.getId()));
   }
 
   @Test
@@ -297,9 +292,9 @@ public class UserServiceTest {
 
   @Test
   void deleteUserShouldThrowUserNotFoundException() {
-    when(userRepository.findById(user.getId())).thenThrow(UserNotFoundException.class);
+    when(userRepository.findById(user.getId())).thenThrow(ValidationException.class);
 
-    assertThrows(UserNotFoundException.class, () -> userService.deleteUser(user.getId()));
+    assertThrows(ValidationException.class, () -> userService.deleteUser(user.getId()));
   }
 
   @Test

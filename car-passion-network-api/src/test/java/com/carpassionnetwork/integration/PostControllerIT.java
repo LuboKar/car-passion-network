@@ -49,7 +49,7 @@ public class PostControllerIT extends BaseIT {
                 .content(gson.toJson(postCreateRequestDto)))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result -> assertInstanceOf(UserNotFoundException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -66,8 +66,7 @@ public class PostControllerIT extends BaseIT {
                 .content(gson.toJson(postCreateRequestDto)))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -85,8 +84,7 @@ public class PostControllerIT extends BaseIT {
                 .content(gson.toJson(postCreateRequestDto)))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(GroupNotFoundException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -134,8 +132,7 @@ public class PostControllerIT extends BaseIT {
         .perform(post("/post/like/" + post.getId()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -146,7 +143,7 @@ public class PostControllerIT extends BaseIT {
         .perform(post("/post/like/" + post.getId()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result -> assertInstanceOf(PostNotFoundException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -218,7 +215,7 @@ public class PostControllerIT extends BaseIT {
         .perform(get("/post/" + post.getId()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result -> assertInstanceOf(PostNotFoundException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -258,8 +255,7 @@ public class PostControllerIT extends BaseIT {
         .perform(delete("/post/delete/" + post.getId()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -271,7 +267,7 @@ public class PostControllerIT extends BaseIT {
         .perform(delete("/post/delete/" + post.getId()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result -> assertInstanceOf(PostNotFoundException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -287,8 +283,7 @@ public class PostControllerIT extends BaseIT {
         .perform(delete("/post/delete/" + savedPost.getId()))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(UserNotAuthorException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -313,8 +308,7 @@ public class PostControllerIT extends BaseIT {
                 .content(gson.toJson(postEditRequestDto)))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(InvalidCredentialsException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -330,7 +324,7 @@ public class PostControllerIT extends BaseIT {
                 .content(gson.toJson(postEditRequestDto)))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result -> assertInstanceOf(PostNotFoundException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
@@ -349,8 +343,7 @@ public class PostControllerIT extends BaseIT {
                 .content(gson.toJson(postEditRequestDto)))
         .andExpect(status().isBadRequest())
         .andExpect(
-            result ->
-                assertInstanceOf(UserNotAuthorException.class, result.getResolvedException()));
+            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test

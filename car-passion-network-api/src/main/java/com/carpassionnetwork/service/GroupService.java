@@ -1,9 +1,6 @@
 package com.carpassionnetwork.service;
 
-import com.carpassionnetwork.exception.AlreadyUsedGroupNameException;
-import com.carpassionnetwork.exception.FileNotUploadedException;
-import com.carpassionnetwork.exception.FolderNotCreatedException;
-import com.carpassionnetwork.exception.GroupNotFoundException;
+import com.carpassionnetwork.exception.*;
 import com.carpassionnetwork.model.Group;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.GroupRepository;
@@ -38,7 +35,10 @@ public class GroupService {
   }
 
   public Group getGroup(UUID groupId) {
-    return groupRepository.findById(groupId).orElseThrow(() -> new GroupNotFoundException(groupId));
+    return groupRepository
+        .findById(groupId)
+        .orElseThrow(
+            () -> new ValidationException("Group with id: " + groupId + " does not exists!"));
   }
 
   public List<Group> getAllGroupsByAdminId(UUID adminId) {
@@ -106,7 +106,7 @@ public class GroupService {
 
   private void validateGroupName(String groupName) {
     Optional<Group> savedGroup = groupRepository.findByName(groupName);
-    if (savedGroup.isPresent()) throw new AlreadyUsedGroupNameException();
+    if (savedGroup.isPresent()) throw new ValidationException("This group name is already used!");
   }
 
   private void verifyFile(MultipartFile file) {
@@ -114,7 +114,7 @@ public class GroupService {
         || file.isEmpty()
         || file.getOriginalFilename() == null
         || file.getOriginalFilename().isEmpty()) {
-      throw new FileNotUploadedException();
+      throw new ValidationException("The uploaded file is invalid.");
     }
   }
 
@@ -136,7 +136,7 @@ public class GroupService {
     try {
       Files.write(targetPath, file.getBytes());
     } catch (IOException e) {
-      throw new FileNotUploadedException();
+      throw new ValidationException("Failed to create file!");
     }
   }
 
@@ -148,7 +148,7 @@ public class GroupService {
         Files.createDirectory(path);
       }
     } catch (IOException e) {
-      throw new FolderNotCreatedException();
+      throw new ValidationException("Failed to create folder!");
     }
   }
 

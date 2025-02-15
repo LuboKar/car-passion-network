@@ -7,9 +7,7 @@ import static org.mockito.Mockito.*;
 
 import com.carpassionnetwork.dto.request.LoginRequest;
 import com.carpassionnetwork.dto.response.AuthenticationResponse;
-import com.carpassionnetwork.exception.AlreadyUsedEmailException;
-import com.carpassionnetwork.exception.InvalidCredentialsException;
-import com.carpassionnetwork.exception.UserNotFoundException;
+import com.carpassionnetwork.exception.ValidationException;
 import com.carpassionnetwork.model.Role;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.UserRepository;
@@ -53,9 +51,9 @@ public class AuthenticationServiceTest {
 
   @Test
   void testRegisterShouldThrowAlreadyUsedEmailException() {
-    when(userRepository.findByEmail(EMAIL)).thenThrow(AlreadyUsedEmailException.class);
+    when(userRepository.findByEmail(EMAIL)).thenThrow(ValidationException.class);
 
-    assertThrows(AlreadyUsedEmailException.class, () -> authenticationService.register(user));
+    assertThrows(ValidationException.class, () -> authenticationService.register(user));
     verify(userRepository, never()).save(user);
   }
 
@@ -75,18 +73,16 @@ public class AuthenticationServiceTest {
 
   @Test
   void testLoginShouldThrowInvalidCredentialsException() {
-    when(authenticationManager.authenticate(any())).thenThrow(InvalidCredentialsException.class);
+    when(authenticationManager.authenticate(any())).thenThrow(ValidationException.class);
 
-    assertThrows(
-        InvalidCredentialsException.class, () -> authenticationService.login(loginRequest));
+    assertThrows(ValidationException.class, () -> authenticationService.login(loginRequest));
   }
 
   @Test
   void testLoginShouldThrowUserNotFoundException() {
-    when(userRepository.findByEmail(loginRequest.getEmail()))
-        .thenThrow(UserNotFoundException.class);
+    when(userRepository.findByEmail(loginRequest.getEmail())).thenThrow(ValidationException.class);
 
-    assertThrows(UserNotFoundException.class, () -> authenticationService.login(loginRequest));
+    assertThrows(ValidationException.class, () -> authenticationService.login(loginRequest));
   }
 
   @Test

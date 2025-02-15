@@ -7,10 +7,7 @@ import static com.carpassionnetwork.helper.PostTestHelper.createNewPost;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import com.carpassionnetwork.exception.GroupNotFoundException;
-import com.carpassionnetwork.exception.InvalidCredentialsException;
-import com.carpassionnetwork.exception.PostNotFoundException;
-import com.carpassionnetwork.exception.UserNotAuthorException;
+import com.carpassionnetwork.exception.ValidationException;
 import com.carpassionnetwork.model.Group;
 import com.carpassionnetwork.model.Post;
 import com.carpassionnetwork.model.User;
@@ -52,29 +49,29 @@ public class PostServiceTest {
 
   @Test
   void createPostShouldThrowInvalidCredentialsExceptionWhenOwnerDoesNotExists() {
-    when(userService.getUser(owner.getId())).thenThrow(InvalidCredentialsException.class);
+    when(userService.getUser(owner.getId())).thenThrow(ValidationException.class);
 
     assertThrows(
-        InvalidCredentialsException.class, () -> postService.createPost(post, owner.getId(), null));
+        ValidationException.class, () -> postService.createPost(post, owner.getId(), null));
   }
 
   @Test
   void createPostShouldThrowInvalidCredentialsExceptionWhenAuthorDoesNotExists() {
     when(userService.getUser(owner.getId())).thenReturn(owner);
-    when(userService.getCurrentUser()).thenThrow(InvalidCredentialsException.class);
+    when(userService.getCurrentUser()).thenThrow(ValidationException.class);
 
     assertThrows(
-        InvalidCredentialsException.class, () -> postService.createPost(post, owner.getId(), null));
+        ValidationException.class, () -> postService.createPost(post, owner.getId(), null));
   }
 
   @Test
   void createPostShouldThrowGroupNotFoundException() {
     when(userService.getUser(owner.getId())).thenReturn(owner);
     when(userService.getCurrentUser()).thenReturn(currentUser);
-    when(groupService.getGroup(group.getId())).thenThrow(GroupNotFoundException.class);
+    when(groupService.getGroup(group.getId())).thenThrow(ValidationException.class);
 
     assertThrows(
-        GroupNotFoundException.class,
+        ValidationException.class,
         () -> postService.createPost(post, owner.getId(), group.getId()));
   }
 
@@ -116,18 +113,17 @@ public class PostServiceTest {
 
   @Test
   void likeOrUnlikePostShouldThrowInvalidCredentialsException() {
-    when(userService.getCurrentUser()).thenThrow(InvalidCredentialsException.class);
+    when(userService.getCurrentUser()).thenThrow(ValidationException.class);
 
-    assertThrows(
-        InvalidCredentialsException.class, () -> postService.likeOrUnlikePost(post.getId()));
+    assertThrows(ValidationException.class, () -> postService.likeOrUnlikePost(post.getId()));
   }
 
   @Test
   void likeOrUnlikePostShouldThrowPostNotFoundException() {
     when(userService.getCurrentUser()).thenReturn(currentUser);
-    when(postRepository.findById(post.getId())).thenThrow(PostNotFoundException.class);
+    when(postRepository.findById(post.getId())).thenThrow(ValidationException.class);
 
-    assertThrows(PostNotFoundException.class, () -> postService.likeOrUnlikePost(post.getId()));
+    assertThrows(ValidationException.class, () -> postService.likeOrUnlikePost(post.getId()));
   }
 
   @Test
@@ -186,9 +182,9 @@ public class PostServiceTest {
 
   @Test
   void getPostShouldThrowPostNotFoundException() {
-    when(postRepository.findById(post.getId())).thenThrow(PostNotFoundException.class);
+    when(postRepository.findById(post.getId())).thenThrow(ValidationException.class);
 
-    assertThrows(PostNotFoundException.class, () -> postService.getPost(post.getId()));
+    assertThrows(ValidationException.class, () -> postService.getPost(post.getId()));
   }
 
   @Test
@@ -210,17 +206,17 @@ public class PostServiceTest {
 
   @Test
   void deletePostShouldThrowInvalidCredentialsException() {
-    when(userService.getCurrentUser()).thenThrow(InvalidCredentialsException.class);
+    when(userService.getCurrentUser()).thenThrow(ValidationException.class);
 
-    assertThrows(InvalidCredentialsException.class, () -> postService.deletePost(post.getId()));
+    assertThrows(ValidationException.class, () -> postService.deletePost(post.getId()));
   }
 
   @Test
   void deletePostShouldThrowPostNotFoundException() {
     when(userService.getCurrentUser()).thenReturn(currentUser);
-    when(postRepository.findById(post.getId())).thenThrow(PostNotFoundException.class);
+    when(postRepository.findById(post.getId())).thenThrow(ValidationException.class);
 
-    assertThrows(PostNotFoundException.class, () -> postService.deletePost(post.getId()));
+    assertThrows(ValidationException.class, () -> postService.deletePost(post.getId()));
   }
 
   @Test
@@ -229,7 +225,7 @@ public class PostServiceTest {
     when(postRepository.findById(post.getId())).thenReturn(Optional.ofNullable(post));
     post.setAuthor(owner);
 
-    assertThrows(UserNotAuthorException.class, () -> postService.deletePost(post.getId()));
+    assertThrows(ValidationException.class, () -> postService.deletePost(post.getId()));
   }
 
   @Test
@@ -246,20 +242,20 @@ public class PostServiceTest {
 
   @Test
   void editPostShouldThrowInvalidCredentialsException() {
-    when(userService.getCurrentUser()).thenThrow(InvalidCredentialsException.class);
+    when(userService.getCurrentUser()).thenThrow(ValidationException.class);
 
     assertThrows(
-        InvalidCredentialsException.class,
+        ValidationException.class,
         () -> postService.editPost(post.getId(), TITLE, post.getContent()));
   }
 
   @Test
   void editPostShouldThrowPostNotFoundException() {
     when(userService.getCurrentUser()).thenReturn(currentUser);
-    when(postRepository.findById(post.getId())).thenThrow(PostNotFoundException.class);
+    when(postRepository.findById(post.getId())).thenThrow(ValidationException.class);
 
     assertThrows(
-        PostNotFoundException.class,
+        ValidationException.class,
         () -> postService.editPost(post.getId(), TITLE, post.getContent()));
   }
 
@@ -270,7 +266,7 @@ public class PostServiceTest {
     post.setAuthor(owner);
 
     assertThrows(
-        UserNotAuthorException.class,
+        ValidationException.class,
         () -> postService.editPost(post.getId(), TITLE, post.getContent()));
   }
 
