@@ -36,7 +36,7 @@ public class GroupControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void createGroupShouldThrowInvalidCredentialsException() throws Exception {
+  void createGroupShouldThrowValidationExceptionWhenInvalidCredentials() throws Exception {
     mockMvc
         .perform(post("/group/" + groupOne.getName()))
         .andExpect(status().isBadRequest())
@@ -57,7 +57,7 @@ public class GroupControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void getGroupShouldThrowGroupNotFoundException() throws Exception {
+  void getGroupShouldThrowValidationExceptionWhenGroupNotFound() throws Exception {
     register();
 
     mockMvc
@@ -145,7 +145,7 @@ public class GroupControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void joinGroupShouldThrowInvalidCredentialsException() throws Exception {
+  void joinGroupShouldThrowValidationExceptionWhenInvalidCredentials() throws Exception {
     mockMvc
         .perform(post("/group/join/" + groupOne.getId()))
         .andExpect(status().isBadRequest())
@@ -155,7 +155,7 @@ public class GroupControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void joinGroupShouldThrowGroupNotFoundException() throws Exception {
+  void joinGroupShouldThrowValidationExceptionWhenGroupNotFound() throws Exception {
     register();
 
     mockMvc
@@ -180,7 +180,7 @@ public class GroupControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void leaveGroupShouldThrowInvalidCredentialsException() throws Exception {
+  void leaveGroupShouldThrowValidationExceptionWhenInvalidCredentials() throws Exception {
     mockMvc
         .perform(post("/group/leave/" + groupOne.getId()))
         .andExpect(status().isBadRequest())
@@ -190,7 +190,7 @@ public class GroupControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void leaveGroupShouldThrowGroupNotFoundException() throws Exception {
+  void leaveGroupShouldThrowValidationExceptionWhenGroupNotFound() throws Exception {
     register();
 
     mockMvc
@@ -213,7 +213,7 @@ public class GroupControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void removeMemberShouldThrowGroupNotFoundException() throws Exception {
+  void removeMemberShouldThrowValidationExceptionWhenGroupNotFound() throws Exception {
     mockMvc
         .perform(post("/group/remove/" + groupOne.getId() + "/" + user.getId()))
         .andExpect(status().isBadRequest())
@@ -223,7 +223,7 @@ public class GroupControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void removeMemberShouldThrowUserNotFoundException() throws Exception {
+  void removeMemberShouldThrowValidationExceptionWhenUserNotFound() throws Exception {
     Group savedGroup = createGroup(groupOne);
 
     mockMvc
@@ -247,8 +247,7 @@ public class GroupControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void uploadGroupPictureShouldThrowFileNotUploadedExceptionWhenFileIsFileIsEmpty()
-      throws Exception {
+  void uploadGroupPictureShouldThrowValidationExceptionWhenFileIsEmpty() throws Exception {
     register();
     MockMultipartFile file =
         new MockMultipartFile(
@@ -271,7 +270,7 @@ public class GroupControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void uploadGroupPictureShouldThrowFileNotUploadedExceptionWhenFileNameIsNull() throws Exception {
+  void uploadGroupPictureShouldThrowValidationExceptionWhenFileNameIsNull() throws Exception {
     register();
     MockMultipartFile file =
         new MockMultipartFile("file", null, MediaType.IMAGE_JPEG_VALUE, "file content".getBytes());
@@ -293,7 +292,7 @@ public class GroupControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void uploadGroupPictureShouldThrowFileNotUploadedExceptionWhenFileNameIsEmpty() throws Exception {
+  void uploadGroupPictureShouldThrowValidationExceptionWhenFileNameIsEmpty() throws Exception {
     register();
     MockMultipartFile file =
         new MockMultipartFile("file", "", MediaType.IMAGE_JPEG_VALUE, "file content".getBytes());
@@ -315,7 +314,7 @@ public class GroupControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "user", roles = "USER")
-  void uploadGroupPictureShouldThrowGroupNotFoundException() throws Exception {
+  void uploadGroupPictureShouldThrowValidationExceptionWhenGroupNotFound() throws Exception {
     register();
     MockMultipartFile file =
         new MockMultipartFile(
@@ -338,7 +337,7 @@ public class GroupControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "user", roles = "USER")
-  void uploadGroupPictureShouldThrowFileNotUploadedExceptionWhenUserFolderDoesNotExists()
+  void uploadGroupPictureShouldThrowValidationExceptionWhenUserFolderDoesNotExists()
       throws Exception {
     register();
     Group savedGroup = createGroup(groupOne);

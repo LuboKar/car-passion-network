@@ -51,7 +51,7 @@ public class UserControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "user", roles = "USER")
-  void getUserShouldThrowUserNotFoundException() throws Exception {
+  void getUserShouldThrowValidationExceptionWhenUserNotFound() throws Exception {
     mockMvc
         .perform(get("/users/" + currentUser.getId()))
         .andExpect(status().isBadRequest())
@@ -77,7 +77,7 @@ public class UserControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void uploadProfilePictureShouldThrowFileNotUploadedExceptionWhenFileIsEmpty() throws Exception {
+  void uploadProfilePictureShouldThrowValidationExceptionWhenFileIsEmpty() throws Exception {
     register();
     MockMultipartFile file =
         new MockMultipartFile("file", "profile.png", MediaType.IMAGE_JPEG_VALUE, "".getBytes());
@@ -99,8 +99,7 @@ public class UserControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void uploadProfilePictureShouldThrowFileNotUploadedExceptionWhenFileNameIsNull()
-      throws Exception {
+  void uploadProfilePictureShouldThrowValidationExceptionWhenFileNameIsNull() throws Exception {
     register();
     MockMultipartFile file =
         new MockMultipartFile("file", null, MediaType.IMAGE_JPEG_VALUE, "file content".getBytes());
@@ -122,8 +121,7 @@ public class UserControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void uploadProfilePictureShouldThrowFileNotUploadedExceptionWhenFileNameIsEmpty()
-      throws Exception {
+  void uploadProfilePictureShouldThrowValidationExceptionWhenFileNameIsEmpty() throws Exception {
     register();
     MockMultipartFile file =
         new MockMultipartFile("file", "", MediaType.IMAGE_JPEG_VALUE, "file content".getBytes());
@@ -145,7 +143,7 @@ public class UserControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "user", roles = "USER")
-  void uploadProfilePictureShouldThrowFileNotUploadedExceptionWhenUserFolderDoesNotExists()
+  void uploadProfilePictureShouldThrowValidationExceptionWhenUserFolderDoesNotExists()
       throws Exception {
     register();
     MockMultipartFile file =
@@ -169,7 +167,7 @@ public class UserControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void uploadProfilePictureShouldThrowInvalidCredentialsException() throws Exception {
+  void uploadProfilePictureShouldThrowValidationExceptionWhenInvalidCredentials() throws Exception {
     MockMultipartFile file =
         new MockMultipartFile("file", "", MediaType.IMAGE_JPEG_VALUE, "file content".getBytes());
 
@@ -211,7 +209,7 @@ public class UserControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void editUserShouldThrowInvalidCredentialsException() throws Exception {
+  void editUserShouldThrowValidationExceptionWhenInvalidCredentials() throws Exception {
     mockMvc
         .perform(
             patch("/users/edit")
@@ -224,7 +222,7 @@ public class UserControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void editUserShouldThrowInvalidPasswordException() throws Exception {
+  void editUserShouldThrowValidationExceptionWhenInvalidPassword() throws Exception {
     register();
     userEditRequest.setOldPassword("pass");
     userEditRequest.setNewPassword("password");
@@ -259,7 +257,7 @@ public class UserControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void addFriendShouldThrowInvalidCredentialsException() throws Exception {
+  void addFriendShouldThrowValidationExceptionWhenInvalidCredentials() throws Exception {
     mockMvc
         .perform(post("/users/friends/" + secondUser.getId()))
         .andExpect(status().isBadRequest())
@@ -269,7 +267,7 @@ public class UserControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void addFriendShouldThrowUserNotFoundException() throws Exception {
+  void addFriendShouldThrowValidationExceptionWhenUserNotFound() throws Exception {
     register();
 
     mockMvc
@@ -290,7 +288,7 @@ public class UserControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void removeFriendShouldThrowInvalidCredentialsException() throws Exception {
+  void removeFriendShouldThrowValidationExceptionWhenInvalidCredentials() throws Exception {
     mockMvc
         .perform(delete("/users/friends/" + secondUser.getId()))
         .andExpect(status().isBadRequest())
@@ -300,7 +298,7 @@ public class UserControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void removeFriendShouldThrowUserNotFoundException() throws Exception {
+  void removeFriendShouldThrowValidationExceptionWhenUserNotFound() throws Exception {
     register();
 
     mockMvc
@@ -374,7 +372,7 @@ public class UserControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void deleteUserShouldThrowUserNotFoundException() throws Exception {
+  void deleteUserShouldThrowValidationExceptionWhenUserNotFound() throws Exception {
     mockMvc
         .perform(delete("/users/" + currentUser.getId()))
         .andExpect(status().isBadRequest())

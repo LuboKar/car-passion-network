@@ -41,7 +41,7 @@ public class CommentControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testCreateCommentShouldThrowInvalidCredentialsException() throws Exception {
+  void testCreateCommentShouldThrowValidationExceptionWhenInvalidCredentials() throws Exception {
     mockMvc
         .perform(
             post("/comment")
@@ -54,7 +54,7 @@ public class CommentControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testCreateCommentShouldThrowPostNotFoundException() throws Exception {
+  void testCreateCommentShouldThrowValidationExceptionWhenPostNotFound() throws Exception {
     register();
     mockMvc
         .perform(
@@ -84,7 +84,8 @@ public class CommentControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testLikeOrUnlikeCommentShouldThrowInvalidCredentialsException() throws Exception {
+  void testLikeOrUnlikeCommentShouldThrowValidationExceptionWhenInvalidCredentials()
+      throws Exception {
     mockMvc
         .perform(post("/comment/like/" + comment.getId()))
         .andExpect(status().isBadRequest())
@@ -94,7 +95,7 @@ public class CommentControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testLikeOrUnlikeCommentShouldThrowCommentNotFoundException() throws Exception {
+  void testLikeOrUnlikeCommentShouldThrowValidationExceptionWhenCommentNotFound() throws Exception {
     register();
 
     mockMvc
@@ -139,7 +140,7 @@ public class CommentControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testReplyCommentShouldThrowInvalidCredentialsException() throws Exception {
+  void testReplyCommentShouldThrowValidationExceptionWhenInvalidCredentials() throws Exception {
     mockMvc
         .perform(
             post("/comment/reply")
@@ -152,7 +153,7 @@ public class CommentControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testReplyCommentShouldThrowCommentNotFoundException() throws Exception {
+  void testReplyCommentShouldThrowValidationExceptionWhenCommentNotFound() throws Exception {
     register();
     commentRequestDto.setParentCommentId(comment.getId());
 
@@ -187,7 +188,7 @@ public class CommentControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testDeleteCommentShouldThrowInvalidCredentialsException() throws Exception {
+  void testDeleteCommentShouldThrowValidationExceptionWhenInvalidCredentials() throws Exception {
     mockMvc
         .perform(delete("/comment/delete/" + post.getId() + "/" + comment.getId()))
         .andExpect(status().isBadRequest())
@@ -197,7 +198,7 @@ public class CommentControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testDeleteCommentShouldThrowPostNotFoundException() throws Exception {
+  void testDeleteCommentShouldThrowValidationExceptionWhenPostNotFound() throws Exception {
     register();
 
     mockMvc
@@ -209,7 +210,7 @@ public class CommentControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testDeleteCommentShouldThrowCommentNotFoundException() throws Exception {
+  void testDeleteCommentShouldThrowValidationExceptionWhenCommentNotFound() throws Exception {
     register();
     Post savedPost = createPost(post);
 
@@ -222,7 +223,7 @@ public class CommentControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testDeleteCommentShouldThrowUserNotAuthorException() throws Exception {
+  void testDeleteCommentShouldThrowValidationExceptionWhenUserNotAuthor() throws Exception {
     register();
     User savedSecondUser = createSecondUser(secondUser);
     post.setAuthor(savedSecondUser);
@@ -257,7 +258,7 @@ public class CommentControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testEditCommentShouldThrowInvalidCredentialsException() throws Exception {
+  void testEditCommentShouldThrowValidationExceptionWhenInvalidCredentials() throws Exception {
     mockMvc
         .perform(
             put("/comment/edit")
@@ -270,7 +271,7 @@ public class CommentControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testEditCommentShouldThrowPostNotFoundException() throws Exception {
+  void testEditCommentShouldThrowValidationExceptionWhenPostNotFound() throws Exception {
     register();
 
     mockMvc
@@ -285,7 +286,7 @@ public class CommentControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testEditCommentShouldThrowCommentNotFoundException() throws Exception {
+  void testEditCommentShouldThrowValidationExceptionWhenCommentNotFound() throws Exception {
     register();
     Post createdPost = createPost(post);
     commentEditRequestDto.setPostId(createdPost.getId());
@@ -302,7 +303,7 @@ public class CommentControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testEditCommentShouldThrowUserNotAuthorException() throws Exception {
+  void testEditCommentShouldThrowValidationExceptionWhenUserNotAuthor() throws Exception {
     register();
     User savedSecondUser = createSecondUser(secondUser);
     post.setAuthor(savedSecondUser);

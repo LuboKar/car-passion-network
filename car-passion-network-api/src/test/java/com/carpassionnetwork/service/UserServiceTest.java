@@ -56,7 +56,7 @@ public class UserServiceTest {
   }
 
   @Test
-  void getUserShouldThrowUserNotFoundException() {
+  void getUserShouldThrowValidationExceptionWhenUserNotFound() {
     when(userRepository.findById(any())).thenReturn(Optional.empty());
 
     assertThrows(ValidationException.class, () -> userService.getUser(user.getId()));
@@ -74,33 +74,34 @@ public class UserServiceTest {
   }
 
   @Test
-  void uploadProfilePictureShouldThrowFileNotUploadedExceptionWhenFileIsNull() {
+  void uploadProfilePictureShouldThrowValidationExceptionWhenFileIsNull() {
     assertThrows(ValidationException.class, () -> userService.uploadProfilePicture(null));
   }
 
   @Test
-  void uploadProfilePictureShouldThrowFileNotUploadedExceptionWhenFileIsEmpty() {
+  void uploadProfilePictureShouldThrowValidationExceptionWhenFileIsEmpty() {
     when(file.isEmpty()).thenReturn(true);
 
     assertThrows(ValidationException.class, () -> userService.uploadProfilePicture(file));
   }
 
   @Test
-  void uploadProfilePictureShouldThrowFileNotUploadedExceptionWhenFileNameIsNull() {
+  void uploadProfilePictureShouldThrowValidationExceptionWhenFileNameIsNull() {
     when(file.getOriginalFilename()).thenReturn(null);
 
     assertThrows(ValidationException.class, () -> userService.uploadProfilePicture(file));
   }
 
   @Test
-  void uploadProfilePictureShouldThrowFileNotUploadedExceptionWhenFileNameIsEmpty() {
+  void uploadProfilePictureShouldThrowValidationExceptionWhenFileNameIsEmpty() {
     when(file.getOriginalFilename()).thenReturn("");
 
     assertThrows(ValidationException.class, () -> userService.uploadProfilePicture(file));
   }
 
   @Test
-  void uploadProfilePictureShouldThrowInvalidCredentialsException() throws IOException {
+  void uploadProfilePictureShouldThrowValidationExceptionWhenInvalidCredentials()
+      throws IOException {
     String fileName = "test.png";
     byte[] fileContent = "file content".getBytes();
     when(file.isEmpty()).thenReturn(false);
@@ -133,7 +134,7 @@ public class UserServiceTest {
   }
 
   @Test
-  void editUserShouldThrowInvalidCredentialsException() {
+  void editUserShouldThrowValidationExceptionWhenInvalidCredentials() {
     SecurityContextHolder.setContext(securityContext);
     when(authentication.getName()).thenReturn(user.getEmail());
     when(securityContext.getAuthentication()).thenReturn(authentication);
@@ -143,7 +144,7 @@ public class UserServiceTest {
   }
 
   @Test
-  void editUserShouldThrowInvalidPasswordException() {
+  void editUserShouldThrowValidationExceptionWhenInvalidPassword() {
     SecurityContextHolder.setContext(securityContext);
     when(authentication.getName()).thenReturn(user.getEmail());
     when(securityContext.getAuthentication()).thenReturn(authentication);
@@ -171,7 +172,7 @@ public class UserServiceTest {
   }
 
   @Test
-  void addFriendShouldThrowInvalidCredentialsException() {
+  void addFriendShouldThrowValidationExceptionWhenInvalidCredentials() {
     SecurityContextHolder.setContext(securityContext);
     when(securityContext.getAuthentication()).thenReturn(authentication);
     when(authentication.getName()).thenReturn(user.getEmail());
@@ -181,7 +182,7 @@ public class UserServiceTest {
   }
 
   @Test
-  void addFriendShouldThrowUserNotFoundException() {
+  void addFriendShouldThrowValidationExceptionWhenUserNotFound() {
     SecurityContextHolder.setContext(securityContext);
     when(securityContext.getAuthentication()).thenReturn(authentication);
     when(authentication.getName()).thenReturn(user.getEmail());
@@ -209,7 +210,7 @@ public class UserServiceTest {
   }
 
   @Test
-  void removeFriendShouldThrowInvalidCredentialsException() {
+  void removeFriendShouldThrowValidationExceptionWhenInvalidCredentials() {
     SecurityContextHolder.setContext(securityContext);
     when(securityContext.getAuthentication()).thenReturn(authentication);
     when(authentication.getName()).thenReturn(user.getEmail());
@@ -219,7 +220,7 @@ public class UserServiceTest {
   }
 
   @Test
-  void removeFriendShouldThrowUserNotFoundException() {
+  void removeFriendShouldThrowValidationExceptionWhenUserNotFound() {
     SecurityContextHolder.setContext(securityContext);
     when(securityContext.getAuthentication()).thenReturn(authentication);
     when(authentication.getName()).thenReturn(user.getEmail());
@@ -291,7 +292,7 @@ public class UserServiceTest {
   }
 
   @Test
-  void deleteUserShouldThrowUserNotFoundException() {
+  void deleteUserShouldThrowValidationExceptionWhenUserNotFound() {
     when(userRepository.findById(user.getId())).thenThrow(ValidationException.class);
 
     assertThrows(ValidationException.class, () -> userService.deleteUser(user.getId()));

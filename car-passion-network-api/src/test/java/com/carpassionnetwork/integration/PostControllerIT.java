@@ -41,7 +41,7 @@ public class PostControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testCreatePostShouldThrowUserNotFoundExceptionWhenOwnerDoesNotExists() throws Exception {
+  void testCreatePostShouldThrowValidationExceptionWhenOwnerDoesNotExists() throws Exception {
     mockMvc
         .perform(
             post("/post")
@@ -54,8 +54,7 @@ public class PostControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testCreatePostShouldThrowInvalidCredentialsExceptionWhenAuthorDoesNotExists()
-      throws Exception {
+  void testCreatePostShouldThrowIValidationExceptionWhenAuthorDoesNotExists() throws Exception {
     User savedOwner = createUser(owner);
     postCreateRequestDto.setOwner(savedOwner.getId());
 
@@ -71,7 +70,7 @@ public class PostControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testCreatePostShouldThrowGroupNotFoundException() throws Exception {
+  void testCreatePostShouldThrowValidationExceptionWhenGroupNotFound() throws Exception {
     register();
     User savedOwner = createUser(owner);
     postCreateRequestDto.setOwner(savedOwner.getId());
@@ -127,7 +126,7 @@ public class PostControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testLikeOrUnlikePostShouldThrowInvalidCredentialsException() throws Exception {
+  void testLikeOrUnlikePostShouldThrowValidationExceptionWhenInvalidCredentials() throws Exception {
     mockMvc
         .perform(post("/post/like/" + post.getId()))
         .andExpect(status().isBadRequest())
@@ -137,7 +136,7 @@ public class PostControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testLikeOrUnlikePostShouldThrowPostNotFoundException() throws Exception {
+  void testLikeOrUnlikePostShouldThrowValidationExceptionWhenPostNotFound() throws Exception {
     register();
     mockMvc
         .perform(post("/post/like/" + post.getId()))
@@ -210,7 +209,7 @@ public class PostControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testGetPostShouldThrowPostNotFoundException() throws Exception {
+  void testGetPostShouldThrowValidationExceptionWhenPostNotFound() throws Exception {
     mockMvc
         .perform(get("/post/" + post.getId()))
         .andExpect(status().isBadRequest())
@@ -250,7 +249,7 @@ public class PostControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testDeletePostShouldThrowInvalidCredentialsException() throws Exception {
+  void testDeletePostShouldThrowValidationExceptionWhenInvalidCredentials() throws Exception {
     mockMvc
         .perform(delete("/post/delete/" + post.getId()))
         .andExpect(status().isBadRequest())
@@ -260,7 +259,7 @@ public class PostControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testDeletePostShouldThrowPostNotFoundException() throws Exception {
+  void testDeletePostShouldThrowValidationExceptionWhenPostNotFound() throws Exception {
     register();
 
     mockMvc
@@ -272,7 +271,7 @@ public class PostControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testDeletePostShouldThrowUserNotAuthorException() throws Exception {
+  void testDeletePostShouldThrowValidationExceptionWhenUserNotAuthor() throws Exception {
     register();
     User savedUser = createUser(owner);
     post.setAuthor(savedUser);
@@ -298,7 +297,7 @@ public class PostControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testEditPostShouldThrowInvalidCredentialsException() throws Exception {
+  void testEditPostShouldThrowValidationExceptionWhenInvalidCredentials() throws Exception {
     postEditRequestDto.setPostId(UUID.randomUUID());
 
     mockMvc
@@ -313,7 +312,7 @@ public class PostControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testEditPostShouldThrowPostNotFoundException() throws Exception {
+  void testEditPostShouldThrowValidationExceptionWhenPostNotFound() throws Exception {
     register();
     postEditRequestDto.setPostId(UUID.randomUUID());
 
@@ -329,7 +328,7 @@ public class PostControllerIT extends BaseIT {
 
   @Test
   @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testEditPostShouldThrowUserNotAuthorException() throws Exception {
+  void testEditPostShouldThrowValidationExceptionWhenUserNotAuthor() throws Exception {
     register();
     User savedUser = createUser(owner);
     post.setAuthor(savedUser);

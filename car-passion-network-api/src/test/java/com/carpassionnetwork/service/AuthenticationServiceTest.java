@@ -50,7 +50,7 @@ public class AuthenticationServiceTest {
   }
 
   @Test
-  void testRegisterShouldThrowAlreadyUsedEmailException() {
+  void testRegisterShouldThrowValidationExceptionWhenEmailAlreadyUsed() {
     when(userRepository.findByEmail(EMAIL)).thenThrow(ValidationException.class);
 
     assertThrows(ValidationException.class, () -> authenticationService.register(user));
@@ -72,14 +72,14 @@ public class AuthenticationServiceTest {
   }
 
   @Test
-  void testLoginShouldThrowInvalidCredentialsException() {
+  void testLoginShouldThrowValidationExceptionWhenInvalidCredentials() {
     when(authenticationManager.authenticate(any())).thenThrow(ValidationException.class);
 
     assertThrows(ValidationException.class, () -> authenticationService.login(loginRequest));
   }
 
   @Test
-  void testLoginShouldThrowUserNotFoundException() {
+  void testLoginShouldThrowValidationExceptionWhenUserNotFound() {
     when(userRepository.findByEmail(loginRequest.getEmail())).thenThrow(ValidationException.class);
 
     assertThrows(ValidationException.class, () -> authenticationService.login(loginRequest));

@@ -48,7 +48,7 @@ public class PostServiceTest {
   }
 
   @Test
-  void createPostShouldThrowInvalidCredentialsExceptionWhenOwnerDoesNotExists() {
+  void createPostShouldThrowValidationExceptionWhenOwnerDoesNotExists() {
     when(userService.getUser(owner.getId())).thenThrow(ValidationException.class);
 
     assertThrows(
@@ -56,7 +56,7 @@ public class PostServiceTest {
   }
 
   @Test
-  void createPostShouldThrowInvalidCredentialsExceptionWhenAuthorDoesNotExists() {
+  void createPostShouldThrowValidationExceptionWhenAuthorDoesNotExists() {
     when(userService.getUser(owner.getId())).thenReturn(owner);
     when(userService.getCurrentUser()).thenThrow(ValidationException.class);
 
@@ -65,7 +65,7 @@ public class PostServiceTest {
   }
 
   @Test
-  void createPostShouldThrowGroupNotFoundException() {
+  void createPostShouldThrowValidationExceptionWhenGroupNotFound() {
     when(userService.getUser(owner.getId())).thenReturn(owner);
     when(userService.getCurrentUser()).thenReturn(currentUser);
     when(groupService.getGroup(group.getId())).thenThrow(ValidationException.class);
@@ -112,14 +112,14 @@ public class PostServiceTest {
   }
 
   @Test
-  void likeOrUnlikePostShouldThrowInvalidCredentialsException() {
+  void likeOrUnlikePostShouldThrowValidationExceptionWhenInvalidCredentials() {
     when(userService.getCurrentUser()).thenThrow(ValidationException.class);
 
     assertThrows(ValidationException.class, () -> postService.likeOrUnlikePost(post.getId()));
   }
 
   @Test
-  void likeOrUnlikePostShouldThrowPostNotFoundException() {
+  void likeOrUnlikePostShouldThrowValidationExceptionWhenPostNotFound() {
     when(userService.getCurrentUser()).thenReturn(currentUser);
     when(postRepository.findById(post.getId())).thenThrow(ValidationException.class);
 
@@ -181,7 +181,7 @@ public class PostServiceTest {
   }
 
   @Test
-  void getPostShouldThrowPostNotFoundException() {
+  void getPostShouldThrowValidationExceptionWhenPostNotFound() {
     when(postRepository.findById(post.getId())).thenThrow(ValidationException.class);
 
     assertThrows(ValidationException.class, () -> postService.getPost(post.getId()));
@@ -205,14 +205,14 @@ public class PostServiceTest {
   }
 
   @Test
-  void deletePostShouldThrowInvalidCredentialsException() {
+  void deletePostShouldThrowValidationExceptionWhenInvalidCredentials() {
     when(userService.getCurrentUser()).thenThrow(ValidationException.class);
 
     assertThrows(ValidationException.class, () -> postService.deletePost(post.getId()));
   }
 
   @Test
-  void deletePostShouldThrowPostNotFoundException() {
+  void deletePostShouldThrowValidationExceptionWhenPostNotFound() {
     when(userService.getCurrentUser()).thenReturn(currentUser);
     when(postRepository.findById(post.getId())).thenThrow(ValidationException.class);
 
@@ -220,7 +220,7 @@ public class PostServiceTest {
   }
 
   @Test
-  void deletePostShouldThrowUserNotAuthorException() {
+  void deletePostShouldThrowValidationExceptionWhenUserNotAuthor() {
     when(userService.getCurrentUser()).thenReturn(currentUser);
     when(postRepository.findById(post.getId())).thenReturn(Optional.ofNullable(post));
     post.setAuthor(owner);
@@ -241,7 +241,7 @@ public class PostServiceTest {
   }
 
   @Test
-  void editPostShouldThrowInvalidCredentialsException() {
+  void editPostShouldThrowValidationExceptionWhenInvalidCredentials() {
     when(userService.getCurrentUser()).thenThrow(ValidationException.class);
 
     assertThrows(
@@ -250,7 +250,7 @@ public class PostServiceTest {
   }
 
   @Test
-  void editPostShouldThrowPostNotFoundException() {
+  void editPostShouldThrowValidationExceptionWhenPostNotFound() {
     when(userService.getCurrentUser()).thenReturn(currentUser);
     when(postRepository.findById(post.getId())).thenThrow(ValidationException.class);
 
@@ -260,7 +260,7 @@ public class PostServiceTest {
   }
 
   @Test
-  void editPostShouldThrowUserNotAuthorException() {
+  void editPostShouldThrowValidationExceptionWhenUserNotFound() {
     when(userService.getCurrentUser()).thenReturn(currentUser);
     when(postRepository.findById(post.getId())).thenReturn(Optional.of(post));
     post.setAuthor(owner);

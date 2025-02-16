@@ -85,7 +85,7 @@ public class AuthenticationControllerIT extends BaseIT {
   }
 
   @Test
-  void testLoginShouldThrowInvalidCredentialsException() throws Exception {
+  void testLoginShouldThrowValidationExceptionWhenInvalidCredentials() throws Exception {
     mockMvc
         .perform(
             post("/authentication/login")
