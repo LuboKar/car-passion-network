@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -21,21 +19,10 @@ public class UserMapper {
   }
 
   public UserResponseDto toUserResponse(User user) {
-    UserResponseDto userResponseDto = modelMapper.map(user, UserResponseDto.class);
-
-    userResponseDto.setFriend(isCurrentUserFriend(user));
-
-    return userResponseDto;
+    return modelMapper.map(user, UserResponseDto.class);
   }
 
   public List<UserResponseDto> toUserResponseList(List<User> users) {
     return users.stream().map(this::toUserResponse).collect(Collectors.toList());
-  }
-
-  private boolean isCurrentUserFriend(User user) {
-    UserDetails currentUser =
-        (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-    return user.getFriends().contains(currentUser);
   }
 }

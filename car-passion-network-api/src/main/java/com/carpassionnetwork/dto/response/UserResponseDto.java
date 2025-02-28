@@ -32,6 +32,4 @@ public class UserResponseDto {
   private LocalDateTime lastUpdate;
 
   private String profilePicture;
-
-  private boolean isFriend;
 }

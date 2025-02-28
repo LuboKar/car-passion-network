@@ -43,18 +43,18 @@ public class BaseIT {
   @Autowired private CommentRepository commentRepository;
   @Autowired private GroupRepository groupRepository;
 
-  protected final User currentUser;
+  protected User currentUser;
 
   protected Gson gson;
 
   public BaseIT() {
     gson =
         new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter()).create();
-    currentUser = createUserOne();
   }
 
   protected void register() {
-    authenticationService.register(currentUser);
+    currentUser = createUserOne();
+    currentUser = createUser(currentUser);
   }
 
   protected Post createPost(Post post) {

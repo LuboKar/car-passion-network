@@ -2,18 +2,18 @@ package com.carpassionnetwork.mapper;
 
 import com.carpassionnetwork.dto.response.GroupResponseDto;
 import com.carpassionnetwork.model.Group;
+import com.carpassionnetwork.service.UserService;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class GroupMapper {
   private final ModelMapper modelMapper;
+  private final UserService userService;
 
   public GroupResponseDto toGroupResponse(Group group) {
     GroupResponseDto groupResponseDto = modelMapper.map(group, GroupResponseDto.class);
@@ -28,9 +28,6 @@ public class GroupMapper {
   }
 
   private boolean isCurrentUserMember(Group group) {
-    UserDetails currentUser =
-        (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-    return group.getMembers().contains(currentUser);
+    return group.getMembers().contains(userService.getCurrentUser());
   }
 }

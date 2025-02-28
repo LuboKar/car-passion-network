@@ -3,6 +3,7 @@ package com.carpassionnetwork.helper;
 import com.carpassionnetwork.dto.request.LoginRequest;
 import com.carpassionnetwork.dto.request.RegistrationRequest;
 import com.carpassionnetwork.model.Gender;
+import com.carpassionnetwork.model.Role;
 import com.carpassionnetwork.model.User;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -22,6 +23,7 @@ public class AuthenticationTestHelper {
         .email(EMAIL)
         .password("password")
         .gender(Gender.MALE)
+        .role(Role.USER)
         .likedPosts(new HashSet<>())
         .friends(new HashSet<>())
         .groups(new HashSet<>())

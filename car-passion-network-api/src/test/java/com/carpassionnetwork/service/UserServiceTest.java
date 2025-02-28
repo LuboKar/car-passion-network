@@ -13,11 +13,12 @@ import com.carpassionnetwork.exception.ValidationException;
 import com.carpassionnetwork.model.Group;
 import com.carpassionnetwork.model.User;
 import com.carpassionnetwork.repository.UserRepository;
+import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,18 +42,23 @@ public class UserServiceTest {
   @Mock private SecurityContext securityContext;
   @Mock private PasswordEncoder passwordEncoder;
 
+  private static final String PARENT_DIRECTORY = "ProfilePictures";
+
   private User user;
   private User secondUser;
   private UserEditRequest userEditRequest;
   private Group group;
+  private String path;
 
   @BeforeEach
-  void setUp() {
+  void setUp() throws IOException {
     user = createUserOne();
     userEditRequest = createUserEditRequest();
     secondUser = createUserTwo();
     user.setLikedComments(new HashSet<>());
     group = createNewGroupOne();
+    path = PARENT_DIRECTORY + "/" + user.getEmail();
+    Files.createDirectories(Path.of(path));
   }
 
   @Test
@@ -71,6 +77,36 @@ public class UserServiceTest {
     assertNotNull(actualUser);
     assertEquals(actualUser, user);
     verify(userRepository, times(1)).findById(user.getId());
+  }
+
+  @Test
+  void getCurrentUserShouldThrowValidationExceptionWhenAuthenticationIsNull() {
+    SecurityContextHolder.setContext(securityContext);
+    when(securityContext.getAuthentication()).thenReturn(null);
+
+    assertThrows(ValidationException.class, () -> userService.getCurrentUser());
+  }
+
+  @Test
+  void getCurrentUserShouldThrowValidationExceptionWhenNotAuthenticated() {
+    SecurityContextHolder.setContext(securityContext);
+    when(securityContext.getAuthentication()).thenReturn(authentication);
+    when(authentication.isAuthenticated()).thenReturn(false);
+
+    assertThrows(ValidationException.class, () -> userService.getCurrentUser());
+  }
+
+  @Test
+  void getCurrentUserSuccessfully() {
+    SecurityContextHolder.setContext(securityContext);
+    when(securityContext.getAuthentication()).thenReturn(authentication);
+    when(authentication.isAuthenticated()).thenReturn(true);
+    when(authentication.getPrincipal()).thenReturn(user);
+
+    User authenticatedUser = userService.getCurrentUser();
+
+    assertNotNull(authenticatedUser);
+    assertEquals(authenticatedUser, user);
   }
 
   @Test
@@ -107,9 +143,8 @@ public class UserServiceTest {
     when(file.isEmpty()).thenReturn(false);
     when(file.getOriginalFilename()).thenReturn(fileName);
     SecurityContextHolder.setContext(securityContext);
-    when(authentication.getName()).thenReturn(user.getEmail());
     when(securityContext.getAuthentication()).thenReturn(authentication);
-    when(userRepository.findByEmail(user.getEmail())).thenThrow(ValidationException.class);
+    when(authentication.getName()).thenReturn(user.getEmail());
     when(file.getBytes()).thenReturn(fileContent);
 
     assertThrows(ValidationException.class, () -> userService.uploadProfilePicture(file));
@@ -124,21 +159,24 @@ public class UserServiceTest {
     SecurityContextHolder.setContext(securityContext);
     when(authentication.getName()).thenReturn(user.getEmail());
     when(securityContext.getAuthentication()).thenReturn(authentication);
-    when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.ofNullable(user));
+    when(authentication.isAuthenticated()).thenReturn(true);
+    when(authentication.getPrincipal()).thenReturn(user);
     when(file.getBytes()).thenReturn(fileContent);
 
     userService.uploadProfilePicture(file);
 
-    verify(userRepository, times(1)).findByEmail(user.getEmail());
+    verify(authentication, times(1)).getName();
+    verify(securityContext, times(2)).getAuthentication();
+    verify(authentication, times(1)).isAuthenticated();
+    verify(authentication, times(1)).getPrincipal();
     verify(userRepository, times(1)).save(user);
   }
 
   @Test
   void editUserShouldThrowValidationExceptionWhenInvalidCredentials() {
     SecurityContextHolder.setContext(securityContext);
-    when(authentication.getName()).thenReturn(user.getEmail());
     when(securityContext.getAuthentication()).thenReturn(authentication);
-    when(userRepository.findByEmail(user.getEmail())).thenThrow(ValidationException.class);
+    when(authentication.isAuthenticated()).thenReturn(false);
 
     assertThrows(ValidationException.class, () -> userService.editUser(userEditRequest));
   }
@@ -146,9 +184,9 @@ public class UserServiceTest {
   @Test
   void editUserShouldThrowValidationExceptionWhenInvalidPassword() {
     SecurityContextHolder.setContext(securityContext);
-    when(authentication.getName()).thenReturn(user.getEmail());
     when(securityContext.getAuthentication()).thenReturn(authentication);
-    when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.ofNullable(user));
+    when(authentication.isAuthenticated()).thenReturn(true);
+    when(authentication.getPrincipal()).thenReturn(user);
     user.setPassword("passs");
     userEditRequest.setOldPassword("pass");
     userEditRequest.setNewPassword("password");
@@ -159,15 +197,15 @@ public class UserServiceTest {
   @Test
   void editUserSuccessfully() {
     SecurityContextHolder.setContext(securityContext);
-    when(authentication.getName()).thenReturn(user.getEmail());
     when(securityContext.getAuthentication()).thenReturn(authentication);
-    when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.ofNullable(user));
+    when(authentication.isAuthenticated()).thenReturn(true);
+    when(authentication.getPrincipal()).thenReturn(user);
 
     userService.editUser(userEditRequest);
 
-    verify(authentication, times(1)).getName();
     verify(securityContext, times(1)).getAuthentication();
-    verify(userRepository, times(1)).findByEmail(user.getEmail());
+    verify(authentication, times(1)).isAuthenticated();
+    verify(authentication, times(1)).getPrincipal();
     verify(userRepository, times(1)).save(user);
   }
 
@@ -175,19 +213,7 @@ public class UserServiceTest {
   void addFriendShouldThrowValidationExceptionWhenInvalidCredentials() {
     SecurityContextHolder.setContext(securityContext);
     when(securityContext.getAuthentication()).thenReturn(authentication);
-    when(authentication.getName()).thenReturn(user.getEmail());
-    when(userRepository.findByEmail(user.getEmail())).thenThrow(ValidationException.class);
-
-    assertThrows(ValidationException.class, () -> userService.addFriend(secondUser.getId()));
-  }
-
-  @Test
-  void addFriendShouldThrowValidationExceptionWhenUserNotFound() {
-    SecurityContextHolder.setContext(securityContext);
-    when(securityContext.getAuthentication()).thenReturn(authentication);
-    when(authentication.getName()).thenReturn(user.getEmail());
-    when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
-    when(userRepository.findById(secondUser.getId())).thenThrow(ValidationException.class);
+    when(authentication.isAuthenticated()).thenReturn(false);
 
     assertThrows(ValidationException.class, () -> userService.addFriend(secondUser.getId()));
   }
@@ -196,36 +222,21 @@ public class UserServiceTest {
   void addFriendSuccessfully() {
     SecurityContextHolder.setContext(securityContext);
     when(securityContext.getAuthentication()).thenReturn(authentication);
-    when(authentication.getName()).thenReturn(user.getEmail());
-    when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
-    when(userRepository.findById(secondUser.getId())).thenReturn(Optional.of(secondUser));
+    when(authentication.isAuthenticated()).thenReturn(true);
+    when(authentication.getPrincipal()).thenReturn(user);
 
     userService.addFriend(secondUser.getId());
 
-    verify(authentication, times(1)).getName();
     verify(securityContext, times(1)).getAuthentication();
-    verify(userRepository, times(1)).findByEmail(user.getEmail());
-    verify(userRepository, times(1)).findById(secondUser.getId());
-    verify(userRepository, times(1)).save(secondUser);
+    verify(authentication, times(1)).isAuthenticated();
+    verify(authentication, times(1)).getPrincipal();
   }
 
   @Test
   void removeFriendShouldThrowValidationExceptionWhenInvalidCredentials() {
     SecurityContextHolder.setContext(securityContext);
     when(securityContext.getAuthentication()).thenReturn(authentication);
-    when(authentication.getName()).thenReturn(user.getEmail());
-    when(userRepository.findByEmail(user.getEmail())).thenThrow(ValidationException.class);
-
-    assertThrows(ValidationException.class, () -> userService.removeFriend(secondUser.getId()));
-  }
-
-  @Test
-  void removeFriendShouldThrowValidationExceptionWhenUserNotFound() {
-    SecurityContextHolder.setContext(securityContext);
-    when(securityContext.getAuthentication()).thenReturn(authentication);
-    when(authentication.getName()).thenReturn(user.getEmail());
-    when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
-    when(userRepository.findById(secondUser.getId())).thenThrow(ValidationException.class);
+    when(authentication.isAuthenticated()).thenReturn(false);
 
     assertThrows(ValidationException.class, () -> userService.removeFriend(secondUser.getId()));
   }
@@ -234,17 +245,14 @@ public class UserServiceTest {
   void removeFriendSuccessfully() {
     SecurityContextHolder.setContext(securityContext);
     when(securityContext.getAuthentication()).thenReturn(authentication);
-    when(authentication.getName()).thenReturn(user.getEmail());
-    when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
-    when(userRepository.findById(secondUser.getId())).thenReturn(Optional.of(secondUser));
+    when(authentication.isAuthenticated()).thenReturn(true);
+    when(authentication.getPrincipal()).thenReturn(user);
 
     userService.addFriend(secondUser.getId());
 
-    verify(authentication, times(1)).getName();
     verify(securityContext, times(1)).getAuthentication();
-    verify(userRepository, times(1)).findByEmail(user.getEmail());
-    verify(userRepository, times(1)).findById(secondUser.getId());
-    verify(userRepository, times(1)).save(secondUser);
+    verify(authentication, times(1)).isAuthenticated();
+    verify(authentication, times(1)).getPrincipal();
   }
 
   @Test
@@ -326,5 +334,36 @@ public class UserServiceTest {
 
     assertEquals(members.size(), 1);
     verify(userRepository, times(1)).findAllByGroupId(group.getId());
+  }
+
+  @Test
+  void areFriendsShouldReturnTrueWhenUsersAreFriends() {
+    when(userRepository.areFriends(user.getId(), secondUser.getId())).thenReturn(true);
+
+    boolean areFriend = userService.areFriends(user.getId(), secondUser.getId());
+
+    assertTrue(areFriend);
+    verify(userRepository, times(1)).areFriends(user.getId(), secondUser.getId());
+  }
+
+  @Test
+  void areFriendsShouldReturnFalseWhenUsersAreNotFriends() {
+    when(userRepository.areFriends(user.getId(), secondUser.getId())).thenReturn(false);
+
+    boolean areFriend = userService.areFriends(user.getId(), secondUser.getId());
+
+    assertFalse(areFriend);
+    verify(userRepository, times(1)).areFriends(user.getId(), secondUser.getId());
+  }
+
+  @AfterEach
+  void cleanup() throws IOException {
+    Path directory = Path.of(path);
+    if (Files.exists(directory)) {
+      Files.walk(directory)
+          .sorted(Comparator.reverseOrder())
+          .map(Path::toFile)
+          .forEach(File::delete);
+    }
   }
 }

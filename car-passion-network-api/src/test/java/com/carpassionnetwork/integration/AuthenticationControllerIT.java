@@ -8,13 +8,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.carpassionnetwork.dto.request.LoginRequest;
 import com.carpassionnetwork.dto.request.RegistrationRequest;
 import com.carpassionnetwork.exception.ValidationException;
+import com.carpassionnetwork.service.AuthenticationService;
 import java.util.Objects;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
 public class AuthenticationControllerIT extends BaseIT {
 
+  @Autowired private AuthenticationService authenticationService;
   private RegistrationRequest registrationRequest;
   private LoginRequest loginRequest;
 
@@ -22,6 +25,7 @@ public class AuthenticationControllerIT extends BaseIT {
   void setUp() {
     registrationRequest = createRegistrationRequest();
     loginRequest = createLoginRequest();
+    currentUser = createUserOne();
   }
 
   @Test
@@ -73,7 +77,7 @@ public class AuthenticationControllerIT extends BaseIT {
 
   @Test
   void testLoginSuccessfully() throws Exception {
-    register();
+    authenticationService.register(currentUser);
 
     mockMvc
         .perform(

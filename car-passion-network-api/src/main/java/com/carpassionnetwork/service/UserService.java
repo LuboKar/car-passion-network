@@ -17,9 +17,11 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -38,14 +40,13 @@ public class UserService {
   }
 
   public User getCurrentUser() {
-    String currentUserEmail = getCurrentUserEmail();
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-    return userRepository
-        .findByEmail(currentUserEmail)
-        .orElseThrow(
-            () ->
-                new ValidationException(
-                    "User with email: " + currentUserEmail + " does not exists!"));
+    if (authentication == null || !authentication.isAuthenticated()) {
+      throw new ValidationException("User is not authenticated!");
+    }
+
+    return (User) authentication.getPrincipal();
   }
 
   public User uploadProfilePicture(MultipartFile file) {
@@ -69,24 +70,18 @@ public class UserService {
     return userRepository.save(currentUser);
   }
 
-  public User addFriend(UUID friendID) {
-    User currentUser = getCurrentUser();
-    User friendUser = getUser(friendID);
+  @Transactional
+  public void addFriend(UUID friendId) {
+    UUID currentUserId = getCurrentUser().getId();
 
-    currentUser.getFriends().add(friendUser);
-    friendUser.getFriends().add(currentUser);
-
-    return userRepository.save(friendUser);
+    userRepository.addFriend(currentUserId, friendId);
   }
 
-  public User removeFriend(UUID friendID) {
-    User currentUser = getCurrentUser();
-    User friendUser = getUser(friendID);
+  @Transactional
+  public void removeFriend(UUID friendId) {
+    UUID currentUserId = getCurrentUser().getId();
 
-    currentUser.getFriends().remove(friendUser);
-    friendUser.getFriends().remove(currentUser);
-
-    return userRepository.save(friendUser);
+    userRepository.removeFriend(currentUserId, friendId);
   }
 
   public List<User> getAllFriendsByUserId(UUID id) {
@@ -112,6 +107,10 @@ public class UserService {
     removeUserGroups(userToDelete);
 
     userRepository.delete(userToDelete);
+  }
+
+  public boolean areFriends(UUID firstUser, UUID secondUser) {
+    return userRepository.areFriends(firstUser, secondUser);
   }
 
   private String getCurrentUserEmail() {

@@ -36,13 +36,15 @@ public class UserController {
   }
 
   @PostMapping("/friends/{userId}")
-  public ResponseEntity<UserResponseDto> addFriends(@PathVariable UUID userId) {
-    return ResponseEntity.ok(userMapper.toUserResponse(userService.addFriend(userId)));
+  @ResponseStatus(HttpStatus.OK)
+  public void addFriends(@PathVariable UUID userId) {
+    userService.addFriend(userId);
   }
 
   @DeleteMapping("/friends/{userId}")
-  public ResponseEntity<UserResponseDto> removeFriends(@PathVariable UUID userId) {
-    return ResponseEntity.ok(userMapper.toUserResponse(userService.removeFriend(userId)));
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void removeFriends(@PathVariable UUID userId) {
+    userService.removeFriend(userId);
   }
 
   @GetMapping("/friends/{userId}")
@@ -68,5 +70,11 @@ public class UserController {
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteUser(@PathVariable UUID id) {
     userService.deleteUser(id);
+  }
+
+  @GetMapping("/{firstUser}/friends/{secondUser}")
+  public ResponseEntity<Boolean> areFriends(
+      @PathVariable UUID firstUser, @PathVariable UUID secondUser) {
+    return ResponseEntity.ok(userService.areFriends(firstUser, secondUser));
   }
 }

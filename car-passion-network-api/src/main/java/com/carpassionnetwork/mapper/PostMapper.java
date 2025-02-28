@@ -4,12 +4,11 @@ import com.carpassionnetwork.dto.request.PostCreateRequestDto;
 import com.carpassionnetwork.dto.response.CommentResponseDto;
 import com.carpassionnetwork.dto.response.PostResponseDto;
 import com.carpassionnetwork.model.Post;
+import com.carpassionnetwork.service.UserService;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Component;
 public class PostMapper {
   private final ModelMapper modelMapper;
   private final CommentMapper commentMapper;
+  private final UserService userService;
 
   public Post toPostEntity(PostCreateRequestDto postCreateRequestDto) {
     return modelMapper.map(postCreateRequestDto, Post.class);
@@ -41,9 +41,6 @@ public class PostMapper {
   }
 
   private boolean isCurrentUserLiked(Post post) {
-    UserDetails currentUser =
-        (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-    return post.getLikes().contains(currentUser);
+    return post.getLikes().contains(userService.getCurrentUser());
   }
 }

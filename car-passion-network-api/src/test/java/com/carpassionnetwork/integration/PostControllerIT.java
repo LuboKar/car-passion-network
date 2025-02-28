@@ -5,6 +5,7 @@ import static com.carpassionnetwork.helper.GroupTestHelper.createNewGroupOne;
 import static com.carpassionnetwork.helper.PostTestHelper.*;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -20,7 +21,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 
 public class PostControllerIT extends BaseIT {
   private PostCreateRequestDto postCreateRequestDto;
@@ -32,6 +32,7 @@ public class PostControllerIT extends BaseIT {
 
   @BeforeEach
   void setUp() {
+    register();
     postCreateRequestDto = createNewPostCreateRequest();
     post = createNewPost();
     owner = createUserTwo();
@@ -40,38 +41,20 @@ public class PostControllerIT extends BaseIT {
   }
 
   @Test
-  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testCreatePostShouldThrowValidationExceptionWhenOwnerDoesNotExists() throws Exception {
     mockMvc
         .perform(
             post("/post")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(postCreateRequestDto)))
+                .content(gson.toJson(postCreateRequestDto))
+                .with(user(currentUser)))
         .andExpect(status().isBadRequest())
         .andExpect(
             result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
-  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
-  void testCreatePostShouldThrowIValidationExceptionWhenAuthorDoesNotExists() throws Exception {
-    User savedOwner = createUser(owner);
-    postCreateRequestDto.setOwner(savedOwner.getId());
-
-    mockMvc
-        .perform(
-            post("/post")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(postCreateRequestDto)))
-        .andExpect(status().isBadRequest())
-        .andExpect(
-            result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
-  }
-
-  @Test
-  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testCreatePostShouldThrowValidationExceptionWhenGroupNotFound() throws Exception {
-    register();
     User savedOwner = createUser(owner);
     postCreateRequestDto.setOwner(savedOwner.getId());
     postCreateRequestDto.setGroup(group.getId());
@@ -80,24 +63,24 @@ public class PostControllerIT extends BaseIT {
         .perform(
             post("/post")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(postCreateRequestDto)))
+                .content(gson.toJson(postCreateRequestDto))
+                .with(user(currentUser)))
         .andExpect(status().isBadRequest())
         .andExpect(
             result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
-  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testCreatePostSuccessfully() throws Exception {
     User savedOwner = createUser(owner);
     postCreateRequestDto.setOwner(savedOwner.getId());
-    register();
 
     mockMvc
         .perform(
             post("/post")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(postCreateRequestDto)))
+                .content(gson.toJson(postCreateRequestDto))
+                .with(user(currentUser)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.title").value(postCreateRequestDto.getTitle()))
         .andExpect(jsonPath("$.content").value(postCreateRequestDto.getContent()))
@@ -105,11 +88,9 @@ public class PostControllerIT extends BaseIT {
   }
 
   @Test
-  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testCreateGroupPostSuccessfully() throws Exception {
-    User savedCurrentUser = createUser(currentUser);
-    postCreateRequestDto.setOwner(savedCurrentUser.getId());
-    group.setAdmin(savedCurrentUser);
+    postCreateRequestDto.setOwner(currentUser.getId());
+    group.setAdmin(currentUser);
     Group savedGroup = createGroup(group);
     postCreateRequestDto.setGroup(savedGroup.getId());
 
@@ -117,7 +98,8 @@ public class PostControllerIT extends BaseIT {
         .perform(
             post("/post")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(postCreateRequestDto)))
+                .content(gson.toJson(postCreateRequestDto))
+                .with(user(currentUser)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.title").value(postCreateRequestDto.getTitle()))
         .andExpect(jsonPath("$.content").value(postCreateRequestDto.getContent()))
@@ -125,34 +107,29 @@ public class PostControllerIT extends BaseIT {
   }
 
   @Test
-  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testLikeOrUnlikePostShouldThrowValidationExceptionWhenInvalidCredentials() throws Exception {
     mockMvc
-        .perform(post("/post/like/" + post.getId()))
+        .perform(post("/post/like/" + post.getId()).with(user(currentUser)))
         .andExpect(status().isBadRequest())
         .andExpect(
             result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
-  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testLikeOrUnlikePostShouldThrowValidationExceptionWhenPostNotFound() throws Exception {
-    register();
     mockMvc
-        .perform(post("/post/like/" + post.getId()))
+        .perform(post("/post/like/" + post.getId()).with(user(currentUser)))
         .andExpect(status().isBadRequest())
         .andExpect(
             result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
-  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testLikeOrUnlikePostShouldLikePostSuccessfully() throws Exception {
-    register();
     Post createdPost = createPost(post);
 
     mockMvc
-        .perform(post("/post/like/" + createdPost.getId()))
+        .perform(post("/post/like/" + createdPost.getId()).with(user(currentUser)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.title").value(createdPost.getTitle()))
         .andExpect(jsonPath("$.content").value(createdPost.getContent()))
@@ -163,14 +140,12 @@ public class PostControllerIT extends BaseIT {
   }
 
   @Test
-  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testLikeOrUnlikePostShouldUnLikePostSuccessfully() throws Exception {
-    User savedUser = createUser(currentUser);
-    post.getLikes().add(savedUser);
+    post.getLikes().add(currentUser);
     Post createdPost = createPost(post);
 
     mockMvc
-        .perform(post("/post/like/" + createdPost.getId()))
+        .perform(post("/post/like/" + createdPost.getId()).with(user(currentUser)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.title").value(createdPost.getTitle()))
         .andExpect(jsonPath("$.content").value(createdPost.getContent()))
@@ -179,50 +154,45 @@ public class PostControllerIT extends BaseIT {
   }
 
   @Test
-  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testGetAllPostsByUserIdSuccessfully() throws Exception {
     Post createdPost = createPost(post);
     currentUser.getLikedPosts().add(createdPost);
-    register();
 
     mockMvc
-        .perform(get("/post/user/" + currentUser.getId()))
+        .perform(get("/post/user/" + currentUser.getId()).with(user(currentUser)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$").isArray());
   }
 
   @Test
-  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testGetAllPostsByGroupIdSuccessfully() throws Exception {
-    User savedUser = createUser(currentUser);
-    group.setAdmin(savedUser);
+    group.setAdmin(currentUser);
     Group savedGroup = createGroup(group);
     Post createdPost = createPost(post);
     createdPost.setGroup(savedGroup);
 
     mockMvc
-        .perform(get("/post/group/" + savedGroup.getId()))
+        .perform(get("/post/group/" + savedGroup.getId()).with(user(currentUser)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$").isArray())
         .andExpect(jsonPath("$[0].id").value(createdPost.getId().toString()));
   }
 
   @Test
-  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testGetPostShouldThrowValidationExceptionWhenPostNotFound() throws Exception {
     mockMvc
-        .perform(get("/post/" + post.getId()))
+        .perform(get("/post/" + post.getId()).with(user(currentUser)))
         .andExpect(status().isBadRequest())
         .andExpect(
             result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
-  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testGetPostSuccessfully() throws Exception {
     Post createdPost = createPost(post);
+
     mockMvc
-        .perform(get("/post/" + createdPost.getId()))
+        .perform(get("/post/" + createdPost.getId()).with(user(currentUser)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.title").value(postCreateRequestDto.getTitle()))
         .andExpect(jsonPath("$.content").value(postCreateRequestDto.getContent()))
@@ -230,13 +200,14 @@ public class PostControllerIT extends BaseIT {
   }
 
   @Test
-  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testGetALLPostsReturnsEmptyListWhenThereAreNoPosts() throws Exception {
-    mockMvc.perform(get("/post")).andExpect(status().isOk()).andExpect(content().json("[]"));
+    mockMvc
+        .perform(get("/post").with(user(currentUser)))
+        .andExpect(status().isOk())
+        .andExpect(content().json("[]"));
   }
 
   @Test
-  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testGetALLPostsSuccessfully() throws Exception {
     createPost(post);
     User savedUser = createUser(owner);
@@ -244,59 +215,55 @@ public class PostControllerIT extends BaseIT {
     post.setAuthor(savedUser);
     createPost(post);
 
-    mockMvc.perform(get("/post")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(1)));
+    mockMvc
+        .perform(get("/post").with(user(currentUser)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)));
   }
 
   @Test
-  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testDeletePostShouldThrowValidationExceptionWhenInvalidCredentials() throws Exception {
     mockMvc
-        .perform(delete("/post/delete/" + post.getId()))
+        .perform(delete("/post/delete/" + post.getId()).with(user(currentUser)))
         .andExpect(status().isBadRequest())
         .andExpect(
             result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
-  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testDeletePostShouldThrowValidationExceptionWhenPostNotFound() throws Exception {
-    register();
-
     mockMvc
-        .perform(delete("/post/delete/" + post.getId()))
+        .perform(delete("/post/delete/" + post.getId()).with(user(currentUser)))
         .andExpect(status().isBadRequest())
         .andExpect(
             result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
-  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testDeletePostShouldThrowValidationExceptionWhenUserNotAuthor() throws Exception {
-    register();
     User savedUser = createUser(owner);
     post.setAuthor(savedUser);
     post.setUser(savedUser);
     Post savedPost = createPost(post);
 
     mockMvc
-        .perform(delete("/post/delete/" + savedPost.getId()))
+        .perform(delete("/post/delete/" + savedPost.getId()).with(user(currentUser)))
         .andExpect(status().isBadRequest())
         .andExpect(
             result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
-  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testDeletePostSuccessfully() throws Exception {
-    User savedUser = createUser(currentUser);
-    post.setAuthor(savedUser);
+    post.setAuthor(currentUser);
     Post savedPost = createPost(post);
 
-    mockMvc.perform(delete("/post/delete/" + savedPost.getId())).andExpect(status().isNoContent());
+    mockMvc
+        .perform(delete("/post/delete/" + savedPost.getId()).with(user(currentUser)))
+        .andExpect(status().isNoContent());
   }
 
   @Test
-  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testEditPostShouldThrowValidationExceptionWhenInvalidCredentials() throws Exception {
     postEditRequestDto.setPostId(UUID.randomUUID());
 
@@ -304,32 +271,30 @@ public class PostControllerIT extends BaseIT {
         .perform(
             put("/post/edit")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(postEditRequestDto)))
+                .content(gson.toJson(postEditRequestDto))
+                .with(user(currentUser)))
         .andExpect(status().isBadRequest())
         .andExpect(
             result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
-  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testEditPostShouldThrowValidationExceptionWhenPostNotFound() throws Exception {
-    register();
     postEditRequestDto.setPostId(UUID.randomUUID());
 
     mockMvc
         .perform(
             put("/post/edit")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(postEditRequestDto)))
+                .content(gson.toJson(postEditRequestDto))
+                .with(user(currentUser)))
         .andExpect(status().isBadRequest())
         .andExpect(
             result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
-  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testEditPostShouldThrowValidationExceptionWhenUserNotAuthor() throws Exception {
-    register();
     User savedUser = createUser(owner);
     post.setAuthor(savedUser);
     Post savedPost = createPost(post);
@@ -339,17 +304,16 @@ public class PostControllerIT extends BaseIT {
         .perform(
             put("/post/edit")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(postEditRequestDto)))
+                .content(gson.toJson(postEditRequestDto))
+                .with(user(currentUser)))
         .andExpect(status().isBadRequest())
         .andExpect(
             result -> assertInstanceOf(ValidationException.class, result.getResolvedException()));
   }
 
   @Test
-  @WithMockUser(username = "john.doe@gmail.com", roles = "USER")
   void testEditPostSuccessfully() throws Exception {
-    User savedUser = createUser(currentUser);
-    post.setAuthor(savedUser);
+    post.setAuthor(currentUser);
     Post savedPost = createPost(post);
     postEditRequestDto.setPostId(savedPost.getId());
 
@@ -357,7 +321,8 @@ public class PostControllerIT extends BaseIT {
         .perform(
             put("/post/edit")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(postEditRequestDto)))
+                .content(gson.toJson(postEditRequestDto))
+                .with(user(currentUser)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.title").value(postEditRequestDto.getTitle()))
         .andExpect(jsonPath("$.content").value(postEditRequestDto.getContent()));
