@@ -37,7 +37,7 @@ export default function Profile() {
       {!loadingUser && <UserName user={user} />}
 
       {currentUserId !== user.id && !loadingUser && (
-        <ProfileMenu user={user} setUser={setUser} />
+        <ProfileMenu userId={user.id} />
       )}
     </div>
   );

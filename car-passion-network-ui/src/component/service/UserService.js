@@ -178,6 +178,27 @@ const getAllGroupMembers = async (groupId) => {
   }
 };
 
+const areFriends = async (firstUserId, secondUserId) => {
+  checkAuthentication();
+
+  try {
+    const token = getToken();
+    const response = await fetch(
+      `http://localhost:8080/users/${firstUserId}/friends/${secondUserId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Error checking if users are friends!", error);
+  }
+};
+
 export {
   getUser,
   uploadProfilePicture,
@@ -188,4 +209,5 @@ export {
   findUsersByFullNameStartsWith,
   deleteUser,
   getAllGroupMembers,
+  areFriends,
 };
